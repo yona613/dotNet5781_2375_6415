@@ -135,12 +135,6 @@ namespace dotNet5781_02_2375_6415
                 tmpString += stations[i].BusStationKey.ToString();
                 tmpString += " ";
             }
-            tmpString += " / ";
-            for (int i = stations.Count - 1; i >= 0; i--)
-            {
-                tmpString += stations[i].BusStationKey.ToString();
-                tmpString += " ";
-            }
 
             return tmpString;
         }
