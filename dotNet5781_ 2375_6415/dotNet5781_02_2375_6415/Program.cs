@@ -317,62 +317,76 @@ namespace dotNet5781_02_2375_6415
                 throw new ArgumentException("Bus station already exists, bus can pass by the same station only once ");
             }
         }
-
+        /// <summary>
+        /// Deletes station in line
+        /// If station doesn't exist throws NotFoundException
+        /// </summary>
+        /// <param name="stationNum">Number of station</param>
         public void DeleteStation(int stationNum)
         {
             int i = 0;
-            for (; i < stations.Count; i++)
+            for (; i < stations.Count; i++) //goes over the all line
             {
-                if (stations[i].BusStationKey == stationNum)
+                if (stations[i].BusStationKey == stationNum) //if found
                 {
                     break;
                 }
             }
-            if (i >= stations.Count)
+            if (i >= stations.Count) //if not found
             {
                 throw new NotFoundException("ERROR : Bus stop not found !!");
             }
-            stations.RemoveAt(i);
-            if (i == 0)
+            stations.RemoveAt(i); //remove the station at found index
+            if (i == 0) //if it is the first station
             {
-                firstStation = stations[0];
+                firstStation = stations[0]; //update first station
             }
-            if ((i - 1) == stations.Count)
+            if ((i - 1) == stations.Count) //if it is last station
             {
-                lastStation = stations[i - 1];
+                lastStation = stations[i - 1]; //update last station
             }
         }
-
+        /// <summary>
+        /// Checks if station exists in line and returns boolean
+        /// </summary>
+        /// <param name="stationNum">Number of station</param>
+        /// <returns></returns>
         public bool CheckStation(int stationNum)
         {
-            for (int i = 0; i < stations.Count; i++)
+            for (int i = 0; i < stations.Count; i++) //goes over the all list
             {
-                if (stations[i].BusStationKey == stationNum)
+                if (stations[i].BusStationKey == stationNum) //if found
                 {
                     return true;
                 }
             }
-            return false;
+            return false; //else
         }
-
+        /// <summary>
+        /// Calculates Distance between 2 stops and returns it
+        /// </summary>
+        /// <param name="stop1">Source's station</param>
+        /// <param name="stop2">Destination's station</param>
+        /// <returns>Returns distance</returns>
         public double Distance(int stop1, int stop2)
         {
             int i = 0;
-            for (; i < stations.Count; i++)
+            for (; i < stations.Count; i++)//searches for first station
             {
                 if (stations[i].BusStationKey == stop1)
                 {
                     break;
                 }
             }
-            if (stations[i].BusStationKey != stop1 || !CheckStation(stop2))
+            if ((i == stations.Count) || !CheckStation(stop2)) //if doesn't find first or second stop
             {
+                throw new NotFoundException("Cannot calculate duration, route doesn't exist in line !!");
             }
             double distance = 0;
             do
             {
                 i++;
-                distance += stations[i].Distance(stations[i - 1]);
+                distance += stations[i].Distance(stations[i - 1]); ///sums distance from first stop to second stop
             } while (stations[i].BusStationKey != stop2);
             return distance;
         }
