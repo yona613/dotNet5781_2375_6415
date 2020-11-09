@@ -229,19 +229,21 @@ namespace dotNet5781_02_2375_6415
             return tmpString;
         }
         /// <summary>
-        /// Adding a stop on the line route
+        /// Adds station in line
+        /// if Index out of range throw ArgumentOutOfRangeException
+        /// if station already exists throw ArgumentException
         /// </summary>
         /// <param name="index">Location of the station in the list of stations</param>
         /// <param name="stationNum">the number of the station</param>
         /// <param name="tmpAdress">the assress of the station</param>
         public void AddStation(int index, int stationNum, string tmpAdress = "")
         {
-            if (index > stations.Count + 1)
+            if (index > stations.Count + 1) // if index out of range
             {
                 ArgumentOutOfRangeException ex = new ArgumentOutOfRangeException("index");
                 throw ex;
             }
-            if (!CheckStation(stationNum))
+            if (!CheckStation(stationNum)) 
             {
                 BusLineStop tmpStation = new BusLineStop(stationNum, tmpAdress);
                 if (index <= stations.Count)
