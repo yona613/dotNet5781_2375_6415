@@ -306,89 +306,112 @@ namespace dotNet5781_02_2375_6415
             } while (stations[i].BusStationKey != stop2);
             return distance;
         }
-
+        /// <summary>
+        /// Calculates the time of route between 2 stations
+        /// </summary>
+        /// <param name="stop1">Source's station</param>
+        /// <param name="stop2">Destination's station</param>
+        /// <returns>Return time in TimeSpan Form</returns>
         public TimeSpan Time(int stop1, int stop2)
         {
             int i = 0;
-            for (; i < stations.Count; i++)
+            for (; i < stations.Count; i++) //searches for first stop
             {
-                if (stations[i].BusStationKey == stop1)
+                if (stations[i].BusStationKey == stop1) //found
                 {
                     break;
                 }
             }
-            if ((i == stations.Count) || !CheckStation(stop2))
+            if ((i == stations.Count) || !CheckStation(stop2)) //if doesn't find first or second stop
             {
                 throw new NotFoundException("Cannot calculate duration, route doesn't exist in line !!");
             }
-            TimeSpan time = new TimeSpan();
+            TimeSpan time = new TimeSpan(); //creates new TimeSpan
             do
             {
-                time += stations[++i].TravelTime(stations[i - 1]);
+                time += stations[++i].TravelTime(stations[i - 1]); //sums time from first station to least station using time function
             } while (stations[i].BusStationKey != stop2);
             return time;
         }
-
+        /// <summary>
+        /// creates a subline composed by the route between 2 stops
+        /// </summary>
+        /// <param name="stop1">Source's stop</param>
+        /// <param name="stop2">Destination's stop</param>
+        /// <returns>Return a subLine</returns>
         public Line SubLine(int stop1, int stop2)
         {
             int i = 0;
-            bool flag = false;
-            for (; i < stations.Count; i++)
+            bool flag = false; //checks if stations found
+            for (; i < stations.Count; i++) //goes over the all line
             {
-                if (stations[i].BusStationKey == stop1)
+                if (stations[i].BusStationKey == stop1) //if station found
                 {
-                    flag = true;
+                    flag = true; //first station was found
                     break;
                 }
             }
-            if (flag == true)
+            if (flag == true) //if first station was found
             {
-                for (int j = i; j < (stations.Count); j++)
+                for (int j = i; j < (stations.Count); j++) //goes over all remaining line to find second station
                 {
-                    if (stations[j].BusStationKey == stop2)
+                    if (stations[j].BusStationKey == stop2) //if second station
                     {
-                        flag = true;
+                        flag = true;//second station found
                         break;
                     }
-                    flag = false;
+                    flag = false; //didn't find second station
                 }
             }
-            Line subLine = new Line();
-            if (flag == false)
+            Line subLine = new Line(); //creates a new subLine
+            if (flag == false) //if 2 stations not found
             {
                 subLine = null;
-                return subLine;
+                return subLine; //returns a null subline
             }
-            subLine.firstStation = stations[i];
+            subLine.firstStation = stations[i]; //updates first station of subLine
             do
             {
-                subLine.stations.Add(stations[i]);
+                subLine.stations.Add(stations[i]); //adds stations to subLine until reaches the second station
             } while (stations[i++].BusStationKey != stop2);
-            subLine.LastStation = stations[i - 1];
+            subLine.LastStation = stations[i - 1]; //updates last station of subLine
             return subLine;
         }
-
+        /// <summary>
+        /// Finds station in line and returns it
+        /// </summary>
+        /// <param name="number">Number of the stataion</param>
+        /// <returns>Returns the station found</returns>
         public BusLineStop FindStation(int number)
         {
-            BusLineStop tmpStop = new BusLineStop(-1);
-            foreach (BusLineStop item in stations)
+            BusLineStop tmpStop = new BusLineStop(-1); //creataes a new station with number -1 (not found)
+            foreach (BusLineStop item in stations) //goes over all stations in list
             {
-                if (item.BusStationKey == number)
+                if (item.BusStationKey == number) //if found
                 {
-                    return item;
+                    return item; //return the station found
                 }
             }
-            return tmpStop;
+            return tmpStop; //else return a -1 station (not found)
         }
 
-
+        /// <summary>
+        /// Implementation of function compareTo of Icomparable interface
+        /// </summary>
+        /// <param name="line2">Line to compare with</param>
+        /// <returns></returns>
         public int CompareTo(Line line2)
         {
+            //compares the time of the 2 lines
             TimeSpan time1 = Time(firstStation.BusStationKey, LastStation.BusStationKey);
             TimeSpan time2 = line2.Time(line2.firstStation.BusStationKey, line2.lastStation.BusStationKey);
-            return time1.CompareTo(time2);
+            return time1.CompareTo(time2); //return comparaison of time
         }
 
+        /// <summary>
+        /// Implemantation of enumerator interface
+        /// </summary>
+        /// <returns>Returns enumarator of the list of stations</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return stations.GetEnumerator();
@@ -396,84 +419,99 @@ namespace dotNet5781_02_2375_6415
 
     }
 
+    /// <summary>
+    /// Class that implement a list of lines of bus
+    /// </summary>
     class BusLinesList : IEnumerable
     {
         private List<Line> myList = new List<Line> { };
-
-        public bool AddLine(int lineNumber, Area tmpArea = Area.General)
+        /// <summary>
+        /// Add line to lines list
+        /// </summary>
+        /// <param name="lineNumber">Number of the line</param>
+        /// <param name="tmpArea">Area of the line</param>
+        /// <returns></returns>
+        public void AddLine(int lineNumber, Area tmpArea = Area.General)
         {
             int i = 0;
-            foreach (var Line in myList)
+            foreach (var Line in myList) //goes over all lines
             {
-                if (Line.LineNumber == lineNumber)
+                if (Line.LineNumber == lineNumber) //if same number
                 {
-                    i++;
+                    i++; //sums the number of lines that have the same number than the one we want to add
                 }
-
             }
-            if (i < 2)
+            if (i < 2) //if there is les than 2 lines with this number
             {
-                Line tmpLine = new Line(lineNumber, tmpArea);
-                myList.Add(tmpLine);
+                Line tmpLine = new Line(lineNumber, tmpArea); //create new line
+                myList.Add(tmpLine); //add line to list
             }
-            else
+            else //if there is already 2 lines
             {
                 throw new ArgumentException("Line already exists, cannot build more than 2 routes for the same line !!");
             }
-            return true;
         }
-
+        /// <summary>
+        /// Add station to a line in the list
+        /// </summary>
+        /// <param name="lineNumber">Line number</param>
+        /// <param name="index">Index of station in line</param>
+        /// <param name="stationNumber">number of station</param>
+        /// <param name="stationAddress">Adress of the station</param>
         public void AddStation(int lineNumber, int index, int stationNumber, string stationAddress = "")
         {
-            BusLineStop tmpStop = FindStop(stationNumber);
-            if (tmpStop.BusStationKey != -1)
+            BusLineStop tmpStop = FindStop(stationNumber); //searches if the bus stop already exists and get it
+            if (tmpStop.BusStationKey != -1) //if bus station already exists
             {
-                bool flag = false;
-                foreach (Line item in myList)
+                bool flag = false; //checks if line exists
+                foreach (Line item in myList) //goes over all lines
                 {
-                    if (item.LineNumber == lineNumber)
+                    if (item.LineNumber == lineNumber) //if the line to add
                     {
-                        flag = true;
-                        item.AddStation(index, tmpStop);
-                        break;
+                        flag = true; //line exists
+                        item.AddStation(index, tmpStop); //add the station found to this line
+                        break; //end
                     }
                 }
-                if (!flag)
+                if (!flag) //if line doesn't exist
                 {
                     throw new NotFoundException("Bus line not found !!");
                 }
             }
             else
             {
-                bool flag = false;
-                foreach (Line item in myList)
+                bool flag = false; //checks if line exists
+                foreach (Line item in myList)//goes over all lines
                 {
-                    if (item.LineNumber == lineNumber)
+                    if (item.LineNumber == lineNumber)//if the line to add
                     {
-                        flag = true;
-                        item.AddStation(index, stationNumber);
-                        break;
+                        flag = true;//line exists
+                        item.AddStation(index, stationNumber); //add a new station with this number to the line
+                        break; //end
                     }
                 }
-                if (!flag)
+                if (!flag) //if line doesn't exist
                 {
                     throw new NotFoundException("Bus line not found !!");
                 }
             }
         }
-
+        /// <summary>
+        /// Deletes line in lines list
+        /// </summary>
+        /// <param name="tmpLine">Number of the line to delete</param>
         public void DeleteLine(int tmpLine)
         {
             int i = 0;
-            for (; i < myList.Count; i++)
+            for (; i < myList.Count; i++) //goes over all lines
             {
-                if (myList[i].LineNumber == tmpLine)
+                if (myList[i].LineNumber == tmpLine) //if this line has the number to delete
                 {
-                    myList.RemoveAt(i);
-                    break;
+                    myList.RemoveAt(i); //remove this line
+                    break; //end
                 }
             }
-            if (i == myList.Count)
+            if (i == myList.Count) //if no line was deleted ( the line didn't exist)
             {
                 throw new NotFoundException("Cannot delete line that doesn't exists !!");
             }
