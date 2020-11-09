@@ -232,8 +232,8 @@ namespace dotNet5781_02_2375_6415
         /// Adding a stop on the line route
         /// </summary>
         /// <param name="index">Location of the station in the list of stations</param>
-        /// <param name="stationNum"></param>
-        /// <param name="tmpAdress"></param>
+        /// <param name="stationNum">the number of the station</param>
+        /// <param name="tmpAdress">the assress of the station</param>
         public void AddStation(int index, int stationNum, string tmpAdress = "")
         {
             if (index > stations.Count + 1)
