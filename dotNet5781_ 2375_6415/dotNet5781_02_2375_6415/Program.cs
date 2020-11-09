@@ -788,6 +788,11 @@ namespace dotNet5781_02_2375_6415
             } while (myChoice != 5);
         }
 
+        /// <summary>
+        /// Gets input from user untill it is integer and returns it in integer form
+        /// Throws exception if input is not an integer
+        /// </summary>
+        /// <returns>input casted into integer</returns>
         static int getIntInput()
         {
             string tmpString;
