@@ -31,57 +31,85 @@ namespace dotNet5781_02_2375_6415
         /// <summary>
         /// empty CTOR
         /// </summary>
-        /// <param name="number"></param>
-        /// <param name="tmpAddress"></param>
+        /// <param name="number">number of the station</param>
+        /// <param name="tmpAddress">address of the station</param>
         public BusStop(int number = 0, string tmpAddress = "")
         {
             busStationKey = number;
             address = tmpAddress;
             Random r = new Random(DateTime.Now.Millisecond);
-            longitude = ((float)r.NextDouble() * ((float)1.2)) + (float)34.3;
-            latitude = ((float)r.NextDouble() * ((float)2.3)) + (float)31;
+            longitude = ((float)r.NextDouble() * ((float)1.2)) + (float)34.3; // Lottery of longitude within the coordinates of the State of Israel
+            latitude = ((float)r.NextDouble() * ((float)2.3)) + (float)31; // Lottery of latitude within the coordinates of the State of Israel
         }
-
+        /// <summary>
+        /// number of the station
+        /// </summary>
         protected int busStationKey;
-
+        /// <summary>
+        /// getter & setter for the number of the station
+        /// </summary>
         public int BusStationKey
         {
             get { return busStationKey; }
             set { busStationKey = value; }
         }
-
+        /// <summary>
+        /// the station's latitude
+        /// </summary>
         protected float latitude;
-
+        /// <summary>
+        /// getter for the station's latitude
+        /// </summary>
         public float Latitude
         {
             get { return latitude; }
         }
-
+        /// <summary>
+        /// the station's longitude
+        /// </summary>
         protected float longitude;
-
+        /// <summary>
+        /// getter for the station's Longitude
+        /// </summary>
         public float Longitude
         {
             get { return longitude; }
         }
-
+        /// <summary>
+        /// the station's address
+        /// </summary>
         protected string address;
-
+        /// <summary>
+        /// getter & setter for the station's address
+        /// </summary>
         public string Address
         {
             get { return address; }
             set { address = value; }
         }
-
+        /// <summary>
+        /// overriding ToString func which print out the station details
+        /// </summary>
+        /// <returns>string with all the details</returns>
         public override string ToString()
         {
             string tmpString = "Bus Station Code:  " + busStationKey.ToString() + ", " + latitude.ToString() + "°N " + longitude.ToString() + "°E";
             return tmpString;
         }
     }
-
+    /// <summary>
+    /// A class that will represent a bus line station.
+    /// Contains all bus station data,
+    /// and also contains the distance from the previous bus line station,
+    /// and the travel time from the previous bus line station
+    /// </summary>
     class BusLineStop : BusStop
     {
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="number"></param>
+        /// <param name="tmpAddress"></param>
         public BusLineStop(int number = 0, string tmpAddress = "") : base(number, tmpAddress) { }
 
         /// <summary>
