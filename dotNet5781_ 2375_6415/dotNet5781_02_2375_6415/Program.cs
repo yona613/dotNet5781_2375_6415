@@ -11,20 +11,28 @@ using System.Threading.Tasks;
 
 namespace dotNet5781_02_2375_6415
 {
-
     using static Math;
-
+    /// <summary>
+    /// A new exception class for cases where we didn't find the product that the user entered
+    /// </summary>
     [Serializable]
     public class NotFoundException : Exception
     {
-
         public NotFoundException() : base() { }
         public NotFoundException(string message) : base(message) { }
         public NotFoundException(string message, Exception inner) : base(message, inner) { }
         protected NotFoundException(SerializationInfo info, StreamingContext context) : base(info, context) { }
     }
+    /// <summary>
+    /// A class that represents a bus stop
+    /// </summary>
     class BusStop
     {
+        /// <summary>
+        /// empty CTOR
+        /// </summary>
+        /// <param name="number"></param>
+        /// <param name="tmpAddress"></param>
         public BusStop(int number = 0, string tmpAddress = "")
         {
             busStationKey = number;
