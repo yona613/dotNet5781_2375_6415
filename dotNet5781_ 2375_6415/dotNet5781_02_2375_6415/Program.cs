@@ -714,12 +714,12 @@ namespace dotNet5781_02_2375_6415
 
         static void Main(string[] args)
         {
-            BusLinesList myList = new BusLinesList();
-            for (int i = 0; i < 10; i++)
+            BusLinesList myList = new BusLinesList(); //creates a list of lines
+            for (int i = 0; i < 10; i++) //adds lines
             {
                 myList.AddLine(i + 1);
             }
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 10; i++) //adds stations
             {
                 for (int j = 0; j < 20; j++)
                 {
@@ -738,8 +738,8 @@ namespace dotNet5781_02_2375_6415
                     }
                 }
             }
-            int myChoice;
-            int innerChoice;
+            int myChoice; //gets choice of user
+            int innerChoice; //gets innerchoice of user
             do
             {
                 Console.WriteLine("Enter your choice :");
