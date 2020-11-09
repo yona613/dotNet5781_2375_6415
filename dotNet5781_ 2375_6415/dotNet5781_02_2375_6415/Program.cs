@@ -272,12 +272,18 @@ namespace dotNet5781_02_2375_6415
                 throw new ArgumentException("Bus station already exists, bus can pass by the same station only once ");
             }
         }
-
+        /// <summary>
+        /// Adds station in line
+        /// if Index out of range throw ArgumentOutOfRangeException
+        /// if station already exists throw ArgumentException
+        /// </summary>
+        /// <param name="index">Index of station in line</param>
+        /// <param name="newStop">Station</param>
         public void AddStation(int index, BusLineStop newStop)
         {
             try
             {
-                if (index > stations.Count + 1)
+                if (index > stations.Count + 1)// if index out of range
                 {
                     ArgumentOutOfRangeException ex = new ArgumentOutOfRangeException("index");
                     throw ex;
