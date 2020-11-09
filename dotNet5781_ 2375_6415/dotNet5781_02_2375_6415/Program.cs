@@ -106,16 +106,16 @@ namespace dotNet5781_02_2375_6415
     class BusLineStop : BusStop
     {
         /// <summary>
-        /// 
+        /// empty CTOR
         /// </summary>
-        /// <param name="number"></param>
-        /// <param name="tmpAddress"></param>
+        /// <param name="number">number of the station</param>
+        /// <param name="tmpAddress">address of the station</param>
         public BusLineStop(int number = 0, string tmpAddress = "") : base(number, tmpAddress) { }
 
         /// <summary>
         /// Calculates distance using coordinates (found on internet)
         /// </summary>
-        /// <param name="tmpBus"></param>
+        /// <param name="tmpBus">The previous station</param>
         public double Distance(BusLineStop tmpBus)
         {
             double distance = 0;
@@ -125,65 +125,102 @@ namespace dotNet5781_02_2375_6415
             distance = (distance * 60 * 1.1515 * 1.609344);
             return distance;
         }
-
+        /// <summary>
+        /// Calculates the travel time from the previous station.
+        /// assuming that the bus runs on average at a speed of 40 km / h
+        /// </summary>
+        /// <param name="tmpBus">The previous station</param>
+        /// <returns>The duration of the journey from the previous station as a show of TimeSpan</returns>
         public TimeSpan TravelTime(BusLineStop tmpBus)
         {
             double distance = Distance(tmpBus);
+            // Calculation of hours, minutes and seconds according to a rate of 40 km / h and depending on the distance
             TimeSpan tmpTime = new TimeSpan((int)(distance / 40.0), (int)((distance % 40.0) / (40.0 / 60.0)), (int)(((distance % 40.0) % (40.0 / 60.0)) / (40.0 / 3600.0)));
+
             return tmpTime;
         }
-
     }
-
+    /// <summary>
+    /// Assigning the bus line to a specific area from a defined area list
+    /// or be cross-areas (general)/// </summary>
     enum Area { General, North, South, Center, Jerusalem };
-
+    /// <summary>
+    /// A class that will represent a single bus line
+    /// which is defined as a route of various bus line stations/// </summary>
     class Line : IComparable<Line>, IEnumerable
     {
+        /// <summary>
+        /// CTOR
+        /// </summary>
+        /// <param name="number">the line number</param>
+        /// <param name="tmpArea">the line area</param>
         public Line(int number = 0, Area tmpArea = Area.General)
         {
             lineNumber = number;
             busArea = tmpArea;
             stations = new List<BusLineStop>();
         }
-
+        /// <summary>
+        /// the line number
+        /// </summary>
         private int lineNumber;
-
+        /// <summary>
+        /// getter & setter for the line number
+        /// </summary>
         public int LineNumber
         {
             get { return lineNumber; }
             set { lineNumber = value; }
         }
-
+        /// <summary>
+        /// The first stop the line passes through
+        /// </summary>
         private BusLineStop firstStation;
-
+        /// <summary>
+        /// getter & setter for the first station
+        /// </summary>
         public BusLineStop FirstStation
         {
             get { return firstStation; }
             set { firstStation = value; }
         }
-
+        /// <summary>
+        /// The last stop the line passes through
+        /// </summary>
         private BusLineStop lastStation;
-
+        /// <summary>
+        /// getter & setter for the last station
+        /// </summary>
         public BusLineStop LastStation
         {
             get { return lastStation; }
             set { lastStation = value; }
         }
-
+        /// <summary>
+        /// The area in which the line travels
+        /// </summary>
         private Area busArea;
-
+        /// <summary>
+        /// getter & setter for the area
+        /// </summary>
         public Area BusArea
         {
             get { return busArea; }
             set { busArea = value; }
         }
-
+        /// <summary>
+        /// List of bus stops where the line stops
+        /// </summary>
         List<BusLineStop> stations;
-
+        /// <summary>
+        /// overriding ToString func which print out the line details
+        /// including the line number, the area where the line operates and the list of station numbers
+        /// </summary>
+        /// <returns>string with all the details</returns>
         public override string ToString()
         {
             string tmpString = "BusLine:  " + lineNumber.ToString() + ", " + busArea.ToString() + " / ";
-            for (int i = 0; i < stations.Count; i++)
+            for (int i = 0; i < stations.Count; i++) // add to the string the list of station numbers
             {
                 tmpString += stations[i].BusStationKey.ToString();
                 tmpString += " ";
@@ -191,7 +228,12 @@ namespace dotNet5781_02_2375_6415
 
             return tmpString;
         }
-
+        /// <summary>
+        /// Adding a stop on the line route
+        /// </summary>
+        /// <param name="index">Location of the station in the list of stations</param>
+        /// <param name="stationNum"></param>
+        /// <param name="tmpAdress"></param>
         public void AddStation(int index, int stationNum, string tmpAdress = "")
         {
             if (index > stations.Count + 1)
