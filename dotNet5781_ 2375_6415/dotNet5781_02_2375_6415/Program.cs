@@ -293,28 +293,28 @@ namespace dotNet5781_02_2375_6415
             {
                 Console.WriteLine($" ERROR : {ex.ToString()}");
             }
-            if (!CheckStation(newStop.BusStationKey))
+            if (!CheckStation(newStop.BusStationKey)) //if station doesn't exist
             {
-                if (index <= stations.Count)
+                if (index <= stations.Count) 
                 {
-                    if (index == 1)
+                    if (index == 1) //if adds first stop
                     {
-                        firstStation = newStop;
+                        firstStation = newStop; //update first stop
                     }
-                    stations.Insert(index - 1, newStop);
+                    stations.Insert(index - 1, newStop); //adds station
                 }
-                else if (index == stations.Count + 1)
+                else if (index == stations.Count + 1) //if adds last stop
                 {
-                    if (index != 1)
+                    if (index != 1) //if last stop isn't first stop
                     {
-                        stations.Add(newStop);
-                        lastStation = newStop;
+                        stations.Add(newStop); //adds station
+                        lastStation = newStop; //updates last station
                     }
-                    else
+                    else //if last station is first station
                     {
-                        firstStation = newStop;
-                        stations.Add(newStop);
-                        lastStation = newStop;
+                        firstStation = newStop; //updates first station
+                        stations.Add(newStop); //adds station
+                        lastStation = newStop; //updates last station
                     }
                 }
             }
