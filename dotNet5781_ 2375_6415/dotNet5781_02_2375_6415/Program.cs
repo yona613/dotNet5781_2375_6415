@@ -243,7 +243,7 @@ namespace dotNet5781_02_2375_6415
                 ArgumentOutOfRangeException ex = new ArgumentOutOfRangeException("index");
                 throw ex;
             }
-            if (!CheckStation(stationNum)) 
+            if (!CheckStation(stationNum)) // If the station does not exist on the route
             {
                 BusLineStop tmpStation = new BusLineStop(stationNum, tmpAdress);
                 if (index <= stations.Count)
