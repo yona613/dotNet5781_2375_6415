@@ -541,7 +541,10 @@ namespace dotNet5781_02_2375_6415
             }
         }
 
-
+        /// <summary>
+        /// Implementation of enumerator interface
+        /// </summary>
+        /// <returns>Enumerator of the list</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return myList.GetEnumerator();
