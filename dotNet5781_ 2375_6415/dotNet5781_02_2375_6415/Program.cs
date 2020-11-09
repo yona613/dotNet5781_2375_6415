@@ -506,78 +506,100 @@ namespace dotNet5781_02_2375_6415
                 throw new NotFoundException("Cannot delete line that doesn't exists !!");
             }
         }
-
+        /// <summary>
+        /// Checks if station already exists in one of the lines and returns it
+        /// </summary>
+        /// <param name="number">Number of the station we look for</param>
+        /// <returns>Return the station if found else return a station with number -1</returns>
         public BusLineStop FindStop(int number)
         {
-            BusLineStop tmpStop = new BusLineStop();
-            foreach (Line item in myList)
+            BusLineStop tmpStop = new BusLineStop(); //creates new station
+            foreach (Line item in myList) //goes over all lines in list
             {
-                tmpStop = item.FindStation(number);
-                if (tmpStop.BusStationKey != -1)
+                tmpStop = item.FindStation(number); //checks if station is in line using function, if yes get it
+                if (tmpStop.BusStationKey != -1) //if station is in line
                 {
                     return tmpStop;
                 }
             }
-            return tmpStop;
+            return tmpStop;//returns a station with number -1 (not found)
         }
-
+        /// <summary>
+        /// Returns list of lines in wich a specific station exists
+        /// </summary>
+        /// <param name="tmpStation">Number of the station we look for</param>
+        /// <returns>returns the subList of lines </returns>
         public List<Line> FindStation(int tmpStation)
         {
-            List<Line> subList = new List<Line> { };
-            foreach (Line line in myList)
+            List<Line> subList = new List<Line> { }; //creates new list of lines
+            foreach (Line line in myList) //goes over all lines in list
             {
-                foreach (BusLineStop busStation in line)
+                foreach (BusLineStop busStation in line) //goes over all stations in line
                 {
-                    if (tmpStation == busStation.BusStationKey)
+                    if (tmpStation == busStation.BusStationKey) //if station is in line
                     {
-                        subList.Add(line);
+                        subList.Add(line); //adds line to the subList
                         break;
                     }
                 }
             }
-            if (subList.Count == 0)
+            if (subList.Count == 0) //if subList is empty (no bus line was found)
             {
                 throw new NotFoundException("cannot create list of lines, no line deserves that station !!");
             }
             return subList;
         }
-
+        /// <summary>
+        /// Creates sublist of Bus lines composed by all routes between 2 stops
+        /// </summary>
+        /// <param name="stn1">Source's station</param>
+        /// <param name="stn2">Destination's station</param>
+        /// <returns>returns subList of bus lines</returns>
         public BusLinesList CreateSubList(int stn1, int stn2)
         {
             BusLinesList subList = new BusLinesList();
-            foreach (Line line in myList)
+            foreach (Line line in myList) //goes over all the lines
             {
-                Line tmpLine = line.SubLine(stn1, stn2);
-                if (tmpLine != null)
+                Line tmpLine = line.SubLine(stn1, stn2); //gets a subLine if this line has a route from stn1 to stn2
+                if (tmpLine != null) //if the subLine exists
                 {
-                    tmpLine.LineNumber = line.LineNumber;
-                    subList.myList.Add(tmpLine);
+                    tmpLine.LineNumber = line.LineNumber; //gets the number of the line from wich this subline is taken
+                    subList.myList.Add(tmpLine); //adds subLine to subList
                 }
             }
             return subList;
         }
-
+        /// <summary>
+        /// Sorts a list of lines according to the default comparer (Time of travel from begin to end)
+        /// </summary>
         public void SortList()
         {
             myList.Sort();
         }
-
+        /// <summary>
+        /// Implementation of indexer interface
+        /// </summary>
+        /// <param name="tmpLine">Gets number of line</param>
+        /// <returns>Returns object line of the number entered</returns>
         public Line this[int tmpLine]
         {
             get
             {
-                for (int i = 0; i < myList.Count; i++)
+                for (int i = 0; i < myList.Count; i++) //searches for line in all array
                 {
                     if (myList[i].LineNumber == tmpLine)
                     {
-                        return myList[i];
+                        return myList[i]; //returns the line if found
                     }
                 }
-                throw new NotFoundException("Bus line not Found !!");
+                throw new NotFoundException("Bus line not Found !!"); //if bus line wasn't found
             }
         }
 
-
+        /// <summary>
+        /// Implementation of enumerator interface
+        /// </summary>
+        /// <returns>Enumerator of the list</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return myList.GetEnumerator();
