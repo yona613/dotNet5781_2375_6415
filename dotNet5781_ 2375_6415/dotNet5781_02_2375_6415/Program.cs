@@ -111,7 +111,6 @@ namespace dotNet5781_02_2375_6415
         /// <param name="number">number of the station</param>
         /// <param name="tmpAddress">address of the station</param>
         public BusLineStop(int number = 0, string tmpAddress = "") : base(number, tmpAddress) { }
-
         /// <summary>
         /// Calculates distance using coordinates (found on internet)
         /// </summary>
@@ -248,28 +247,28 @@ namespace dotNet5781_02_2375_6415
                 BusLineStop tmpStation = new BusLineStop(stationNum, tmpAdress);
                 if (index <= stations.Count)
                 {
-                    if (index == 1)
+                    if (index == 1) //if adds first stop
                     {
-                        firstStation = tmpStation;
+                        firstStation = tmpStation; //update first stop
                     }
-                    stations.Insert(index - 1, tmpStation);
+                    stations.Insert(index - 1, tmpStation); //adds station
                 }
-                else if (index == stations.Count + 1)
+                else if (index == stations.Count + 1) //if adds first stop
                 {
-                    if (index != 1)
+                    if (index != 1) //if last stop isn't first stop
                     {
-                        stations.Add(tmpStation);
-                        lastStation = tmpStation;
+                        stations.Add(tmpStation); //adds station
+                        lastStation = tmpStation; //update last stop
                     }
-                    else
+                    else //if last station is first station
                     {
-                        firstStation = tmpStation;
-                        stations.Add(tmpStation);
-                        lastStation = tmpStation;
+                        firstStation = tmpStation; //update first stop
+                        stations.Add(tmpStation); //adds station
+                        lastStation = tmpStation; //update last stop
                     }
                 }
             }
-            else
+            else // ERROR: Bus station already exists, bus can pass by the same station only once
             {
                 throw new ArgumentException("Bus station already exists, bus can pass by the same station only once ");
             }
@@ -320,7 +319,7 @@ namespace dotNet5781_02_2375_6415
                     }
                 }
             }
-            else
+            else // ERROR: Bus station already exists, bus can pass by the same station only once
             {
                 throw new ArgumentException("Bus station already exists, bus can pass by the same station only once ");
             }
@@ -486,7 +485,6 @@ namespace dotNet5781_02_2375_6415
             }
             return tmpStop; //else return a -1 station (not found)
         }
-
         /// <summary>
         /// Implementation of function compareTo of Icomparable interface
         /// </summary>
@@ -499,7 +497,6 @@ namespace dotNet5781_02_2375_6415
             TimeSpan time2 = line2.Time(line2.firstStation.BusStationKey, line2.lastStation.BusStationKey);
             return time1.CompareTo(time2); //return comparaison of time
         }
-
         /// <summary>
         /// Implemantation of enumerator interface
         /// </summary>
@@ -510,7 +507,6 @@ namespace dotNet5781_02_2375_6415
         }
 
     }
-
     /// <summary>
     /// Class that implement a list of lines of bus
     /// </summary>
@@ -697,7 +693,6 @@ namespace dotNet5781_02_2375_6415
                 throw new NotFoundException("Bus line not Found !!"); //if bus line wasn't found
             }
         }
-
         /// <summary>
         /// Implementation of enumerator interface
         /// </summary>
@@ -707,8 +702,6 @@ namespace dotNet5781_02_2375_6415
             return myList.GetEnumerator();
         }
     }
-
-
 
     class Program
     {
@@ -729,6 +722,7 @@ namespace dotNet5781_02_2375_6415
                     {
                         myList.AddStation(i + 1, 1, r.Next(1, 40));
                     }
+                    // catches arr empties for the boot continuity of stations and lines and to avoid duplication
                     catch (ArgumentOutOfRangeException ex)
                     {
                     }
@@ -753,11 +747,11 @@ namespace dotNet5781_02_2375_6415
                     case Choice.ADD:
                         Console.WriteLine("Enter your choice :");
                         Console.WriteLine("New line - 1 / New BusStop - 2");
-                        innerChoice = getIntInput();
-                        if (innerChoice == 1)
+                        innerChoice = getIntInput(); // read and check the input
+                        if (innerChoice == 1) // adds New line
                         {
                             Console.WriteLine("Enter Number of Line :");
-                            innerChoice = getIntInput();
+                            innerChoice = getIntInput(); // read and check the input
                             try
                             {
                                 myList.AddLine(innerChoice);
@@ -767,28 +761,29 @@ namespace dotNet5781_02_2375_6415
                                 Console.WriteLine($" ERROR : {ex.ToString()}");
                             }
                         }
-                        if (innerChoice == 2)
+                        if (innerChoice == 2) // adds New bus stop
                         {
                             Console.WriteLine("Enter Bus Line :");
-                            int tmpNum;
+                            int tmpNum; // num of the line
                             tmpNum = getIntInput();
                             Console.WriteLine("Enter Index of Stop in Line :");
-                            int index = getIntInput();
+                            int index = getIntInput(); // Location of the station on the list
+
                             Console.WriteLine("Enter number of station :");
-                            int stnNum = getIntInput();
+                            int stnNum = getIntInput(); // num of station
                             try
                             {
                                 myList.AddStation(tmpNum, index, stnNum);
                             }
-                            catch (ArgumentOutOfRangeException ex)
+                            catch (ArgumentOutOfRangeException ex) // wrong index
                             {
                                 Console.WriteLine($" ERROR : {ex.ToString()}");
                             }
-                            catch (NotFoundException ex1)
+                            catch (NotFoundException ex1) // no line
                             {
                                 Console.WriteLine($" ERROR : {ex1.ToString()}");
                             }
-                            catch (ArgumentException ex2)
+                            catch (ArgumentException ex2) // bus stop already exist
                             {
                                 Console.WriteLine($" ERROR : {ex2.ToString()}");
                             }
@@ -806,17 +801,16 @@ namespace dotNet5781_02_2375_6415
                             {
                                 myList.DeleteLine(tmpNum);
                             }
-                            catch (NotFoundException ex)
+                            catch (NotFoundException ex) // wrong line
                             {
                                 Console.WriteLine($" ERROR : {ex.ToString()}");
                             }
-
                         }
-                        if (innerChoice == 2)
+                        if (innerChoice == 2) // Delete BusStop
                         {
                             Console.WriteLine("Enter Bus Line :");
                             int tmpNum = getIntInput();
-                            bool flag = false;
+                            bool flag = false; // true = we find the line
                             foreach (Line line in myList)
                             {
                                 if (line.LineNumber == tmpNum)
@@ -828,7 +822,7 @@ namespace dotNet5781_02_2375_6415
                                     {
                                         line.DeleteStation(tmpNum);
                                     }
-                                    catch (NotFoundException ex)
+                                    catch (NotFoundException ex) // no exist bus stop in this line
                                     {
                                         Console.WriteLine($" ERROR : {ex.ToString()}");
                                     }
@@ -837,7 +831,7 @@ namespace dotNet5781_02_2375_6415
                             }
                             try
                             {
-                                if (!flag)
+                                if (!flag) // we didn't find the line
                                     throw new NotFoundException("Bus line not found !!");
                             }
                             catch (NotFoundException ex)
@@ -856,34 +850,36 @@ namespace dotNet5781_02_2375_6415
                             int tmpNum = getIntInput();
                             try
                             {
-                                List<Line> subList = myList.FindStation(tmpNum);
+                                List<Line> subList = myList.FindStation(tmpNum); // A new list of lines that pass through the station
+
                                 foreach (Line item in subList)
                                 {
                                     Console.WriteLine($"Line #{item.LineNumber}");
                                 }
                             }
-                            catch (NotFoundException ex)
+                            catch (NotFoundException ex) // wrong bus stop
                             {
                                 Console.WriteLine($" ERROR : {ex.ToString()}");
                             }
-
                         }
-                        if (innerChoice == 2)
+                        if (innerChoice == 2) // Finding the fast route between two stations
                         {
                             Console.WriteLine("Enter first station :");
                             int stn1 = getIntInput();
                             Console.WriteLine("Enter second station :");
                             int stn2 = getIntInput();
+                            // A new list of lines that pass between these 2 stations
                             BusLinesList subList = myList.CreateSubList(stn1, stn2);
                             try
                             {
+                                // Sort the list according to a criterion of total travel time
                                 subList.SortList();
                                 foreach (Line item in subList)
                                 {
                                     Console.WriteLine($"Line #{item.LineNumber}");
                                 }
                             }
-                            catch (NotFoundException ex)
+                            catch (NotFoundException ex) // wrong station/stations
                             {
                                 Console.WriteLine($" ERROR : {ex.ToString()}");
                             }
@@ -894,37 +890,39 @@ namespace dotNet5781_02_2375_6415
                         Console.WriteLine("Print all lines - 1 / Print all stops - 2");
                         Console.WriteLine();
                         innerChoice = getIntInput();
-                        if (innerChoice == 1)
+                        if (innerChoice == 1) // Print all lines
                         {
                             foreach (Line item in myList)
                             {
                                 Console.WriteLine($"Line #{item.LineNumber}");
                             }
                         }
-                        if (innerChoice == 2)
+                        if (innerChoice == 2) // Print all stops
                         {
-                            List<int> stationList = new List<int> { };
-                            foreach (Line line in myList)
+                            List<int> stationList = new List<int> { }; // List of station numbers
+                            foreach (Line line in myList) // For each line from the list of existing lines
                             {
                                 foreach (BusLineStop stop in line)
                                 {
-                                    bool flag = true;
-                                    foreach (int num in stationList)
+                                    bool flag = true; // True if the bus stop is not yet in the list of printable bus stops
+                                    foreach (int num in stationList) // For each station where the line stops
                                     {
-                                        if (num == stop.BusStationKey)
+                                        if (num == stop.BusStationKey) // We have already printed this station, it is already on the list
                                         {
                                             flag = false;
                                         }
                                     }
-                                    if (flag == true)
+                                    if (flag == true) // the bus stop is not yet in the list of printable bus stops
                                     {
-                                        List<Line> subList = myList.FindStation(stop.BusStationKey);
-                                        Console.WriteLine(stop.ToString());
-                                        foreach (Line item in subList)
+                                        List<Line> subList = myList.FindStation(stop.BusStationKey); // List of lines stopping at this station
+                                        Console.WriteLine(stop.ToString()); // Prints the station
+                                        foreach (Line item in subList) // Prints the lines that stop at the station
                                         {
                                             Console.Write($"Line #{item.LineNumber} / ");
                                         }
-                                        Console.WriteLine();
+                                        Console.WriteLine(); // new line
+
+                                        // Adds the station to the list of stations we have printed
                                         stationList.Add(stop.BusStationKey);
                                     }
                                 }
@@ -939,7 +937,6 @@ namespace dotNet5781_02_2375_6415
                 }
             } while (myChoice != 5);
         }
-
         /// <summary>
         /// Gets input from user untill it is integer and returns it in integer form
         /// Throws exception if input is not an integer
@@ -951,10 +948,10 @@ namespace dotNet5781_02_2375_6415
             int tmpNum;
             do
             {
-                tmpString = Console.ReadLine();
+                tmpString = Console.ReadLine(); // reads the input
                 try
                 {
-                    if (!int.TryParse(tmpString, out tmpNum))
+                    if (!int.TryParse(tmpString, out tmpNum)) // didn't succeed to switch the input to integer
                     {
                         throw new InvalidCastException("Invalid input !!");
                     }
@@ -967,11 +964,6 @@ namespace dotNet5781_02_2375_6415
             } while (true);
             return tmpNum;
         }
-
         static Random r = new Random(DateTime.Now.Millisecond);
     }
-
-
 }
-
-
