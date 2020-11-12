@@ -111,32 +111,46 @@ namespace dotNet5781_02_2375_6415
         /// <param name="number">number of the station</param>
         /// <param name="tmpAddress">address of the station</param>
         public BusLineStop(int number = 0, string tmpAddress = "") : base(number, tmpAddress) { }
+
+
+        private double distance = 0;
+
+        public double Distance
+        {
+            get { return distance; }
+            set { distance = value; }
+        }
         /// <summary>
         /// Calculates distance using coordinates (found on internet)
         /// </summary>
         /// <param name="tmpBus">The previous station</param>
-        public double Distance(BusLineStop tmpBus)
+        public void SetDistance(BusLineStop tmpBus)
         {
-            double distance = 0;
             double theta = tmpBus.longitude - longitude;
             distance = (Math.Sin((tmpBus.latitude * Math.PI) / 180.0) * Math.Sin((latitude * Math.PI) / 180.0) + Math.Cos((tmpBus.longitude * Math.PI) / 180.0) * Math.Cos((longitude * Math.PI) / 180.0) * Math.Cos((theta * Math.PI) / 180.0));
             distance = Math.Acos(distance);
             distance = (distance * 60 * 1.1515 * 1.609344);
-            return distance;
         }
+
+
+        private TimeSpan travelTime = new TimeSpan(0,0,0);
+
+        public TimeSpan TravelTime
+        {
+            get { return travelTime; }
+            set { travelTime = value; }
+        }
+
         /// <summary>
         /// Calculates the travel time from the previous station.
         /// assuming that the bus runs on average at a speed of 40 km / h
         /// </summary>
         /// <param name="tmpBus">The previous station</param>
         /// <returns>The duration of the journey from the previous station as a show of TimeSpan</returns>
-        public TimeSpan TravelTime(BusLineStop tmpBus)
+        public void SetTravelTime()
         {
-            double distance = Distance(tmpBus);
             // Calculation of hours, minutes and seconds according to a rate of 40 km / h and depending on the distance
-            TimeSpan tmpTime = new TimeSpan((int)(distance / 40.0), (int)((distance % 40.0) / (40.0 / 60.0)), (int)(((distance % 40.0) % (40.0 / 60.0)) / (40.0 / 3600.0)));
-
-            return tmpTime;
+            travelTime = new TimeSpan((int)(distance / 40.0), (int)((distance % 40.0) / (40.0 / 60.0)), (int)(((distance % 40.0) % (40.0 / 60.0)) / (40.0 / 3600.0)));
         }
     }
     /// <summary>
@@ -232,33 +246,55 @@ namespace dotNet5781_02_2375_6415
         /// if Index out of range throw ArgumentOutOfRangeException
         /// if station already exists throw ArgumentException
         /// </summary>
-        /// <param name="index">Location of the station in the list of stations</param>
+        /// <param name="predStation">Key of last station in the list of stations</param>
         /// <param name="stationNum">the number of the station</param>
-        /// <param name="tmpAdress">the assress of the station</param>
-        public void AddStation(int index, int stationNum, string tmpAdress = "")
+        /// <param name="tmpAdress">the address of the station</param>
+        public void AddStation(int predStation, int stationNum, string tmpAdress = "")
         {
-            if (index > stations.Count + 1) // if index out of range
+            int index = 0; //index where to insert
+            if (predStation != 0) //if not first stop
             {
-                ArgumentOutOfRangeException ex = new ArgumentOutOfRangeException("index");
-                throw ex;
+                for (; index < stations.Count; index++) //looks for index 
+                {
+                    if (stations[index].BusStationKey == predStation)
+                    {
+                        break;
+                    }
+                }
+                if (index > stations.Count + 1) // if index out of range
+                {
+                    throw new ArgumentOutOfRangeException("index");
+                }
             }
             if (!CheckStation(stationNum)) // If the station does not exist on the route
             {
                 BusLineStop tmpStation = new BusLineStop(stationNum, tmpAdress);
-                if (index <= stations.Count)
+                if (index < stations.Count)
                 {
-                    if (index == 1) //if adds first stop
+                    if (index == 0) //if adds first stop
                     {
                         firstStation = tmpStation; //update first stop
+                        stations.Insert(index, tmpStation); //adds station
+                        stations[index + 1].SetDistance(stations[index]);
+                        stations[index + 1].SetTravelTime();
                     }
-                    stations.Insert(index - 1, tmpStation); //adds station
+                    else
+                    {
+                        stations.Insert(index, tmpStation); //adds station
+                        stations[index].SetDistance(stations[index - 1]);
+                        stations[index].SetTravelTime();
+                        stations[index + 1].SetDistance(stations[index]);
+                        stations[index + 1].SetTravelTime();
+                    }
                 }
-                else if (index == stations.Count + 1) //if adds first stop
+                else if (index == stations.Count) //if adds last stop
                 {
-                    if (index != 1) //if last stop isn't first stop
+                    if (index != 0) //if last stop isn't first stop
                     {
                         stations.Add(tmpStation); //adds station
                         lastStation = tmpStation; //update last stop
+                        stations[index].SetDistance(stations[index - 1]);
+                        stations[index].SetTravelTime();
                     }
                     else //if last station is first station
                     {
@@ -280,50 +316,50 @@ namespace dotNet5781_02_2375_6415
         /// </summary>
         /// <param name="index">Index of station in line</param>
         /// <param name="newStop">Station</param>
-        public void AddStation(int index, BusLineStop newStop)
-        {
-            try
-            {
-                if (index > stations.Count + 1)// if index out of range
-                {
-                    ArgumentOutOfRangeException ex = new ArgumentOutOfRangeException("index");
-                    throw ex;
-                }
-            }
-            catch (ArgumentOutOfRangeException ex)
-            {
-                Console.WriteLine($" ERROR : {ex.ToString()}");
-            }
-            if (!CheckStation(newStop.BusStationKey)) //if station doesn't exist
-            {
-                if (index <= stations.Count) 
-                {
-                    if (index == 1) //if adds first stop
-                    {
-                        firstStation = newStop; //update first stop
-                    }
-                    stations.Insert(index - 1, newStop); //adds station
-                }
-                else if (index == stations.Count + 1) //if adds last stop
-                {
-                    if (index != 1) //if last stop isn't first stop
-                    {
-                        stations.Add(newStop); //adds station
-                        lastStation = newStop; //updates last station
-                    }
-                    else //if last station is first station
-                    {
-                        firstStation = newStop; //updates first station
-                        stations.Add(newStop); //adds station
-                        lastStation = newStop; //updates last station
-                    }
-                }
-            }
-            else // ERROR: Bus station already exists, bus can pass by the same station only once
-            {
-                throw new ArgumentException("Bus station already exists, bus can pass by the same station only once ");
-            }
-        }
+        //public void AddStation(int index, BusLineStop newStop)
+        //{
+        //    try
+        //    {
+        //        if (index > stations.Count + 1)// if index out of range
+        //        {
+        //            ArgumentOutOfRangeException ex = new ArgumentOutOfRangeException("index");
+        //            throw ex;
+        //        }
+        //    }
+        //    catch (ArgumentOutOfRangeException ex)
+        //    {
+        //        Console.WriteLine($" ERROR : {ex.ToString()}");
+        //    }
+        //    if (!CheckStation(newStop.BusStationKey)) //if station doesn't exist
+        //    {
+        //        if (index <= stations.Count) 
+        //        {
+        //            if (index == 1) //if adds first stop
+        //            {
+        //                firstStation = newStop; //update first stop
+        //            }
+        //            stations.Insert(index - 1, newStop); //adds station
+        //        }
+        //        else if (index == stations.Count + 1) //if adds last stop
+        //        {
+        //            if (index != 1) //if last stop isn't first stop
+        //            {
+        //                stations.Add(newStop); //adds station
+        //                lastStation = newStop; //updates last station
+        //            }
+        //            else //if last station is first station
+        //            {
+        //                firstStation = newStop; //updates first station
+        //                stations.Add(newStop); //adds station
+        //                lastStation = newStop; //updates last station
+        //            }
+        //        }
+        //    }
+        //    else // ERROR: Bus station already exists, bus can pass by the same station only once
+        //    {
+        //        throw new ArgumentException("Bus station already exists, bus can pass by the same station only once ");
+        //    }
+        //}
         /// <summary>
         /// Deletes station in line
         /// If station doesn't exist throws NotFoundException
@@ -343,15 +379,25 @@ namespace dotNet5781_02_2375_6415
             {
                 throw new NotFoundException("ERROR : Bus stop not found !!");
             }
-            stations.RemoveAt(i); //remove the station at found index
-            if (i == 0) //if it is the first station
+            if ((i - 1) != stations.Count) //if not last station
             {
-                firstStation = stations[0]; //update first station
-            }
-            if ((i - 1) == stations.Count) //if it is last station
+                if (i == 0) //if it is the first station
+                {
+                    firstStation = stations[0]; //update first station
+                    stations[i + 1].Distance = 0;
+                    stations[i + 1].SetTravelTime();
+                }
+                else
+                {
+                    stations[i + 1].SetDistance(stations[i - 2]);
+                    stations[i + 1].SetTravelTime();
+                }
+            } 
+            else  //if it is last station
             {
                 lastStation = stations[i - 1]; //update last station
             }
+            stations.RemoveAt(i); //remove the station at found index
         }
         /// <summary>
         /// Checks if station exists in line and returns boolean
@@ -369,34 +415,34 @@ namespace dotNet5781_02_2375_6415
             }
             return false; //else
         }
+
         /// <summary>
         /// Calculates Distance between 2 stops and returns it
         /// </summary>
         /// <param name="stop1">Source's station</param>
         /// <param name="stop2">Destination's station</param>
         /// <returns>Returns distance</returns>
-        public double Distance(int stop1, int stop2)
-        {
-            int i = 0;
-            for (; i < stations.Count; i++)//searches for first station
-            {
-                if (stations[i].BusStationKey == stop1)
-                {
-                    break;
-                }
-            }
-            if ((i == stations.Count) || !CheckStation(stop2)) //if doesn't find first or second stop
-            {
-                throw new NotFoundException("Cannot calculate duration, route doesn't exist in line !!");
-            }
-            double distance = 0;
-            do
-            {
-                i++;
-                distance += stations[i].Distance(stations[i - 1]); ///sums distance from first stop to second stop
-            } while (stations[i].BusStationKey != stop2);
-            return distance;
-        }
+        //public double SetDistance(BusLineStop stop2)
+        //{
+        //int i = 0;
+        //for (; i < stations.Count; i++)//searches for first station
+        //{
+        //    if (stations[i].BusStationKey == stop1)
+        //    {
+        //        break;
+        //    }
+        //}
+        //if ((i == stations.Count) || !CheckStation(stop2)) //if doesn't find first or second stop
+        //{
+        //    throw new NotFoundException("Cannot calculate duration, route doesn't exist in line !!");
+
+        //    do
+        //    {
+        //        i++;
+        //        distance += stations[i].Distance(stations[i - 1]); ///sums distance from first stop to second stop
+        //    } while (stations[i].BusStationKey != stop2);
+        //    return distance;
+        //}
         /// <summary>
         /// Calculates the time of route between 2 stations
         /// </summary>
@@ -420,7 +466,7 @@ namespace dotNet5781_02_2375_6415
             TimeSpan time = new TimeSpan(); //creates new TimeSpan
             do
             {
-                time += stations[++i].TravelTime(stations[i - 1]); //sums time from first station to least station using time function
+                time += stations[++i].TravelTime; //sums time from first station to least station using time function
             } while (stations[i].BusStationKey != stop2);
             return time;
         }
@@ -529,7 +575,7 @@ namespace dotNet5781_02_2375_6415
                     i++; //sums the number of lines that have the same number than the one we want to add
                 }
             }
-            if (i < 2) //if there is les than 2 lines with this number
+            if (i < 2) //if there is less than 2 lines with this number
             {
                 Line tmpLine = new Line(lineNumber, tmpArea); //create new line
                 myList.Add(tmpLine); //add line to list
@@ -546,43 +592,60 @@ namespace dotNet5781_02_2375_6415
         /// <param name="index">Index of station in line</param>
         /// <param name="stationNumber">number of station</param>
         /// <param name="stationAddress">Adress of the station</param>
-        public void AddStation(int lineNumber, int index, int stationNumber, string stationAddress = "")
+        public void AddStation(int lineNumber,int predStation, int stationNumber, string stationAddress = "")
         {
-            BusLineStop tmpStop = FindStop(stationNumber); //searches if the bus stop already exists and get it
-            if (tmpStop.BusStationKey != -1) //if bus station already exists
+            //bool flag = false; //checks if line exists
+            BusLinesList tmpList = this[lineNumber];
+            if (tmpList == null)
             {
-                bool flag = false; //checks if line exists
-                foreach (Line item in myList) //goes over all lines
-                {
-                    if (item.LineNumber == lineNumber) //if the line to add
-                    {
-                        flag = true; //line exists
-                        item.AddStation(index, tmpStop); //add the station found to this line
-                        break; //end
-                    }
-                }
-                if (!flag) //if line doesn't exist
-                {
-                    throw new NotFoundException("Bus line not found !!");
-                }
+                throw new NotFoundException("Bus line not found !!");
+            }
+            int lineChoice;
+            if (tmpList.myList.Count == 2)
+            {
+                Console.WriteLine("First way - 1 / second way - 2");
+                lineChoice = Program.getIntInput();
+                tmpList.myList[lineChoice - 1].AddStation(predStation, stationNumber);
             }
             else
             {
-                bool flag = false; //checks if line exists
-                foreach (Line item in myList)//goes over all lines
-                {
-                    if (item.LineNumber == lineNumber)//if the line to add
-                    {
-                        flag = true;//line exists
-                        item.AddStation(index, stationNumber); //add a new station with this number to the line
-                        break; //end
-                    }
-                }
-                if (!flag) //if line doesn't exist
-                {
-                    throw new NotFoundException("Bus line not found !!");
-                }
+                tmpList.myList[0].AddStation(predStation, stationNumber);
             }
+            //foreach (Line item in myList)//goes over all lines
+            //{
+            //    if (item.LineNumber == lineNumber)//if the line to add
+            //    {
+            //        flag = true;//line exists
+            //        item.AddStation(index, stationNumber); //add a new station with this number to the line
+            //        break; //end
+            //    }
+            //}
+            //if (!flag) //if line doesn't exist
+            //{
+            //    throw new NotFoundException("Bus line not found !!");
+            //}
+            //BusLineStop tmpStop = FindStop(stationNumber); //searches if the bus stop already exists and get it
+            //if (tmpStop.BusStationKey != -1) //if bus station already exists
+            //{
+            //    bool flag = false; //checks if line exists
+            //    foreach (Line item in myList) //goes over all lines
+            //    {
+            //        if (item.LineNumber == lineNumber) //if the line to add
+            //        {
+            //            flag = true; //line exists
+            //            item.AddStation(index, tmpStop); //add the station found to this line
+            //            break; //end
+            //        }
+            //    }
+            //    if (!flag) //if line doesn't exist
+            //    {
+            //        throw new NotFoundException("Bus line not found !!");
+            //    }
+            //}
+            //else
+            //{
+               
+            //}
         }
         /// <summary>
         /// Deletes line in lines list
@@ -678,19 +741,24 @@ namespace dotNet5781_02_2375_6415
         /// Implementation of indexer interface
         /// </summary>
         /// <param name="tmpLine">Gets number of line</param>
-        /// <returns>Returns object line of the number entered</returns>
-        public Line this[int tmpLine]
+        /// <returns>Returns List of lines of the number entered</returns>
+        public BusLinesList this[int tmpLine]
         {
             get
             {
+                BusLinesList tmpList = new BusLinesList(); //creates tmpList of lines to return
                 for (int i = 0; i < myList.Count; i++) //searches for line in all array
                 {
                     if (myList[i].LineNumber == tmpLine)
                     {
-                        return myList[i]; //returns the line if found
+                        tmpList.myList.Add(myList[i]); //adds line in the List
                     }
                 }
-                throw new NotFoundException("Bus line not Found !!"); //if bus line wasn't found
+                if (tmpList.myList.Count == 0)
+                {
+                    tmpList = null;
+                }
+                return tmpList;
             }
         }
         /// <summary>
@@ -714,13 +782,17 @@ namespace dotNet5781_02_2375_6415
             {
                 myList.AddLine(i + 1);
             }
+
             for (int i = 0; i < 10; i++) //adds stations
             {
+                int k = 0;
+                int tmp = 0;
                 for (int j = 0; j < 20; j++)
                 {
+                    tmp = r.Next(1, 41);
                     try
                     {
-                        myList.AddStation(i + 1, 1, r.Next(1, 40));
+                        myList.AddStation(i + 1,k,tmp);
                     }
                     // catches arr empties for the boot continuity of stations and lines and to avoid duplication
                     catch (ArgumentOutOfRangeException ex)
@@ -732,6 +804,7 @@ namespace dotNet5781_02_2375_6415
                     catch (ArgumentException ex2)
                     {
                     }
+                    k = tmp;
                 }
             }
             int myChoice; //gets choice of user
@@ -760,13 +833,14 @@ namespace dotNet5781_02_2375_6415
                             {
                                 Console.WriteLine($" ERROR : {ex.ToString()}");
                             }
+                            innerChoice = 1;
                         }
                         if (innerChoice == 2) // adds New bus stop
                         {
                             Console.WriteLine("Enter Bus Line :");
                             int tmpNum; // num of the line
                             tmpNum = getIntInput();
-                            Console.WriteLine("Enter Index of Stop in Line :");
+                            Console.WriteLine("Enter number of pred Stop in Line :");
                             int index = getIntInput(); // Location of the station on the list
 
                             Console.WriteLine("Enter number of station :");
@@ -942,7 +1016,7 @@ namespace dotNet5781_02_2375_6415
         /// Throws exception if input is not an integer
         /// </summary>
         /// <returns>input casted into integer</returns>
-        static int getIntInput()
+        static public int getIntInput()
         {
             string tmpString;
             int tmpNum;
