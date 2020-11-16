@@ -220,8 +220,6 @@ namespace dotNet5781_02_2375_6415
             }
             return false; //else
         }
-
-
         /// <summary>
         /// Calculates the time of route between 2 stations
         /// </summary>
@@ -338,7 +336,5 @@ namespace dotNet5781_02_2375_6415
         {
             return stations.GetEnumerator();
         }
-
     }
 }
-    

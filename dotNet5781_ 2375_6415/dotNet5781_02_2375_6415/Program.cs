@@ -12,13 +12,10 @@ using System.Threading.Tasks;
 namespace dotNet5781_02_2375_6415
 {
     using static Math;
-
-
     /// <summary>
     /// Assigning the bus line to a specific area from a defined area list
     /// or be cross-areas (general)/// </summary>
     enum Area { General, North, South, Center, Jerusalem };
-
 
     class Program
     {
@@ -285,6 +282,5 @@ namespace dotNet5781_02_2375_6415
             } while (true);
             return tmpNum;
         }
-
     }
 }

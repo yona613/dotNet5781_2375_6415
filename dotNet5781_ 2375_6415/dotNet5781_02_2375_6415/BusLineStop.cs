@@ -42,7 +42,6 @@ namespace dotNet5781_02_2375_6415
             distance = Math.Acos(distance);
             distance = (distance * 60 * 1.1515 * 1.609344);
         }
-
         /// <summary>
         /// Travel time from previous station
         /// </summary>
@@ -53,7 +52,6 @@ namespace dotNet5781_02_2375_6415
             get { return travelTime; }
             set { travelTime = value; }
         }
-
         /// <summary>
         /// Calculates the travel time from the previous station.
         /// assuming that the bus runs on average at a speed of 40 km / h
