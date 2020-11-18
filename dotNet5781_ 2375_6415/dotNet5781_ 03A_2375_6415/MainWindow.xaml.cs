@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 namespace dotNet5781__03A_2375_6415
 {
 
+
     using static Math;
 
 
