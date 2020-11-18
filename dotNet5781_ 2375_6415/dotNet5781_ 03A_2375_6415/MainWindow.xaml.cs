@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace dotNet5781_03A_2375_6415
+namespace dotNet5781__03A_2375_6415
 {
 
     using static Math;
@@ -68,6 +68,7 @@ namespace dotNet5781_03A_2375_6415
             cbBusLines.ItemsSource = myList;
             cbBusLines.DisplayMemberPath = "LineNumber";
             cbBusLines.SelectedIndex = 0;
+
         }
 
         private void cbBusLines_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -80,6 +81,7 @@ namespace dotNet5781_03A_2375_6415
             currentDisplayBusLine = myList[index].myList.First();
             UpGrid.DataContext = currentDisplayBusLine;
             lbBusLineStations.DataContext = currentDisplayBusLine.stations;
+            tbArea.Text = myList[index].myList.First().BusArea.ToString();
         }
 
         static public int getIntInput()

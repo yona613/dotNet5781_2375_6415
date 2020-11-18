@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace dotNet5781_03A_2375_6415
+namespace dotNet5781__03A_2375_6415
 {
     /// <summary>
     /// A new exception class for cases where we didn't find the product that the user entered

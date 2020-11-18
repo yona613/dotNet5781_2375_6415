@@ -1,24 +1,24 @@
-﻿<Window x:Class="dotNet5781_03A_2375_6415.MainWindow"
+﻿<Window x:Class="dotNet5781__03A_2375_6415.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:dotNet5781_03A_2375_6415"
+        xmlns:local="clr-namespace:dotNet5781__03A_2375_6415"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid Name = "MainGrid">
         <Grid Name="UpGrid" HorizontalAlignment="Stretch" Height="auto" Grid.Row="0"
         VerticalAlignment="Stretch" Width="auto">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions >
-            <ComboBox Name = "cbBusLines"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch"  Grid.Column="1" SelectionChanged="cbBusLines_SelectionChanged"/>
+            <ComboBox Name = "cbBusLines"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch"  Grid.Column="1" SelectionChanged="cbBusLines_SelectionChanged" FontFamily="Segoe UI Black" FontSize="36"/>
             <TextBox Name = "tbArea"  Grid.Column="3" HorizontalAlignment="Stretch"  Text="{Binding Path=Area}" VerticalAlignment="Stretch" FontFamily="Viner Hand ITC" FontSize="16"/>
-            <Label Content="Label" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" FontFamily="Blackadder ITC" FontSize="36"/>
-            <Label Content="Label" Grid.Column="2" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" FontFamily="Snap ITC" FontSize="36"/>
+            <Label Content="Bus Line Number:" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" FontFamily="Blackadder ITC" FontSize="24" Cursor="None"/>
+            <Label Content="Area :" Grid.Column="2" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" FontFamily="Snap ITC" FontSize="36"/>
         </Grid>
         <ListBox Name="lbBusLineStations"  HorizontalAlignment="Left" Height="362" Grid.Row="1" VerticalAlignment="Top" Width="792" ItemsSource="{Binding}" />
         <Grid.RowDefinitions>
