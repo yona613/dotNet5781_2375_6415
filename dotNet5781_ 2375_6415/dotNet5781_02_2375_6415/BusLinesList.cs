@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace dotNet5781_02_2375_6415
 {
-
     /// <summary>
     /// Class that implement a list of lines of bus
     /// </summary>
@@ -190,5 +189,4 @@ namespace dotNet5781_02_2375_6415
             return myList.GetEnumerator();
         }
     }
-
 }
