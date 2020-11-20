@@ -12,29 +12,26 @@
             <ImageBrush ImageSource="C:\Users\Yona et Audelia\Desktop\Mini Project .NET\dotNet5781_ 2375_6415\dotNet5781_ 03A_2375_6415\BusPic.png" Stretch="None"  />
         </Grid.Background>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0*"/>
-            <ColumnDefinition Width="0*"/>
-            <ColumnDefinition Width="0*"/>
-            <ColumnDefinition/>
-            <ColumnDefinition Width="0*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid Name="UpGrid" HorizontalAlignment="Stretch" Height="auto" Grid.Row="0"
         VerticalAlignment="Stretch" Width="auto" Grid.ColumnSpan="4">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="33*"/>
-                <ColumnDefinition Width="33*"/>
-                <ColumnDefinition Width="33*"/>
-                <ColumnDefinition Width="0*"/>
-                <ColumnDefinition Width="4*"/>
-                <ColumnDefinition Width="29*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions >
             <ComboBox Name = "cbBusLines"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch"  Grid.Column="1" SelectionChanged="cbBusLines_SelectionChanged" FontFamily="Times New Roman" FontSize="36" BorderBrush="{x:Null}" Background="{x:Null}"/>
-            <TextBox Name = "tbArea"  Grid.Column="3" HorizontalAlignment="Stretch"  Text="{Binding Path=Area}" VerticalAlignment="Stretch" FontFamily="Times New Roman" FontSize="24" Background="{x:Null}" BorderBrush="{x:Null}" Grid.ColumnSpan="3" TextAlignment="Center"/>
+            <TextBox Name = "tbArea"  Grid.Column="3" HorizontalAlignment="Stretch"  Text="{Binding Path=Area}" VerticalAlignment="Stretch" FontFamily="Times New Roman" FontSize="24" Background="{x:Null}" BorderBrush="{x:Null}" TextAlignment="Center"/>
             <Label Content="Bus Line Number:" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" FontFamily="Times New Roman" FontSize="24" Cursor="None" FontWeight="Bold"/>
             <Label Content="Area :" Grid.Column="2" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" FontFamily="Times New Roman" FontSize="36"/>
         </Grid>
-        <ListBox Name="lbBusLineStations"  HorizontalAlignment="Left" Height="362" Grid.Row="1" VerticalAlignment="Top" Width="650" ItemsSource="{Binding}" Foreground="Red" Background="{x:Null}" BorderBrush="{x:Null}" OpacityMask="Black" FontSize="24" FontFamily="Times New Roman" FontStyle="Italic" Margin="1,0,0,0" Grid.Column="2" Grid.ColumnSpan="2"  />
-        <Button Name="Exit" Content="Exit" HorizontalAlignment="Left" Margin="656,296,0,0" Grid.Row="1" VerticalAlignment="Top" Width="127" Height="66" FontSize="36" Click="Button_Click" Background="#FF324497" BorderBrush="{x:Null}" FontFamily="Blackadder ITC" Grid.Column="3"/>
+        <ListBox Name="lbBusLineStations"  HorizontalAlignment="Left" Height="362" Grid.Row="1" VerticalAlignment="Top" Width="650" ItemsSource="{Binding}" Foreground="Red" Background="{x:Null}" BorderBrush="{x:Null}" OpacityMask="Black" FontSize="24" FontFamily="Times New Roman" FontStyle="Italic" Margin="10,0,0,0" Grid.ColumnSpan="4"  />
+        <Button Name="Exit" Content="Exit" Margin="71,296,10,0" Grid.Row="1" VerticalAlignment="Top" Height="66" FontSize="36" Click="Button_Click" Background="#FF324497" BorderBrush="{x:Null}" FontFamily="Blackadder ITC" Grid.Column="3" RenderTransformOrigin="0.525,1.333"/>
         <Grid.RowDefinitions>
             <RowDefinition Height="50*"/>
             <RowDefinition Height="400*"/>
