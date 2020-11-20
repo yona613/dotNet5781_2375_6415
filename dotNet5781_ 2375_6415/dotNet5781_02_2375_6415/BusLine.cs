@@ -14,14 +14,14 @@ namespace dotNet5781_02_2375_6415
     /// A class that will represent a single bus line
     ///  which is defined as a route of various bus line stations///
     /// </summary>
-    class Line : IComparable<Line>, IEnumerable
+    public class BusLine : IComparable<BusLine>, IEnumerable
     {
         /// <summary>
         /// CTOR
         /// </summary>
         /// <param name="number">the line number</param>
         /// <param name="tmpArea">the line area</param>
-        public Line(int number = 0, Area tmpArea = Area.General)
+        public BusLine(int number = 0, Area tmpArea = Area.General)
         {
             lineNumber = number;
             busArea = tmpArea;
@@ -78,7 +78,12 @@ namespace dotNet5781_02_2375_6415
         /// <summary>
         /// List of bus stops where the line stops
         /// </summary>
-        List<BusLineStop> stations;
+        private List<BusLineStop> stations;
+
+        public List<BusLineStop>  Stations
+        { 
+            get { return stations; }
+        }
         /// <summary>
         /// overriding ToString func which print out the line details
         /// including the line number, the area where the line operates and the list of station numbers
@@ -261,7 +266,7 @@ namespace dotNet5781_02_2375_6415
         /// <param name="stop1">Source's stop</param>
         /// <param name="stop2">Destination's stop</param>
         /// <returns>Return a subLine</returns>
-        public Line SubLine(int stop1, int stop2)
+        public BusLine SubLine(int stop1, int stop2)
         {
             int i = 0;
             bool flag = false; //checks if stations found
@@ -285,7 +290,7 @@ namespace dotNet5781_02_2375_6415
                     flag = false; //didn't find second station
                 }
             }
-            Line subLine = new Line(); //creates a new subLine
+            BusLine subLine = new BusLine(); //creates a new subLine
             if (flag == false) //if 2 stations not found
             {
                 subLine = null;
@@ -321,7 +326,7 @@ namespace dotNet5781_02_2375_6415
         /// </summary>
         /// <param name="line2">Line to compare with</param>
         /// <returns></returns>
-        public int CompareTo(Line line2)
+        public int CompareTo(BusLine line2)
         {
             //compares the time of the 2 lines
             TimeSpan time1 = Time(firstStation.BusStationKey, LastStation.BusStationKey);

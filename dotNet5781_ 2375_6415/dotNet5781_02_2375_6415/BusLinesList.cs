@@ -11,9 +11,9 @@ namespace dotNet5781_02_2375_6415
     /// Class that implement a list of lines of bus
     /// </summary>
     /// 
-    class BusLinesList : IEnumerable
+    public class BusLinesList : IEnumerable
     {
-        private List<Line> myList = new List<Line> { };
+        public List<BusLine> myList = new List<BusLine> { };
         /// <summary>
         /// Add line to lines list
         /// </summary>
@@ -32,7 +32,7 @@ namespace dotNet5781_02_2375_6415
             }
             if (i < 2) //if there is less than 2 lines with this number
             {
-                Line tmpLine = new Line(lineNumber, tmpArea); //create new line
+                BusLine tmpLine = new BusLine(lineNumber, tmpArea); //create new line
                 myList.Add(tmpLine); //add line to list
             }
             else //if there is already 2 lines
@@ -94,7 +94,7 @@ namespace dotNet5781_02_2375_6415
         public BusLineStop FindStop(int number)
         {
             BusLineStop tmpStop = new BusLineStop(); //creates new station
-            foreach (Line item in myList) //goes over all lines in list
+            foreach (BusLine item in myList) //goes over all lines in list
             {
                 tmpStop = item.FindStation(number); //checks if station is in line using function, if yes get it
                 if (tmpStop.BusStationKey != -1) //if station is in line
@@ -109,10 +109,10 @@ namespace dotNet5781_02_2375_6415
         /// </summary>
         /// <param name="tmpStation">Number of the station we look for</param>
         /// <returns>returns the subList of lines </returns>
-        public List<Line> FindStation(int tmpStation)
+        public List<BusLine> FindStation(int tmpStation)
         {
-            List<Line> subList = new List<Line> { }; //creates new list of lines
-            foreach (Line line in myList) //goes over all lines in list
+            List<BusLine> subList = new List<BusLine> { }; //creates new list of lines
+            foreach (BusLine line in myList) //goes over all lines in list
             {
                 foreach (BusLineStop busStation in line) //goes over all stations in line
                 {
@@ -138,9 +138,9 @@ namespace dotNet5781_02_2375_6415
         public BusLinesList CreateSubList(int stn1, int stn2)
         {
             BusLinesList subList = new BusLinesList();
-            foreach (Line line in myList) //goes over all the lines
+            foreach (BusLine line in myList) //goes over all the lines
             {
-                Line tmpLine = line.SubLine(stn1, stn2); //gets a subLine if this line has a route from stn1 to stn2
+                BusLine tmpLine = line.SubLine(stn1, stn2); //gets a subLine if this line has a route from stn1 to stn2
                 if (tmpLine != null) //if the subLine exists
                 {
                     tmpLine.LineNumber = line.LineNumber; //gets the number of the line from wich this subline is taken

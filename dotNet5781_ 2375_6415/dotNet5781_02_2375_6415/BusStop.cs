@@ -9,7 +9,7 @@ namespace dotNet5781_02_2375_6415
     /// <summary>
     /// A class that represents a bus stop
     /// </summary>
-    class BusStop
+    public class BusStop
     {
         /// <summary>
         /// empty CTOR

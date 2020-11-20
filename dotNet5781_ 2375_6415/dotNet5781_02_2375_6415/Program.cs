@@ -15,7 +15,7 @@ namespace dotNet5781_02_2375_6415
     /// <summary>
     /// Assigning the bus line to a specific area from a defined area list
     /// or be cross-areas (general)/// </summary>
-    enum Area { General, North, South, Center, Jerusalem };
+    public enum Area { General, North, South, Center, Jerusalem };
 
     class Program
     {
@@ -130,7 +130,7 @@ namespace dotNet5781_02_2375_6415
                             Console.WriteLine("Enter Bus Line :");
                             int tmpNum = getIntInput();
                             bool flag = false; // true = we find the line
-                            foreach (Line line in myList)
+                            foreach (BusLine line in myList)
                             {
                                 if (line.LineNumber == tmpNum)
                                 {
@@ -169,9 +169,9 @@ namespace dotNet5781_02_2375_6415
                             int tmpNum = getIntInput();
                             try
                             {
-                                List<Line> subList = myList.FindStation(tmpNum); // A new list of lines that pass through the station
+                                List<BusLine> subList = myList.FindStation(tmpNum); // A new list of lines that pass through the station
 
-                                foreach (Line item in subList)
+                                foreach (BusLine item in subList)
                                 {
                                     Console.WriteLine($"Line #{item.LineNumber}");
                                 }
@@ -193,7 +193,7 @@ namespace dotNet5781_02_2375_6415
                             {
                                 // Sort the list according to a criterion of total travel time
                                 subList.SortList();
-                                foreach (Line item in subList)
+                                foreach (BusLine item in subList)
                                 {
                                     Console.WriteLine($"Line #{item.LineNumber}");
                                 }
@@ -210,7 +210,7 @@ namespace dotNet5781_02_2375_6415
                         innerChoice = getIntInput();
                         if (innerChoice == 1) // Print all lines
                         {
-                            foreach (Line item in myList)
+                            foreach (BusLine item in myList)
                             {
                                 Console.WriteLine($"Line #{item.LineNumber}");
                             }
@@ -218,7 +218,7 @@ namespace dotNet5781_02_2375_6415
                         if (innerChoice == 2) // Print all stops
                         {
                             List<int> stationList = new List<int> { }; // List of station numbers
-                            foreach (Line line in myList) // For each line from the list of existing lines
+                            foreach (BusLine line in myList) // For each line from the list of existing lines
                             {
                                 foreach (BusLineStop stop in line)
                                 {
@@ -232,9 +232,9 @@ namespace dotNet5781_02_2375_6415
                                     }
                                     if (flag == true) // the bus stop is not yet in the list of printable bus stops
                                     {
-                                        List<Line> subList = myList.FindStation(stop.BusStationKey); // List of lines stopping at this station
+                                        List<BusLine> subList = myList.FindStation(stop.BusStationKey); // List of lines stopping at this station
                                         Console.WriteLine(stop.ToString()); // Prints the station
-                                        foreach (Line item in subList) // Prints the lines that stop at the station
+                                        foreach (BusLine item in subList) // Prints the lines that stop at the station
                                         {
                                             Console.Write($"Line #{item.LineNumber} / ");
                                         }

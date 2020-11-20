@@ -46,7 +46,7 @@
     <Compile Include="BusLinesList.cs" />
     <Compile Include="BusLineStop.cs" />
     <Compile Include="BusStop.cs" />
-    <Compile Include="Line.cs" />
+    <Compile Include="BusLine.cs" />
     <Compile Include="MyException.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

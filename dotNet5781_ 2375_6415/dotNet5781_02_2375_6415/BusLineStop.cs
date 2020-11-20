@@ -12,7 +12,7 @@ namespace dotNet5781_02_2375_6415
     /// and also contains the distance from the previous bus line station,
     /// and the travel time from the previous bus line station
     /// </summary>
-    class BusLineStop : BusStop
+    public class BusLineStop : BusStop
     {
         /// <summary>
         /// empty CTOR
@@ -62,6 +62,13 @@ namespace dotNet5781_02_2375_6415
         {
             // Calculation of hours, minutes and seconds according to a rate of 40 km / h and depending on the distance
             travelTime = new TimeSpan((int)(distance / 40.0), (int)((distance % 40.0) / (40.0 / 60.0)), (int)(((distance % 40.0) % (40.0 / 60.0)) / (40.0 / 3600.0)));
+        }
+
+        public override string ToString()
+        {
+            string tmpString = base.ToString();
+            tmpString += "  " + travelTime.ToString();
+            return tmpString;
         }
     }
 }

@@ -12,34 +12,32 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using dotNet5781_02_2375_6415;
 
-namespace dotNet5781__03A_2375_6415
+namespace dotNet5781_03A_2375_6415
 {
-
-
-    using static Math;
-
 
     /// <summary>
     /// Assigning the bus line to a specific area from a defined area list
     /// or be cross-areas (general)/// </summary>
-    enum Area { General, North, South, Center, Jerusalem };
+    public enum Area { General, North, South, Center, Jerusalem };
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
+
         private BusLinesList myList = new BusLinesList(); //creates a list of lines
-        private Line currentDisplayBusLine;
+        private BusLine currentDisplayBusLine; //gets current Line
 
         public MainWindow()
         {
+            //initialazing list of Bus Lines
             for (int i = 0; i < 10; i++) //adds lines
             {
                 myList.AddLine(i + 1);
             }
-
             for (int i = 0; i < 10; i++) //adds stations
             {
                 int k = 0;
@@ -64,49 +62,43 @@ namespace dotNet5781__03A_2375_6415
                     k = tmp;
                 }
             }
-
             InitializeComponent();
             cbBusLines.ItemsSource = myList;
             cbBusLines.DisplayMemberPath = "LineNumber";
             cbBusLines.SelectedIndex = 0;
-
         }
 
+        /// <summary>
+        /// Event when line is changed
+        /// </summary>
+        /// <param name="sender">Sender of event</param>
+        /// <param name="e">param changed</param>
         private void cbBusLines_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ShowBusLine((cbBusLines.SelectedValue as Line).LineNumber);
+            //use the show bus line function to show data of bus line
+            ShowBusLine((cbBusLines.SelectedValue as BusLine).LineNumber);
         }
 
+        /// <summary>
+        /// Function that shows data of bus line on the grid
+        /// </summary>
+        /// <param name="index"></param>
         private void ShowBusLine(int index)
         {
-            currentDisplayBusLine = myList[index].myList.First();
+            currentDisplayBusLine = myList[index].myList.First(); //gets bus line to show
             UpGrid.DataContext = currentDisplayBusLine;
-            lbBusLineStations.DataContext = currentDisplayBusLine.stations;
+            lbBusLineStations.DataContext = currentDisplayBusLine.Stations;
             tbArea.Text = myList[index].myList.First().BusArea.ToString();
         }
 
-        static public int getIntInput()
+        /// <summary>
+        /// Event when exit button is pressed to close program
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            string tmpString;
-            int tmpNum;
-            do
-            {
-                tmpString = Console.ReadLine(); // reads the input
-                try
-                {
-                    if (!int.TryParse(tmpString, out tmpNum)) // didn't succeed to switch the input to integer
-                    {
-                        throw new InvalidCastException("Invalid input !!");
-                    }
-                    break;
-                }
-                catch (InvalidCastException ex)
-                {
-                    Console.WriteLine($" ERROR : {ex.ToString()}");
-                }
-            } while (true);
-            return tmpNum;
+            Close();
         }
-
     }
 }
