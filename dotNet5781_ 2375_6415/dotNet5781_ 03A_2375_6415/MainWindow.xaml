@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:dotNet5781_03A_2375_6415"
         mc:Ignorable="d"
-        Icon="C:\Users\Yona et Audelia\Desktop\Mini Project .NET\dotNet5781_ 2375_6415\dotNet5781_ 03A_2375_6415\BusPic1.ico"
+        Icon="Resources/BusPic1.ico"
         Title="BusLines" Height="450" Width="800">
     <Grid Name = "MainGrid" >
         <Grid.Background >
-            <ImageBrush ImageSource="C:\Users\Yona et Audelia\Desktop\Mini Project .NET\dotNet5781_ 2375_6415\dotNet5781_ 03A_2375_6415\BusPic.png" Stretch="None"  />
+            <ImageBrush ImageSource="Resources/BusPic.png" Stretch="None"  />
         </Grid.Background>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
