@@ -35,7 +35,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>BusPic1.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\BusPic1.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -104,7 +104,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="BusPic1.ico" />
+    <Resource Include="Resources\BusPic1.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\BusPic.png" />
+    <Resource Include="Resources\BusPic1.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="BusPic1.png" />
