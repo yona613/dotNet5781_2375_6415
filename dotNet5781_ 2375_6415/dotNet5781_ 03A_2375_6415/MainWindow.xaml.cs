@@ -62,6 +62,7 @@ namespace dotNet5781_03A_2375_6415
                     k = tmp;
                 }
             }
+
             InitializeComponent();
             cbBusLines.ItemsSource = myList;
             cbBusLines.DisplayMemberPath = "LineNumber";
