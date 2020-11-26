@@ -1,0 +1,58 @@
+﻿<Window x:Class="dotNet5781_03B_2375_6415.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:dotNet5781_03B_2375_6415"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+
+    <Grid Height="419" VerticalAlignment="Bottom">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="31*"/>
+        </Grid.ColumnDefinitions>
+        <ListBox Name = "BusList"
+                 VerticalAlignment="Center"  
+                 Grid.Column="1" 
+                 HorizontalAlignment="Center"
+                 ItemsSource="{Binding}" 
+                 Height="406"
+                 Margin="8,6,7,7" 
+                 RenderTransformOrigin="0.5,0.5" 
+                 Width="667">
+
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Name="BusData"
+                                   Text="{Binding}"
+                                   Grid.Column="0"
+                                   PreviewMouseLeftButtonDown="BusData_MouseLeftButtonDown"
+                                   />
+                        <Button Name="TravelBt"
+                               Content="travel"
+                                Grid.Column="1" 
+                                Click="Travel_Click"
+                              
+                               />
+                        <Button Name="Refuel"
+                               Content="refuel"
+                                Grid.Column="2" Click="Refuel_Click"
+                               />
+
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Button Name= "AddBusbt"  Content="Add New Bus" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="90" Height="57"  Click="AddBusbt_Click"/>
+    </Grid>
+</Window>
+
+
+   

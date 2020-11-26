@@ -1,0 +1,32 @@
+﻿<Window x:Class="dotNet5781_03B_2375_6415.Travel"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:dotNet5781_03B_2375_6415"
+        mc:Ignorable="d"
+        Title="Travel" Height="200" Width="100">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50*" />
+            <RowDefinition Height="100*" />
+        </Grid.RowDefinitions>
+        <Label Name="KmLb" 
+               Content="Enter Kilometers to travel :" 
+               HorizontalAlignment="Left" 
+               Margin="0,-1,0,0" 
+               VerticalAlignment="Top" 
+               Height="57" 
+               Width="92"
+               />
+        <TextBox x:Name="TravelTxb"
+                 HorizontalAlignment="Left" 
+                 Height="23" Margin="0,20,0,0" 
+                 Grid.Row="1" 
+                 VerticalAlignment="Top" 
+                 Width="92" 
+                 RenderTransformOrigin="0.586,0.565"
+                 KeyDown="OnKeyDownEvent"
+                 />
+    </Grid>
+</Window>
