@@ -215,7 +215,7 @@ namespace dotNet5781_01_2375_6415
         /// <summary>
         /// getter and setter for kmFromTest
         /// </summary>
-        public int KmOfTest
+        public int KmFromTest
         {
             get { return kmFromTest; }
             set { kmFromTest = value; }
@@ -250,12 +250,12 @@ namespace dotNet5781_01_2375_6415
             }
             if (checkTest) //if doesn't need test by date then checks test by Km and checks fuel
             {
-                if (((Km - Oil) < 0) && ((KmOfTest + Km) < 20000)) //first check is : is there enough oil / second check is : is there enough Km until next test 
+                if (((Km - Oil) < 0) && ((KmFromTest + Km) < 20000)) //first check is : is there enough oil / second check is : is there enough Km until next test 
                 {
                     //if can travel
                     Oil -= Km; //update oil
                     Kilometrage += Km; //update Kilometrage
-                    KmOfTest += Km; //update Km from Test 
+                    KmFromTest += Km; //update Km from Test 
                     throw new ArgumentException($"Bus traveled : {Km} Km");
                     //Console.WriteLine($"Bus traveled : {Km} Km"); //prints how many Kms the bus travelled
                 }
@@ -287,7 +287,7 @@ namespace dotNet5781_01_2375_6415
         public void Test()
         {
             dateOfTest = DateTime.Now;
-            KmOfTest = Kilometrage;
+            KmFromTest = Kilometrage;
         }
 
         /// <summary>
@@ -305,7 +305,7 @@ namespace dotNet5781_01_2375_6415
                 //prints license in format XXX-XX-XXX
                 Console.WriteLine($"License : {License / 100000}-{(License % 100000) / 1000}-{License % 1000}");
             }
-            Console.WriteLine($"Kilometrage : {KmOfTest} "); //prints kilometrage from latest test
+            Console.WriteLine($"Kilometrage : {KmFromTest} "); //prints kilometrage from latest test
             Console.WriteLine();
         }
 
