@@ -287,7 +287,7 @@ namespace dotNet5781_01_2375_6415
         public void Test()
         {
             dateOfTest = DateTime.Now;
-            KmFromTest = Kilometrage;
+            KmFromTest = 0;
         }
 
         /// <summary>
@@ -313,11 +313,11 @@ namespace dotNet5781_01_2375_6415
         {
             if (startDate.Year < 2018)
             {
-                return $"License : {License / 100000}-{(License % 100000) / 100}-{License % 100}" + " " + " Status : " + busStatus.ToString() + " startDate :  " + startDate.ToString() + "  Kilometrage " + kilometrage.ToString() + " Test : " + dateOfTest.ToString() + " KmTst : " + kmFromTest.ToString() + " Oil : " + oil.ToString();
+                return $"License : {License / 100000}-{(License % 100000) / 100}-{License % 100}" + " " + " Status : " + busStatus.ToString() + " startDate :  " + startDate.ToString() + "  Kilometrage " + kilometrage.ToString() + " Test : " + dateOfTest.ToString() + " KmFromTst : " + kmFromTest.ToString() + " Oil : " + oil.ToString();
             }
             else
             {
-                return $"License : {License / 100000}-{(License % 100000) / 1000}-{License % 1000}" + " " + " Status : " + busStatus.ToString() + " startDate :  " + startDate.ToString() + "  Kilometrage " + kilometrage.ToString() + " Test : " + dateOfTest.ToString() + " KmTst : " + kmFromTest.ToString() + " Oil : " + oil.ToString(); 
+                return $"License : {License / 100000}-{(License % 100000) / 1000}-{License % 1000}" + " " + " Status : " + busStatus.ToString() + " startDate :  " + startDate.ToString() + "  Kilometrage " + kilometrage.ToString() + " Test : " + dateOfTest.ToString() + " KmFromTst : " + kmFromTest.ToString() + " Oil : " + oil.ToString(); 
             }
         }
     }
