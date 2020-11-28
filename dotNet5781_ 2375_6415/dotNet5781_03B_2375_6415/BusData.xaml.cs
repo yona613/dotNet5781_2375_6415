@@ -38,8 +38,10 @@ namespace dotNet5781_03B_2375_6415
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             ((Bus)MainGrid.DataContext).Test();
+            ((Bus)MainGrid.DataContext).Fuel();
             MainGrid.DataContext = null;
             MainGrid.DataContext = tmpBus1;
+
         }
 
     }

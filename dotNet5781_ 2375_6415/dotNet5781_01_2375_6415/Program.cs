@@ -135,40 +135,40 @@ namespace dotNet5781_01_2375_6415
             List<Bus> busList = new List<Bus> { }; //list of buses 
             for (int i = 0; i < 7; i++)
             {
-                DateTime tmpDate = new DateTime(2000 + r.Next(0, 19), r.Next(1, 13), r.Next(1, 30));
-                DateTime tmpTest = new DateTime(2020, r.Next(1, 10), r.Next(1, 30));
+                DateTime tmpDate = new DateTime(2000 + r.Next(0, 19), r.Next(1, 13), r.Next(1, 30), r.Next(0, 13), r.Next(0, 60), r.Next(0, 60));
+                DateTime tmpTest = new DateTime(2020, r.Next(1, 10), r.Next(1, 30), r.Next(0, 13), r.Next(0, 60), r.Next(0, 60));
                 if (tmpDate.Year < 2018)
                 {
                     int tmpKm = r.Next(20500, 200000);
-                    Bus tmpBus = new Bus(tmpDate, r.Next(1000000, 10000000), r.Next(0, 1201),tmpKm ,tmpKm-r.Next(0,20001), tmpTest);
+                    Bus tmpBus = new Bus(tmpDate, r.Next(1000000, 10000000), r.Next(0, 1201),tmpKm , r.Next(0,18000), tmpTest);
                     busList.Add(tmpBus);
                 }
                 else
                 {
                     int tmpKm = r.Next(20500, 200000);
-                    Bus tmpBus = new Bus(tmpDate, r.Next(10000000, 100000000), r.Next(0, 1201), tmpKm, tmpKm - r.Next(0, 20001), tmpTest);
+                    Bus tmpBus = new Bus(tmpDate, r.Next(10000000, 100000000), r.Next(0, 1201), tmpKm, r.Next(0, 18000), tmpTest);
                     busList.Add(tmpBus);
                 }
             }
             //Bus that next test time is passed
-            DateTime tmpDate1 = new DateTime(2015, r.Next(1, 13), r.Next(1, 30));
-            DateTime tmpTest1 = new DateTime(2018, r.Next(1, 10), r.Next(1, 30));
+            DateTime tmpDate1 = new DateTime(2015, r.Next(1, 13), r.Next(1, 30), r.Next(0, 13), r.Next(0, 60), r.Next(0, 60));
+            DateTime tmpTest1 = new DateTime(2018, r.Next(1, 10), r.Next(1, 30), r.Next(0, 13), r.Next(0, 60), r.Next(0, 60));
             int tmpKm1 = r.Next(20500, 200000);
-            Bus tmpBus1 = new Bus(tmpDate1, r.Next(1000000, 10000000), r.Next(0, 1201), tmpKm1, tmpKm1 - r.Next(0, 20001), tmpTest1);
+            Bus tmpBus1 = new Bus(tmpDate1, r.Next(1000000, 10000000), r.Next(0, 1201), tmpKm1, r.Next(0, 18000), tmpTest1);
             busList.Add(tmpBus1);
 
             //bus close to test because of km
-            tmpDate1 = new DateTime(2018, r.Next(1, 13), r.Next(1, 30));
-            tmpTest1 = new DateTime(2020, r.Next(1, 10), r.Next(1, 30));
+            tmpDate1 = new DateTime(2018, r.Next(1, 13), r.Next(1, 30), r.Next(0, 13), r.Next(0, 60), r.Next(0, 60));
+            tmpTest1 = new DateTime(2020, r.Next(1, 10), r.Next(1, 30), r.Next(0, 13), r.Next(0, 60), r.Next(0, 60));
             tmpKm1 = r.Next(20500, 200000);
-            tmpBus1 = new Bus(tmpDate1, r.Next(10000000, 100000000), r.Next(0, 1201), tmpKm1, tmpKm1 - r.Next(0,501), tmpTest1);
+            tmpBus1 = new Bus(tmpDate1, r.Next(10000000, 100000000), r.Next(0, 1201), tmpKm1, r.Next(19900, 19998), tmpTest1);
             busList.Add(tmpBus1);
 
             //bus close to refuel
-            tmpDate1 = new DateTime(2019, r.Next(1, 13), r.Next(1, 30));
-            tmpTest1 = new DateTime(2020, r.Next(1, 10), r.Next(1, 30));
+            tmpDate1 = new DateTime(2019, r.Next(1, 13), r.Next(1, 30), r.Next(0, 13), r.Next(0, 60), r.Next(0, 60));
+            tmpTest1 = new DateTime(2020, r.Next(1, 10), r.Next(1, 30), r.Next(0, 13), r.Next(0, 60), r.Next(0, 60));
             tmpKm1 = r.Next(20500, 200000);
-            tmpBus1 = new Bus(tmpDate1, r.Next(10000000, 100000000), r.Next(0, 50), tmpKm1, tmpKm1 - r.Next(0, 20001), tmpTest1);
+            tmpBus1 = new Bus(tmpDate1, r.Next(10000000, 100000000), r.Next(0, 50), tmpKm1, r.Next(0, 18000), tmpTest1);
             busList.Add(tmpBus1);
 
             return busList;

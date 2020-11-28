@@ -19,7 +19,7 @@ namespace dotNet5781_01_2375_6415
             license = 0;
             oil = 1200;
             kilometrage = 0;
-            kmOfTest = 0;
+            kmFromTest = 0;
             //gets test of today's date
             dateOfTest = DateTime.Now; //to get today's date
         }
@@ -30,7 +30,7 @@ namespace dotNet5781_01_2375_6415
             license = tmpLicense;
             oil = tmpOil;
             kilometrage = tmpKilometrage;
-            kmOfTest = tmpKmTest;
+            kmFromTest = tmpKmTest;
             dateOfTest = tmpDateOfTest;
         }
 
@@ -208,17 +208,17 @@ namespace dotNet5781_01_2375_6415
         }
 
         /// <summary>
-        /// Field that gets Kilometrage when last test was effectued
+        /// Field that gets the km the bus has traveled since the test
         /// </summary>
-        private int kmOfTest;
+        private int kmFromTest;
 
         /// <summary>
-        /// getter and setter for kmOfTest
+        /// getter and setter for kmFromTest
         /// </summary>
         public int KmOfTest
         {
-            get { return kmOfTest; }
-            set { kmOfTest = value; }
+            get { return kmFromTest; }
+            set { kmFromTest = value; }
         }
 
         /// <summary>
@@ -250,11 +250,12 @@ namespace dotNet5781_01_2375_6415
             }
             if (checkTest) //if doesn't need test by date then checks test by Km and checks fuel
             {
-                if (((Km - Oil) < 0) && ((Kilometrage + Km - KmOfTest) < 20000)) //first check is : is there enough oil / second check is : is there enough Km until next test 
+                if (((Km - Oil) < 0) && ((KmOfTest + Km) < 20000)) //first check is : is there enough oil / second check is : is there enough Km until next test 
                 {
                     //if can travel
                     Oil -= Km; //update oil
                     Kilometrage += Km; //update Kilometrage
+                    KmOfTest += Km; //update Km from Test 
                     throw new ArgumentException($"Bus traveled : {Km} Km");
                     //Console.WriteLine($"Bus traveled : {Km} Km"); //prints how many Kms the bus travelled
                 }
@@ -304,7 +305,7 @@ namespace dotNet5781_01_2375_6415
                 //prints license in format XXX-XX-XXX
                 Console.WriteLine($"License : {License / 100000}-{(License % 100000) / 1000}-{License % 1000}");
             }
-            Console.WriteLine($"Kilometrage : {Kilometrage - KmOfTest} "); //prints kilometrage from latest test
+            Console.WriteLine($"Kilometrage : {KmOfTest} "); //prints kilometrage from latest test
             Console.WriteLine();
         }
 
@@ -312,11 +313,11 @@ namespace dotNet5781_01_2375_6415
         {
             if (startDate.Year < 2018)
             {
-                return $"License : {License / 100000}-{(License % 100000) / 100}-{License % 100}" + " " + " Status : " + busStatus.ToString() + " startDate :  " + startDate.ToString() + "  Kilometrage " + kilometrage.ToString() + " Test : " + dateOfTest.ToString() + " KmTst : " + kmOfTest.ToString() + " Oil : " + oil.ToString();
+                return $"License : {License / 100000}-{(License % 100000) / 100}-{License % 100}" + " " + " Status : " + busStatus.ToString() + " startDate :  " + startDate.ToString() + "  Kilometrage " + kilometrage.ToString() + " Test : " + dateOfTest.ToString() + " KmTst : " + kmFromTest.ToString() + " Oil : " + oil.ToString();
             }
             else
             {
-                return $"License : {License / 100000}-{(License % 100000) / 1000}-{License % 1000}" + " " + " Status : " + busStatus.ToString() + " startDate :  " + startDate.ToString() + "  Kilometrage " + kilometrage.ToString() + " Test : " + dateOfTest.ToString() + " KmTst : " + kmOfTest.ToString() + " Oil : " + oil.ToString(); 
+                return $"License : {License / 100000}-{(License % 100000) / 1000}-{License % 1000}" + " " + " Status : " + busStatus.ToString() + " startDate :  " + startDate.ToString() + "  Kilometrage " + kilometrage.ToString() + " Test : " + dateOfTest.ToString() + " KmTst : " + kmFromTest.ToString() + " Oil : " + oil.ToString(); 
             }
         }
     }
