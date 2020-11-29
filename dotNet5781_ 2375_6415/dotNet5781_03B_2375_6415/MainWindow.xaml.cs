@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,8 @@ namespace dotNet5781_03B_2375_6415
     public partial class MainWindow : Window
     {
         public static List<Bus> myBusList = Program.CreateBusList();
+
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -45,8 +48,14 @@ namespace dotNet5781_03B_2375_6415
 
         private void Refuel_Click(object sender, RoutedEventArgs e)
         {
-            ((Bus)(((Button)sender).DataContext)).Fuel();
-            BusList.Items.Refresh();
+           ((Bus)(((Button)sender).DataContext)).bw.DoWork += bw_DoWork;
+           ((Bus)(((Button)sender).DataContext)).bw.RunWorkerAsync(((Bus)(((Button)sender).DataContext)));
+        }
+
+        private void bw_DoWork(object sender, DoWorkEventArgs e)
+        {
+            ((Bus)e.Argument).Fuel();
+            Dispatcher.BeginInvoke(new Action(BusList.Items.Refresh));
         }
 
         private void BusData_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

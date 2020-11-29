@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Threading;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -41,8 +42,8 @@ namespace dotNet5781_03B_2375_6415
                     catch (ArgumentException ex)
                     {
                         MessageBox.Show(ex.Message);
+                        this.Close();
                     }
-                    this.Close();
                 }
                 else
                 {

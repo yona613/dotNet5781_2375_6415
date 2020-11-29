@@ -32,12 +32,36 @@ namespace dotNet5781_03B_2375_6415
                 int tmpInt;
                 if (int.TryParse(GetlicenseTxb.Text, out tmpInt))
                 {
-                    if (tmpInt >= 10000000 && tmpInt < 1000000000)
+                    try
                     {
-                        Bus tmpBus = new Bus(DateTime.Now,tmpInt,1200,0,0,DateTime.Now);
-                        MainWindow.myBusList.Add(tmpBus);
-                        AddBusWin.Close();
+                        if (tmpInt >= 10000000 && tmpInt < 100000000) //can only add bus with 8 digits (year 2020 +)
+                        {
+                            Bus tmpBus = new Bus(DateTime.Now, tmpInt, 1200, 0, 0, DateTime.Now);
+                            foreach (var item in MainWindow.myBusList)
+                            {
+                                if (item.License == tmpInt)
+                                {
+                                    throw new ArgumentException("Bus already exists, enter valid number !!!");
+                                }
+                            }
+                            MainWindow.myBusList.Add(tmpBus);
+                            AddBusWin.Close();
+                        }
+                        else
+                        {
+                            throw new ArgumentException("License not valid, enter valid number (license : 8 digits) !!!");
+                        }
                     }
+                    catch (ArgumentException ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                        GetlicenseTxb.Clear();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Wrong Input !!!!");
+                    GetlicenseTxb.Clear();
                 }
             }
         }

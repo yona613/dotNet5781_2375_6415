@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ComponentModel;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace dotNet5781_01_2375_6415
 {
@@ -10,6 +12,9 @@ namespace dotNet5781_01_2375_6415
 
     public class Bus
     {
+
+        public BackgroundWorker bw = new BackgroundWorker();
+
         /// <summary>
         /// Default constructor
         /// </summary>
@@ -276,7 +281,8 @@ namespace dotNet5781_01_2375_6415
         /// Updates fuel
         /// </summary>
         public void Fuel()
-        { 
+        {
+            Thread.Sleep(12000);
             Oil = 1200; //updates oil       
         }
 
