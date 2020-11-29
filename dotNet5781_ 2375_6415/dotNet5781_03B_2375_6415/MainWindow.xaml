@@ -30,22 +30,38 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
                         <TextBlock Name="BusData"
                                    Text="{Binding}"
                                    Grid.Column="0"
+                                   Grid.Row="0"
                                    PreviewMouseLeftButtonDown="BusData_MouseLeftButtonDown"
                                    />
                         <Button Name="TravelBt"
                                Content="travel"
                                 Grid.Column="1" 
+                                Grid.Row="0"
                                 Click="Travel_Click"
                               
                                />
                         <Button Name="Refuel"
                                Content="refuel"
-                                Grid.Column="2" Click="Refuel_Click"
+                                Grid.Column="2" 
+                                Grid.Row="0"
+                                Click="Refuel_Click"
                                />
-
+                        <ProgressBar x:Name="RefuelPB"
+                                     Grid.Row="1"
+                                     Grid.Column="2"
+                                     Minimum="0"
+                                     Maximum="100"
+                                     Height="20"
+                                     Width="50"
+                                     DataContext="{Binding Path=bw.progressPercentage}"
+                                     />
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>

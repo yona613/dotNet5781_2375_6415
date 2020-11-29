@@ -15,6 +15,7 @@ namespace dotNet5781_01_2375_6415
 
         public BackgroundWorker bw = new BackgroundWorker();
 
+
         /// <summary>
         /// Default constructor
         /// </summary>
@@ -258,9 +259,12 @@ namespace dotNet5781_01_2375_6415
                 if (((Km - Oil) < 0) && ((KmFromTest + Km) < 20000)) //first check is : is there enough oil / second check is : is there enough Km until next test 
                 {
                     //if can travel
+                    busStatus = Status.TRAVELLING;
+                    Thread.Sleep((Km / Program.r.Next(20, 51)) * 6000 + (Km % Program.r.Next(20, 51))*100);
                     Oil -= Km; //update oil
                     Kilometrage += Km; //update Kilometrage
                     KmFromTest += Km; //update Km from Test 
+                    busStatus = Status.READY;
                     throw new ArgumentException($"Bus traveled : {Km} Km");
                     //Console.WriteLine($"Bus traveled : {Km} Km"); //prints how many Kms the bus travelled
                 }
@@ -273,7 +277,7 @@ namespace dotNet5781_01_2375_6415
             else //if cannot travel because test
             {
                 throw new ArgumentException("Cannot travel, test is needed");
-                    //Console.WriteLine("Cannot travel, test is needed");
+                //Console.WriteLine("Cannot travel, test is needed");
             }
         }
 
@@ -282,8 +286,10 @@ namespace dotNet5781_01_2375_6415
         /// </summary>
         public void Fuel()
         {
-            Thread.Sleep(12000);
-            Oil = 1200; //updates oil       
+            //busStatus = Status.OILING;
+            //Thread.Sleep(12000);
+            Oil = 1200; //updates oil 
+            //busStatus = Status.READY;
         }
 
 
@@ -292,8 +298,12 @@ namespace dotNet5781_01_2375_6415
         /// </summary>
         public void Test()
         {
+            busStatus = Status.TESTING;
+            Thread.Sleep(144000);
             dateOfTest = DateTime.Now;
+            oil = 1200;
             KmFromTest = 0;
+            busStatus = Status.READY;
         }
 
         /// <summary>

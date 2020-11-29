@@ -23,9 +23,10 @@ namespace dotNet5781_03B_2375_6415
     /// </summary>
     public partial class MainWindow : Window
     {
+
         public static List<Bus> myBusList = Program.CreateBusList();
 
-        
+
         public MainWindow()
         {
             InitializeComponent();
@@ -41,32 +42,63 @@ namespace dotNet5781_03B_2375_6415
 
         private void Travel_Click(object sender, RoutedEventArgs e)
         {
-            Window tmpWin = new Travel((Bus)(((Button)sender).DataContext));
-            tmpWin.ShowDialog();
-            BusList.Items.Refresh();
+            if (!((Bus)(((Button)sender).DataContext)).bw.IsBusy)
+            {
+                Window tmpWin = new Travel((Bus)(((Button)sender).DataContext));
+                tmpWin.ShowDialog();
+                Dispatcher.BeginInvoke(new Action(BusList.Items.Refresh));
+            }
+            else
+            {
+                MessageBox.Show("Bus already Busy !!!");
+            }
+            
         }
 
         private void Refuel_Click(object sender, RoutedEventArgs e)
         {
-           ((Bus)(((Button)sender).DataContext)).bw.DoWork += bw_DoWork;
-           ((Bus)(((Button)sender).DataContext)).bw.RunWorkerAsync(((Bus)(((Button)sender).DataContext)));
+            if (!((Bus)(((Button)sender).DataContext)).bw.IsBusy)
+            {
+                ((Bus)(((Button)sender).DataContext)).bw = new BackgroundWorker();
+                ((Bus)(((Button)sender).DataContext)).bw.DoWork += Refuel;
+                ((Bus)(((Button)sender).DataContext)).bw.WorkerReportsProgress = true;
+                ((Bus)(((Button)sender).DataContext)).bw.ProgressChanged += RefuelingProgress;
+                ((Bus)(((Button)sender).DataContext)).bw.RunWorkerAsync(((Bus)(((Button)sender).DataContext)));
+            }
+            else
+            {
+                MessageBox.Show("Bus already Busy !!!");
+            }
         }
 
-        private void bw_DoWork(object sender, DoWorkEventArgs e)
+        private void Refuel(object sender, DoWorkEventArgs e)
         {
+            ((Bus)e.Argument).BusStatus = Status.OILING;
+            Dispatcher.BeginInvoke(new Action(BusList.Items.Refresh));
+            for (int i = 0; i < 12; i++)
+            {
+                (sender as BackgroundWorker).ReportProgress(i * 8);
+                Thread.Sleep(1000);
+            }
             ((Bus)e.Argument).Fuel();
+            ((Bus)e.Argument).BusStatus = Status.READY;
             Dispatcher.BeginInvoke(new Action(BusList.Items.Refresh));
         }
 
         private void BusData_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.ClickCount==2)
+            if (e.ClickCount == 2)
             {
                 BusData tmpWin = new BusData(((Bus)(((TextBlock)sender).DataContext)));
                 tmpWin.ShowDialog();
                 BusList.Items.Refresh();
             }
-            
+        }
+
+        void RefuelingProgress(object sender , ProgressChangedEventArgs e)
+        {
+            ProgressBar myPB = (ProgressBar)BusList.FindName("RefuelPB");
+           // myPB.Value = e.ProgressPercentage;
         }
     }
 }
