@@ -10,7 +10,7 @@ namespace dotNet5781_01_2375_6415
 {
     public enum Status { READY , TRAVELLING , OILING , TESTING}
 
-    public class Bus
+    public class Bus : INotifyPropertyChanged
     {
 
         public BackgroundWorker bw = new BackgroundWorker();
@@ -103,6 +103,20 @@ namespace dotNet5781_01_2375_6415
             set { license = value; }
         }
 
+        public string License1
+        {
+            get {
+                if (startDate.Year < 2018)
+                {
+                    return (License / 100000).ToString().PadLeft(2, '0') + "-" + ((License % 100000) / 100).ToString().PadLeft(3, '0') + "-" + (License % 100).ToString().PadLeft(2, '0');
+                }
+                else
+                {
+                    return (License / 100000).ToString().PadLeft(3, '0') + "-" + ((License % 100000) / 1000).ToString().PadLeft(2, '0') + "-" + (License % 1000).ToString().PadLeft(3, '0');
+                }
+            }
+        }
+
         /// <summary>
         /// Setter for License
         /// </summary>
@@ -152,7 +166,10 @@ namespace dotNet5781_01_2375_6415
         public Status BusStatus
         {
             get { return busStatus; }
-            set { busStatus = value; }
+            set {
+                busStatus = value;
+                OnPropertyChanged("BusStatus");
+            }
         }
 
 
@@ -167,7 +184,10 @@ namespace dotNet5781_01_2375_6415
         public int Oil
         {
             get { return oil; }
-            set { oil = value; }
+            set { 
+                oil = value;
+                OnPropertyChanged("Oil");
+            }
         }
 
         /// <summary>
@@ -224,7 +244,10 @@ namespace dotNet5781_01_2375_6415
         public int KmFromTest
         {
             get { return kmFromTest; }
-            set { kmFromTest = value; }
+            set { 
+                kmFromTest = value;
+                OnPropertyChanged("KmFromTest");
+            }
         }
 
         /// <summary>
@@ -234,6 +257,7 @@ namespace dotNet5781_01_2375_6415
         /// <param name="Km">number of Km to travel</param>
         public void Travel(int Km)
         {
+            bw.ProgressChanged += Travel_ProgressChanged;
             DateTime currentDate = DateTime.Now; //gets current date from PC
             bool checkTest = true; //gets false if needs test
             if ((currentDate.Year - dateOfTest.Year) >= 2) //if difference > 2 then needs new test
@@ -260,12 +284,22 @@ namespace dotNet5781_01_2375_6415
                 {
                     //if can travel
                     busStatus = Status.TRAVELLING;
-                    Thread.Sleep((Km / Program.r.Next(20, 51)) * 6000 + (Km % Program.r.Next(20, 51))*100);
-                    Oil -= Km; //update oil
-                    Kilometrage += Km; //update Kilometrage
-                    KmFromTest += Km; //update Km from Test 
-                    busStatus = Status.READY;
+                    int mySpeed = Program.r.Next(20, 51);
+                    int myTime = (Km / mySpeed * 6000 + (Km % mySpeed) * 100);
+                    counter = new TimeSpan(Km / mySpeed, (Km % mySpeed), 0);
+                    for (int i = 1; i <= (myTime / 100); i++)
+                    {
+                        bw.ReportProgress(i);
+                        Thread.Sleep(100);
+                    }
+                    //Thread.Sleep(((int)e.Argument / Program.r.Next(20, 51)) * 6000 + ((int)e.Argument % mySpeed * 100);
+                    this.Oil -= Km; //update oil
+                    this.Kilometrage += Km; //update Kilometrage
+                    this.KmFromTest += Km; //update Km from Test 
+                    this.BusStatus = Status.READY;
                     throw new ArgumentException($"Bus traveled : {Km} Km");
+
+
                     //Console.WriteLine($"Bus traveled : {Km} Km"); //prints how many Kms the bus travelled
                 }
                 else //if cannot travel because Kms
@@ -281,15 +315,116 @@ namespace dotNet5781_01_2375_6415
             }
         }
 
+        public void Travel_DoWork(int tmpKm)
+        {
+            bw.WorkerReportsProgress = true;
+            bw.ProgressChanged += Travel_ProgressChanged;
+            bw.RunWorkerAsync();
+        }
+
+        private void Travel_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            this.ProgressTravel = e.ProgressPercentage;
+            this.Counter= this.counter.Subtract(new TimeSpan(0, 1, 0));
+            OnPropertyChanged("Counter");
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        private int progressFuel;
+
+        public int ProgressFuel
+        {
+            get { return progressFuel; }
+            set { 
+                progressFuel = value;
+                OnPropertyChanged("ProgressFuel");
+            }
+        }
+
+        private int progressTest;
+
+        public int ProgressTest
+        {
+            get { return progressTest; }
+            set
+            {
+                progressTest = value;
+                OnPropertyChanged("ProgressTest");
+            }
+        }
+
+        private int progressTravel;
+
+        public int ProgressTravel
+        {
+            get { return progressTravel; }
+            set
+            {
+                progressTravel = value;
+                OnPropertyChanged("ProgressTravel");
+            }
+        }
+
+        private TimeSpan counter;
+
+        public  TimeSpan Counter
+        {
+            get { return counter; }
+            set { 
+                counter = value;
+                OnPropertyChanged("Counter");
+            }
+        }
+
+
+        private void Refuel_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            this.ProgressFuel = e.ProgressPercentage;
+            Counter = new TimeSpan(2-(e.ProgressPercentage / 6),-((e.ProgressPercentage % 6)*10), 0);
+        }
+
+        private void Refuel_ProgressCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            ProgressFuel = 0;
+            Counter = new TimeSpan(0,0,0);
+            OnPropertyChanged("Oil");
+            OnPropertyChanged("BusStatus");
+        }
+
         /// <summary>
         /// Updates fuel
         /// </summary>
         public void Fuel()
         {
-            //busStatus = Status.OILING;
-            //Thread.Sleep(12000);
-            Oil = 1200; //updates oil 
-            //busStatus = Status.READY;
+            bw = new BackgroundWorker();
+            bw.DoWork += Refuel;
+            bw.WorkerReportsProgress = true;
+            bw.ProgressChanged += Refuel_ProgressChanged;
+            bw.RunWorkerCompleted += Refuel_ProgressCompleted;
+            bw.RunWorkerAsync(); 
+        }
+
+        private void Refuel(object sender, DoWorkEventArgs e)
+        {
+            BusStatus = Status.OILING;
+            this.Oil = 0;
+            for (int i = 0; i < 12; i++)
+            {
+                (sender as BackgroundWorker).ReportProgress(i);
+                this.Oil = i*100;
+                Thread.Sleep(1000);
+            }
+            this.Oil = 1200;
+            BusStatus = Status.READY;
         }
 
 
@@ -298,12 +433,34 @@ namespace dotNet5781_01_2375_6415
         /// </summary>
         public void Test()
         {
-            busStatus = Status.TESTING;
-            Thread.Sleep(144000);
+            if (!bw.IsBusy)
+            {
+                bw = new BackgroundWorker();
+                bw.DoWork += Testing;
+                bw.WorkerReportsProgress = true;
+                bw.ProgressChanged += Test_ProgressChanged;
+                bw.RunWorkerAsync();
+            }
+        }
+
+        private void Testing(object sender, DoWorkEventArgs e)
+        {
+            BusStatus = Status.TESTING;
+            for (int i = 0; i < 144; i++)
+            {
+                (sender as BackgroundWorker).ReportProgress(i);
+                Thread.Sleep(1000);
+            }
             dateOfTest = DateTime.Now;
-            oil = 1200;
-            KmFromTest = 0;
-            busStatus = Status.READY;
+            this.Oil = 1200;
+            this.KmFromTest = 0;
+            this.BusStatus = Status.READY;
+        }
+
+        private void Test_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            this.ProgressTest = e.ProgressPercentage;
+            Counter = new TimeSpan(24 - (e.ProgressPercentage / 6),- ((e.ProgressPercentage % 6) * 10), 0);
         }
 
         /// <summary>
@@ -329,11 +486,11 @@ namespace dotNet5781_01_2375_6415
         {
             if (startDate.Year < 2018)
             {
-                return $"License : {License / 100000}-{(License % 100000) / 100}-{License % 100}" + " " + " Status : " + busStatus.ToString() + " startDate :  " + startDate.ToString() + "  Kilometrage " + kilometrage.ToString() + " Test : " + dateOfTest.ToString() + " KmFromTst : " + kmFromTest.ToString() + " Oil : " + oil.ToString();
+                return "License : " + (License / 100000).ToString().PadLeft(3, '0') + "-" + ((License % 100000) / 100).ToString().PadLeft(2, '0') + "-" + (License % 100).ToString().PadLeft(3, '0') + " " + " Status : " + busStatus.ToString() + " startDate :  " + startDate.ToString() + "  Kilometrage " + kilometrage.ToString() + " Test : " + dateOfTest.ToString() + " KmFromTst : " + kmFromTest.ToString() + " Oil : " + oil.ToString();
             }
             else
             {
-                return $"License : {License / 100000}-{(License % 100000) / 1000}-{License % 1000}" + " " + " Status : " + busStatus.ToString() + " startDate :  " + startDate.ToString() + "  Kilometrage " + kilometrage.ToString() + " Test : " + dateOfTest.ToString() + " KmFromTst : " + kmFromTest.ToString() + " Oil : " + oil.ToString(); 
+                return "License : " + (License / 100000).ToString().PadLeft(3,'0')+"-"+((License % 100000) / 1000).ToString().PadLeft(2,'0') +"-" + (License % 1000).ToString().PadLeft(3,'0') + " " + " Status : " + busStatus.ToString() + " startDate :  " + startDate.ToString() + "  Kilometrage " + kilometrage.ToString() + " Test : " + dateOfTest.ToString() + " KmFromTst : " + kmFromTest.ToString() + " Oil : " + oil.ToString(); 
             }
         }
     }

@@ -7,65 +7,135 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
 
+    <Window.Resources>
+        <DataTemplate x:Key="MyTemplate"
+                      DataType="Mydata">
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Label Name="BusData"
+                           Content= "{Binding Path=License1, Mode=OneWay}"
+                           Grid.Column="0"
+                           Height="50"
+                           Width="80"
+                           Grid.Row="0"
+                       HorizontalContentAlignment="Center"
+                       VerticalContentAlignment="Center"
+                           PreviewMouseLeftButtonDown="BusData_MouseLeftButtonDown" 
+                                   >
+                </Label>
+                <Label Name="BusData1"
+                           Content="{Binding Path=Oil}"
+                       HorizontalAlignment="Center"
+                       HorizontalContentAlignment="Center"
+                       VerticalContentAlignment="Center"
+                       Grid.Column="1"
+                           Height="50"
+                           Width="100"
+                           Grid.Row="0"
+                           PreviewMouseLeftButtonDown="BusData_MouseLeftButtonDown"
+                                   />
+                <Label Name="BusData2"
+                           Height="50"
+                           Width="80"
+                           Content="{Binding Path=BusStatus}"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           HorizontalContentAlignment="Center"
+                       VerticalContentAlignment="Center"
+                           Grid.Column="2"
+                           PreviewMouseLeftButtonDown="BusData_MouseLeftButtonDown"
+                                   />
+                <Button Name="TravelBt"
+                        Content="travel"                       
+                        HorizontalAlignment="Center"
+                        Height="20"
+                        Width="50"
+                        Margin="10"
+                        VerticalAlignment="Center"
+                        Grid.Column="3" 
+                        Click="Travel_Click" 
+                               />
+                <Button Name="Refuel"
+                        Height="50"
+                        Width="80"
+                        Grid.Column="5" 
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Click="Refuel_Click">
+                    <Button.Content>
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="2">
+                            <Label HorizontalContentAlignment="Center" Height="25" HorizontalAlignment="Stretch" VerticalAlignment="Top" VerticalContentAlignment="Top" Content="Refuel"/>
+                            <ProgressBar Name="refuelPB1"   Value="{Binding Path=ProgressFuel}" Height="20" Width="50" Minimum="0" Maximum="12"/>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <Label  Name="CounterTxt" 
+                        Grid.Column="6" 
+                        HorizontalContentAlignment="Right" 
+                        Content="Remaining Time : " 
+                        HorizontalAlignment="Right"  
+                        VerticalAlignment="Center"
+                        />
+                    <Label  Name="Counter" 
+                        Grid.Column="7"  
+                        Content="{Binding Path=Counter}" 
+                        HorizontalAlignment="Left"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                        VerticalAlignment="Center"
+                        />
+
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
+
     <Grid Height="419" VerticalAlignment="Bottom">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="4*"/>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5*"/>
             <ColumnDefinition Width="31*"/>
         </Grid.ColumnDefinitions>
-        <ListBox Name = "BusList"
-                 VerticalAlignment="Center"  
+        <Grid Grid.Column="1"
+                  Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="70"/>
+                <ColumnDefinition Width="110"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" Content="License Number" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <Label Content="Oil" Grid.Column="1" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <Label Content="Bus Status" Grid.Column="2" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        </Grid>
+        <Grid Grid.Column="1"
+                  Grid.Row="1">
+            <ListBox Name = "BusList"
+                 VerticalAlignment="Stretch"  
                  Grid.Column="1" 
-                 HorizontalAlignment="Center"
+                 HorizontalAlignment="Stretch"
                  ItemsSource="{Binding}" 
-                 Height="406"
-                 Margin="8,6,7,7" 
-                 RenderTransformOrigin="0.5,0.5" 
-                 Width="667">
-
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Name="BusData"
-                                   Text="{Binding}"
-                                   Grid.Column="0"
-                                   Grid.Row="0"
-                                   PreviewMouseLeftButtonDown="BusData_MouseLeftButtonDown"
-                                   />
-                        <Button Name="TravelBt"
-                               Content="travel"
-                                Grid.Column="1" 
-                                Grid.Row="0"
-                                Click="Travel_Click"
-                              
-                               />
-                        <Button Name="Refuel"
-                               Content="refuel"
-                                Grid.Column="2" 
-                                Grid.Row="0"
-                                Click="Refuel_Click"
-                               />
-                        <ProgressBar x:Name="RefuelPB"
-                                     Grid.Row="1"
-                                     Grid.Column="2"
-                                     Minimum="0"
-                                     Maximum="100"
-                                     Height="20"
-                                     Width="50"
-                                     DataContext="{Binding Path=bw.progressPercentage}"
-                                     />
-                    </Grid>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+                 ItemTemplate="{StaticResource MyTemplate}"  
+                     >
+            </ListBox>
+        </Grid>
+        
         <Button Name= "AddBusbt"  Content="Add New Bus" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="90" Height="57"  Click="AddBusbt_Click"/>
     </Grid>
 </Window>

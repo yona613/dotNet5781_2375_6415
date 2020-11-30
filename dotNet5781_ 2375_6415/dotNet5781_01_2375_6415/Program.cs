@@ -161,7 +161,7 @@ namespace dotNet5781_01_2375_6415
             tmpDate1 = new DateTime(2018, r.Next(1, 13), r.Next(1, 30), r.Next(0, 13), r.Next(0, 60), r.Next(0, 60));
             tmpTest1 = new DateTime(2020, r.Next(1, 10), r.Next(1, 30), r.Next(0, 13), r.Next(0, 60), r.Next(0, 60));
             tmpKm1 = r.Next(20500, 200000);
-            tmpBus1 = new Bus(tmpDate1, r.Next(100000000, 100000000), r.Next(0, 1201), tmpKm1, r.Next(19900, 19998), tmpTest1);
+            tmpBus1 = new Bus(tmpDate1, r.Next(10000000, 100000000), r.Next(0, 1201), tmpKm1, r.Next(19900, 19998), tmpTest1);
             busList.Add(tmpBus1);
 
             //bus close to refuel

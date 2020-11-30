@@ -38,9 +38,10 @@ namespace dotNet5781_03B_2375_6415
                 {
                     if (!tmpBus1.bw.IsBusy)
                     {
-                        tmpBus1.bw = new BackgroundWorker();
-                        tmpBus1.bw.DoWork += Do_Travel;
-                        tmpBus1.bw.RunWorkerAsync(tmpBus1);
+                            tmpBus1.bw = new BackgroundWorker();
+                            tmpBus1.bw.WorkerReportsProgress = true;
+                            tmpBus1.bw.DoWork += Do_Travel;
+                            tmpBus1.bw.RunWorkerAsync(tmpBus1);
                     }
                     else
                     {
