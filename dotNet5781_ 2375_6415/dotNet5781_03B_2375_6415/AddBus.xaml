@@ -7,8 +7,28 @@
         mc:Ignorable="d"
         Name = "AddBusWin" Title = "Add a new Bus" Height="450" Width="800">
     <Grid>
-        <TextBox x:Name="GetlicenseTxb" HorizontalAlignment="Left" Height="221" Margin="104,107,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="572" KeyDown="OnKeyDownHandler"/>
-        <Label Content="Enter the License Number :" HorizontalAlignment="Left" Margin="228,10,0,0" VerticalAlignment="Top" Height="73" Width="314"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Label Content="Enter the License Number :" 
+               HorizontalAlignment="Center" 
+               VerticalAlignment="Top" 
+               Height="73" 
+               Width="314"/>
+        <TextBox x:Name="GetlicenseTxb" 
+                 Grid.Row="1"
+                 HorizontalAlignment="Center" 
+                 Height="50" 
+                 Width="200"
+                 VerticalAlignment="Bottom" 
+                 KeyDown="OnKeyDownHandler" />
+        
 
     </Grid>
 </Window>

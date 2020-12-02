@@ -20,6 +20,8 @@ namespace dotNet5781_03B_2375_6415
     /// </summary>
     public partial class Window1 : Window
     {
+
+        MainWindow wnd = (MainWindow)Application.Current.MainWindow;
         public Window1()
         {
             InitializeComponent();
@@ -45,6 +47,7 @@ namespace dotNet5781_03B_2375_6415
                                 }
                             }
                             MainWindow.myBusList.Add(tmpBus);
+                            wnd.BusList.Items.Add(tmpBus);
                             AddBusWin.Close();
                         }
                         else

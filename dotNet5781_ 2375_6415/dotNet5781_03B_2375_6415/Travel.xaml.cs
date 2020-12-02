@@ -1,19 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.ComponentModel;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Threading;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using dotNet5781_01_2375_6415;
+using System.Text.RegularExpressions;
 
 namespace dotNet5781_03B_2375_6415
 {
@@ -36,12 +25,17 @@ namespace dotNet5781_03B_2375_6415
             {
                 if (int.TryParse(TravelTxb.Text, out kM))
                 {
-                    if (!tmpBus1.bw.IsBusy)
+                    if (tmpBus1.BusStatus==Status.READY)
                     {
-                            tmpBus1.bw = new BackgroundWorker();
-                            tmpBus1.bw.WorkerReportsProgress = true;
-                            tmpBus1.bw.DoWork += Do_Travel;
-                            tmpBus1.bw.RunWorkerAsync(tmpBus1);
+
+                        MyBw bw = new MyBw(tmpBus1, "Travel",kM);
+                        bw.bW.RunWorkerCompleted += Travel_ProgressCompleted;
+                        MainWindow.myBwList.Add(bw);
+                        bw.Start();
+                        //tmpBus1.bw = new BackgroundWorker();
+                        //tmpBus1.bw.WorkerReportsProgress = true;
+                        //tmpBus1.bw.DoWork += Travel_ProgressCompleted;
+                        //tmpBus1.bw.RunWorkerAsync(tmpBus1);
                     }
                     else
                     {
@@ -57,15 +51,25 @@ namespace dotNet5781_03B_2375_6415
             }
         }
 
-        private void Do_Travel(object sender, DoWorkEventArgs e)
+        public void Travel_ProgressCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            try
+            if (e.Error!=null)
             {
-                tmpBus1.Travel(kM);
+                MessageBox.Show(e.Error.Message);
             }
-            catch (ArgumentException ex)
+            else
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show($"Bus traveled : {kM} Km");
+            }
+        }
+
+        private void TravelTxb_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex myReg = new Regex("[^0-9]+");
+            e.Handled = myReg.IsMatch(e.Text);
+            if (e.Handled)
+            {
+                MessageBox.Show($"Wrong Input !!!! \n {e.Text} Enter digits only");
             }
         }
     }

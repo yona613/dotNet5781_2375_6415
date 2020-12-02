@@ -1,21 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Threading;
 using System.Windows.Threading;
-using System.Diagnostics;
 using dotNet5781_01_2375_6415;
 
 namespace dotNet5781_03B_2375_6415
@@ -26,41 +16,59 @@ namespace dotNet5781_03B_2375_6415
     public partial class MainWindow : Window
     {
         public static List<Bus> myBusList = Program.CreateBusList();
+        public static List<MyBw> myBwList = new List<MyBw> { };
 
         public MainWindow()
         {
             InitializeComponent();
-            BusList.ItemsSource = myBusList;
+            foreach (var item in myBusList)
+            {
+                BusList.Items.Add(item);
+            }
         }
 
         private void AddBusbt_Click(object sender, RoutedEventArgs e)
         {
             Window addWin = new dotNet5781_03B_2375_6415.Window1();
             addWin.ShowDialog();
-            BusList.Items.Refresh();
+            //BusList.Items.Refresh();
         }
 
         private void Travel_Click(object sender, RoutedEventArgs e)
         {
-            if (!((Bus)(((Button)sender).DataContext)).bw.IsBusy)
+            Bus current = ((Bus)(((Button)sender).DataContext));
+            if (((Bus)(((Button)sender).DataContext)).BusStatus == Status.READY)
             {
                 Window tmpWin = new Travel((Bus)(((Button)sender).DataContext));
                 tmpWin.ShowDialog();
-                Dispatcher.BeginInvoke(new Action(BusList.Items.Refresh));
+                foreach (var item in MainWindow.myBwList)
+                {
+                    if (item.MyBus.License == (current.License))
+                    {
+                        if (item.MyStatus == "Refuel")
+                        {
+                            Finditem<ProgressBar>(current, "refuelPB1").DataContext = item;
+                        }
+                        Finditem<Label>(current, "Counter").DataContext = item;
+                    }
+                }
+                //Dispatcher.BeginInvoke(new Action(BusList.Items.Refresh));
             }
             else
             {
                 MessageBox.Show("Bus already Busy !!!");
-            }
-            
+            }  
         }
 
         private void Refuel_Click(object sender, RoutedEventArgs e)
         {
-            if (!((Bus)(((Button)sender).DataContext)).bw.IsBusy)
+            if (((Bus)(((Button)sender).DataContext)).BusStatus == Status.READY)
             {
-                ((Bus)(((Button)sender).DataContext)).bw.RunWorkerCompleted += Update;
-                ((Bus)(((Button)sender).DataContext)).Fuel();
+                MyBw bw = new MyBw(((Bus)(((Button)sender).DataContext)), "Refuel");
+                Finditem<ProgressBar>((((Button)sender).DataContext), "refuelPB1").DataContext = bw; ;
+                Finditem<Label>((((Button)sender).DataContext), "Counter").DataContext = bw;
+                myBwList.Add(bw);
+                bw.Start();
             }
             else
             {
@@ -75,13 +83,56 @@ namespace dotNet5781_03B_2375_6415
 
         private void BusData_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.ClickCount == 2)
+            //if (e.ClickCount == 2)
+            Bus current = BusList.SelectedItem as Bus;
             {
-                BusData tmpWin = new BusData(((Bus)(((Label)sender).DataContext)));
+                BusData tmpWin = new BusData(current);
                 tmpWin.ShowDialog();
-                BusList.Items.Refresh();
+                foreach (var item in MainWindow.myBwList)
+                {
+                    if (item.MyBus.License == (current.License))
+                    {
+                        if (item.MyStatus=="Refuel")
+                        {
+                            Finditem<ProgressBar>(current, "refuelPB1").DataContext = item;
+                        }
+                        Finditem<Label>(current, "Counter").DataContext = item;
+                    }
+                }
             }
         }
-    }
 
+        private childItem FindVisualChild<childItem>(DependencyObject obj) where childItem : DependencyObject
+        {
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
+            {
+                DependencyObject child = VisualTreeHelper.GetChild(obj, i);
+                if (child != null && child is childItem)
+                {
+                    return (childItem)child;
+                }
+                else
+                {
+                    childItem childOfChild = FindVisualChild<childItem>(child);
+                    if (childOfChild != null)
+                        return childOfChild;
+                }
+            }
+            return null;
+        }
+
+        public A Finditem<A>(object item, string str)
+        {
+
+            ListBoxItem myListBoxItem = (ListBoxItem)(BusList.ItemContainerGenerator.ContainerFromItem(item));
+
+            // Getting the ContentPresenter of myListBoxItem
+            ContentPresenter myContentPresenter = FindVisualChild<ContentPresenter>(myListBoxItem);
+
+            // Finding textBlock from the DataTemplate that is set on that ContentPresenter
+            DataTemplate myDataTemplate = myContentPresenter.ContentTemplate;
+            A myLabel = (A)myDataTemplate.FindName(str, myContentPresenter);
+            return myLabel;
+        }
+    }
 }

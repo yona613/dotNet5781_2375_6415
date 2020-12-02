@@ -1,20 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Threading;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Threading;
+﻿using System.Windows;
 using dotNet5781_01_2375_6415;
 
 namespace dotNet5781_03B_2375_6415
@@ -24,6 +8,7 @@ namespace dotNet5781_03B_2375_6415
     /// </summary>
     public partial class BusData : Window
     {
+        MainWindow wnd = (MainWindow)Application.Current.MainWindow;
 
         public static Bus tmpBus1;
         public BusData(Bus tmpBus)
@@ -31,14 +16,25 @@ namespace dotNet5781_03B_2375_6415
             InitializeComponent();
             MainGrid.DataContext = tmpBus;
             tmpBus1 = tmpBus;
+            foreach (var item in MainWindow.myBwList)
+            {
+                if (item.MyBus.License==tmpBus1.License)
+                {
+                    refuelPB.DataContext = item;
+                    Counter.DataContext = item;
+                }
+            }    
         }
 
         private void Refuel_Click(object sender, RoutedEventArgs e)
         {
-
-            if (!((Bus)MainGrid.DataContext).bw.IsBusy)
+            if (((Bus)MainGrid.DataContext).BusStatus == Status.READY)
             {
-                ((Bus)MainGrid.DataContext).Fuel();
+                MyBw bw = new MyBw(((Bus)MainGrid.DataContext), "Refuel");
+                refuelPB.DataContext = bw;
+                Counter.DataContext = bw;
+                MainWindow.myBwList.Add(bw);
+                bw.Start();
             }
             else
             {
@@ -48,9 +44,13 @@ namespace dotNet5781_03B_2375_6415
 
         private void Test_Click(object sender, RoutedEventArgs e)
         {
-            if (!((Bus)MainGrid.DataContext).bw.IsBusy)
+            if (((Bus)MainGrid.DataContext).BusStatus == Status.READY)
             {
-                ((Bus)MainGrid.DataContext).Test();
+                MyBw bw = new MyBw(((Bus)MainGrid.DataContext), "Testing");
+                TestPB.DataContext = bw;
+                Counter.DataContext = bw;
+                MainWindow.myBwList.Add(bw);
+                bw.Start();
             }
             else
             {

@@ -61,10 +61,11 @@
     <Compile Include="BusData.xaml.cs">
       <DependentUpon>BusData.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Timer.cs" />
+    <Compile Include="MyBw.cs" />
     <Compile Include="Travel.xaml.cs">
       <DependentUpon>Travel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TravelBw.cs" />
     <Page Include="BusData.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

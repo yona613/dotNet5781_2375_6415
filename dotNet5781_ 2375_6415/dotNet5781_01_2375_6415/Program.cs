@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
 
 namespace dotNet5781_01_2375_6415
-{ 
+{
     public class Program
     {
         static void Main(string[] args)

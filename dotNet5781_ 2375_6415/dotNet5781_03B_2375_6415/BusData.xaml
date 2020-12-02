@@ -58,7 +58,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Label  Name="CounterTxt" Grid.Column="0" HorizontalContentAlignment="Right" Content="Remaining Time : " HorizontalAlignment="Right"  VerticalAlignment="Center" Height="29" Width="136"/>
-            <Label  Name="Counter" Grid.Column="1"  Content="{Binding Path=Counter}" HorizontalAlignment="Left"  VerticalAlignment="Center" Height="29" Width="136"/>
+            <Label  Name="Counter" Grid.Column="1"  Content="{Binding Path = Counter}" HorizontalAlignment="Left"  VerticalAlignment="Center" Height="29" Width="136"/>
 
         </Grid>
 
@@ -71,7 +71,7 @@
                 <Button.Content>
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="2">
                         <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" Margin="0" Content="Refuel"/>
-                        <ProgressBar Name="refuelPB"   Value="{Binding Path=ProgressFuel}" Height="20" Width="50" Minimum="0" Maximum="12"/>
+                        <ProgressBar Name="refuelPB"   Value="{Binding Path=Progress, UpdateSourceTrigger=PropertyChanged}" Height="20" Width="50" Minimum="0" Maximum="12"/>
                     </StackPanel>
                 </Button.Content>
             </Button>
@@ -79,7 +79,7 @@
                 <Button.Content>
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="2">
                         <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  Margin="0" Content="Test"/>
-                        <ProgressBar Name="TestPB"   Value="{Binding Path=ProgressTest}" Height="20" Width="80" Minimum="0" Maximum="144"/>
+                        <ProgressBar Name="TestPB"   Value="{Binding Path = Progress}" Height="20" Width="80" Minimum="0" Maximum="144"/>
                     </StackPanel>
                 </Button.Content>
             </Button>
