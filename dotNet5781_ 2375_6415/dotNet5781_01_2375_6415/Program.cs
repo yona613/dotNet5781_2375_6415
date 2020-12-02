@@ -6,14 +6,22 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
-
+/// <summary>
+/// 
+/// </summary>
 namespace dotNet5781_01_2375_6415
 { 
+    /// <summary>
+    /// 
+    /// </summary>
     public class Program
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="args"></param>
         static void Main(string[] args)
         {
-
             string choice; //gets user's choice
             List<Bus> busList = CreateBusList();
             do
@@ -106,7 +114,10 @@ namespace dotNet5781_01_2375_6415
         /// Random number to be used in the whole namespace
         /// </summary>
         public static Random r = new Random(DateTime.Now.Millisecond);
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         static public int getIntInput()
         {
             string tmpString;
@@ -129,7 +140,10 @@ namespace dotNet5781_01_2375_6415
             } while (true);
             return tmpNum;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         static public List<Bus> CreateBusList()
         {
             List<Bus> busList = new List<Bus> { }; //list of buses 
@@ -161,7 +175,7 @@ namespace dotNet5781_01_2375_6415
             tmpDate1 = new DateTime(2018, r.Next(1, 13), r.Next(1, 30), r.Next(0, 13), r.Next(0, 60), r.Next(0, 60));
             tmpTest1 = new DateTime(2020, r.Next(1, 10), r.Next(1, 30), r.Next(0, 13), r.Next(0, 60), r.Next(0, 60));
             tmpKm1 = r.Next(20500, 200000);
-            tmpBus1 = new Bus(tmpDate1, r.Next(10000000, 100000000), r.Next(0, 1201), tmpKm1, r.Next(19900, 19998), tmpTest1);
+            tmpBus1 = new Bus(tmpDate1, r.Next(100000000, 100000000), r.Next(0, 1201), tmpKm1, r.Next(19900, 19998), tmpTest1);
             busList.Add(tmpBus1);
 
             //bus close to refuel

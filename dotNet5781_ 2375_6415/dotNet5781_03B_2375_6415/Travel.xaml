@@ -21,7 +21,8 @@
                />
         <TextBox x:Name="TravelTxb"
                  HorizontalAlignment="Left" 
-                 Height="23" Margin="0,20,0,0" 
+                 Height="23"
+                 Margin="0,20,0,0" 
                  Grid.Row="1" 
                  VerticalAlignment="Top" 
                  Width="92" 

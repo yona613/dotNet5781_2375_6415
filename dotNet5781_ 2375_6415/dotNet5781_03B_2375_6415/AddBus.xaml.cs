@@ -20,11 +20,18 @@ namespace dotNet5781_03B_2375_6415
     /// </summary>
     public partial class Window1 : Window
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public Window1()
         {
             InitializeComponent();
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnKeyDownHandler(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)

@@ -13,9 +13,9 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="2*"/>
-            <RowDefinition Height="1*"/>
             <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
+        <Grid HorizontalAlignment="Stretch" Height="Auto"  Grid.Row="2" VerticalAlignment="Top" Width="Auto"/>
         <Grid HorizontalAlignment="Stretch" Height="Auto"  Grid.Row="0" VerticalAlignment="Stretch" Width="Auto">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -49,40 +49,17 @@
             <TextBox Grid.Column="2" HorizontalAlignment="Stretch" Height="Auto"  TextWrapping="Wrap" IsReadOnly="True"  Text="{Binding Path= Kilometrage , Mode=OneTime}" VerticalAlignment="Stretch" Width="Auto" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
             <TextBox Grid.Column="3" HorizontalAlignment="Stretch" Height="Auto"  TextWrapping="Wrap" IsReadOnly="True"  Text="{Binding Path= DateOfTest, Mode=OneTime }" VerticalAlignment="Stretch" Width="Auto" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
             <TextBox Grid.Column="4" HorizontalAlignment="Stretch" Height="Auto"  TextWrapping="Wrap" IsReadOnly="True"  Text="{Binding Path= KmFromTest, Mode=OneTime }" VerticalAlignment="Stretch" Width="Auto" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-            <TextBox Grid.Column="5" HorizontalAlignment="Stretch" Height="Auto"  TextWrapping="Wrap" IsReadOnly="True"  Text="{Binding Path= Oil }" VerticalAlignment="Stretch" Width="Auto" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-            <TextBox Grid.Column="6" HorizontalAlignment="Stretch" Height="Auto"  TextWrapping="Wrap" IsReadOnly="True" Text="{Binding Path= BusStatus}" VerticalAlignment="Stretch" Width="Auto" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <TextBox Grid.Column="5" HorizontalAlignment="Stretch" Height="Auto"  TextWrapping="Wrap" IsReadOnly="True"  Text="{Binding Path= Oil , Mode=OneTime }" VerticalAlignment="Stretch" Width="Auto" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <TextBox Grid.Column="6" HorizontalAlignment="Stretch" Height="Auto"  TextWrapping="Wrap" IsReadOnly="True" Text="{Binding Path= BusStatus , Mode=OneTime}" VerticalAlignment="Stretch" Width="Auto" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
         </Grid>
-        <Grid HorizontalAlignment="Stretch"   Grid.Row="2" VerticalAlignment="Stretch" Width="Auto">
+        <Grid HorizontalAlignment="Stretch" Height="Auto"  Grid.Row="2" VerticalAlignment="Stretch" Width="Auto">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Label  Name="CounterTxt" Grid.Column="0" HorizontalContentAlignment="Right" Content="Remaining Time : " HorizontalAlignment="Right"  VerticalAlignment="Center" Height="29" Width="136"/>
-            <Label  Name="Counter" Grid.Column="1"  Content="{Binding Path=Counter}" HorizontalAlignment="Left"  VerticalAlignment="Center" Height="29" Width="136"/>
-
-        </Grid>
-
-        <Grid HorizontalAlignment="Stretch" Height="Auto"  Grid.Row="3" VerticalAlignment="Stretch" Width="Auto">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Button x:Name="RefuelBt" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="135" Height="70" Click="Refuel_Click">
-                <Button.Content>
-                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="2">
-                        <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" Margin="0" Content="Refuel"/>
-                        <ProgressBar Name="refuelPB"   Value="{Binding Path=ProgressFuel}" Height="20" Width="50" Minimum="0" Maximum="12"/>
-                    </StackPanel>
-                </Button.Content>
-            </Button>
-            <Button x:Name="TestBt"  Grid.Column="1" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="135" Click="Test_Click" Height="70">
-                <Button.Content>
-                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="2">
-                        <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  Margin="0" Content="Test"/>
-                        <ProgressBar Name="TestPB"   Value="{Binding Path=ProgressTest}" Height="20" Width="80" Minimum="0" Maximum="144"/>
-                    </StackPanel>
-                </Button.Content>
-            </Button>
+            <Button x:Name="RefuelBt" Content="Refuel" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="135" Height="70" Click="Refuel_Click"/>
+            <Button x:Name="TestBt" Content="Test" Grid.Column="1" HorizontalAlignment="Center"  VerticalAlignment="Center" Width="135" Click="Test_Click" Height="70"/>
+            <ProgressBar Name="RefPB" HorizontalAlignment="Left" Height="25" Margin="130,119,0,0" VerticalAlignment="Top" Width="136" Minimum="0" Maximum="12"/>
         </Grid>
     </Grid>
 </Window>

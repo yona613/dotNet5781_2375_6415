@@ -22,14 +22,28 @@ namespace dotNet5781_03B_2375_6415
     /// </summary>
     public partial class Travel : Window
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public Bus tmpBus1;
+        /// <summary>
+        /// 
+        /// </summary>
         public int kM = 0;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tmpBus"></param>
         public Travel(Bus tmpBus)
         {
             tmpBus1 = tmpBus;
             InitializeComponent();
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnKeyDownEvent(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
@@ -38,10 +52,9 @@ namespace dotNet5781_03B_2375_6415
                 {
                     if (!tmpBus1.bw.IsBusy)
                     {
-                            tmpBus1.bw = new BackgroundWorker();
-                            tmpBus1.bw.WorkerReportsProgress = true;
-                            tmpBus1.bw.DoWork += Do_Travel;
-                            tmpBus1.bw.RunWorkerAsync(tmpBus1);
+                        tmpBus1.bw = new BackgroundWorker();
+                        tmpBus1.bw.DoWork += Do_Travel;
+                        tmpBus1.bw.RunWorkerAsync(tmpBus1);
                     }
                     else
                     {
@@ -56,7 +69,11 @@ namespace dotNet5781_03B_2375_6415
                 }
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Do_Travel(object sender, DoWorkEventArgs e)
         {
             try
