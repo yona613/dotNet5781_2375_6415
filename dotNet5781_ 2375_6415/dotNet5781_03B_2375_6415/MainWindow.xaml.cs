@@ -31,7 +31,6 @@ namespace dotNet5781_03B_2375_6415
         {
             Window addWin = new dotNet5781_03B_2375_6415.Window1();
             addWin.ShowDialog();
-            //BusList.Items.Refresh();
         }
 
         private void Travel_Click(object sender, RoutedEventArgs e)
@@ -52,7 +51,6 @@ namespace dotNet5781_03B_2375_6415
                         Finditem<Label>(current, "Counter").DataContext = item;
                     }
                 }
-                //Dispatcher.BeginInvoke(new Action(BusList.Items.Refresh));
             }
             else
             {
@@ -67,6 +65,7 @@ namespace dotNet5781_03B_2375_6415
                 MyBw bw = new MyBw(((Bus)(((Button)sender).DataContext)), "Refuel");
                 Finditem<ProgressBar>((((Button)sender).DataContext), "refuelPB1").DataContext = bw; ;
                 Finditem<Label>((((Button)sender).DataContext), "Counter").DataContext = bw;
+                bw.bW.RunWorkerCompleted += OnProgressCompleted;
                 myBwList.Add(bw);
                 bw.Start();
             }
@@ -76,14 +75,8 @@ namespace dotNet5781_03B_2375_6415
             }
         }
 
-        private void Update(object sender, RunWorkerCompletedEventArgs e)
+        private void BusData_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Dispatcher.Invoke(new Action(BusList.Items.Refresh));
-        }
-
-        private void BusData_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            //if (e.ClickCount == 2)
             Bus current = BusList.SelectedItem as Bus;
             {
                 BusData tmpWin = new BusData(current);
@@ -133,6 +126,17 @@ namespace dotNet5781_03B_2375_6415
             DataTemplate myDataTemplate = myContentPresenter.ContentTemplate;
             A myLabel = (A)myDataTemplate.FindName(str, myContentPresenter);
             return myLabel;
+        }
+
+        public static void OnProgressCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            foreach (var item in myBwList)
+            {
+                if (item.MyBus.bw == sender as BackgroundWorker)
+                {
+                    myBwList.Remove(item);
+                }
+            }
         }
     }
 }

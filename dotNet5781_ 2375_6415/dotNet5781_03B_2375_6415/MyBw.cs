@@ -32,6 +32,7 @@ namespace dotNet5781_03B_2375_6415
                 default:
                     break;
             }
+            bW.RunWorkerCompleted += OnProgressCompleted;
             bW.WorkerReportsProgress = true;
         }
 
@@ -111,6 +112,12 @@ namespace dotNet5781_03B_2375_6415
             this.Counter = new TimeSpan(0, 0, 0);
         }
 
+        public void OnProgressCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            this.Progress = 0;
+            this.Counter = new TimeSpan();
+        }
+
 
         private void Testing(object sender, DoWorkEventArgs e)
         {
@@ -120,9 +127,7 @@ namespace dotNet5781_03B_2375_6415
                 (sender as BackgroundWorker).ReportProgress(i);
                 Thread.Sleep(1000);
             }
-            //myBus.DateOfTest = DateTime.Now;
-            myBus.Oil = 1200;
-            myBus.KmFromTest = 0;
+            myBus.Test();
             myBus.BusStatus = Status.READY;
         }
 
@@ -132,17 +137,11 @@ namespace dotNet5781_03B_2375_6415
             this.Counter = new TimeSpan(24 - (e.ProgressPercentage / 6), -((e.ProgressPercentage % 6) * 10), 0);
         }
 
-        //public void Travel_DoWork(int tmpKm)
-        //{
-        //    bw.WorkerReportsProgress = true;
-        //    bw.ProgressChanged += Travel_ProgressChanged;
-        //    bw.RunWorkerAsync();
-        //}
-
         private void Do_Travel(object sender, DoWorkEventArgs e)
         {
-            if (myBus.Travel(myKm))
+            if (true)
             {
+                myBus.Travel(myKm);
                 myBus.BusStatus = Status.TRAVELLING;
                 int mySpeed = Program.r.Next(20, 51);
                 int myTime = (myKm / mySpeed * 6000 + (myKm % mySpeed) * 100);
@@ -153,6 +152,7 @@ namespace dotNet5781_03B_2375_6415
                     Thread.Sleep(100);
                 }
                 myBus.BusStatus = Status.READY;
+                throw new MyTravelException($"Bus {myBus.License1} has traveled : {myKm} Km");
             }
         }
 
@@ -171,5 +171,7 @@ namespace dotNet5781_03B_2375_6415
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+
+
     }
 }

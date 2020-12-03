@@ -255,9 +255,8 @@ namespace dotNet5781_01_2375_6415
         /// and updates the relevant fields
         /// </summary>
         /// <param name="Km">number of Km to travel</param>
-        public bool Travel(int Km)
+        public void Travel(int Km)
         {
-            //bw.ProgressChanged += Travel_ProgressChanged;
             DateTime currentDate = DateTime.Now; //gets current date from PC
             bool checkTest = true; //gets false if needs test
             if ((currentDate.Year - dateOfTest.Year) >= 2) //if difference > 2 then needs new test
@@ -282,35 +281,19 @@ namespace dotNet5781_01_2375_6415
             {
                 if (((Km - Oil) < 0) && ((KmFromTest + Km) < 20000)) //first check is : is there enough oil / second check is : is there enough Km until next test 
                 {
-                    //if can travel
-                    //busStatus = Status.TRAVELLING;
-                    //int mySpeed = Program.r.Next(20, 51);
-                    //int myTime = (Km / mySpeed * 6000 + (Km % mySpeed) * 100);
-                    //counter = new TimeSpan(Km / mySpeed, (Km % mySpeed), 0);
-                    //for (int i = 1; i <= (myTime / 100); i++)
-                    //{
-                    //    bw.ReportProgress(i);
-                    //    Thread.Sleep(100);
-                    //}
-                    //Thread.Sleep(((int)e.Argument / Program.r.Next(20, 51)) * 6000 + ((int)e.Argument % mySpeed * 100);
+                    
                     this.Oil -= Km; //update oil
                     this.Kilometrage += Km; //update Kilometrage
-                    this.KmFromTest += Km; //update Km from Test 
-                    return true;
-                    //this.BusStatus = Status.READY;
-                    //throw new ArgumentException($"Bus traveled : {Km} Km");
-                    //Console.WriteLine($"Bus traveled : {Km} Km"); //prints how many Kms the bus travelled
+                    this.KmFromTest += Km; //update Km from Test                    
                 }
                 else //if cannot travel because Kms
                 {
-                    throw new ArgumentException("Overpass the allowed Kilometrage , cannot travel");
-                    //Console.WriteLine("Overpass the allowed Kilometrage , cannot travel");
+                    throw new MyTravelException("Overpass the allowed Kilometrage , cannot travel");
                 }
             }
             else //if cannot travel because test
             {
-                throw new ArgumentException("Cannot travel, test is needed");
-                //Console.WriteLine("Cannot travel, test is needed");
+                throw new MyTravelException("Cannot travel, test is needed");
             }
         }
 
@@ -391,7 +374,7 @@ namespace dotNet5781_01_2375_6415
         /// </summary>
         public void Fuel()
         {
-            oil = 1200;
+            this.Oil = 1200;
         }
 
         //public void Refuel(object sender, DoWorkEventArgs e)

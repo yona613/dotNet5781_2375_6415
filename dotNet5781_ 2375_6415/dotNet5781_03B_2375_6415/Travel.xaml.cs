@@ -12,7 +12,7 @@ namespace dotNet5781_03B_2375_6415
     public partial class Travel : Window
     {
         public Bus tmpBus1;
-        public int kM = 0;
+        //public int kM = 0;
         public Travel(Bus tmpBus)
         {
             tmpBus1 = tmpBus;
@@ -23,6 +23,7 @@ namespace dotNet5781_03B_2375_6415
         {
             if (e.Key == Key.Enter)
             {
+                int kM = 0;
                 if (int.TryParse(TravelTxb.Text, out kM))
                 {
                     if (tmpBus1.BusStatus==Status.READY)
@@ -30,6 +31,7 @@ namespace dotNet5781_03B_2375_6415
 
                         MyBw bw = new MyBw(tmpBus1, "Travel",kM);
                         bw.bW.RunWorkerCompleted += Travel_ProgressCompleted;
+                        bw.bW.RunWorkerCompleted += MainWindow.OnProgressCompleted;
                         MainWindow.myBwList.Add(bw);
                         bw.Start();
                         //tmpBus1.bw = new BackgroundWorker();
@@ -53,14 +55,8 @@ namespace dotNet5781_03B_2375_6415
 
         public void Travel_ProgressCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            if (e.Error!=null)
-            {
-                MessageBox.Show(e.Error.Message);
-            }
-            else
-            {
-                MessageBox.Show($"Bus traveled : {kM} Km");
-            }
+            MessageBox.Show(e.Error.Message);
+
         }
 
         private void TravelTxb_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -69,7 +65,7 @@ namespace dotNet5781_03B_2375_6415
             e.Handled = myReg.IsMatch(e.Text);
             if (e.Handled)
             {
-                MessageBox.Show($"Wrong Input !!!! \n {e.Text} Enter digits only");
+                MessageBox.Show($"Wrong Input !!!! \n {e.Text} is not a digit !!");
             }
         }
     }

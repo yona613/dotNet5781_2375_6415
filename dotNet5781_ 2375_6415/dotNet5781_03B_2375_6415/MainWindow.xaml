@@ -65,7 +65,14 @@
                         Grid.Column="3" 
                         Click="Travel_Click" 
                                >
-                    <Button.Resources>                        <Style TargetType="Border">                            <Setter                                 Property="CornerRadius"                                 Value="50"                            />                        </Style>                    </Button.Resources>
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter 
+                                Property="CornerRadius" 
+                                Value="50"
+                            />
+                        </Style>
+                    </Button.Resources>
                 </Button>
                 <Button Name="Refuel"
                         Height="50"
@@ -80,7 +87,14 @@
                             <ProgressBar Name="refuelPB1" Value="{Binding Path=Progress, UpdateSourceTrigger=PropertyChanged}" Height="20" Width="50" Minimum="0" Maximum="12"/>
                         </StackPanel>
                     </Button.Content>
-                    <Button.Resources>                        <Style TargetType="Border">                            <Setter                                 Property="CornerRadius"                                 Value="10"                            />                        </Style>                    </Button.Resources>
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter 
+                                Property="CornerRadius" 
+                                Value="10"
+                            />
+                        </Style>
+                    </Button.Resources>
                 </Button>
                 <Label  Name="CounterTxt" 
                         Grid.Column="6" 
@@ -97,7 +111,6 @@
                         VerticalContentAlignment="Center"
                         VerticalAlignment="Center"
                         />
-
             </Grid>
         </DataTemplate>
     </Window.Resources>
@@ -127,12 +140,12 @@
         <Grid Grid.Column="1"
                   Grid.Row="1">
             <ListBox Name = "BusList"
-                     MouseDoubleClick="BusData_MouseLeftButtonDown"
-                 VerticalAlignment="Stretch"  
-                 Grid.Column="1" 
-                 HorizontalAlignment="Stretch"
-                 ItemsSource="{Binding}" 
-                 ItemTemplate="{StaticResource MyTemplate}"  
+                     MouseDoubleClick="BusData_MouseDoubleClick"
+                     VerticalAlignment="Stretch"  
+                     Grid.Column="1" 
+                     HorizontalAlignment="Stretch"
+                     ItemsSource="{Binding}" 
+                     ItemTemplate="{StaticResource MyTemplate}"  
                      >
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
@@ -156,7 +169,14 @@
         </Grid>
 
         <Button Name= "AddBusbt"   HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="90" Height="74"  Click="AddBusbt_Click">
-            <Button.Resources>                <Style TargetType="Border">                    <Setter                         Property="CornerRadius"                         Value="10"                    />                </Style>            </Button.Resources>
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter 
+                        Property="CornerRadius" 
+                        Value="10"
+                    />
+                </Style>
+            </Button.Resources>
             <Button.Content>
                 <StackPanel>
                     <TextBlock Text="Add New Bus"/>

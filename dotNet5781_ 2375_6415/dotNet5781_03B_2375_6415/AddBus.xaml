@@ -12,23 +12,102 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="5*"/>
         </Grid.RowDefinitions>
         <Label Content="Enter the License Number :" 
                HorizontalAlignment="Center" 
+               VerticalContentAlignment="Center"
+               HorizontalContentAlignment="Center"
                VerticalAlignment="Top" 
+               Grid.Column="0"
+               Grid.Row="1"
                Height="73" 
                Width="314"/>
         <TextBox x:Name="GetlicenseTxb" 
+                 Grid.Column="0"
                  Grid.Row="1"
                  HorizontalAlignment="Center" 
                  Height="50" 
                  Width="200"
                  VerticalAlignment="Bottom" 
+                 PreviewTextInput="_PreviewTextInput"
                  KeyDown="OnKeyDownHandler" />
-        
-
+        <Label Name="KmLB"
+               Content="Enter the Kilometrage :" 
+               HorizontalAlignment="Center" 
+               VerticalContentAlignment="Center"
+               HorizontalContentAlignment="Center"
+               VerticalAlignment="Top" 
+               Grid.Column="1"
+               Grid.Row="1"
+               Height="73" 
+               Width="314"
+               IsEnabled="false"
+               />
+        <TextBox Name="GetKmTxb" 
+                 Grid.Column="1"
+                 Grid.Row="1"
+                 HorizontalAlignment="Center" 
+                 Height="50" 
+                 Width="200"
+                 VerticalAlignment="Bottom" 
+                 PreviewTextInput="_PreviewTextInput"
+                 IsEnabled="false"
+         />
+        <CheckBox Name="OldBusCB"
+                  Content="Old Bus" 
+                  VerticalContentAlignment="Center"
+                  HorizontalContentAlignment="Left"
+                  Height="30"
+                  Width="300"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Bottom" 
+                  Unchecked="OldBusCB_Unchecked"
+                  Checked="CheckBox_Checked"
+        />
+        <Grid Name="LicenseGrid"
+              Grid.Row="2"
+              Grid.Column="0"
+              IsEnabled="false"
+              >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="5*"/>
+            </Grid.RowDefinitions>
+            <Calendar Name="OldBusSD" 
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Bottom"
+                  Grid.Row="1" 
+                  />
+            <Label Content="Choose Date of Licensing :" 
+                   HorizontalContentAlignment="Center"
+                   VerticalContentAlignment="Center"
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Center"
+                   Width="200"/>
+        </Grid>
+        <Grid Name="TestGrid"
+              Grid.Row="2"
+              Grid.Column="1"
+              IsEnabled="False"
+              >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="5*"/>
+            </Grid.RowDefinitions>
+            <Calendar Name="OldBusTD" 
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Bottom"
+                  Grid.Row="1" 
+                  />
+            <Label Content="Choose Date of latest Test :" 
+                   HorizontalContentAlignment="Center"
+                   VerticalContentAlignment="Center"
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Center"
+                   Width="200"/>
+        </Grid>
     </Grid>
 </Window>

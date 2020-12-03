@@ -20,7 +20,14 @@ namespace dotNet5781_03B_2375_6415
             {
                 if (item.MyBus.License==tmpBus1.License)
                 {
-                    refuelPB.DataContext = item;
+                    if (item.MyBus.BusStatus == Status.OILING)
+                    {
+                        refuelPB.DataContext = item;
+                    }
+                    if (item.MyBus.BusStatus == Status.TESTING)
+                    {
+                        TestPB.DataContext = item;
+                    }
                     Counter.DataContext = item;
                 }
             }    
@@ -33,6 +40,7 @@ namespace dotNet5781_03B_2375_6415
                 MyBw bw = new MyBw(((Bus)MainGrid.DataContext), "Refuel");
                 refuelPB.DataContext = bw;
                 Counter.DataContext = bw;
+                bw.bW.RunWorkerCompleted += MainWindow.OnProgressCompleted;
                 MainWindow.myBwList.Add(bw);
                 bw.Start();
             }
@@ -49,6 +57,7 @@ namespace dotNet5781_03B_2375_6415
                 MyBw bw = new MyBw(((Bus)MainGrid.DataContext), "Testing");
                 TestPB.DataContext = bw;
                 Counter.DataContext = bw;
+                bw.bW.RunWorkerCompleted += MainWindow.OnProgressCompleted;
                 MainWindow.myBwList.Add(bw);
                 bw.Start();
             }
@@ -56,12 +65,6 @@ namespace dotNet5781_03B_2375_6415
             {
                 MessageBox.Show("Bus already Busy !!!");
             }
-        }
-
-        private void Update()
-        {
-            MainGrid.DataContext = null;
-            MainGrid.DataContext = tmpBus1;
         }
     }
 }
