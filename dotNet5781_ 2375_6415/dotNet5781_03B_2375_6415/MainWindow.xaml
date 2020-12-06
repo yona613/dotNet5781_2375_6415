@@ -63,7 +63,7 @@
                         Margin="10"
                         VerticalAlignment="Center"
                         Grid.Column="3" 
-                        Click="Travel_Click" 
+                        Click="Travel_Click"
                                >
                     <Button.Resources>
                         <Style TargetType="Border">
@@ -80,7 +80,8 @@
                         Grid.Column="5" 
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Click="Refuel_Click">
+                        Click="Refuel_Click"
+                        >
                     <Button.Content>
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="2">
                             <Label HorizontalContentAlignment="Center" Height="25" HorizontalAlignment="Stretch" VerticalAlignment="Top" VerticalContentAlignment="Top" Content="Refuel"/>

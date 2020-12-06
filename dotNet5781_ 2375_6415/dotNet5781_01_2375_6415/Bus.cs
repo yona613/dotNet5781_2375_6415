@@ -309,66 +309,6 @@ namespace dotNet5781_01_2375_6415
             }
         }
 
-        //private int progressFuel;
-
-        //public int ProgressFuel
-        //{
-        //    get { return progressFuel; }
-        //    set { 
-        //        progressFuel = value;
-        //        OnPropertyChanged("ProgressFuel");
-        //    }
-        //}
-
-        //private int progressTest;
-
-        //public int ProgressTest
-        //{
-        //    get { return progressTest; }
-        //    set
-        //    {
-        //        progressTest = value;
-        //        OnPropertyChanged("ProgressTest");
-        //    }
-        //}
-
-        //private int progressTravel;
-
-        //public int ProgressTravel
-        //{
-        //    get { return progressTravel; }
-        //    set
-        //    {
-        //        progressTravel = value;
-        //        OnPropertyChanged("ProgressTravel");
-        //    }
-        //}
-
-        //private TimeSpan counter;
-
-        //public  TimeSpan Counter
-        //{
-        //    get { return counter; }
-        //    set { 
-        //        counter = value;
-        //        OnPropertyChanged("Counter");
-        //    }
-        //}
-
-        //public void Refuel_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        //{
-        //    this.ProgressFuel = e.ProgressPercentage;
-        //    Counter = new TimeSpan(2-(e.ProgressPercentage / 6),-((e.ProgressPercentage % 6)*10), 0);
-        //}
-
-        //public void Refuel_ProgressCompleted(object sender, RunWorkerCompletedEventArgs e)
-        //{
-        //    ProgressFuel = 0;
-        //    Counter = new TimeSpan(0,0,0);
-        //    OnPropertyChanged("Oil");
-        //    OnPropertyChanged("BusStatus");
-        //}
-
         /// <summary>
         /// Updates fuel
         /// </summary>
@@ -377,21 +317,7 @@ namespace dotNet5781_01_2375_6415
             this.Oil = 1200;
         }
 
-        //public void Refuel(object sender, DoWorkEventArgs e)
-        //{
-        //    BusStatus = Status.OILING;
-        //    this.Oil = 0;
-        //    for (int i = 0; i < 12; i++)
-        //    {
-        //        (sender as BackgroundWorker).ReportProgress(i);
-        //        this.Oil = i*100;
-        //        Thread.Sleep(1000);
-        //    }
-        //    this.Oil = 1200;
-        //    BusStatus = Status.READY;
-        //}
-
-
+     
         /// <summary>
         /// updates test
         /// </summary>
@@ -402,26 +328,7 @@ namespace dotNet5781_01_2375_6415
             this.KmFromTest = 0;
         }
 
-    //private void Testing(object sender, DoWorkEventArgs e)
-    //{
-    //    BusStatus = Status.TESTING;
-    //    for (int i = 0; i < 144; i++)
-    //    {
-    //        (sender as BackgroundWorker).ReportProgress(i);
-    //        Thread.Sleep(1000);
-    //    }
-    //    dateOfTest = DateTime.Now;
-    //    this.Oil = 1200;
-    //    this.KmFromTest = 0;
-    //    this.BusStatus = Status.READY;
-    //}
-
-    //private void Test_ProgressChanged(object sender, ProgressChangedEventArgs e)
-    //{
-    //    this.ProgressTest = e.ProgressPercentage;
-    //    Counter = new TimeSpan(24 - (e.ProgressPercentage / 6),- ((e.ProgressPercentage % 6) * 10), 0);
-    //}
-
+    
     /// <summary>
     /// Prints buse's License and Kilometrage from latest test
     /// </summary>

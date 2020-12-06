@@ -12,38 +12,38 @@ namespace dotNet5781_03B_2375_6415
     public partial class Travel : Window
     {
         public Bus tmpBus1;
-        //public int kM = 0;
         public Travel(Bus tmpBus)
         {
-            tmpBus1 = tmpBus;
             InitializeComponent();
+            tmpBus1 = tmpBus;
         }
 
+        /// <summary>
+        /// Event raised for every key entered
+        /// used to do when enter key is entered
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnKeyDownEvent(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter)
+            if (e.Key == Key.Enter) //if enter 
             {
                 int kM = 0;
                 if (int.TryParse(TravelTxb.Text, out kM))
                 {
-                    if (tmpBus1.BusStatus==Status.READY)
+                    if (tmpBus1.BusStatus==Status.READY) 
                     {
-
-                        MyBw bw = new MyBw(tmpBus1, "Travel",kM);
-                        bw.bW.RunWorkerCompleted += Travel_ProgressCompleted;
-                        bw.bW.RunWorkerCompleted += MainWindow.OnProgressCompleted;
-                        MainWindow.myBwList.Add(bw);
-                        bw.Start();
-                        //tmpBus1.bw = new BackgroundWorker();
-                        //tmpBus1.bw.WorkerReportsProgress = true;
-                        //tmpBus1.bw.DoWork += Travel_ProgressCompleted;
-                        //tmpBus1.bw.RunWorkerAsync(tmpBus1);
+                        MyBw bw = new MyBw(tmpBus1, "Travel",kM); //creates new bkgrnd worker to hanle the travel
+                        bw.bW.RunWorkerCompleted += Travel_ProgressCompleted; //adds function to bkgrd worker events
+                        bw.bW.RunWorkerCompleted += MainWindow.OnProgressCompleted; //adds function to bkgrd worker events
+                        MainWindow.myBwList.Add(bw); //adds worker to list of bckgrnd workers
+                        bw.Start(); //start worker
                     }
                     else
                     {
                         MessageBox.Show("Bus already Busy !!!");
                     }
-                    this.Close();
+                    Close(); //close window
                 }
                 else
                 {
@@ -53,18 +53,31 @@ namespace dotNet5781_03B_2375_6415
             }
         }
 
+        /// <summary>
+        /// Event raised when travel is completed
+        /// used to show error of travel if occured (exceptions)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void Travel_ProgressCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             MessageBox.Show(e.Error.Message);
-
         }
 
+
+
+        /// <summary>
+        /// Raised on every key of keyboard before it is displayed on screen
+        /// used to check that only digits are entered
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void TravelTxb_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            Regex myReg = new Regex("[^0-9]+");
-            e.Handled = myReg.IsMatch(e.Text);
-            if (e.Handled)
-            {
+            Regex myReg = new Regex("[^0-9]+");//gets regular expression that allows only digits
+            e.Handled = myReg.IsMatch(e.Text); //checks taht key entered is regular expression
+            if (e.Handled) //if not regular expression
+            { 
                 MessageBox.Show($"Wrong Input !!!! \n {e.Text} is not a digit !!");
             }
         }

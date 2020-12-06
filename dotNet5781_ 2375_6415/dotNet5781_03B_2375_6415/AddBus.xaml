@@ -45,6 +45,7 @@
                Height="73" 
                Width="314"
                IsEnabled="false"
+               Visibility="Collapsed"
                />
         <TextBox Name="GetKmTxb" 
                  Grid.Column="1"
@@ -55,6 +56,7 @@
                  VerticalAlignment="Bottom" 
                  PreviewTextInput="_PreviewTextInput"
                  IsEnabled="false"
+                 Visibility="Collapsed"
          />
         <CheckBox Name="OldBusCB"
                   Content="Old Bus" 
@@ -71,6 +73,7 @@
               Grid.Row="2"
               Grid.Column="0"
               IsEnabled="false"
+              Visibility="Collapsed"
               >
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
@@ -92,6 +95,7 @@
               Grid.Row="2"
               Grid.Column="1"
               IsEnabled="False"
+              Visibility="Collapsed"
               >
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
