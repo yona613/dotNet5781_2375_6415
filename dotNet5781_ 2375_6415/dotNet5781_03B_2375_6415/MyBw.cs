@@ -175,7 +175,7 @@ namespace dotNet5781_03B_2375_6415
             int mySpeed = Program.r.Next(20, 51); //gets average speed
             int myTime = (myKm / mySpeed * 6000 + (myKm % mySpeed) * 100); //gets time to last
             this.Counter = new TimeSpan(myKm / mySpeed, (myKm % mySpeed), 0);
-            for (int i = 1; i <= (myTime / 100); i++) //to last tim neede
+            for (int i = 1; i <= (myTime / 100); i++) //to last tim needed
             {
                 bW.ReportProgress(i);
                 Thread.Sleep(100);
