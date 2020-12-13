@@ -134,6 +134,7 @@ namespace dotNet5781_03B_2375_6415
         /// <returns></returns>
         private childItem FindVisualChild<childItem>(DependencyObject obj) where childItem : DependencyObject
         {
+            int k = VisualTreeHelper.GetChildrenCount(obj);
             for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
             {
                 DependencyObject child = VisualTreeHelper.GetChild(obj, i);
