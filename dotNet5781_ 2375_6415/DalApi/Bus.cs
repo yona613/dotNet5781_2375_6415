@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DalObject
+namespace DO
 {
-
     public enum Status { READY, TRAVELLING, REFUELLING, TESTING }
-    class Bus
+    public class Bus
     {
         private int license;
 
@@ -48,6 +47,22 @@ namespace DalObject
         {
             get { return busStatus; }
             set { busStatus = value; }
+        }
+
+        private DateTime testDate;
+
+        public DateTime TestDate
+        {
+            get { return testDate; }
+            set { testDate = value; }
+        }
+
+        private int kmFromTest;
+
+        public int KmFromTest
+        {
+            get { return kmFromTest; }
+            set { kmFromTest = value; }
         }
 
         private string brand;

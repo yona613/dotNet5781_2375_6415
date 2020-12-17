@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DalObject
+namespace DO
 {
     public enum Area { General, North, South, Center, Jerusalem };
-    class BusLine
+    public class BusLine
     {
         private int key;
 

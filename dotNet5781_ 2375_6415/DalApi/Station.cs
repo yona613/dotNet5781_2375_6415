@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Device.Location;
 
-namespace DalObject
+namespace DO
 {
-    class Station
+    public class Station
     {
         private int stationId;
 
@@ -16,6 +16,7 @@ namespace DalObject
             get { return stationId; }
             set { stationId = value; }
         }
+
         private GeoCoordinate coordinates;
 
         public  GeoCoordinate Coordinates

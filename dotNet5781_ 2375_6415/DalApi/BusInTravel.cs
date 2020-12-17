@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DalObject
+namespace DO
 {
-    class BusInTravel
+    public class BusInTravel
     {
         private int key;
 
