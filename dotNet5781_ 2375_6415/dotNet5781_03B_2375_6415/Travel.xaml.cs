@@ -1,19 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.ComponentModel;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Threading;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using dotNet5781_01_2375_6415;
+using System.Text.RegularExpressions;
 
 namespace dotNet5781_03B_2375_6415
 {
@@ -22,45 +11,39 @@ namespace dotNet5781_03B_2375_6415
     /// </summary>
     public partial class Travel : Window
     {
-        /// <summary>
-        /// 
-        /// </summary>
         public Bus tmpBus1;
-        /// <summary>
-        /// 
-        /// </summary>
-        public int kM = 0;
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="tmpBus"></param>
         public Travel(Bus tmpBus)
         {
-            tmpBus1 = tmpBus;
             InitializeComponent();
+            tmpBus1 = tmpBus;
         }
+
         /// <summary>
-        /// 
+        /// Event raised for every key entered
+        /// used to do when enter key is entered
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnKeyDownEvent(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter)
+            if (e.Key == Key.Enter) //if enter 
             {
+                int kM = 0;
                 if (int.TryParse(TravelTxb.Text, out kM))
                 {
-                    if (!tmpBus1.bw.IsBusy)
+                    if (tmpBus1.BusStatus==Status.READY) 
                     {
-                        tmpBus1.bw = new BackgroundWorker();
-                        tmpBus1.bw.DoWork += Do_Travel;
-                        tmpBus1.bw.RunWorkerAsync(tmpBus1);
+                        MyBw bw = new MyBw(tmpBus1, "Travel",kM); //creates new bkgrnd worker to hanle the travel
+                        bw.bW.RunWorkerCompleted += Travel_ProgressCompleted; //adds function to bkgrd worker events
+                        bw.bW.RunWorkerCompleted += MainWindow.OnProgressCompleted; //adds function to bkgrd worker events
+                        MainWindow.myBwList.Add(bw); //adds worker to list of bckgrnd workers
+                        bw.Start(); //start worker
                     }
                     else
                     {
                         MessageBox.Show("Bus already Busy !!!");
                     }
-                    this.Close();
+                    Close(); //close window
                 }
                 else
                 {
@@ -69,20 +52,33 @@ namespace dotNet5781_03B_2375_6415
                 }
             }
         }
+
         /// <summary>
-        /// 
+        /// Event raised when travel is completed
+        /// used to show error of travel if occured (exceptions)
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Do_Travel(object sender, DoWorkEventArgs e)
+        public void Travel_ProgressCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            try
-            {
-                tmpBus1.Travel(kM);
-            }
-            catch (ArgumentException ex)
-            {
-                MessageBox.Show(ex.Message);
+            MessageBox.Show(e.Error.Message);
+        }
+
+
+
+        /// <summary>
+        /// Raised on every key of keyboard before it is displayed on screen
+        /// used to check that only digits are entered
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TravelTxb_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex myReg = new Regex("[^0-9]+");//gets regular expression that allows only digits
+            e.Handled = myReg.IsMatch(e.Text); //checks taht key entered is regular expression
+            if (e.Handled) //if not regular expression
+            { 
+                MessageBox.Show($"Wrong Input !!!! \n {e.Text} is not a digit !!");
             }
         }
     }

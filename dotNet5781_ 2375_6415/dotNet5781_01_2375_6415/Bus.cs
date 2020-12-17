@@ -8,18 +8,11 @@ using System.Threading;
 
 namespace dotNet5781_01_2375_6415
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public enum Status { READY , TRAVELLING , OILING , TESTING}
-    /// <summary>
-    /// 
-    /// </summary>
-    public class Bus
+
+    public class Bus : INotifyPropertyChanged
     {
-        /// <summary>
-        /// 
-        /// </summary>
+
         public BackgroundWorker bw = new BackgroundWorker();
 
 
@@ -36,15 +29,7 @@ namespace dotNet5781_01_2375_6415
             //gets test of today's date
             dateOfTest = DateTime.Now; //to get today's date
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="tmpStartDate"></param>
-        /// <param name="tmpLicense"></param>
-        /// <param name="tmpOil"></param>
-        /// <param name="tmpKilometrage"></param>
-        /// <param name="tmpKmTest"></param>
-        /// <param name="tmpDateOfTest"></param>
+
         public Bus(DateTime tmpStartDate, int tmpLicense, int tmpOil, int tmpKilometrage, int tmpKmTest, DateTime tmpDateOfTest)
         {
             startDate = tmpStartDate;
@@ -118,6 +103,20 @@ namespace dotNet5781_01_2375_6415
             set { license = value; }
         }
 
+        public string License1
+        {
+            get {
+                if (startDate.Year < 2018)
+                {
+                    return (License / 100000).ToString().PadLeft(2, '0') + "-" + ((License % 100000) / 100).ToString().PadLeft(3, '0') + "-" + (License % 100).ToString().PadLeft(2, '0');
+                }
+                else
+                {
+                    return (License / 100000).ToString().PadLeft(3, '0') + "-" + ((License % 100000) / 1000).ToString().PadLeft(2, '0') + "-" + (License % 1000).ToString().PadLeft(3, '0');
+                }
+            }
+        }
+
         /// <summary>
         /// Setter for License
         /// </summary>
@@ -163,13 +162,14 @@ namespace dotNet5781_01_2375_6415
         /// gets status of autobus
         /// </summary>
         private Status busStatus = Status.READY;
-        /// <summary>
-        /// 
-        /// </summary>
+
         public Status BusStatus
         {
             get { return busStatus; }
-            set { busStatus = value; }
+            set {
+                busStatus = value;
+                OnPropertyChanged("BusStatus");
+            }
         }
 
 
@@ -184,7 +184,10 @@ namespace dotNet5781_01_2375_6415
         public int Oil
         {
             get { return oil; }
-            set { oil = value; }
+            set { 
+                oil = value;
+                OnPropertyChanged("Oil");
+            }
         }
 
         /// <summary>
@@ -205,9 +208,7 @@ namespace dotNet5781_01_2375_6415
         /// Field that gets date of last test
         /// </summary>
         private DateTime dateOfTest;
-        /// <summary>
-        /// 
-        /// </summary>
+
         public DateTime DateOfTest
         {
             get { return dateOfTest; }
@@ -243,7 +244,10 @@ namespace dotNet5781_01_2375_6415
         public int KmFromTest
         {
             get { return kmFromTest; }
-            set { kmFromTest = value; }
+            set { 
+                kmFromTest = value;
+                OnPropertyChanged("KmFromTest");
+            }
         }
 
         /// <summary>
@@ -277,27 +281,31 @@ namespace dotNet5781_01_2375_6415
             {
                 if (((Km - Oil) < 0) && ((KmFromTest + Km) < 20000)) //first check is : is there enough oil / second check is : is there enough Km until next test 
                 {
-                    //if can travel
-
-                    busStatus = Status.TRAVELLING;
-                    Thread.Sleep((Km / Program.r.Next(20, 51)) * 6000 + (Km % Program.r.Next(20, 51))*100);
-                    Oil -= Km; //update oil
-                    Kilometrage += Km; //update Kilometrage
-                    KmFromTest += Km; //update Km from Test 
-                    busStatus = Status.READY;
-                    throw new ArgumentException($"Bus traveled : {Km} Km");
-                    //Console.WriteLine($"Bus traveled : {Km} Km"); //prints how many Kms the bus travelled
+                    
+                    this.Oil -= Km; //update oil
+                    this.Kilometrage += Km; //update Kilometrage
+                    this.KmFromTest += Km; //update Km from Test                    
                 }
                 else //if cannot travel because Kms
                 {
-                    throw new ArgumentException("Overpass the allowed Kilometrage , cannot travel");
-                    //Console.WriteLine("Overpass the allowed Kilometrage , cannot travel");
+                    throw new MyTravelException("Overpass the allowed Kilometrage , cannot travel");
                 }
             }
             else //if cannot travel because test
             {
-                throw new ArgumentException("Cannot travel, test is needed");
-                //Console.WriteLine("Cannot travel, test is needed");
+                throw new MyTravelException("Cannot travel, test is needed");
+            }
+        }
+
+        
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
 
@@ -306,30 +314,25 @@ namespace dotNet5781_01_2375_6415
         /// </summary>
         public void Fuel()
         {
-            //busStatus = Status.OILING;
-            //Thread.Sleep(12000);
-            Oil = 1200; //updates oil 
-            //busStatus = Status.READY;
+            this.Oil = 1200;
         }
 
-
+     
         /// <summary>
         /// updates test
         /// </summary>
         public void Test()
         {
-            busStatus = Status.TESTING;
-            Thread.Sleep(144000);
             dateOfTest = DateTime.Now;
-            oil = 1200;
-            KmFromTest = 0;
-            busStatus = Status.READY;
+            this.Oil = 1200;
+            this.KmFromTest = 0;
         }
 
-        /// <summary>
-        /// Prints buse's License and Kilometrage from latest test
-        /// </summary>
-        public void Print()
+    
+    /// <summary>
+    /// Prints buse's License and Kilometrage from latest test
+    /// </summary>
+    public void Print()
         {
             if (startDate.Year < 2018)
             {
@@ -344,19 +347,16 @@ namespace dotNet5781_01_2375_6415
             Console.WriteLine($"Kilometrage : {KmFromTest} "); //prints kilometrage from latest test
             Console.WriteLine();
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
+
         public override string ToString()
         {
             if (startDate.Year < 2018)
             {
-                return $"License : {License / 100000}-{(License % 100000) / 100}-{License % 100}" + " " + " Status : " + busStatus.ToString() + " startDate :  " + startDate.ToString() + "  Kilometrage " + kilometrage.ToString() + " Test : " + dateOfTest.ToString() + " KmFromTst : " + kmFromTest.ToString() + " Oil : " + oil.ToString();
+                return "License : " + (License / 100000).ToString().PadLeft(3, '0') + "-" + ((License % 100000) / 100).ToString().PadLeft(2, '0') + "-" + (License % 100).ToString().PadLeft(3, '0') + " " + " Status : " + busStatus.ToString() + " startDate :  " + startDate.ToString() + "  Kilometrage " + kilometrage.ToString() + " Test : " + dateOfTest.ToString() + " KmFromTst : " + kmFromTest.ToString() + " Oil : " + oil.ToString();
             }
             else
             {
-                return $"License : {License / 100000}-{(License % 100000) / 1000}-{License % 1000}" + " " + " Status : " + busStatus.ToString() + " startDate :  " + startDate.ToString() + "  Kilometrage " + kilometrage.ToString() + " Test : " + dateOfTest.ToString() + " KmFromTst : " + kmFromTest.ToString() + " Oil : " + oil.ToString(); 
+                return "License : " + (License / 100000).ToString().PadLeft(3,'0')+"-"+((License % 100000) / 1000).ToString().PadLeft(2,'0') +"-" + (License % 1000).ToString().PadLeft(3,'0') + " " + " Status : " + busStatus.ToString() + " startDate :  " + startDate.ToString() + "  Kilometrage " + kilometrage.ToString() + " Test : " + dateOfTest.ToString() + " KmFromTst : " + kmFromTest.ToString() + " Oil : " + oil.ToString(); 
             }
         }
     }

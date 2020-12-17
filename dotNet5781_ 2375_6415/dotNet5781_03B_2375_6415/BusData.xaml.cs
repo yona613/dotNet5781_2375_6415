@@ -1,18 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.ComponentModel;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Threading;
+﻿using System.Windows;
 using dotNet5781_01_2375_6415;
 
 namespace dotNet5781_03B_2375_6415
@@ -22,24 +8,47 @@ namespace dotNet5781_03B_2375_6415
     /// </summary>
     public partial class BusData : Window
     {
-        
-        public static Bus tmpBus1;
+        //to be able to update the main window from that window
+        MainWindow wnd = (MainWindow)Application.Current.MainWindow;
+
+        //public static Bus tmpBus1;
         public BusData(Bus tmpBus)
         {
             InitializeComponent();
-            MainGrid.DataContext = tmpBus;
-            tmpBus1 = tmpBus;
+            MainGrid.DataContext = tmpBus; //initialize data on the window
+            //tmpBus1 = tmpBus;
+            foreach (var item in MainWindow.myBwList) //searches for background worker working on that bus to update window
+            {
+                if (item.MyBus.License==tmpBus.License)
+                {
+                    if (item.MyBus.BusStatus == Status.OILING)
+                    {
+                        refuelPB.DataContext = item;
+                    }
+                    if (item.MyBus.BusStatus == Status.TESTING)
+                    {
+                        TestPB.DataContext = item;
+                    }
+                    Counter.DataContext = item;
+                }
+            }    
         }
 
-        private void Refuel_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Event when click on refuel button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Refuel_Click(object sender, RoutedEventArgs e) 
         {
-           if (!((Bus)MainGrid.DataContext).bw.IsBusy)
+            if (((Bus)MainGrid.DataContext).BusStatus == Status.READY)
             {
-                ((Bus)MainGrid.DataContext).bw = new BackgroundWorker();
-                ((Bus)MainGrid.DataContext).bw.DoWork += Refuel;
-                ((Bus)MainGrid.DataContext).bw.ProgressChanged += RefuelingProgress;
-                ((Bus)MainGrid.DataContext).bw.WorkerReportsProgress = true;
-                ((Bus)MainGrid.DataContext).bw.RunWorkerAsync(((Bus)MainGrid.DataContext));
+                MyBw bw = new MyBw(((Bus)MainGrid.DataContext), "Refuel"); //creates new bkgrnd worker to handle this refuelling
+                refuelPB.DataContext = bw; //binds element in window to the data of background worker
+                Counter.DataContext = bw; //binds element in window to the data of background worker
+                bw.bW.RunWorkerCompleted += MainWindow.OnProgressCompleted; //adds events to bkgrnd worker
+                MainWindow.myBwList.Add(bw); //adds bkgrnd worker to the list
+                bw.Start(); //runs bkgrnd worker
             }
             else
             {
@@ -47,50 +56,27 @@ namespace dotNet5781_03B_2375_6415
             }
         }
 
+
+        /// <summary>
+        /// Event when click on test button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Test_Click(object sender, RoutedEventArgs e)
         {
-            if (!((Bus)MainGrid.DataContext).bw.IsBusy)
+            if (((Bus)MainGrid.DataContext).BusStatus == Status.READY)
             {
-                ((Bus)MainGrid.DataContext).bw = new BackgroundWorker();
-                ((Bus)MainGrid.DataContext).bw.DoWork += Test;
-                ((Bus)MainGrid.DataContext).bw.RunWorkerAsync(((Bus)MainGrid.DataContext));
+                MyBw bw = new MyBw(((Bus)MainGrid.DataContext), "Testing");//creates new bkgrnd worker to handle this testing
+                TestPB.DataContext = bw; //binds element in window to the data of background worker
+                Counter.DataContext = bw;//binds element in window to the data of background worker
+                bw.bW.RunWorkerCompleted += MainWindow.OnProgressCompleted; //adds events to bkgrnd worker
+                MainWindow.myBwList.Add(bw);//adds bkgrnd worker to the list
+                bw.Start(); //runs bkgrnd worker
             }
             else
             {
                 MessageBox.Show("Bus already Busy !!!");
             }
-        }
-
-        private void Test(object sender, DoWorkEventArgs e)
-        {
-            ((Bus)e.Argument).Test();
-            Dispatcher.BeginInvoke(new Action(Update));
-        }
-
-        private void Refuel(object sender, DoWorkEventArgs e)
-        {
-            ((Bus)e.Argument).BusStatus = Status.OILING;
-            Dispatcher.BeginInvoke(new Action(Update));
-            for (int i = 1; i <= 12; i++)
-            {
-                (sender as BackgroundWorker).ReportProgress(i);
-                Thread.Sleep(1000);
-            }
-            ((Bus)e.Argument).Fuel();
-            ((Bus)e.Argument).BusStatus = Status.READY;
-            Dispatcher.BeginInvoke(new Action(Update));
-            (sender as BackgroundWorker).ReportProgress(0);
-        }
-
-        private void Update()
-        {
-            MainGrid.DataContext = null;
-            MainGrid.DataContext = tmpBus1;
-        }
-
-        void RefuelingProgress(object sender, ProgressChangedEventArgs e)
-        {
-            RefPB.Value = e.ProgressPercentage;
         }
     }
 }

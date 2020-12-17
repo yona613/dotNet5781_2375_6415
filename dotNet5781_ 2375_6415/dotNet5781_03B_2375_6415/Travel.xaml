@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:dotNet5781_03B_2375_6415"
         mc:Ignorable="d"
-        Title="Travel" Height="200" Width="100">
+        Title="Travel" Height="200" Width="200">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50*" />
@@ -20,11 +20,11 @@
                Width="92"
                />
         <TextBox x:Name="TravelTxb"
-                 HorizontalAlignment="Left" 
-                 Height="23"
-                 Margin="0,20,0,0" 
+                 PreviewTextInput="TravelTxb_PreviewTextInput"
+                 HorizontalAlignment="Center" 
+                 Height="23" Margin="0,20,0,0" 
                  Grid.Row="1" 
-                 VerticalAlignment="Top" 
+                 VerticalAlignment="Center" 
                  Width="92" 
                  RenderTransformOrigin="0.586,0.565"
                  KeyDown="OnKeyDownEvent"

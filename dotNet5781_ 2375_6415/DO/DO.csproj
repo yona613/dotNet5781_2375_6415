@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E7005186-7E5A-43AA-BDEC-4B6D5E6E276A}</ProjectGuid>
+    <ProjectGuid>{5A95C8ED-8BB4-4E6B-88C5-40187CB40D6D}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>dotNet5781_01_2375_6415</RootNamespace>
-    <AssemblyName>dotNet5781_01_2375_6415</AssemblyName>
+    <RootNamespace>DO</RootNamespace>
+    <AssemblyName>DO</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -43,8 +43,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bus.cs" />
-    <Compile Include="MyTravelException.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
