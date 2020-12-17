@@ -278,6 +278,7 @@ namespace dotNet5781_01_2375_6415
                 if (((Km - Oil) < 0) && ((KmFromTest + Km) < 20000)) //first check is : is there enough oil / second check is : is there enough Km until next test 
                 {
                     //if can travel
+
                     busStatus = Status.TRAVELLING;
                     Thread.Sleep((Km / Program.r.Next(20, 51)) * 6000 + (Km % Program.r.Next(20, 51))*100);
                     Oil -= Km; //update oil
