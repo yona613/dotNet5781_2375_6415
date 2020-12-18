@@ -8,7 +8,6 @@ using DO;
 
 namespace DS
 {
-
     public class DataSource
     {
         /// <summary>
@@ -17,6 +16,7 @@ namespace DS
         public static Random r = new Random(DateTime.Now.Millisecond);
 
         List<Station> stationList;
+        List<LineStation> linestationList;
         List<BusLine> lineList;
         List<Bus> busList;
         List<User> userList;
@@ -25,6 +25,9 @@ namespace DS
         {
             busList = CreateBusList();
             stationList = CreateStations();
+            lineList = CreateLines();
+            linestationList = CreateLineStations();
+            userList = CreateUsers();
         }
 
         private List<Bus> CreateBusList()
@@ -79,6 +82,7 @@ namespace DS
             {
                 int tmpInt = r.Next(0, 31);  //to get adress in array
                 Station tmpStation = new Station { StationId = i, Coordinates = new GeoCoordinate { Latitude = r.NextDouble() * 2.3 + 31, Longitude = r.NextDouble() * 1.2 + 34.3 }, Name = addressList[tmpInt], Address = r.Next(0, 100).ToString() + " " + addressList[tmpInt], DigitalPanel = true, Invalid = true, Roof = true };
+                myStationsList.Add(tmpStation);
             }
             return myStationsList;
         }
@@ -86,11 +90,36 @@ namespace DS
         private List<BusLine> CreateLines()
         {
             List<BusLine> busLines = new List<BusLine> { };
-            for (int i = 0; i < 10; i++)
+            for (int i = 1; i < 11; i++)
             {
-
+                BusLine tmpLine = new BusLine { FirstStation = r.Next(1000, 1050), Key = i, LastStation = r.Next(1000, 1050), LineArea = (Area)r.Next(0, 4), LineNumber = i };
+                busLines.Add(tmpLine);
             }
             return busLines;
+        }
+
+        private List<LineStation> CreateLineStations()
+        {
+            List<LineStation> lineStations = new List<LineStation> { };
+            for (int i = 1; i < 11; i++)
+            {
+                for (int j = 1; j < 11; j++)
+                {
+                    lineStations.Add(new LineStation { Index = j, LineNumber = i, StationNumber = r.Next(1000, 1050) });
+                }
+            }
+            return lineStations;
+        }
+
+        private List<User> CreateUsers()
+        {
+            List<User> users = new List<User> { };
+            List<string> names = new List<string> { "Yona", "Elyassaf", "Nathi", "Aharon", "David", "Dani", "Oshri", "Eliezer", "Avraham", "Itamar" };
+            for (int i = 1; i < 11; i++)
+            {
+                users.Add(new User { UserName = names[i - 1], Password = "1234", Permission = Permit.USER });
+            }
+            return users;
         }
     }
 }
