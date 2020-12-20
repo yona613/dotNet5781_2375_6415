@@ -8,20 +8,24 @@ using DO;
 
 namespace DS
 {
-    public class DataSource
+    public static class DataSource
     {
         /// <summary>
         /// Random number to be used in the whole namespace
         /// </summary>
         public static Random r = new Random(DateTime.Now.Millisecond);
 
-        List<Station> stationList;
-        List<LineStation> linestationList;
-        List<BusLine> lineList;
-        List<Bus> busList;
-        List<User> userList;
+        public static List<Station> stationList;
+        public static List<LineStation> linestationList;
+        public static List<BusLine> lineList;
+        public static List<Bus> busList;
+        public static List<User> userList;
+        public static List<BusInTravel> busInTravelList = new List<BusInTravel> { };
+        public static List<LineDeparting> lineDepartingList = new List<LineDeparting> { };
+        public static List<PairStations> PairStationList = new List<PairStations> { };
+        public static List<UserTrip> userTripList = new List<UserTrip> { };
 
-        public DataSource()
+        static DataSource()
         {
             busList = CreateBusList();
             stationList = CreateStations();
@@ -30,7 +34,7 @@ namespace DS
             userList = CreateUsers();
         }
 
-        private List<Bus> CreateBusList()
+        private static List<Bus> CreateBusList()
         {
             List<Bus> busList = new List<Bus> { }; //list of buses 
             for (int i = 0; i < 17; i++)
@@ -74,7 +78,7 @@ namespace DS
             return busList;
         }
 
-        private List<Station> CreateStations()
+        private static List<Station> CreateStations()
         {
             List<string> addressList = new List<string> { "Tchernikowsky", "Veitzman", "Shakhal", "Heller", "Bazak", "Mea Shearim", "Geoula", "Begin", "Ouziel", "Romema", "Manitou", "Man", "Zangwill", "Bayit Vegan", "Hantke", "Bayit", "Mekor Baruh", "Rashi", "Pines", "Havaad Haleoumi", "Tora Vaavoda", "Michlin", "Herzl", "Ben Maimon", " Shaoulzon", "Hai Taieb", "Rashba" , "Ramban", "Raavad","Hakablan", "HaMemGuimel","Viznitz" };
             List<Station> myStationsList = new List<Station> { };
@@ -87,18 +91,18 @@ namespace DS
             return myStationsList;
         }
 
-        private List<BusLine> CreateLines()
+        private static List<BusLine> CreateLines()
         {
             List<BusLine> busLines = new List<BusLine> { };
             for (int i = 1; i < 11; i++)
             {
-                BusLine tmpLine = new BusLine { FirstStation = r.Next(1000, 1050), Key = i, LastStation = r.Next(1000, 1050), LineArea = (Area)r.Next(0, 4), LineNumber = i };
+                BusLine tmpLine = new BusLine { FirstStation = r.Next(1000, 1050), Key = Config.BusLineCounter, LastStation = r.Next(1000, 1050), LineArea = (Area)r.Next(0, 4), LineNumber = i };
                 busLines.Add(tmpLine);
             }
             return busLines;
         }
 
-        private List<LineStation> CreateLineStations()
+        private static List<LineStation> CreateLineStations()
         {
             List<LineStation> lineStations = new List<LineStation> { };
             for (int i = 1; i < 11; i++)
@@ -111,7 +115,7 @@ namespace DS
             return lineStations;
         }
 
-        private List<User> CreateUsers()
+        private static List<User> CreateUsers()
         {
             List<User> users = new List<User> { };
             List<string> names = new List<string> { "Yona", "Elyassaf", "Nathi", "Aharon", "David", "Dani", "Oshri", "Eliezer", "Avraham", "Itamar" };
