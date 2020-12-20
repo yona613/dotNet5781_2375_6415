@@ -57,9 +57,36 @@ namespace DalApi
         IEnumerable<BusInTravel> GetAllBusInTravel();
         IEnumerable<BusInTravel> GetAllBusInTravelBy(Predicate<BusInTravel> predicate);
         BusInTravel GetBusInTravel(int license, int lineNumber, DateTime departureTime);
-        void AddBusInTravel(BusInTravel tmpLineStation);
+        void AddBusInTravel(BusInTravel tmpBusInTravel);
         void DeleteBusInTravel(int license, int lineNumber, DateTime departureTime);
         void UpdateBusInTravel(int license, int lineNumber, DateTime departureTime, Action<BusInTravel> update);
+        #endregion
+
+        #region LineDeparting
+        IEnumerable<LineDeparting> GetAllLineDeparting();
+        IEnumerable<LineDeparting> GetAllLineDepartingBy(Predicate<LineDeparting> predicate);
+        LineDeparting GetLineDeparting(int lineNumber, DateTime startTime);
+        void AddLineDeparting(LineDeparting tmpLineDeparting);
+        void DeleteLineDeparting(int lineNumber, DateTime startTime);
+        void UpdateLineDeparting(int lineNumber, DateTime startTime, Action<LineDeparting> update);
+        #endregion
+
+        #region PairStations
+        IEnumerable<PairStations> GetAllPairStations();
+        IEnumerable<LineDeparting> GetAllPairStationsBy(Predicate<PairStations> predicate);
+        PairStations GetPairStations(int firstStation, int secondStation);
+        void AddPairStations(PairStations tmpPairStations);
+        void DeletePairStations(int firstStation, int secondStation);
+        void UpdatePairStations(int firstStation, int secondStation, Action<PairStations> update);
+        #endregion
+
+        #region UserTrip
+        IEnumerable<UserTrip> GetAllUserTrip();
+        IEnumerable<UserTrip> GetAllUserTripBy(Predicate<UserTrip> predicate);
+        UserTrip GetUserTrip(string name);
+        void AddUserTrip(UserTrip tmpUserTrip);
+        void DeleteUserTrip(string name);
+        void UpdateUserTrip(string name, Action<UserTrip> update);
         #endregion
 
     }
