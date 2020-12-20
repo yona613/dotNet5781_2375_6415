@@ -98,7 +98,9 @@ namespace DalObject
         {
             if (DataSource.lineList.FirstOrDefault(Line => Line.LineNumber == tmpBusLine.LineNumber) != null)
                 throw new BadLineException("the Line already exist", tmpBusLine.LineNumber);
-            DataSource.lineList.Add(tmpBusLine.Clone());
+            BusLine myBusLine = tmpBusLine.Clone();
+            myBusLine.Key = Config.BusLineCounter;
+            DataSource.lineList.Add(myBusLine);
         }
         public void UpdateLine(int lineNumber, Action<BusLine> update)
         {
@@ -265,7 +267,7 @@ namespace DalObject
         {
             IEnumerable<BusInTravel> myBusInTravel = from busInTravel in DataSource.busInTravelList
                                                      where busInTravel.MyActivity == Activity.ON && predicate(busInTravel)
-                                                      select busInTravel.Clone();
+                                                     select busInTravel.Clone();
             if (myBusInTravel != null)
                 return myBusInTravel;
             throw new ReadDataException("No BusInTravel meets the conditions");
@@ -305,64 +307,118 @@ namespace DalObject
         }
         #endregion
 
+        #region LineDeparting
         public IEnumerable<LineDeparting> GetAllLineDeparting()
         {
-            throw new NotImplementedException();
+            return from lineDeparting in DataSource.lineDepartingList
+                   where lineDeparting.MyActivity == Activity.ON
+                   select lineDeparting.Clone();
         }
 
         public IEnumerable<LineDeparting> GetAllLineDepartingBy(Predicate<LineDeparting> predicate)
         {
-            throw new NotImplementedException();
+            IEnumerable<LineDeparting> mylineDeparting = from lineDeparting in DataSource.lineDepartingList
+                                                         where lineDeparting.MyActivity == Activity.ON && predicate(lineDeparting)
+                                                         select lineDeparting.Clone();
+            if (mylineDeparting != null)
+                return mylineDeparting;
+            throw new ReadDataException("No LineDeparting meets the conditions");
         }
 
         public LineDeparting GetLineDeparting(int lineNumber, DateTime startTime)
         {
-            throw new NotImplementedException();
+            LineDeparting line = DataSource.lineDepartingList.FirstOrDefault
+                (lineDeparting => lineDeparting.LineNumber == lineNumber && lineDeparting.StartTime == startTime && lineDeparting.MyActivity == Activity.ON);
+            if (line != null)
+                return line.Clone();
+            throw new BadLineDepartingException("Linedeparting doesn't exist ", lineNumber, startTime);
         }
 
         public void AddLineDeparting(LineDeparting tmpLineDeparting)
         {
-            throw new NotImplementedException();
+            LineDeparting line = DataSource.lineDepartingList.FirstOrDefault
+                (lineDeparting => lineDeparting.LineNumber == tmpLineDeparting.LineNumber && lineDeparting.StartTime == tmpLineDeparting.StartTime && lineDeparting.MyActivity == Activity.ON);
+            if (line == null)
+                DataSource.lineDepartingList.Add(tmpLineDeparting.Clone());
+            throw new BadLineDepartingException("Line Departing already exists" , tmpLineDeparting.LineNumber, tmpLineDeparting.StartTime);
         }
 
         public void DeleteLineDeparting(int lineNumber, DateTime startTime)
         {
-            throw new NotImplementedException();
+            LineDeparting line = DataSource.lineDepartingList.FirstOrDefault
+                (lineDeparting => lineDeparting.LineNumber == lineNumber && lineDeparting.StartTime == startTime && lineDeparting.MyActivity == Activity.ON);
+            if (line != null)
+                line.MyActivity = Activity.OFF;
+            throw new BadLineDepartingException("LineDeparture doesn't exist" , lineNumber, startTime);
         }
 
         public void UpdateLineDeparting(int lineNumber, DateTime startTime, Action<LineDeparting> update)
         {
-            throw new NotImplementedException();
+            LineDeparting line = DataSource.lineDepartingList.FirstOrDefault
+                (lineDeparting => lineDeparting.LineNumber == lineNumber && lineDeparting.StartTime == startTime && lineDeparting.MyActivity == Activity.ON);
+            if (line != null)
+                update(line);
+            throw new BadLineDepartingException("LineDeparture doesn't exist", lineNumber, startTime);
         }
+        #endregion
 
+        #region PairStation
         public IEnumerable<PairStations> GetAllPairStations()
         {
-            throw new NotImplementedException();
+            return from pairstation in DataSource.PairStationList
+                   where pairstation.MyActivity == Activity.ON
+                   select pairstation.Clone();
         }
 
-        public IEnumerable<LineDeparting> GetAllPairStationsBy(Predicate<PairStations> predicate)
+        public IEnumerable<PairStations> GetAllPairStationsBy(Predicate<PairStations> predicate)
         {
-            throw new NotImplementedException();
+            IEnumerable<PairStations> pairStations = from pairstation in DataSource.PairStationList
+                                                     where pairstation.MyActivity == Activity.ON && predicate(pairstation)
+                                                     select pairstation.Clone();
+            if (pairStations != null)
+                return pairStations;
+            throw new ReadDataException("No Pair station meets the conditions");
         }
 
         public PairStations GetPairStations(int firstStation, int secondStation)
         {
-            throw new NotImplementedException();
+            PairStations pair = DataSource.PairStationList.FirstOrDefault
+                (pairStations => pairStations.FirstStationNumber == firstStation && pairStations.LastStationNumber == secondStation && pairStations.MyActivity == Activity.ON);
+            if (pair != null)
+                return pair.Clone();
+            throw new BadPairStationException("Pair Station doesn't exist", firstStation, secondStation);
         }
 
         public void AddPairStations(PairStations tmpPairStations)
         {
-            throw new NotImplementedException();
+            PairStations pair = DataSource.PairStationList.FirstOrDefault
+               (pairStations => pairStations.FirstStationNumber == tmpPairStations.FirstStationNumber && pairStations.LastStationNumber == tmpPairStations.LastStationNumber && pairStations.MyActivity == Activity.ON);
+            if (pair == null)
+                DataSource.PairStationList.Add(tmpPairStations.Clone());
+            throw new BadPairStationException("Pair Station already exist", tmpPairStations.FirstStationNumber, tmpPairStations.LastStationNumber);
         }
 
         public void DeletePairStations(int firstStation, int secondStation)
         {
-            throw new NotImplementedException();
+            PairStations pair = DataSource.PairStationList.FirstOrDefault
+               (pairStations => pairStations.FirstStationNumber == firstStation && pairStations.LastStationNumber == secondStation && pairStations.MyActivity == Activity.ON);
+            if (pair != null)
+                pair.MyActivity = Activity.OFF;
+            throw new BadPairStationException("Pair Station doesn't exist", firstStation, secondStation);
         }
 
-        public void UpdatePairStations(int firstStation, int secondStation, Action<PairStations> update);
+        public void UpdatePairStations(int firstStation, int secondStation, Action<PairStations> update)
+        {
+            PairStations pair = DataSource.PairStationList.FirstOrDefault
+               (pairStations => pairStations.FirstStationNumber == firstStation && pairStations.LastStationNumber == secondStation && pairStations.MyActivity == Activity.ON);
+            if (pair != null)
+                update(pair);
+            throw new BadPairStationException("Pair Station doesn't exist", firstStation, secondStation);
+        }
 
+        #endregion
 
+        #region UserTrip
         public IEnumerable<UserTrip> GetAllUserTrip()
         {
             return from userTrip in DataSource.userTripList
@@ -374,7 +430,7 @@ namespace DalObject
         {
             IEnumerable<UserTrip> myUserTrip = from UserTrip in DataSource.userTripList
                                                where UserTrip.MyActivity == Activity.ON && predicate(UserTrip)
-                                                     select UserTrip.Clone();
+                                               select UserTrip.Clone();
             if (myUserTrip != null)
                 return myUserTrip;
             throw new ReadDataException("No UserTrip meets the conditions");
@@ -399,7 +455,7 @@ namespace DalObject
 
         public void DeleteUserTrip(string name)
         {
-            UserTrip tmpUserTrip= DataSource.userTripList.FirstOrDefault(userTrip => userTrip.UserName == name && userTrip.MyActivity == Activity.ON);
+            UserTrip tmpUserTrip = DataSource.userTripList.FirstOrDefault(userTrip => userTrip.UserName == name && userTrip.MyActivity == Activity.ON);
             if (tmpUserTrip != null)
                 tmpUserTrip.MyActivity = Activity.OFF;
             throw new BadUserTripException("User Trip doesn't exist", tmpUserTrip.UserName);
@@ -412,5 +468,6 @@ namespace DalObject
                 update(tmpUserTrip);
             throw new BadUserTripException("User Trip doesn't exist", tmpUserTrip.UserName);
         }
+        #endregion
     }
 }

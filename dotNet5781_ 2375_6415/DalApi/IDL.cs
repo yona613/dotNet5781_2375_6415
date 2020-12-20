@@ -73,7 +73,7 @@ namespace DalApi
 
         #region PairStations
         IEnumerable<PairStations> GetAllPairStations();
-        IEnumerable<LineDeparting> GetAllPairStationsBy(Predicate<PairStations> predicate);
+        IEnumerable<PairStations> GetAllPairStationsBy(Predicate<PairStations> predicate);
         PairStations GetPairStations(int firstStation, int secondStation);
         void AddPairStations(PairStations tmpPairStations);
         void DeletePairStations(int firstStation, int secondStation);
