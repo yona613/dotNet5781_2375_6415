@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace DO
 {
-    public enum Status { READY, TRAVELLING, REFUELLING, TESTING }
     public class Bus
     {
         private int license;
@@ -79,6 +78,13 @@ namespace DO
         {
             get { return airConditionning; }
             set { airConditionning = value; }
+        }
+
+        private Activity myActivity;
+        public Activity MyActivity 
+        {
+            get { return myActivity; }
+            set { myActivity = value; } 
         }
     }
 }

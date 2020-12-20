@@ -39,5 +39,12 @@ namespace DO
             get { return time; }
             set { time = value; }
         }
+
+        private Activity myActivity;
+        public Activity MyActivity
+        {
+            get { return myActivity; }
+            set { myActivity = value; }
+        }
     }
 }

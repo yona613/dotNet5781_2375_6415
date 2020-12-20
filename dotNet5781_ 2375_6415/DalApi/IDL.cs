@@ -88,6 +88,5 @@ namespace DalApi
         void DeleteUserTrip(string name);
         void UpdateUserTrip(string name, Action<UserTrip> update);
         #endregion
-
     }
 }

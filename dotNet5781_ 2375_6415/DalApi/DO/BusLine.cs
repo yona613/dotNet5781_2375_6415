@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace DO
 {
-    public enum Area { General, North, South, Center, Jerusalem };
     public class BusLine
     {
         private int key;
@@ -47,6 +46,13 @@ namespace DO
         {
             get { return lastStation; }
             set { lastStation = value; }
+        }
+
+        private Activity myActivity;
+        public Activity MyActivity
+        {
+            get { return myActivity; }
+            set { myActivity = value; }
         }
     }
 }

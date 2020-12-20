@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace DO
 {
-    public enum Permit { ADMIN, USER}
     public class User
     {
         private string userName;
@@ -31,6 +30,13 @@ namespace DO
         {
             get { return permission; }
             set { permission = value; }
+        }
+
+        private Activity myActivity;
+        public Activity MyActivity
+        {
+            get { return myActivity; }
+            set { myActivity = value; }
         }
     }
 }

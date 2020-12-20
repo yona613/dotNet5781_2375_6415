@@ -50,6 +50,7 @@
     <Compile Include="DO\BusInTravel.cs" />
     <Compile Include="DO\BusLine.cs" />
     <Compile Include="DalFactory.cs" />
+    <Compile Include="DO\Enums.cs" />
     <Compile Include="DO\Exceptions.cs" />
     <Compile Include="DO\LineDeparting.cs" />
     <Compile Include="DO\LineStation.cs" />

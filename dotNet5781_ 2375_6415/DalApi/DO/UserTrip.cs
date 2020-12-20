@@ -63,5 +63,12 @@ namespace DO
             get { return stopTime; }
             set { stopTime = value; }
         }
+
+        private Activity myActivity;
+        public Activity MyActivity
+        {
+            get { return myActivity; }
+            set { myActivity = value; }
+        }
     }
 }

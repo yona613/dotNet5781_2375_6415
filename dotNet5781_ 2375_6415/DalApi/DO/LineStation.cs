@@ -31,6 +31,13 @@ namespace DO
             get { return index; }
             set { index = value; }
         }
+
+        private Activity myActivity;
+        public Activity MyActivity
+        {
+            get { return myActivity; }
+            set { myActivity = value; }
+        }
     }
 
 }

@@ -79,5 +79,12 @@ namespace DO
             get { return driversId; }
             set { driversId = value; }
         }
+
+        private Activity myActivity;
+        public Activity MyActivity
+        {
+            get { return myActivity; }
+            set { myActivity = value; }
+        }
     }
 }

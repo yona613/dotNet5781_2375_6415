@@ -72,4 +72,26 @@ namespace DO
         public override string ToString() => base.ToString() + $", bad LineStation : {"/r"} line :{line}, station:{station}" ;
     }
 
+    [Serializable]
+    public class BadUserTripException : Exception
+    {
+        public string userName;
+        public BadUserTripException(string user) : base() => userName = user;
+        public BadUserTripException(string message, string user) : base(message) => userName = user;
+        public BadUserTripException(string message, Exception inner, string user) : base(message, inner) => userName = user;
+        protected BadUserTripException(SerializationInfo info, StreamingContext context, string user) : base(info, context) => userName = user;
+        public override string ToString() => base.ToString() + $", bad UserTrip name {userName}";
+    }
+
+    public class BadPairStationException : Exception
+    {
+        public int firstStation;
+        public int lastStation;
+        public BadPairStationException(int tmpFirstStation, int tmpLastStation) : base() { firstStation = tmpFirstStation; lastStation = tmpLastStation; }
+
+        public BadPairStationException(string message, int tmpFirstStation, int tmpLastStation) : base(message) { firstStation = tmpFirstStation; lastStation = tmpLastStation; }
+        public BadPairStationException(string message, Exception inner, int tmpFirstStation, int tmpLastStation) : base(message, inner) { firstStation = tmpFirstStation; lastStation = tmpLastStation; }
+        protected BadPairStationException(SerializationInfo info, StreamingContext context, int tmpFirstStation, int tmpLastStation) : base(info, context) { firstStation = tmpFirstStation; lastStation = tmpLastStation; }
+        public override string ToString() => base.ToString() + $", bad PairStation : {"/r"} firstStation :{firstStation}, lastStation:{lastStation}";
+    }
 }
