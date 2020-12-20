@@ -54,6 +54,13 @@ namespace DalApi
         #endregion
 
         #region BusInTravel
+        IEnumerable<BusInTravel> GetAllBusInTravel();
+        IEnumerable<BusInTravel> GetAllBusInTravelBy(Predicate<BusInTravel> predicate);
+        BusInTravel GetBusInTravel(int license, int lineNumber, DateTime departureTime);
+        void AddBusInTravel(BusInTravel tmpLineStation);
+        void DeleteBusInTravel(int license, int lineNumber, DateTime departureTime);
+        void UpdateBusInTravel(int license, int lineNumber, DateTime departureTime, Action<BusInTravel> update);
+        #endregion
 
     }
 }
