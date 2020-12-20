@@ -257,7 +257,7 @@ namespace DalObject
 
         public IEnumerable<BusInTravel> GetAllBusInTravel()
         {
-            return from busInTravel in DataSource.BusInTravelList
+            return from busInTravel in DataSource.busInTravelList
                    select busInTravel.Clone();
         }
 
