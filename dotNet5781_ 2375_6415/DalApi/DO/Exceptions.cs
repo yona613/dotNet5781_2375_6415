@@ -94,4 +94,27 @@ namespace DO
         protected BadPairStationException(SerializationInfo info, StreamingContext context, int tmpFirstStation, int tmpLastStation) : base(info, context) { firstStation = tmpFirstStation; lastStation = tmpLastStation; }
         public override string ToString() => base.ToString() + $", bad PairStation : {"/r"} firstStation :{firstStation}, lastStation:{lastStation}";
     }
+
+    [Serializable]
+    public class BadBusInTravelException : Exception
+    {
+        public int license;
+        public int lineNumber;
+        public DateTime departureTime;
+        public BadBusInTravelException(int tmpLicense, int tmpLineNumber, DateTime tmpDepartureTime) : base() { license = tmpLicense; lineNumber = tmpLineNumber; departureTime = tmpDepartureTime; }
+        public BadBusInTravelException(string message, int tmpLicense, int tmpLineNumber, DateTime tmpDepartureTime) : base(message) { license = tmpLicense; lineNumber = tmpLineNumber; departureTime = tmpDepartureTime; }
+        public BadBusInTravelException(string message, Exception inner, int tmpLicense, int tmpLineNumber, DateTime tmpDepartureTime) : base(message, inner) { license = tmpLicense; lineNumber = tmpLineNumber; departureTime = tmpDepartureTime; }
+        protected BadBusInTravelException(SerializationInfo info, StreamingContext context, int tmpLicense, int tmpLineNumber, DateTime tmpDepartureTime) : base(info, context) { license = tmpLicense; lineNumber = tmpLineNumber; departureTime = tmpDepartureTime; }
+        public override string ToString() => base.ToString() + $", bad BusInTravel: license = {license}, lineNumber = {lineNumber}, departureTime = {departureTime}";
+    }
+    public class BadLineDepartingException : Exception
+    {
+        public int lineNumber;
+        public DateTime startTime;
+        public BadLineDepartingException(int tmpLineNumber, DateTime tmpStartTime) : base() {lineNumber = tmpLineNumber; startTime = tmpStartTime; }
+        public BadLineDepartingException(string message, int tmpLineNumber, DateTime tmpStartTime) : base(message) { lineNumber = tmpLineNumber; startTime = tmpStartTime; }
+        public BadLineDepartingException(string message, Exception inner, int tmpLineNumber, DateTime tmpStartTime) : base(message, inner) { lineNumber = tmpLineNumber; startTime = tmpStartTime; }
+        protected BadLineDepartingException(SerializationInfo info, StreamingContext context, int tmpLineNumber, DateTime tmpStartTime) : base(info, context) { lineNumber = tmpLineNumber; startTime = tmpStartTime; }
+        public override string ToString() => base.ToString() + $", bad LineDeparting: lineNumber = {lineNumber}, startTime = {startTime}";
+    }
 }
