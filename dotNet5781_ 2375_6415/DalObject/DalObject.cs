@@ -286,7 +286,11 @@ namespace DalObject
         {
             if (DataSource.busInTravelList.FirstOrDefault(
                 busInTravel => busInTravel.License == tmpBusInTravel.License && busInTravel.Line == tmpBusInTravel.Line && busInTravel.DepartureTime == tmpBusInTravel.DepartureTime) != null)
-                DataSource.busInTravelList.Add(tmpBusInTravel.Clone());
+            {
+                BusInTravel myBusInTravel = tmpBusInTravel.Clone();
+                myBusInTravel.Key = Config.BusInTravelCounter;
+                DataSource.busInTravelList.Add(myBusInTravel);
+            }        
             throw new BadBusInTravelException("Bus In Travel already exist", tmpBusInTravel.License, tmpBusInTravel.Line, tmpBusInTravel.DepartureTime);
         }
 
@@ -449,7 +453,11 @@ namespace DalObject
         {
             if (DataSource.userTripList.FirstOrDefault(
                             userTrip => userTrip.UserName == tmpUserTrip.UserName && userTrip.MyActivity == Activity.ON) != null)
-                DataSource.userTripList.Add(tmpUserTrip.Clone());
+            {
+                UserTrip myUserTrip = tmpUserTrip.Clone();
+                myUserTrip.Key = Config.UserTripCounter;
+                DataSource.userTripList.Add(myUserTrip);
+            }
             throw new BadUserTripException("User Trip already exist", tmpUserTrip.UserName);
         }
 
