@@ -252,5 +252,68 @@ namespace DalObject
             throw new BadLineStationException("Line Station doesn't exist", lineNumber, stationNumber);
         }
         #endregion
+
+        #region BusInTravel
+
+        public IEnumerable<BusInTravel> GetAllBusInTravel()
+        {
+            return from busInTravel in DataSource.BusInTravelList
+                   select busInTravel.Clone();
+        }
+
+        public IEnumerable<BusInTravel> GetAllBusInTravelBy(Predicate<BusInTravel> predicate)
+        {
+            IEnumerable<BusInTravel> myBusInTravel = from busInTravel in DataSource.busInTravelList
+                                                     where predicate(busInTravel)
+                                                      select busInTravel.Clone();
+            if (myBusInTravel != null)
+                return myBusInTravel;
+            throw new ReadDataException("No BusInTravel meets the conditions");
+        }
+
+        public BusInTravel GetBusInTravel(int license, int line, DateTime departureTime)
+        {
+            BusInTravel myBusInTravel = DataSource.busInTravelList.FirstOrDefault(
+                busInTravel => busInTravel.License == license && busInTravel.Line == line && busInTravel.DepartureTime == departureTime);
+            if (myBusInTravel != null)
+                return myBusInTravel.Clone();
+            throw new BadBusInTravelException("Bus In Travel doesn't exist", license, line, departureTime);
+        }
+
+        public void AddBusInTravel(BusInTravel tmpBusInTravel)
+        {
+            if (DataSource.busInTravelList.FirstOrDefault(
+                busInTravel => busInTravel.License == tmpBusInTravel.License && busInTravel.Line == tmpBusInTravel.Line && busInTravel.DepartureTime == tmpBusInTravel.DepartureTime) != null)
+                DataSource.busInTravelList.Add(tmpBusInTravel.Clone());
+            throw new BadBusInTravelException("Bus In Travel already exist", tmpBusInTravel.License, tmpBusInTravel.Line, tmpBusInTravel.DepartureTime);
+        }
+
+        public void DeleteBusInTravel(int license, int lineNumber, DateTime departureTime)
+        {
+            BusInTravel tmpBusInTravel = DataSource.busInTravelList.FirstOrDefault(busInTravel => station.LineNumber == lineNumber && station.StationNumber == stationNumber);
+            if (tmpLineStation != null)
+                DataSource.linestationList.Remove(tmpLineStation);
+            throw new BadLineStationException("Line Station doesn't exist", lineNumber, stationNumber);
+        }
+        public void DeleteLineStation(int stationNumber, int lineNumber)
+        {
+            LineStation tmpLineStation = DataSource.linestationList.FirstOrDefault(station => station.LineNumber == lineNumber && station.StationNumber == stationNumber);
+            if (tmpLineStation != null)
+                DataSource.linestationList.Remove(tmpLineStation);
+            throw new BadLineStationException("Line Station doesn't exist", lineNumber, stationNumber);
+        }
+
+        public void UpdateLineStation(int stationNumber, int lineNumber, Action<LineStation> update)
+        {
+            LineStation tmpLineStation = DataSource.linestationList.FirstOrDefault(station => station.LineNumber == lineNumber && station.StationNumber == stationNumber);
+            if (tmpLineStation != null)
+                update(tmpLineStation);
+            throw new BadLineStationException("Line Station doesn't exist", lineNumber, stationNumber);
+        }
+        public void UpdateBusInTravel(int license, int lineNumber, DateTime departureTime, Action<BusInTravel> update)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
     }
 }
