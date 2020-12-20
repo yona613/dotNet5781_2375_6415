@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DS
 {
-    static class Config
+    public static class Config
     {
         static int busInTravelCounter = 0;
         public static int BusInTravelCounter => ++busInTravelCounter;
