@@ -256,18 +256,18 @@ namespace DalObject
         #endregion
 
         #region BusInTravel
-
         public IEnumerable<BusInTravel> GetAllBusInTravel()
         {
             return from busInTravel in DataSource.busInTravelList
+                   where busInTravel.MyActivity == Activity.ON
                    select busInTravel.Clone();
         }
 
         public IEnumerable<BusInTravel> GetAllBusInTravelBy(Predicate<BusInTravel> predicate)
         {
             IEnumerable<BusInTravel> myBusInTravel = from busInTravel in DataSource.busInTravelList
-                                                     where predicate(busInTravel)
-                                                      select busInTravel.Clone();
+                                                     where busInTravel.MyActivity == Activity.ON && predicate(busInTravel)
+                                                     select busInTravel.Clone();
             if (myBusInTravel != null)
                 return myBusInTravel;
             throw new ReadDataException("No BusInTravel meets the conditions");
@@ -276,7 +276,7 @@ namespace DalObject
         public BusInTravel GetBusInTravel(int license, int line, DateTime departureTime)
         {
             BusInTravel myBusInTravel = DataSource.busInTravelList.FirstOrDefault(
-                busInTravel => busInTravel.License == license && busInTravel.Line == line && busInTravel.DepartureTime == departureTime);
+                busInTravel => busInTravel.License == license && busInTravel.Line == line && busInTravel.DepartureTime == departureTime && busInTravel.MyActivity == Activity.ON);
             if (myBusInTravel != null)
                 return myBusInTravel.Clone();
             throw new BadBusInTravelException("Bus In Travel doesn't exist", license, line, departureTime);
@@ -290,31 +290,20 @@ namespace DalObject
             throw new BadBusInTravelException("Bus In Travel already exist", tmpBusInTravel.License, tmpBusInTravel.Line, tmpBusInTravel.DepartureTime);
         }
 
-        public void DeleteBusInTravel(int license, int lineNumber, DateTime departureTime)
+        public void DeleteBusInTravel(int license, int line, DateTime departureTime)
         {
-            BusInTravel tmpBusInTravel = DataSource.busInTravelList.FirstOrDefault(busInTravel => busInTravel.LineNumber == lineNumber && station.StationNumber == stationNumber);
-            if (tmpLineStation != null)
-                DataSource.linestationList.Remove(tmpLineStation);
-            throw new BadLineStationException("Line Station doesn't exist", lineNumber, stationNumber);
-        }
-        public void DeleteLineStation(int stationNumber, int lineNumber)
-        {
-            LineStation tmpLineStation = DataSource.linestationList.FirstOrDefault(station => station.LineNumber == lineNumber && station.StationNumber == stationNumber);
-            if (tmpLineStation != null)
-                DataSource.linestationList.Remove(tmpLineStation);
-            throw new BadLineStationException("Line Station doesn't exist", lineNumber, stationNumber);
+            BusInTravel tmpBusInTravel = DataSource.busInTravelList.FirstOrDefault(busInTravel => busInTravel.License == license && busInTravel.Line == line && busInTravel.MyActivity == Activity.ON);
+            if (tmpBusInTravel != null)
+                tmpBusInTravel.MyActivity = Activity.OFF;
+            throw new BadBusInTravelException("Bus In Travel doesn't exist", tmpBusInTravel.License, tmpBusInTravel.Line, tmpBusInTravel.DepartureTime);
         }
 
-        public void UpdateLineStation(int stationNumber, int lineNumber, Action<LineStation> update)
+        public void UpdateBusInTravel(int license, int line, DateTime departureTime, Action<BusInTravel> update)
         {
-            LineStation tmpLineStation = DataSource.linestationList.FirstOrDefault(station => station.LineNumber == lineNumber && station.StationNumber == stationNumber);
-            if (tmpLineStation != null)
-                update(tmpLineStation);
-            throw new BadLineStationException("Line Station doesn't exist", lineNumber, stationNumber);
-        }
-        public void UpdateBusInTravel(int license, int lineNumber, DateTime departureTime, Action<BusInTravel> update)
-        {
-            throw new NotImplementedException();
+            BusInTravel tmpBusInTravel = DataSource.busInTravelList.FirstOrDefault(busInTravel => busInTravel.License == license && busInTravel.Line == line && busInTravel.MyActivity == Activity.ON);
+            if (tmpBusInTravel != null)
+                update(tmpBusInTravel);
+            throw new BadBusInTravelException("Bus In Travel doesn't exist", tmpBusInTravel.License, tmpBusInTravel.Line, tmpBusInTravel.DepartureTime);
         }
         #endregion
 
@@ -406,7 +395,7 @@ namespace DalObject
                (pairStations => pairStations.FirstStationNumber == tmpPairStations.FirstStationNumber && pairStations.LastStationNumber == tmpPairStations.LastStationNumber && pairStations.MyActivity == Activity.ON);
             if (pair == null)
                 DataSource.PairStationList.Add(tmpPairStations.Clone());
-            throw new BadPairStationException("Pair Station already exist", tmpPairStations.FirstStationNumber, tmpPairStations.las);
+            throw new BadPairStationException("Pair Station already exist", tmpPairStations.FirstStationNumber, tmpPairStations.LastStationNumber);
         }
 
         public void DeletePairStations(int firstStation, int secondStation)
@@ -432,32 +421,52 @@ namespace DalObject
         #region UserTrip
         public IEnumerable<UserTrip> GetAllUserTrip()
         {
-            throw new NotImplementedException();
+            return from userTrip in DataSource.userTripList
+                   where userTrip.MyActivity == Activity.ON
+                   select userTrip.Clone();
         }
 
         public IEnumerable<UserTrip> GetAllUserTripBy(Predicate<UserTrip> predicate)
         {
-            throw new NotImplementedException();
+            IEnumerable<UserTrip> myUserTrip = from UserTrip in DataSource.userTripList
+                                               where UserTrip.MyActivity == Activity.ON && predicate(UserTrip)
+                                               select UserTrip.Clone();
+            if (myUserTrip != null)
+                return myUserTrip;
+            throw new ReadDataException("No UserTrip meets the conditions");
         }
 
         public UserTrip GetUserTrip(string name)
         {
-            throw new NotImplementedException();
+            UserTrip myUserTrip = DataSource.userTripList.FirstOrDefault(
+                userTrip => userTrip.UserName == name && userTrip.MyActivity == Activity.ON);
+            if (myUserTrip != null)
+                return myUserTrip.Clone();
+            throw new BadUserTripException("User Trip doesn't exist", name);
         }
 
         public void AddUserTrip(UserTrip tmpUserTrip)
         {
-            throw new NotImplementedException();
+            if (DataSource.userTripList.FirstOrDefault(
+                            userTrip => userTrip.UserName == tmpUserTrip.UserName && userTrip.MyActivity == Activity.ON) != null)
+                DataSource.userTripList.Add(tmpUserTrip.Clone());
+            throw new BadUserTripException("User Trip already exist", tmpUserTrip.UserName);
         }
 
         public void DeleteUserTrip(string name)
         {
-            throw new NotImplementedException();
+            UserTrip tmpUserTrip = DataSource.userTripList.FirstOrDefault(userTrip => userTrip.UserName == name && userTrip.MyActivity == Activity.ON);
+            if (tmpUserTrip != null)
+                tmpUserTrip.MyActivity = Activity.OFF;
+            throw new BadUserTripException("User Trip doesn't exist", tmpUserTrip.UserName);
         }
 
         public void UpdateUserTrip(string name, Action<UserTrip> update)
         {
-            throw new NotImplementedException();
+            UserTrip tmpUserTrip = DataSource.userTripList.FirstOrDefault(userTrip => userTrip.UserName == name && userTrip.MyActivity == Activity.ON);
+            if (tmpUserTrip != null)
+                update(tmpUserTrip);
+            throw new BadUserTripException("User Trip doesn't exist", tmpUserTrip.UserName);
         }
         #endregion
     }
