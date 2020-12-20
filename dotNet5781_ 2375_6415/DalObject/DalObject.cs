@@ -290,7 +290,7 @@ namespace DalObject
 
         public void DeleteBusInTravel(int license, int lineNumber, DateTime departureTime)
         {
-            BusInTravel tmpBusInTravel = DataSource.busInTravelList.FirstOrDefault(busInTravel => station.LineNumber == lineNumber && station.StationNumber == stationNumber);
+            BusInTravel tmpBusInTravel = DataSource.busInTravelList.FirstOrDefault(busInTravel => busInTravel.LineNumber == lineNumber && station.StationNumber == stationNumber);
             if (tmpLineStation != null)
                 DataSource.linestationList.Remove(tmpLineStation);
             throw new BadLineStationException("Line Station doesn't exist", lineNumber, stationNumber);
@@ -311,6 +311,96 @@ namespace DalObject
             throw new BadLineStationException("Line Station doesn't exist", lineNumber, stationNumber);
         }
         public void UpdateBusInTravel(int license, int lineNumber, DateTime departureTime, Action<BusInTravel> update)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<LineDeparting> GetAllLineDeparting()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<LineDeparting> GetAllLineDepartingBy(Predicate<LineDeparting> predicate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public LineDeparting GetLineDeparting(int lineNumber, DateTime startTime)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddLineDeparting(LineDeparting tmpLineDeparting)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteLineDeparting(int lineNumber, DateTime startTime)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateLineDeparting(int lineNumber, DateTime startTime, Action<LineDeparting> update)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<PairStations> GetAllPairStations()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<LineDeparting> GetAllPairStationsBy(Predicate<PairStations> predicate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public PairStations GetPairStations(int firstStation, int secondStation)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddPairStations(PairStations tmpPairStations)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeletePairStations(int firstStation, int secondStation)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdatePairStations(int firstStation, int secondStation, Action<PairStations> update)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<UserTrip> GetAllUserTrip()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<UserTrip> GetAllUserTripBy(Predicate<UserTrip> predicate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public UserTrip GetUserTrip(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddUserTrip(UserTrip tmpUserTrip)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteUserTrip(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateUserTrip(string name, Action<UserTrip> update)
         {
             throw new NotImplementedException();
         }
