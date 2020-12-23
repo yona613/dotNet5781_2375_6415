@@ -25,7 +25,7 @@ namespace BL
         public IEnumerable<Bus> GetAllBuseBy(Predicate<Bus> predicate)
         {
             IEnumerable<Bus> busList = from item in dal.GetAllBuses()
-                                       let busBO = item.CopyPropertiesToNew(typeof(Bus))
+                                       let busBO = BusDoBOAdapter(item)
                                        where predicate((Bus)busBO)
                                        select (Bus)busBO;
             if (busList != null)
@@ -91,189 +91,305 @@ namespace BL
         #endregion
 
         #region Line
-
+        BusLine BusLineDoBOAdapter(DO.BusLine lineDO)
+        {
+            BusLine lineBO = new BusLine();
+            lineDO.CopyPropertiesTo(lineBO);
+            return lineBO;
+        }
         public IEnumerable<BusLine> GetAllBusLines()
         {
-            return from busLine in DataSource.lineList
-                   select busLine.Clone();
+            return from busLine in dal.GetAllBusLines()
+                   select BusLineDoBOAdapter(busLine);
         }
 
         public IEnumerable<BusLine> GetAllBusLinesBy(Predicate<BusLine> predicate)
         {
-            IEnumerable<BusLine> myBusList = from busLine in DataSource.lineList
-                                             where predicate(busLine)
-                                             select busLine.Clone();
-            if (myBusList != null)
-                return myBusList;
-            throw new ReadDataException("No Line meets the conditions");
+            IEnumerable<BusLine> myLinesList = from busLine in dal.GetAllBusLines()
+                                               let item = BusLineDoBOAdapter(busLine)
+                                               where predicate(item)
+                                               select item;
+            if (myLinesList != null)
+                return myLinesList;
+            throw new NotImplementedException("No Line meets the conditions");
         }
         public BusLine GetBusLine(int id)
         {
-            BusLine myBusLine = DataSource.lineList.Find(line => line.LineNumber == id);
-            if (myBusLine != null)
-                return myBusLine.Clone();
-            throw new BadLineException("the Line doesn't exist", id);
+            DO.BusLine busLineDO;
+            try
+            {
+                busLineDO = dal.GetBusLine(id);
+                return BusLineDoBOAdapter(busLineDO);
+            }
+            catch (DO.BadLineException e)
+            {
+                throw new NotImplementedException(e.Message);
+            }
         }
 
         public void AddLine(BusLine tmpBusLine)
         {
-            if (DataSource.lineList.FirstOrDefault(Line => Line.LineNumber == tmpBusLine.LineNumber) != null)
-                throw new BadLineException("the Line already exist", tmpBusLine.LineNumber);
-            BusLine myBusLine = tmpBusLine.Clone();
-            myBusLine.Key = Config.BusLineCounter;
-            DataSource.lineList.Add(myBusLine);
+            try
+            {
+                dal.AddLine((DO.BusLine)tmpBusLine.CopyPropertiesToNew(typeof(DO.BusLine)));
+            }
+            catch (DO.BadLineException e)
+            {
+                throw new NotImplementedException(e.Message);
+            }
         }
         public void UpdateLine(BusLine lineToUpdate)
         {
-            throw new NotImplementedException();
+            try
+            {
+                dal.UpdateLine((DO.BusLine)lineToUpdate.CopyPropertiesToNew(typeof(DO.BusLine)));
+            }
+            catch (DO.BadLineException e)
+            {
+                throw new NotImplementedException(e.Message);
+            }
         }
 
         public void DeleteLine(int lineNumber)
         {
-            BusLine tmpLine = DataSource.lineList.FirstOrDefault(line => line.LineNumber == lineNumber);
-            if (tmpLine == null)
-                throw new BadLineException("the Line doesn't exist", lineNumber);
-            DataSource.lineList.Remove(tmpLine);
+            try
+            {
+                dal.DeleteLine(lineNumber);
+            }
+            catch (DO.BadLineException e)
+            {
+                throw new NotImplementedException(e.Message);
+            }
         }
         #endregion
 
         #region Station
+        Station StationDoBOAdapter(DO.Station stationDO)
+        {
+            Station stationBO = new Station();
+            stationDO.CopyPropertiesTo(stationBO);
+            return stationBO;
+        }
         public IEnumerable<Station> GetAllStations()
         {
-            return from station in DataSource.stationList
-                   select station.Clone();
+            return from station in dal.GetAllStations()
+                   select StationDoBOAdapter(station);
         }
 
         public IEnumerable<Station> GetAllStationsBy(Predicate<Station> predicate)
         {
-            IEnumerable<Station> myStationsList = from station in DataSource.stationList
-                                                  where predicate(station)
-                                                  select station.Clone();
+            IEnumerable<Station> myStationsList = from station in dal.GetAllStations()
+                                                  let item = StationDoBOAdapter(station)
+                                                  where predicate(item)
+                                                  select item;
             if (myStationsList == null)
-                throw new ReadDataException("No Station meets the conditions");
+                throw new NotImplementedException("No Station meets the conditions");
             return myStationsList;
         }
         public Station GetStation(int id)
         {
-            Station myStation = DataSource.stationList.Find(Station => Station.StationId == id);
-            if (myStation != null)
-                return myStation.Clone();
-            throw new BadStationException("Station doesn't exist", id);
+            DO.Station stationDO;
+            try
+            {
+                stationDO = dal.GetStation(id);
+                return StationDoBOAdapter(stationDO);
+            }
+            catch (DO.BadStationException e)
+            {
+                throw new NotImplementedException(e.Message);
+            }
         }
 
         public void AddStation(Station tmpStation)
         {
-            if (DataSource.stationList.FirstOrDefault(station => station.StationId == tmpStation.StationId) != null)
-                throw new BadStationException("Station already exist", tmpStation.StationId);
-            DataSource.stationList.Add(tmpStation.Clone());
+            DO.Station stationDO = new DO.Station();
+            tmpStation.CopyPropertiesTo(stationDO);
+            try
+            {
+                dal.AddStation(stationDO);
+            }
+            catch (DO.BadStationException e)
+            {
+                throw new NotImplementedException(e.Message);
+            }
         }
         public void DeleteStation(int id)
         {
-            Station myStation = DataSource.stationList.FirstOrDefault(station => station.StationId == id);
-            if (myStation == null)
-                throw new BadStationException("Station doesn't exist", id);
-            DataSource.stationList.Remove(myStation);
+            try
+            {
+                dal.DeleteStation(id);
+            }
+            catch (DO.BadStationException e)
+            {
+                throw new NotImplementedException(e.Message);
+            }
         }
         #endregion
 
         #region User
+        User UserDoBOAdapter(DO.User userDO)
+        {
+            User userBO = new User();
+            userDO.CopyPropertiesTo(userBO);
+            return userBO;
+        }
         public IEnumerable<User> GetAllUsers()
         {
-            return from user in DataSource.userList
-                   select user.Clone();
+            return from user in dal.GetAllUsers()
+                   select UserDoBOAdapter(user);
         }
 
         public IEnumerable<User> GetAllUsersBy(Predicate<User> predicate)
         {
-            IEnumerable<User> myUsers = from user in DataSource.userList
-                                        where predicate(user)
-                                        select user.Clone();
+            IEnumerable<User> myUsers = from user in dal.GetAllUsers()
+                                        let userBO = UserDoBOAdapter(user)
+                                        where predicate(userBO)
+                                        select userBO;
             if (myUsers == null)
-                throw new ReadDataException("No User meets the conditions");
+                throw new NotImplementedException("No User meets the conditions");
             return myUsers;
         }
         public User GetUser(string userName)
         {
-            User myUser = DataSource.userList.FirstOrDefault(user => user.UserName == userName);
-            if (myUser != null)
-                return myUser.Clone();
-            throw new BadUserException("User doesn't exist", userName);
+            DO.User userDO;
+            try
+            {
+                userDO = dal.GetUser(userName);
+                return UserDoBOAdapter(userDO);
+            }
+            catch (DO.BadUserException e)
+            {
+                throw new NotImplementedException(e.Message);
+            }
         }
 
         public void UpdateUser(User userToUpdate)
         {
-            throw new NotImplementedException();
+            DO.User userDO = new DO.User();
+            try
+            {
+                dal.UpdateUser((DO.User)userToUpdate.CopyPropertiesToNew(typeof(DO.User)));
+            }
+            catch (DO.BadUserException e)
+            {
+                throw new NotImplementedException(e.Message);
+            }
         }
 
         public void AddUser(User tmpUser)
         {
-            if (DataSource.userList.FirstOrDefault(user => user.UserName == tmpUser.UserName) != null)
-                throw new BadUserException("User already exist", tmpUser.UserName);
-            DataSource.userList.Add(tmpUser.Clone());
+            DO.User userDO = new DO.User();
+            try
+            {
+                dal.AddUser((DO.User)tmpUser.CopyPropertiesToNew(typeof(DO.User)));
+            }
+            catch (DO.BadUserException e)
+            {
+                throw new NotImplementedException(e.Message);
+            }
         }
         public void DeleteUser(string userName)
         {
-            User myUser = DataSource.userList.FirstOrDefault(user => user.UserName == userName);
-            if (myUser != null)
-                DataSource.userList.Remove(myUser);
-            throw new BadUserException("User doesn't exist", userName);
+            try
+            {
+                dal.DeleteUser(userName);
+            }
+            catch (DO.BadUserException e)
+            {
+                throw new NotImplementedException(e.Message);
+            }
         }
         #endregion
 
         #region LineStation
+        LineStation LineStationDoBOAdapter(DO.LineStation lineStationDO)
+        {
+            LineStation lineStationBO = new LineStation();
+            lineStationDO.CopyPropertiesTo(lineStationBO);
+            return lineStationBO;
+        }
         public IEnumerable<LineStation> GetAllLineStations()
         {
-            return from lineStation in DataSource.linestationList
-                   select lineStation.Clone();
+            return from lineStation in dal.GetAllLineStations()
+                   select LineStationDoBOAdapter(lineStation);
         }
 
         public IEnumerable<LineStation> GetAllLineStationsBy(Predicate<LineStation> predicate)
         {
-            IEnumerable<LineStation> myLineStations = from lineStation in DataSource.linestationList
-                                                      where predicate(lineStation)
-                                                      select lineStation.Clone();
+            IEnumerable<LineStation> myLineStations = from lineStation in dal.GetAllLineStations()
+                                                      let lineStationBO = LineStationDoBOAdapter(lineStation)
+                                                      where predicate(lineStationBO)
+                                                      select lineStationBO;
             if (myLineStations != null)
                 return myLineStations;
-            throw new ReadDataException("No LineStation meets the conditions");
+            throw new BOReadDataException("No LineStation meets the conditions");
         }
 
         public LineStation GetLineStation(int stationNumber, int lineNumber)
         {
-            LineStation myLineStation = DataSource.linestationList.FirstOrDefault(
-                station => station.LineNumber == lineNumber && station.StationNumber == stationNumber);
-            if (myLineStation != null)
-                return myLineStation.Clone();
-            throw new BadLineStationException("Line Station doesn't exist", lineNumber, stationNumber);
+            DO.LineStation lineStationDO;
+            try
+            {
+                lineStationDO = dal.GetLineStation(stationNumber, lineNumber);
+                return LineStationDoBOAdapter(lineStationDO);
+            }
+            catch (DO.BadLineStationException e)
+            {
+                throw new BOBadLineStationException(e.Message, lineNumber, stationNumber);
+            }
         }
 
         public void AddLineStation(LineStation tmpLineStation)
         {
-            if (DataSource.linestationList.FirstOrDefault(station => station.LineNumber == tmpLineStation.LineNumber && station.StationNumber == tmpLineStation.StationNumber) != null)
-                DataSource.linestationList.Add(tmpLineStation.Clone());
-            throw new BadLineStationException("Line Station already exist", tmpLineStation.LineNumber, tmpLineStation.StationNumber);
+            DO.LineStation lineStationDO = new DO.LineStation();
+            try
+            {
+                dal.AddLineStation((DO.LineStation)tmpLineStation.CopyPropertiesToNew(typeof(DO.LineStation)));
+            }
+            catch (DO.BadLineStationException e)
+            {
+                throw new BOBadLineStationException(e.Message, tmpLineStation.LineNumber, tmpLineStation.StationNumber);
+            }
         }
 
         public void DeleteLineStation(int stationNumber, int lineNumber)
-        {
-            LineStation tmpLineStation = DataSource.linestationList.FirstOrDefault(station => station.LineNumber == lineNumber && station.StationNumber == stationNumber);
-            if (tmpLineStation != null)
-                DataSource.linestationList.Remove(tmpLineStation);
-            throw new BadLineStationException("Line Station doesn't exist", lineNumber, stationNumber);
+        {          
+            try
+            {
+                dal.DeleteLineStation(stationNumber, lineNumber);
+            }
+            catch (DO.BadLineStationException e)
+            {
+                throw new BOBadLineStationException(e.Message, lineNumber, stationNumber);
+            }
         }
 
         public void UpdateLineStation(LineStation lineStationToUpdate)
         {
-            throw new NotImplementedException();
+            DO.LineStation lineStationDO = new DO.LineStation();
+            try
+            {
+                dal.UpdateLineStation((DO.LineStation)lineStationToUpdate.CopyPropertiesToNew(typeof(DO.LineStation)));
+            }
+            catch (DO.BadLineStationException e)
+            {
+                throw new BOBadLineStationException(e.Message, lineStationToUpdate.LineNumber, lineStationToUpdate.StationNumber);
+            }
         }
 
         #endregion
 
         #region BusInTravel
+        BusInTravel BusInTravelDOBOAdapter(DO.BusInTravel busInTravelDO)
+        {
+            BusInTravel busInTravelBO = new BusInTravel();
+            busInTravelDO.CopyPropertiesTo(busInTravelBO);
+            return busInTravelBO;
+        }
         public IEnumerable<BusInTravel> GetAllBusInTravel()
         {
-            return from busInTravel in DataSource.busInTravelList
-                   where busInTravel.MyActivity == Activity.ON
-                   select busInTravel.Clone();
+            return from busInTravel in dal.GetAllBusInTravel()
+                   select BusInTravelDOBOAdapter(busInTravel);
         }
 
         public IEnumerable<BusInTravel> GetAllBusInTravelBy(Predicate<BusInTravel> predicate)

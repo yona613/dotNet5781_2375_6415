@@ -48,6 +48,7 @@
     <Compile Include="BO\BusLine.cs" />
     <Compile Include="BO\Enums.cs" />
     <Compile Include="BLApi\IBL.cs" />
+    <Compile Include="BO\Exceptions.cs" />
     <Compile Include="BO\LineDeparting.cs" />
     <Compile Include="BO\LineStation.cs" />
     <Compile Include="BO\PairStations.cs" />
