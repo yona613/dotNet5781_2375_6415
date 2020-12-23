@@ -8,83 +8,14 @@ namespace BO
 {
     public class Bus
     {
-        private int license;
-
-        public int License
-        {
-            get { return license; }
-            set { license = value; }
-        }
-
-        private DateTime licenseDate;
-
-        public DateTime LicenseDate
-        {
-            get { return licenseDate; }
-            set { licenseDate = value; }
-        }
-
-        private int kilometrage;
-
-        public int Kilometrage
-        {
-            get { return kilometrage; }
-            set { kilometrage = value; }
-        }
-
-        private int fuel;
-
-        public int Fuel
-        {
-            get { return fuel; }
-            set { fuel = value; }
-        }
-
-        private Status busStatus;
-
-        public Status BusStatus
-        {
-            get { return busStatus; }
-            set { busStatus = value; }
-        }
-
-        private DateTime testDate;
-
-        public DateTime TestDate
-        {
-            get { return testDate; }
-            set { testDate = value; }
-        }
-
-        private int kmFromTest;
-
-        public int KmFromTest
-        {
-            get { return kmFromTest; }
-            set { kmFromTest = value; }
-        }
-
-        private string brand;
-
-        public string Brand
-        {
-            get { return brand; }
-            set { brand = value; }
-        }
-
-        private bool airConditionning;
-
-        public bool AirConditionning
-        {
-            get { return airConditionning; }
-            set { airConditionning = value; }
-        }
-
-        private Activity myActivity;
-        public Activity MyActivity
-        {
-            get { return myActivity; }
-            set { myActivity = value; }
-        }
+        public int License { get; set; }
+        public DateTime LicenseDate { get; set; }
+        public int Kilometrage { get; set; }
+        public int Fuel { get; set; }
+        public Status BusStatus { get; set; }
+        public DateTime TestDate { get; set; }
+        public int KmFromTest { get; set; }
+        public string Brand { get; set; }
+        public bool AirConditionning { get; set; }
     }
 }
