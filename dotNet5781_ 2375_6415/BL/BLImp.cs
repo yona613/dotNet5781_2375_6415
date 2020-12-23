@@ -30,7 +30,7 @@ namespace BL
                                        select (Bus)busBO;
             if (busList != null)
                 return busList;
-            throw new NotImplementedException();  
+            throw new BOReadDataException("No Bus meets the conditions");
         }
 
         public IEnumerable<Bus> GetAllBuses()
@@ -48,7 +48,7 @@ namespace BL
             }
             catch (DO.BadBusException e)
             {
-                throw new NotImplementedException(e.Message);
+                throw new BOBadBusException(e.Message, license);
             }
         }
 
@@ -62,7 +62,7 @@ namespace BL
             }
             catch (DO.BadBusException e)
             {
-                throw new NotImplementedException(e.Message);
+                throw new BOBadBusException(e.Message, myBus.License);
             }
         }
 
@@ -74,7 +74,7 @@ namespace BL
             }
             catch (DO.BadBusException e)
             {
-                throw new NotImplementedException(e.Message);
+                throw new BOBadBusException(e.Message, busToUpdate.License);
             }
         }
         public void DeleteBus(int license)
@@ -85,7 +85,7 @@ namespace BL
             }
             catch (DO.BadBusException e)
             {
-                throw new NotImplementedException(e.Message);
+                throw new BOBadBusException(e.Message, license);
             }
         }
         #endregion
@@ -112,7 +112,7 @@ namespace BL
                                                select item;
             if (myLinesList != null)
                 return myLinesList;
-            throw new NotImplementedException("No Line meets the conditions");
+            throw new BOReadDataException("No Line meets the conditions");
         }
         public BusLine GetBusLine(int id)
         {
@@ -124,7 +124,7 @@ namespace BL
             }
             catch (DO.BadLineException e)
             {
-                throw new NotImplementedException(e.Message);
+                throw new BOBadLineException(e.Message, id);
             }
         }
 
@@ -136,7 +136,7 @@ namespace BL
             }
             catch (DO.BadLineException e)
             {
-                throw new NotImplementedException(e.Message);
+                throw new BOBadLineException(e.Message, tmpBusLine.LineNumber);
             }
         }
         public void UpdateLine(BusLine lineToUpdate)
@@ -147,7 +147,7 @@ namespace BL
             }
             catch (DO.BadLineException e)
             {
-                throw new NotImplementedException(e.Message);
+                throw new BOBadLineException(e.Message, lineToUpdate.LineNumber);
             }
         }
 
@@ -159,7 +159,7 @@ namespace BL
             }
             catch (DO.BadLineException e)
             {
-                throw new NotImplementedException(e.Message);
+                throw new BOBadLineException(e.Message, lineNumber);
             }
         }
         #endregion
@@ -184,7 +184,7 @@ namespace BL
                                                   where predicate(item)
                                                   select item;
             if (myStationsList == null)
-                throw new NotImplementedException("No Station meets the conditions");
+                throw new BOReadDataException("No Station meets the conditions");
             return myStationsList;
         }
         public Station GetStation(int id)
@@ -197,7 +197,7 @@ namespace BL
             }
             catch (DO.BadStationException e)
             {
-                throw new NotImplementedException(e.Message);
+                throw new BOBadStationException(e.Message, id);
             }
         }
 
@@ -211,7 +211,7 @@ namespace BL
             }
             catch (DO.BadStationException e)
             {
-                throw new NotImplementedException(e.Message);
+                throw new BOBadStationException(e.Message, tmpStation.StationId);
             }
         }
         public void DeleteStation(int id)
@@ -222,7 +222,7 @@ namespace BL
             }
             catch (DO.BadStationException e)
             {
-                throw new NotImplementedException(e.Message);
+                throw new BOBadStationException(e.Message, id);
             }
         }
         #endregion
@@ -247,7 +247,7 @@ namespace BL
                                         where predicate(userBO)
                                         select userBO;
             if (myUsers == null)
-                throw new NotImplementedException("No User meets the conditions");
+                throw new BOReadDataException("No User meets the conditions");
             return myUsers;
         }
         public User GetUser(string userName)
@@ -260,7 +260,7 @@ namespace BL
             }
             catch (DO.BadUserException e)
             {
-                throw new NotImplementedException(e.Message);
+                throw new BOBadUserException(e.Message, userName);
             }
         }
 
@@ -273,7 +273,7 @@ namespace BL
             }
             catch (DO.BadUserException e)
             {
-                throw new NotImplementedException(e.Message);
+                throw new BOBadUserException(e.Message, userToUpdate.UserName);
             }
         }
 
@@ -286,7 +286,7 @@ namespace BL
             }
             catch (DO.BadUserException e)
             {
-                throw new NotImplementedException(e.Message);
+                throw new BOBadUserException(e.Message, tmpUser.UserName);
             }
         }
         public void DeleteUser(string userName)
@@ -297,7 +297,7 @@ namespace BL
             }
             catch (DO.BadUserException e)
             {
-                throw new NotImplementedException(e.Message);
+                throw new BOBadUserException(e.Message, userName);
             }
         }
         #endregion
@@ -395,97 +395,143 @@ namespace BL
 
         public IEnumerable<BusInTravel> GetAllBusInTravelBy(Predicate<BusInTravel> predicate)
         {
-            IEnumerable<BusInTravel> myBusInTravel = from busInTravel in DataSource.busInTravelList
-                                                     where busInTravel.MyActivity == Activity.ON && predicate(busInTravel)
-                                                     select busInTravel.Clone();
+            IEnumerable<BusInTravel> myBusInTravel = from busInTravel in dal.GetAllBusInTravel()
+                                                     let busInTravelBO = BusInTravelDOBOAdapter(busInTravel)
+                                                     where predicate(busInTravelBO)
+                                                     select busInTravelBO;
             if (myBusInTravel != null)
                 return myBusInTravel;
-            throw new ReadDataException("No BusInTravel meets the conditions");
+            throw new BOReadDataException("No BusInTravel meets the conditions");
         }
 
         public BusInTravel GetBusInTravel(int license, int line, DateTime departureTime)
         {
-            BusInTravel myBusInTravel = DataSource.busInTravelList.FirstOrDefault(
-                busInTravel => busInTravel.License == license && busInTravel.Line == line && busInTravel.DepartureTime == departureTime && busInTravel.MyActivity == Activity.ON);
-            if (myBusInTravel != null)
-                return myBusInTravel.Clone();
-            throw new BadBusInTravelException("Bus In Travel doesn't exist", license, line, departureTime);
+            DO.BusInTravel busInTravelDO;
+            try
+            {
+                busInTravelDO = dal.GetBusInTravel(license, line,departureTime);
+                return BusInTravelDOBOAdapter(busInTravelDO);
+            }
+            catch (DO.BadBusInTravelException e)
+            {
+                throw new BOBadBusInTravelException(e.Message, line, license, departureTime);
+            }
         }
 
         public void AddBusInTravel(BusInTravel tmpBusInTravel)
         {
-            if (DataSource.busInTravelList.FirstOrDefault(
-                busInTravel => busInTravel.License == tmpBusInTravel.License && busInTravel.Line == tmpBusInTravel.Line && busInTravel.DepartureTime == tmpBusInTravel.DepartureTime) != null)
+            DO.BusInTravel busInTravelDO = new DO.BusInTravel();
+            try
             {
-                BusInTravel myBusInTravel = tmpBusInTravel.Clone();
-                myBusInTravel.Key = Config.BusInTravelCounter;
-                DataSource.busInTravelList.Add(myBusInTravel);
+                dal.AddBusInTravel((DO.BusInTravel)tmpBusInTravel.CopyPropertiesToNew(typeof(DO.BusInTravel)));
             }
-            throw new BadBusInTravelException("Bus In Travel already exist", tmpBusInTravel.License, tmpBusInTravel.Line, tmpBusInTravel.DepartureTime);
+            catch (DO.BadBusInTravelException e)
+            {
+                throw new BOBadBusInTravelException(e.Message, tmpBusInTravel.Line, tmpBusInTravel.License, tmpBusInTravel.DepartureTime);
+            }
         }
 
         public void DeleteBusInTravel(int license, int line, DateTime departureTime)
         {
-            BusInTravel tmpBusInTravel = DataSource.busInTravelList.FirstOrDefault(busInTravel => busInTravel.License == license && busInTravel.Line == line && busInTravel.MyActivity == Activity.ON);
-            if (tmpBusInTravel != null)
-                tmpBusInTravel.MyActivity = Activity.OFF;
-            throw new BadBusInTravelException("Bus In Travel doesn't exist", tmpBusInTravel.License, tmpBusInTravel.Line, tmpBusInTravel.DepartureTime);
+            try
+            {
+                dal.DeleteBusInTravel(license, line, departureTime);
+            }
+            catch (DO.BadBusInTravelException e)
+            {
+                throw new BOBadBusInTravelException(e.Message, line, license, departureTime);
+            }
         }
 
         public void UpdateBusInTravel(BusInTravel busInTravelToUpdate)
         {
-            throw new NotImplementedException();
+            DO.BusInTravel busInTravelDO = new DO.BusInTravel();
+            try
+            {
+                dal.AddBusInTravel((DO.BusInTravel)busInTravelToUpdate.CopyPropertiesToNew(typeof(DO.BusInTravel)));
+            }
+            catch (DO.BadBusInTravelException e)
+            {
+                throw new BOBadBusInTravelException(e.Message, busInTravelToUpdate.Line, busInTravelToUpdate.License, busInTravelToUpdate.DepartureTime);
+            }
         }
         #endregion
 
         #region LineDeparting
+        LineDeparting LineDepartingDOBOAdapter(DO.LineDeparting lineDepartingDO)
+        {
+            LineDeparting lineDepartingBO = new LineDeparting();
+            lineDepartingDO.CopyPropertiesTo(lineDepartingBO);
+            return lineDepartingBO;
+        }
+
         public IEnumerable<LineDeparting> GetAllLineDeparting()
         {
-            return from lineDeparting in DataSource.lineDepartingList
-                   where lineDeparting.MyActivity == Activity.ON
-                   select lineDeparting.Clone();
+            return from lineDeparting in dal.GetAllLineDeparting()                 
+                   select LineDepartingDOBOAdapter(lineDeparting);
         }
 
         public IEnumerable<LineDeparting> GetAllLineDepartingBy(Predicate<LineDeparting> predicate)
         {
-            IEnumerable<LineDeparting> mylineDeparting = from lineDeparting in DataSource.lineDepartingList
-                                                         where lineDeparting.MyActivity == Activity.ON && predicate(lineDeparting)
-                                                         select lineDeparting.Clone();
+            IEnumerable<LineDeparting> mylineDeparting = from lineDeparting in dal.GetAllLineDeparting()
+                                                         let lineDepartingBO = LineDepartingDOBOAdapter(lineDeparting)
+                                                         where predicate(lineDepartingBO)
+                                                         select lineDepartingBO;
             if (mylineDeparting != null)
                 return mylineDeparting;
-            throw new ReadDataException("No LineDeparting meets the conditions");
+            throw new BOReadDataException("No LineDeparting meets the conditions");
         }
 
         public LineDeparting GetLineDeparting(int lineNumber, DateTime startTime)
         {
-            LineDeparting line = DataSource.lineDepartingList.FirstOrDefault
-                (lineDeparting => lineDeparting.LineNumber == lineNumber && lineDeparting.StartTime == startTime && lineDeparting.MyActivity == Activity.ON);
-            if (line != null)
-                return line.Clone();
-            throw new BadLineDepartingException("Linedeparting doesn't exist ", lineNumber, startTime);
+            DO.LineDeparting lineDepartingDO;
+            try
+            {
+                lineDepartingDO = dal.GetLineDeparting(lineNumber, startTime);
+                return LineDepartingDOBOAdapter(lineDepartingDO);
+            }
+            catch (DO.BadLineDepartingException e)
+            {
+                throw new BOBadLineDepartingException(e.Message, lineNumber, startTime);
+            }
         }
 
         public void AddLineDeparting(LineDeparting tmpLineDeparting)
         {
-            LineDeparting line = DataSource.lineDepartingList.FirstOrDefault
-                (lineDeparting => lineDeparting.LineNumber == tmpLineDeparting.LineNumber && lineDeparting.StartTime == tmpLineDeparting.StartTime && lineDeparting.MyActivity == Activity.ON);
-            if (line == null)
-                DataSource.lineDepartingList.Add(tmpLineDeparting.Clone());
-            throw new BadLineDepartingException("Line Departing already exists", tmpLineDeparting.LineNumber, tmpLineDeparting.StartTime);
+            DO.LineDeparting busInTravelDO = new DO.LineDeparting();
+            try
+            {
+                dal.AddLineDeparting((DO.LineDeparting)tmpLineDeparting.CopyPropertiesToNew(typeof(DO.LineDeparting)));
+            }
+            catch (DO.BadLineDepartingException e)
+            {
+                throw new BOBadLineDepartingException(e.Message, tmpLineDeparting.LineNumber, tmpLineDeparting.StartTime);
+            }
         }
 
         public void DeleteLineDeparting(int lineNumber, DateTime startTime)
         {
-            LineDeparting line = DataSource.lineDepartingList.FirstOrDefault
-                (lineDeparting => lineDeparting.LineNumber == lineNumber && lineDeparting.StartTime == startTime && lineDeparting.MyActivity == Activity.ON);
-            if (line != null)
-                line.MyActivity = Activity.OFF;
-            throw new BadLineDepartingException("LineDeparture doesn't exist", lineNumber, startTime);
+            try
+            {
+                dal.DeleteLineDeparting(lineNumber, startTime);
+            }
+            catch (DO.BadLineDepartingException e)
+            {
+                throw new BOBadLineDepartingException(e.Message, lineNumber, startTime);
+            }
         }
 
         public void UpdateLineDeparting(LineDeparting lineDepartingToUpdate)
         {
-            throw new NotImplementedException();
+            DO.LineDeparting busInTravelDO = new DO.LineDeparting();
+            try
+            {
+                dal.UpdateLineDeparting((DO.LineDeparting)lineDepartingToUpdate.CopyPropertiesToNew(typeof(DO.LineDeparting)));
+            }
+            catch (DO.BadLineDepartingException e)
+            {
+                throw new BOBadLineDepartingException(e.Message, lineDepartingToUpdate.LineNumber, lineDepartingToUpdate.StartTime);
+            }
         }
         #endregion
 
