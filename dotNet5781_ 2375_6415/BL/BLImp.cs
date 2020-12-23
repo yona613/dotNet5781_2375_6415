@@ -4,82 +4,94 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DalApi;
-using DO;
-using DS;
+using BLApi;
+using BO;
 
-
-namespace DalObject
+namespace BL
 {
-    sealed class DalObject : IDL
+
+    class BLImp : IBL
     {
-        #region singelton
-        static readonly DalObject instance = new DalObject();
-        static DalObject() { }// static ctor to ensure instance init is done just before first usage
-        DalObject() { } // default => private
-        public static DalObject Instance { get => instance; }// The public Instance property to use
-        #endregion
+        IDL dal = DalFactory.GetDal();
 
         #region Bus
+        Bus BusDoBOAdapter(DO.Bus busDO)
+        {
+            Bus busBO = new Bus();
+            busDO.CopyPropertiesTo(busBO);
+            return busBO;
+        }
+
         public IEnumerable<Bus> GetAllBuseBy(Predicate<Bus> predicate)
         {
-            IEnumerable<Bus> allBuses = from Bus in DataSource.busList
-                                        where predicate(Bus)
-                                        select Bus.Clone();
-            if (allBuses != null)
-            {
-                return allBuses;
-            }
-            throw new ReadDataException("No Bus meets the conditions");
+            IEnumerable<Bus> busList = from item in dal.GetAllBuses()
+                                       let busBO = item.CopyPropertiesToNew(typeof(Bus))
+                                       where predicate((Bus)busBO)
+                                       select (Bus)busBO;
+            if (busList != null)
+                return busList;
+            throw new NotImplementedException();  
         }
 
         public IEnumerable<Bus> GetAllBuses()
         {
-            return from Bus in DataSource.busList
-                   select Bus.Clone();
+            return from item in dal.GetAllBuses()
+                   select BusDoBOAdapter(item);
         }
         public Bus GetBus(int license)
         {
-            Bus tmpBus = DataSource.busList.Find(bus => bus.License == license);
-            if (tmpBus != null)
+            DO.Bus busDO;
+            try
             {
-                return tmpBus.Clone();
+                busDO = dal.GetBus(license);
+                return BusDoBOAdapter(busDO);
             }
-            throw new BadBusException("Bus doesn't exist", license);
+            catch (DO.BadBusException e)
+            {
+                throw new NotImplementedException(e.Message);
+            }
         }
 
         public void AddBus(Bus myBus)
         {
-            if (DataSource.busList.FirstOrDefault(bus => bus.License == myBus.License) != null)
-                throw new BadBusException("Bus already exist", myBus.License);
-            DataSource.busList.Add(myBus.Clone());
+            DO.Bus busDo = new DO.Bus();
+            myBus.CopyPropertiesTo(busDo);
+            try
+            {
+                dal.AddBus(busDo);
+            }
+            catch (DO.BadBusException e)
+            {
+                throw new NotImplementedException(e.Message);
+            }
         }
 
         public void UpdateBus(Bus busToUpdate)
         {
-            Bus tmpBus = DataSource.busList.FirstOrDefault(bus => bus.License == busToUpdate.License);
-            if (tmpBus == null)
-                throw new BadBusException("Bus doesn't exist", busToUpdate.License);
-            DeleteBus(tmpBus.License);
-            AddBus(busToUpdate);
+            try
+            {
+                dal.UpdateBus((DO.Bus)busToUpdate.CopyPropertiesToNew(typeof(DO.Bus)));
+            }
+            catch (DO.BadBusException e)
+            {
+                throw new NotImplementedException(e.Message);
+            }
         }
-
-        /*public void UpdateBus(int license, Action<Bus> update)
-        {
-            Bus tmpBus = DataSource.busList.FirstOrDefault(bus => bus.License == license);
-            if (tmpBus == null)
-                throw new BadBusException("Bus doesn't exist", license);
-            update(tmpBus);
-        }*/
         public void DeleteBus(int license)
         {
-            Bus tmpBus = DataSource.busList.FirstOrDefault(bus => bus.License == license);
-            if (tmpBus == null)
-                throw new BadBusException("Bus doesn't exist", license);
-            DataSource.busList.Remove(tmpBus);
+            try
+            {
+                dal.DeleteBus(license);
+            }
+            catch (DO.BadBusException e)
+            {
+                throw new NotImplementedException(e.Message);
+            }
         }
         #endregion
 
         #region Line
+
         public IEnumerable<BusLine> GetAllBusLines()
         {
             return from busLine in DataSource.lineList
@@ -111,12 +123,9 @@ namespace DalObject
             myBusLine.Key = Config.BusLineCounter;
             DataSource.lineList.Add(myBusLine);
         }
-        public void UpdateLine(int lineNumber, Action<BusLine> update)
+        public void UpdateLine(BusLine lineToUpdate)
         {
-            BusLine tmpLine = DataSource.lineList.FirstOrDefault(line => line.LineNumber == lineNumber);
-            if (tmpLine == null)
-                throw new BadLineException("the Line doesn't exist", lineNumber);
-            update(tmpLine);
+            throw new NotImplementedException();
         }
 
         public void DeleteLine(int lineNumber)
@@ -154,7 +163,7 @@ namespace DalObject
 
         public void AddStation(Station tmpStation)
         {
-            if (DataSource.stationList.FirstOrDefault(station =>station.StationId == tmpStation.StationId) != null)
+            if (DataSource.stationList.FirstOrDefault(station => station.StationId == tmpStation.StationId) != null)
                 throw new BadStationException("Station already exist", tmpStation.StationId);
             DataSource.stationList.Add(tmpStation.Clone());
         }
@@ -179,7 +188,7 @@ namespace DalObject
             IEnumerable<User> myUsers = from user in DataSource.userList
                                         where predicate(user)
                                         select user.Clone();
-            if(myUsers == null)
+            if (myUsers == null)
                 throw new ReadDataException("No User meets the conditions");
             return myUsers;
         }
@@ -191,12 +200,9 @@ namespace DalObject
             throw new BadUserException("User doesn't exist", userName);
         }
 
-        public void UpdateUser(string userName, Action<User> update)
+        public void UpdateUser(User userToUpdate)
         {
-            User myUser = DataSource.userList.FirstOrDefault(user => user.UserName == userName);
-            if (myUser != null)
-                update(myUser);
-            throw new BadUserException("User doesn't exist", userName);
+            throw new NotImplementedException();
         }
 
         public void AddUser(User tmpUser)
@@ -234,10 +240,10 @@ namespace DalObject
         public LineStation GetLineStation(int stationNumber, int lineNumber)
         {
             LineStation myLineStation = DataSource.linestationList.FirstOrDefault(
-                station =>station.LineNumber == lineNumber && station.StationNumber == stationNumber);
+                station => station.LineNumber == lineNumber && station.StationNumber == stationNumber);
             if (myLineStation != null)
                 return myLineStation.Clone();
-            throw new BadLineStationException("Line Station doesn't exist", lineNumber,stationNumber);
+            throw new BadLineStationException("Line Station doesn't exist", lineNumber, stationNumber);
         }
 
         public void AddLineStation(LineStation tmpLineStation)
@@ -255,13 +261,11 @@ namespace DalObject
             throw new BadLineStationException("Line Station doesn't exist", lineNumber, stationNumber);
         }
 
-        public void UpdateLineStation(int stationNumber, int lineNumber, Action<LineStation> update)
+        public void UpdateLineStation(LineStation lineStationToUpdate)
         {
-            LineStation tmpLineStation = DataSource.linestationList.FirstOrDefault(station => station.LineNumber == lineNumber && station.StationNumber == stationNumber);
-            if (tmpLineStation != null)
-                update(tmpLineStation);
-            throw new BadLineStationException("Line Station doesn't exist", lineNumber, stationNumber);
+            throw new NotImplementedException();
         }
+
         #endregion
 
         #region BusInTravel
@@ -299,7 +303,7 @@ namespace DalObject
                 BusInTravel myBusInTravel = tmpBusInTravel.Clone();
                 myBusInTravel.Key = Config.BusInTravelCounter;
                 DataSource.busInTravelList.Add(myBusInTravel);
-            }        
+            }
             throw new BadBusInTravelException("Bus In Travel already exist", tmpBusInTravel.License, tmpBusInTravel.Line, tmpBusInTravel.DepartureTime);
         }
 
@@ -311,12 +315,9 @@ namespace DalObject
             throw new BadBusInTravelException("Bus In Travel doesn't exist", tmpBusInTravel.License, tmpBusInTravel.Line, tmpBusInTravel.DepartureTime);
         }
 
-        public void UpdateBusInTravel(int license, int line, DateTime departureTime, Action<BusInTravel> update)
+        public void UpdateBusInTravel(BusInTravel busInTravelToUpdate)
         {
-            BusInTravel tmpBusInTravel = DataSource.busInTravelList.FirstOrDefault(busInTravel => busInTravel.License == license && busInTravel.Line == line && busInTravel.MyActivity == Activity.ON);
-            if (tmpBusInTravel != null)
-                update(tmpBusInTravel);
-            throw new BadBusInTravelException("Bus In Travel doesn't exist", tmpBusInTravel.License, tmpBusInTravel.Line, tmpBusInTravel.DepartureTime);
+            throw new NotImplementedException();
         }
         #endregion
 
@@ -353,7 +354,7 @@ namespace DalObject
                 (lineDeparting => lineDeparting.LineNumber == tmpLineDeparting.LineNumber && lineDeparting.StartTime == tmpLineDeparting.StartTime && lineDeparting.MyActivity == Activity.ON);
             if (line == null)
                 DataSource.lineDepartingList.Add(tmpLineDeparting.Clone());
-            throw new BadLineDepartingException("Line Departing already exists" , tmpLineDeparting.LineNumber, tmpLineDeparting.StartTime);
+            throw new BadLineDepartingException("Line Departing already exists", tmpLineDeparting.LineNumber, tmpLineDeparting.StartTime);
         }
 
         public void DeleteLineDeparting(int lineNumber, DateTime startTime)
@@ -362,16 +363,12 @@ namespace DalObject
                 (lineDeparting => lineDeparting.LineNumber == lineNumber && lineDeparting.StartTime == startTime && lineDeparting.MyActivity == Activity.ON);
             if (line != null)
                 line.MyActivity = Activity.OFF;
-            throw new BadLineDepartingException("LineDeparture doesn't exist" , lineNumber, startTime);
+            throw new BadLineDepartingException("LineDeparture doesn't exist", lineNumber, startTime);
         }
 
-        public void UpdateLineDeparting(int lineNumber, DateTime startTime, Action<LineDeparting> update)
+        public void UpdateLineDeparting(LineDeparting lineDepartingToUpdate)
         {
-            LineDeparting line = DataSource.lineDepartingList.FirstOrDefault
-                (lineDeparting => lineDeparting.LineNumber == lineNumber && lineDeparting.StartTime == startTime && lineDeparting.MyActivity == Activity.ON);
-            if (line != null)
-                update(line);
-            throw new BadLineDepartingException("LineDeparture doesn't exist", lineNumber, startTime);
+            throw new NotImplementedException();
         }
         #endregion
 
@@ -420,13 +417,9 @@ namespace DalObject
             throw new BadPairStationException("Pair Station doesn't exist", firstStation, secondStation);
         }
 
-        public void UpdatePairStations(int firstStation, int secondStation, Action<PairStations> update)
+        public void UpdatePairStations(PairStations pairStationsToUpdate)
         {
-            PairStations pair = DataSource.PairStationList.FirstOrDefault
-               (pairStations => pairStations.FirstStationNumber == firstStation && pairStations.LastStationNumber == secondStation && pairStations.MyActivity == Activity.ON);
-            if (pair != null)
-                update(pair);
-            throw new BadPairStationException("Pair Station doesn't exist", firstStation, secondStation);
+            throw new NotImplementedException();
         }
 
         #endregion
@@ -484,6 +477,10 @@ namespace DalObject
             if (tmpUserTrip != null)
                 update(tmpUserTrip);
             throw new BadUserTripException("User Trip doesn't exist", tmpUserTrip.UserName);
+        }
+        public void UpdateUserTrip(UserTrip userTripToUpdate)
+        {
+            throw new NotImplementedException();
         }
         #endregion
     }
