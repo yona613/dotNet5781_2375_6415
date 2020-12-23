@@ -97,6 +97,7 @@ namespace BL
             lineDO.CopyPropertiesTo(lineBO);
             return lineBO;
         }
+
         public IEnumerable<BusLine> GetAllBusLines()
         {
             return from busLine in dal.GetAllBusLines()
@@ -488,115 +489,156 @@ namespace BL
         }
         #endregion
 
-        #region PairStation
+        #region PairStations
+        PairStations PairStationsDoBOAdapter(DO.PairStations pairStationsDO)
+        {
+            PairStations pairStationsBO = new PairStations();
+            pairStationsDO.CopyPropertiesTo(pairStationsBO);
+            return pairStationsBO;
+        }
+
         public IEnumerable<PairStations> GetAllPairStations()
         {
-            return from pairstation in DataSource.PairStationList
-                   where pairstation.MyActivity == Activity.ON
-                   select pairstation.Clone();
+            return from pairStations in dal.GetAllPairStations()
+                   select PairStationsDoBOAdapter(pairStations);
         }
 
         public IEnumerable<PairStations> GetAllPairStationsBy(Predicate<PairStations> predicate)
         {
-            IEnumerable<PairStations> pairStations = from pairstation in DataSource.PairStationList
-                                                     where pairstation.MyActivity == Activity.ON && predicate(pairstation)
-                                                     select pairstation.Clone();
-            if (pairStations != null)
-                return pairStations;
-            throw new ReadDataException("No Pair station meets the conditions");
+            IEnumerable<PairStations> myPairStationsList = from pairStations in dal.GetAllPairStations()
+                                                   let item = PairStationsDoBOAdapter(pairStations)
+                                                   where predicate(item)
+                                                   select item;
+            if (myPairStationsList != null)
+                return myPairStationsList;
+            throw new BOReadDataException("No Pair Stations meets the conditions");
         }
 
-        public PairStations GetPairStations(int firstStation, int secondStation)
+        public PairStations GetPairStations(int firstStations, int secondStation)
         {
-            PairStations pair = DataSource.PairStationList.FirstOrDefault
-                (pairStations => pairStations.FirstStationNumber == firstStation && pairStations.LastStationNumber == secondStation && pairStations.MyActivity == Activity.ON);
-            if (pair != null)
-                return pair.Clone();
-            throw new BadPairStationException("Pair Station doesn't exist", firstStation, secondStation);
+            DO.PairStations pairStationsDo;
+            try
+            {
+                pairStationsDo = dal.GetPairStations(firstStations, secondStation);
+                return PairStationsDoBOAdapter(pairStationsDo);
+            }
+            catch (DO.BadPairStationException e)
+            {
+                throw new BOBadPairStationException(e.Message, firstStations, secondStation);
+            }
         }
 
         public void AddPairStations(PairStations tmpPairStations)
         {
-            PairStations pair = DataSource.PairStationList.FirstOrDefault
-               (pairStations => pairStations.FirstStationNumber == tmpPairStations.FirstStationNumber && pairStations.LastStationNumber == tmpPairStations.LastStationNumber && pairStations.MyActivity == Activity.ON);
-            if (pair == null)
-                DataSource.PairStationList.Add(tmpPairStations.Clone());
-            throw new BadPairStationException("Pair Station already exist", tmpPairStations.FirstStationNumber, tmpPairStations.LastStationNumber);
+            try
+            {
+                dal.AddPairStations((DO.PairStations)tmpPairStations.CopyPropertiesToNew(typeof(DO.PairStations)));
+            }
+            catch (DO.BadPairStationException e)
+            {
+                throw new BOBadPairStationException(e.Message, tmpPairStations.FirstStationNumber, tmpPairStations.LastStationNumber);
+            }
         }
 
         public void DeletePairStations(int firstStation, int secondStation)
         {
-            PairStations pair = DataSource.PairStationList.FirstOrDefault
-               (pairStations => pairStations.FirstStationNumber == firstStation && pairStations.LastStationNumber == secondStation && pairStations.MyActivity == Activity.ON);
-            if (pair != null)
-                pair.MyActivity = Activity.OFF;
-            throw new BadPairStationException("Pair Station doesn't exist", firstStation, secondStation);
+            try
+            {
+                dal.DeletePairStations(firstStation, firstStation);
+            }
+            catch (DO.BadPairStationException e)
+            {
+                throw new BOBadPairStationException(e.Message, firstStation, firstStation);
+            }
         }
 
         public void UpdatePairStations(PairStations pairStationsToUpdate)
         {
-            throw new NotImplementedException();
+            try
+            {
+                dal.UpdatePairStations((DO.PairStations)pairStationsToUpdate.CopyPropertiesToNew(typeof(DO.PairStations)));
+            }
+            catch (DO.BadPairStationException e)
+            {
+                throw new BOBadPairStationException(e.Message, pairStationsToUpdate.FirstStationNumber, pairStationsToUpdate.LastStationNumber);
+            }
         }
 
         #endregion
 
         #region UserTrip
+        UserTrip UserTripDoBOAdapter(DO.UserTrip userTripDO)
+        {
+            UserTrip userTripBO = new UserTrip();
+            userTripDO.CopyPropertiesTo(userTripBO);
+            return userTripBO;
+        }
+
         public IEnumerable<UserTrip> GetAllUserTrip()
         {
-            return from userTrip in DataSource.userTripList
-                   where userTrip.MyActivity == Activity.ON
-                   select userTrip.Clone();
+            return from userTrip in dal.GetAllUserTrip()
+                   select UserTripDoBOAdapter(userTrip);
         }
 
         public IEnumerable<UserTrip> GetAllUserTripBy(Predicate<UserTrip> predicate)
         {
-            IEnumerable<UserTrip> myUserTrip = from UserTrip in DataSource.userTripList
-                                               where UserTrip.MyActivity == Activity.ON && predicate(UserTrip)
-                                               select UserTrip.Clone();
-            if (myUserTrip != null)
-                return myUserTrip;
-            throw new ReadDataException("No UserTrip meets the conditions");
+            IEnumerable<UserTrip> myUserTripList = from userTrip in dal.GetAllUserTrip()
+                                               let item = UserTripDoBOAdapter(userTrip)
+                                               where predicate(item)
+                                               select item;
+            if (myUserTripList != null)
+                return myUserTripList;
+            throw new BOBadUserTripException("No Line meets the conditions");
         }
 
         public UserTrip GetUserTrip(string name)
         {
-            UserTrip myUserTrip = DataSource.userTripList.FirstOrDefault(
-                userTrip => userTrip.UserName == name && userTrip.MyActivity == Activity.ON);
-            if (myUserTrip != null)
-                return myUserTrip.Clone();
-            throw new BadUserTripException("User Trip doesn't exist", name);
+            DO.UserTrip userTripDo;
+            try
+            {
+                userTripDo = dal.GetUserTrip(name);
+                return UserTripDoBOAdapter(userTripDo);
+            }
+            catch (DO.BadUserTripException e)
+            {
+                throw new BOBadUserTripException(e.Message);
+            }
         }
 
         public void AddUserTrip(UserTrip tmpUserTrip)
         {
-            if (DataSource.userTripList.FirstOrDefault(
-                            userTrip => userTrip.UserName == tmpUserTrip.UserName && userTrip.MyActivity == Activity.ON) != null)
+            try
             {
-                UserTrip myUserTrip = tmpUserTrip.Clone();
-                myUserTrip.Key = Config.UserTripCounter;
-                DataSource.userTripList.Add(myUserTrip);
+                dal.AddUserTrip((DO.UserTrip)tmpUserTrip.CopyPropertiesToNew(typeof(DO.UserTrip)));
             }
-            throw new BadUserTripException("User Trip already exist", tmpUserTrip.UserName);
+            catch (DO.BadUserTripException e)
+            {
+                throw new BOBadUserTripException(e.Message);
+            }
         }
 
         public void DeleteUserTrip(string name)
         {
-            UserTrip tmpUserTrip = DataSource.userTripList.FirstOrDefault(userTrip => userTrip.UserName == name && userTrip.MyActivity == Activity.ON);
-            if (tmpUserTrip != null)
-                tmpUserTrip.MyActivity = Activity.OFF;
-            throw new BadUserTripException("User Trip doesn't exist", tmpUserTrip.UserName);
+            try
+            {
+                dal.DeleteUserTrip(name);
+            }
+            catch (DO.BadLineException e)
+            {
+                throw new NotImplementedException(e.Message);
+            }
         }
 
-        public void UpdateUserTrip(string name, Action<UserTrip> update)
-        {
-            UserTrip tmpUserTrip = DataSource.userTripList.FirstOrDefault(userTrip => userTrip.UserName == name && userTrip.MyActivity == Activity.ON);
-            if (tmpUserTrip != null)
-                update(tmpUserTrip);
-            throw new BadUserTripException("User Trip doesn't exist", tmpUserTrip.UserName);
-        }
         public void UpdateUserTrip(UserTrip userTripToUpdate)
         {
-            throw new NotImplementedException();
+            try
+            {
+                dal.UpdateUserTrip((DO.UserTrip)userTripToUpdate.CopyPropertiesToNew(typeof(DO.UserTrip)));
+            }
+            catch (DO.BadUserTripException e)
+            {
+                throw new BOBadUserTripException(e.Message);
+            }
         }
         #endregion
     }
