@@ -23,7 +23,7 @@ namespace DalApi
         IEnumerable<BusLine> GetAllBusLinesBy(Predicate<BusLine> predicate);
         BusLine GetBusLine(int id);
         void AddLine(BusLine tmpBusLine);
-        void UpdateLine(int lineNumber, Action<BusLine> update);
+        void UpdateLine(BusLine lineToUpdate);
         void DeleteLine(int id);
         #endregion
 
@@ -41,7 +41,7 @@ namespace DalApi
         User GetUser(string userName);
         void AddUser(User tmpUser);
         void DeleteUser(string name);
-        void UpdateUser(string name, Action<User> update);
+        void UpdateUser(User userToUpdate);
         #endregion
 
         #region LineStation
@@ -50,7 +50,7 @@ namespace DalApi
         LineStation GetLineStation(int stationNumber, int lineNumber);
         void AddLineStation(LineStation tmpLineStation);
         void DeleteLineStation(int stationNumber, int lineNumber);
-        void UpdateLineStation(int stationNumber, int lineNumber, Action<LineStation> update);
+        void UpdateLineStation(LineStation lineStationToUpdate);
         #endregion
 
         #region BusInTravel
@@ -59,7 +59,7 @@ namespace DalApi
         BusInTravel GetBusInTravel(int license, int lineNumber, DateTime departureTime);
         void AddBusInTravel(BusInTravel tmpBusInTravel);
         void DeleteBusInTravel(int license, int lineNumber, DateTime departureTime);
-        void UpdateBusInTravel(int license, int lineNumber, DateTime departureTime, Action<BusInTravel> update);
+        void UpdateBusInTravel(BusInTravel busInTravelToUpdate);
         #endregion
 
         #region LineDeparting
@@ -68,7 +68,7 @@ namespace DalApi
         LineDeparting GetLineDeparting(int lineNumber, DateTime startTime);
         void AddLineDeparting(LineDeparting tmpLineDeparting);
         void DeleteLineDeparting(int lineNumber, DateTime startTime);
-        void UpdateLineDeparting(int lineNumber, DateTime startTime, Action<LineDeparting> update);
+        void UpdateLineDeparting(LineDeparting lineDepartingToUpdate);
         #endregion
 
         #region PairStations
@@ -77,7 +77,7 @@ namespace DalApi
         PairStations GetPairStations(int firstStation, int secondStation);
         void AddPairStations(PairStations tmpPairStations);
         void DeletePairStations(int firstStation, int secondStation);
-        void UpdatePairStations(int firstStation, int secondStation, Action<PairStations> update);
+        void UpdatePairStations(PairStations pairStationsToUpdate);
         #endregion
 
         #region UserTrip
@@ -86,7 +86,7 @@ namespace DalApi
         UserTrip GetUserTrip(string name);
         void AddUserTrip(UserTrip tmpUserTrip);
         void DeleteUserTrip(string name);
-        void UpdateUserTrip(string name, Action<UserTrip> update);
+        void UpdateUserTrip(UserTrip userTripToUpdate);
         #endregion
     }
 }
