@@ -23,6 +23,7 @@ namespace BLApi
         IEnumerable<BusLine> GetAllBusLines();
         IEnumerable<BusLine> GetAllBusLinesBy(Predicate<BusLine> predicate);
         BusLine GetBusLine(int id);
+        void AddLine(BusLine tmpBusLine, Station firstStation, Station lastStation);
         void AddLine(BusLine tmpBusLine);
         void UpdateLine(BusLine lineToUpdate);
         void DeleteLine(int id);

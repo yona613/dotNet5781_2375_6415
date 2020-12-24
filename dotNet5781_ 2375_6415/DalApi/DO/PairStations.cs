@@ -24,9 +24,9 @@ namespace DO
             set { lastStationNumber = value; }
         }
 
-        private float distance;
+        private double distance;
 
-        public float Distance
+        public double Distance
         {
             get { return distance; }
             set { distance = value; }

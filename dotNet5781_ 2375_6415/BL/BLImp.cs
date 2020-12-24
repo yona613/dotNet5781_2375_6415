@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Device.Location;
 using DalApi;
 using BLApi;
 using BO;
 
 namespace BL
 {
-
     class BLImp : IBL
     {
         IDL dal = DalFactory.GetDal();
@@ -128,8 +128,14 @@ namespace BL
             }
         }
 
-        public void AddLine(BusLine tmpBusLine)
+        public void AddLine(BusLine tmpBusLine, Station firstStation, Station lastStation)
         {
+            AddStation(firstStation);
+            AddStation(lastStation);
+            AddLineStation(new LineStation() { Index = 1, LineNumber = tmpBusLine.LineNumber, StationNumber = tmpBusLine.FirstStation });
+            AddLineStation(new LineStation() { Index = 2, LineNumber = tmpBusLine.LineNumber, StationNumber = tmpBusLine.LastStation });
+            double distance = firstStation.Coordinates.GetDistanceTo(lastStation.Coordinates);
+            AddPairStations(new PairStations() { FirstStationNumber = firstStation.StationId, LastStationNumber = lastStation.StationId, Distance = distance, Time = new TimeSpan((int)(distance / 40.0), (int)((distance % 40.0) / (40.0 / 60.0)), (int)(((distance % 40.0) % (40.0 / 60.0)) / (40.0 / 3600.0))) });
             try
             {
                 dal.AddLine((DO.BusLine)tmpBusLine.CopyPropertiesToNew(typeof(DO.BusLine)));
@@ -139,6 +145,24 @@ namespace BL
                 throw new BOBadLineException(e.Message, tmpBusLine.LineNumber);
             }
         }
+        public void AddLine(BusLine tmpBusLine)
+        {
+            Station firstStation = GetStation(tmpBusLine.FirstStation);
+            Station lastStation = GetStation(tmpBusLine.LastStation);
+            AddLineStation(new LineStation() { Index = 1, LineNumber = tmpBusLine.LineNumber, StationNumber = tmpBusLine.FirstStation });
+            AddLineStation(new LineStation() { Index = 2, LineNumber = tmpBusLine.LineNumber, StationNumber = tmpBusLine.LastStation });
+            double distance = firstStation.Coordinates.GetDistanceTo(lastStation.Coordinates);
+            AddPairStations(new PairStations() { FirstStationNumber = firstStation.StationId, LastStationNumber = lastStation.StationId, Distance = distance, Time = new TimeSpan((int)(distance / 40.0), (int)((distance % 40.0) / (40.0 / 60.0)), (int)(((distance % 40.0) % (40.0 / 60.0)) / (40.0 / 3600.0))) });
+            try
+            {
+                dal.AddLine((DO.BusLine)tmpBusLine.CopyPropertiesToNew(typeof(DO.BusLine)));
+            }
+            catch (DO.BadLineException e)
+            {
+                throw new BOBadLineException(e.Message, tmpBusLine.LineNumber);
+            }
+        }
+
         public void UpdateLine(BusLine lineToUpdate)
         {
             try
@@ -216,6 +240,66 @@ namespace BL
         }
         public void DeleteStation(int id)
         {
+            foreach (var item in GetAllBusLines())
+            {
+                bool first = false;
+                bool deleted = false;
+                int lastIndex = 0;
+                IEnumerable<LineStation> myStations = GetAllLineStationsBy(x => x.LineNumber == item.LineNumber).OrderBy(x=>x.Index);
+                IEnumerable<int> sizeCol = from station in myStations
+                           where station.StationNumber == item.LastStation
+                           select station.Index;
+                int size = sizeCol.First();
+                if (size <= 2)
+                {
+                    DeleteLine(item.LineNumber);
+                    throw new BOReadDataException($"Line {item.LineNumber} too small, it has been deleted");
+                }
+                foreach (var station in myStations)
+                {
+                    if (station.StationNumber == id)
+                    {
+                        if (station.StationNumber == item.FirstStation)
+                        {
+                            DeleteLineStation(station.StationNumber, item.LineNumber);
+                            first = true;
+                            deleted = true;
+                            continue;
+                        }
+                        if (station.StationNumber == item.LastStation)
+                        {
+                            lastIndex = station.Index;
+                            DeleteLineStation(station.StationNumber, item.LineNumber);
+                            break;
+                        }
+                        else
+                        {
+                            DeleteLineStation(station.StationNumber, item.LineNumber);
+                            deleted = true;
+                            continue;
+                        }
+
+                    }
+                    if (deleted)
+                    {
+                        station.Index--;
+                        UpdateLineStation(station);
+                    }
+                    if (first)
+                    {
+                        first = false;
+                        item.FirstStation = station.StationNumber;
+                        UpdateLine(item);
+                    }                                  
+                }
+                item.LastStation = myStations.FirstOrDefault(x => x.Index == lastIndex - 1).StationNumber;
+                UpdateLine(item);
+            }
+            IEnumerable<PairStations> myPairStations = GetAllPairStationsBy(x => (x.FirstStationNumber == id) || (x.LastStationNumber == id));
+            foreach (var item in myPairStations)
+            {
+                DeletePairStations(item.FirstStationNumber, item.LastStationNumber);
+            }
             try
             {
                 dal.DeleteStation(id);
