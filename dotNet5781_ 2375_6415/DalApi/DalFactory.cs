@@ -47,7 +47,7 @@ namespace DalApi
             //    NB: the class may not be public - it will still be found... Our approach that the implemntation class
             //        should hold "internal" access permission (which is actually the default access permission)
             // 2nd element is the package name = assembly name (as above)
-            Type type = Type.GetType($"Dal.{dalPackage}, {dalPackage}");
+            Type type = Type.GetType($"DalObject.{dalPackage}, {dalPackage}");
             // If the type is not found - the implementation is not correct - it looks like the class name is wrong...
             if (type == null)
                 throw new DalConfigException($"Class name is not the same as Assembly Name: {dalPackage}");

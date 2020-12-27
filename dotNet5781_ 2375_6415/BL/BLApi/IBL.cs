@@ -25,7 +25,9 @@ namespace BLApi
         BusLine GetBusLine(int id);
         void AddLine(BusLine tmpBusLine, Station firstStation, Station lastStation);
         void AddLine(BusLine tmpBusLine);
-        void UpdateLine(BusLine lineToUpdate);
+        //void UpdateLine(BusLine lineToUpdate);
+        void AddStationToLine(LineStation station);
+        void DeleteStationFromLine(int stationNumber, int lineNumber);
         void DeleteLine(int id);
         #endregion
 

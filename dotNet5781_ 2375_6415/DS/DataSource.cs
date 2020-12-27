@@ -15,6 +15,7 @@ namespace DS
         /// </summary>
         public static Random r = new Random(DateTime.Now.Millisecond);
 
+        private static int stationNum = 1010;
         public static List<Station> stationList;
         public static List<LineStation> linestationList;
         public static List<BusLine> lineList;
@@ -82,7 +83,7 @@ namespace DS
         {
             List<string> addressList = new List<string> { "Tchernikowsky", "Veitzman", "Shakhal", "Heller", "Bazak", "Mea Shearim", "Geoula", "Begin", "Ouziel", "Romema", "Manitou", "Man", "Zangwill", "Bayit Vegan", "Hantke", "Bayit", "Mekor Baruh", "Rashi", "Pines", "Havaad Haleoumi", "Tora Vaavoda", "Michlin", "Herzl", "Ben Maimon", " Shaoulzon", "Hai Taieb", "Rashba" , "Ramban", "Raavad","Hakablan", "HaMemGuimel","Viznitz" };
             List<Station> myStationsList = new List<Station> { };
-            for (int i = 1000; i < 1050; i++)
+            for (int i = 1000; i < 1200; i++)
             {
                 int tmpInt = r.Next(0, 31);  //to get adress in array
                 Station tmpStation = new Station { StationId = i, Coordinates = new GeoCoordinate { Latitude = r.NextDouble() * 2.3 + 31, Longitude = r.NextDouble() * 1.2 + 34.3 }, Name = addressList[tmpInt], Address = r.Next(0, 100).ToString() + " " + addressList[tmpInt], DigitalPanel = true, Invalid = true, Roof = true, MyActivity = Activity.ON };
@@ -115,41 +116,41 @@ namespace DS
             {
                 for (int j = 2; j < 10; j++)
                 {
-                    lineStations.Add(new LineStation { Index = j, LineNumber = i, StationNumber = r.Next(1010, 1050), MyActivity = Activity.ON });
+                    lineStations.Add(new LineStation { Index = j, LineNumber = i, StationNumber = stationNum++, MyActivity = Activity.ON });
                 }
             }
-            linestationList.Add(new LineStation { Index = 1, LineNumber = 1, StationNumber = 1000, MyActivity = Activity.ON });
-            linestationList.Add(new LineStation { Index = 1, LineNumber = 2, StationNumber = 1001, MyActivity = Activity.ON });
-            linestationList.Add(new LineStation { Index = 1, LineNumber = 3, StationNumber = 1002, MyActivity = Activity.ON });
-            linestationList.Add(new LineStation { Index = 1, LineNumber = 4, StationNumber = 1003, MyActivity = Activity.ON });
-            linestationList.Add(new LineStation { Index = 1, LineNumber = 5, StationNumber = 1004, MyActivity = Activity.ON });
-            linestationList.Add(new LineStation { Index = 1, LineNumber = 6, StationNumber = 1001, MyActivity = Activity.ON });
-            linestationList.Add(new LineStation { Index = 1, LineNumber = 7, StationNumber = 1002, MyActivity = Activity.ON });
-            linestationList.Add(new LineStation { Index = 1, LineNumber = 8, StationNumber = 1004, MyActivity = Activity.ON });
-            linestationList.Add(new LineStation { Index = 1, LineNumber = 9, StationNumber = 1009, MyActivity = Activity.ON });
-            linestationList.Add(new LineStation { Index = 1, LineNumber = 10, StationNumber = 1008, MyActivity = Activity.ON });
-            linestationList.Add(new LineStation { Index = 10, LineNumber = 1, StationNumber = 1009, MyActivity = Activity.ON });
-            linestationList.Add(new LineStation { Index = 10, LineNumber = 2, StationNumber = 1008, MyActivity = Activity.ON });
-            linestationList.Add(new LineStation { Index = 10, LineNumber = 3, StationNumber = 1007, MyActivity = Activity.ON });
-            linestationList.Add(new LineStation { Index = 10, LineNumber = 4, StationNumber = 1006, MyActivity = Activity.ON });
-            linestationList.Add(new LineStation { Index = 10, LineNumber = 5, StationNumber = 1005, MyActivity = Activity.ON });
-            linestationList.Add(new LineStation { Index = 10, LineNumber = 6, StationNumber = 1008, MyActivity = Activity.ON });
-            linestationList.Add(new LineStation { Index = 10, LineNumber = 7, StationNumber = 1006, MyActivity = Activity.ON });
-            linestationList.Add(new LineStation { Index = 10, LineNumber = 8, StationNumber = 1006, MyActivity = Activity.ON });
-            linestationList.Add(new LineStation { Index = 10, LineNumber = 9, StationNumber = 1006, MyActivity = Activity.ON });
-            linestationList.Add(new LineStation { Index = 10, LineNumber = 10, StationNumber = 1007, MyActivity = Activity.ON });
+            lineStations.Add(new LineStation { Index = 1, LineNumber = 1, StationNumber = 1000, MyActivity = Activity.ON });
+            lineStations.Add(new LineStation { Index = 1, LineNumber = 2, StationNumber = 1001, MyActivity = Activity.ON });
+            lineStations.Add(new LineStation { Index = 1, LineNumber = 3, StationNumber = 1002, MyActivity = Activity.ON });
+            lineStations.Add(new LineStation { Index = 1, LineNumber = 4, StationNumber = 1003, MyActivity = Activity.ON });
+            lineStations.Add(new LineStation { Index = 1, LineNumber = 5, StationNumber = 1004, MyActivity = Activity.ON });
+            lineStations.Add(new LineStation { Index = 1, LineNumber = 6, StationNumber = 1001, MyActivity = Activity.ON });
+            lineStations.Add(new LineStation { Index = 1, LineNumber = 7, StationNumber = 1002, MyActivity = Activity.ON });
+            lineStations.Add(new LineStation { Index = 1, LineNumber = 8, StationNumber = 1004, MyActivity = Activity.ON });
+            lineStations.Add(new LineStation { Index = 1, LineNumber = 9, StationNumber = 1009, MyActivity = Activity.ON });
+            lineStations.Add(new LineStation { Index = 1, LineNumber = 10, StationNumber = 1008, MyActivity = Activity.ON });
+            lineStations.Add(new LineStation { Index = 10, LineNumber = 1, StationNumber = 1009, MyActivity = Activity.ON });
+            lineStations.Add(new LineStation { Index = 10, LineNumber = 2, StationNumber = 1008, MyActivity = Activity.ON });
+            lineStations.Add(new LineStation { Index = 10, LineNumber = 3, StationNumber = 1007, MyActivity = Activity.ON });
+            lineStations.Add(new LineStation { Index = 10, LineNumber = 4, StationNumber = 1006, MyActivity = Activity.ON });
+            lineStations.Add(new LineStation { Index = 10, LineNumber = 5, StationNumber = 1005, MyActivity = Activity.ON });
+            lineStations.Add(new LineStation { Index = 10, LineNumber = 6, StationNumber = 1008, MyActivity = Activity.ON });
+            lineStations.Add(new LineStation { Index = 10, LineNumber = 7, StationNumber = 1006, MyActivity = Activity.ON });
+            lineStations.Add(new LineStation { Index = 10, LineNumber = 8, StationNumber = 1006, MyActivity = Activity.ON });
+            lineStations.Add(new LineStation { Index = 10, LineNumber = 9, StationNumber = 1006, MyActivity = Activity.ON });
+            lineStations.Add(new LineStation { Index = 10, LineNumber = 10, StationNumber = 1007, MyActivity = Activity.ON });
             for (int i = 1; i < 11; i++)
             {
                 for (int j = 1; j < 10; j++)
                 {
                     int firstStationNumber;
-                    IEnumerable<int> tmp = from station in linestationList
-                                           where station.LineNumber == i && station.StationNumber == j
+                    IEnumerable<int> tmp = from station in lineStations
+                                           where station.LineNumber == i && station.Index== j
                                            select station.StationNumber;
                     firstStationNumber = tmp.First();
                     int lastStationNumber;
-                    tmp = from station in linestationList
-                          where station.LineNumber == i && station.StationNumber == j + 1
+                    tmp = from station in lineStations
+                          where station.LineNumber == i && station.Index == j + 1
                           select station.StationNumber;
                     lastStationNumber = tmp.First();
                     GeoCoordinate firstStationLocation;

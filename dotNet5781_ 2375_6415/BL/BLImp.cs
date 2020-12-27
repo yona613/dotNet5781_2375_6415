@@ -26,8 +26,8 @@ namespace BL
         {
             IEnumerable<Bus> busList = from item in dal.GetAllBuses()
                                        let busBO = BusDoBOAdapter(item)
-                                       where predicate((Bus)busBO)
-                                       select (Bus)busBO;
+                                       where predicate(busBO)
+                                       select busBO;
             if (busList != null)
                 return busList;
             throw new BOReadDataException("No Bus meets the conditions");
@@ -163,7 +163,7 @@ namespace BL
             }
         }
 
-        public void UpdateLine(BusLine lineToUpdate)
+        private void UpdateLine(BusLine lineToUpdate)
         {
             try
             {
@@ -175,8 +175,118 @@ namespace BL
             }
         }
 
+        public void AddStationToLine(LineStation station)
+        {
+            LineStation lineStation = GetAllLineStationsBy(x => x.LineNumber == station.LineNumber && x.StationNumber == station.StationNumber).FirstOrDefault();
+            if (lineStation != null)
+                throw new BOBadLineStationException($"Cannot add station {station.StationNumber}, it already exists in line {station.LineNumber}", station.LineNumber, station.StationNumber);
+            else
+            {
+                if (station.Index == 1)
+                {
+                    BusLine myLine = GetBusLine(station.LineNumber);
+                    myLine.FirstStation = station.StationNumber;
+                    UpdateLine(myLine);
+                }
+                int index = 1;
+                AddLineStation(station);
+                IEnumerable<LineStation> myLineStations = GetAllLineStationsBy(x => x.LineNumber == station.LineNumber).OrderBy(x => x.Index);
+                foreach (var item in myLineStations)
+                {
+                    if (item.Index == station.Index - 1)
+                    {
+                        Station lastStation = GetStation(station.StationNumber);
+                        Station firstStation = GetStation(item.StationNumber);
+                        double distance = firstStation.Coordinates.GetDistanceTo(lastStation.Coordinates);
+                        AddPairStations(new PairStations() { FirstStationNumber = firstStation.StationId, LastStationNumber = lastStation.StationId, Distance = distance, Time = new TimeSpan((int)(distance / 40.0), (int)((distance % 40.0) / (40.0 / 60.0)), (int)(((distance % 40.0) % (40.0 / 60.0)) / (40.0 / 3600.0))) });
+                    }
+                    if (item.Index == station.Index)
+                    {
+                        Station firstStation = GetStation(station.StationNumber);
+                        Station lastStation = GetStation(item.StationNumber);
+                        double distance = firstStation.Coordinates.GetDistanceTo(lastStation.Coordinates);
+                        AddPairStations(new PairStations() { FirstStationNumber = firstStation.StationId, LastStationNumber = lastStation.StationId, Distance = distance, Time = new TimeSpan((int)(distance / 40.0), (int)((distance % 40.0) / (40.0 / 60.0)), (int)(((distance % 40.0) % (40.0 / 60.0)) / (40.0 / 3600.0))) });
+                    }
+                    if (item.Index >= station.Index)
+                    {                       
+                        item.Index++;
+                        UpdateLineStation(item);
+                    }
+                    index++;
+                }
+                if (index == station.Index)
+                {
+                    BusLine myLine = GetBusLine(station.LineNumber);
+                    myLine.LastStation = station.StationNumber;
+                    UpdateLine(myLine);
+                }
+            }
+        }
+
+        public void DeleteStationFromLine(int stationNumber, int lineNumber)
+        {
+            bool first = false;
+            bool deleted = false;
+            int lastIndex = 0;
+            BusLine myLine = GetBusLine(lineNumber);
+            IEnumerable<LineStation> myStations = GetAllLineStationsBy(x => x.LineNumber == lineNumber).OrderBy(x => x.Index);
+            IEnumerable<int> sizeCol = from station in myStations
+                                       where station.StationNumber == myLine.LastStation
+                                       select station.Index;
+            int size = sizeCol.First();
+            if (size <= 2)
+            {
+                DeleteLine(lineNumber);
+                throw new BOReadDataException($"Line {lineNumber} too small, it has been deleted");
+            }
+            foreach (var station in myStations)
+            {
+                if (station.StationNumber == stationNumber)
+                {
+                    if (station.StationNumber == myLine.FirstStation)
+                    {
+                        DeleteLineStation(station.StationNumber, myLine.LineNumber);
+                        first = true;
+                        deleted = true;
+                        continue;
+                    }
+                    if (station.StationNumber == myLine.LastStation)
+                    {
+                        lastIndex = station.Index;
+                        DeleteLineStation(station.StationNumber, myLine.LineNumber);
+                        break;
+                    }
+                    else
+                    {
+                        DeleteLineStation(station.StationNumber, myLine.LineNumber);
+                        deleted = true;
+                        continue;
+                    }
+
+                }
+                if (deleted)
+                {
+                    station.Index--;
+                    UpdateLineStation(station);
+                }
+                if (first)
+                {
+                    first = false;
+                    myLine.FirstStation = station.StationNumber;
+                    UpdateLine(myLine);
+                }
+            }
+            myLine.LastStation = myStations.FirstOrDefault(x => x.Index == lastIndex - 1).StationNumber;
+            UpdateLine(myLine);
+        }
+
         public void DeleteLine(int lineNumber)
         {
+            var myLineStationsList = GetAllLineStationsBy(x => x.LineNumber == lineNumber).ToList();
+            for (int i = 0; i < myLineStationsList.Count; i++)
+            {
+                DeleteLineStation(myLineStationsList[i].StationNumber, myLineStationsList[i].LineNumber);
+            }
             try
             {
                 dal.DeleteLine(lineNumber);
@@ -240,41 +350,43 @@ namespace BL
         }
         public void DeleteStation(int id)
         {
-            foreach (var item in GetAllBusLines())
+            var myStations = GetAllLineStations().GroupBy(x => x.LineNumber).ToList();
+            var busLines = GetAllBusLines().ToList();
+            for (int i = 0; i < busLines.Count; i++)
             {
                 bool first = false;
                 bool deleted = false;
                 int lastIndex = 0;
-                IEnumerable<LineStation> myStations = GetAllLineStationsBy(x => x.LineNumber == item.LineNumber).OrderBy(x=>x.Index);
-                IEnumerable<int> sizeCol = from station in myStations
-                           where station.StationNumber == item.LastStation
+                var lineStations = myStations.FirstOrDefault(x => x.Key == busLines[i].LineNumber).OrderBy(x => x.Index).ToList();
+                IEnumerable<int> sizeCol = from station in lineStations
+                           where station.StationNumber == busLines[i].LastStation
                            select station.Index;
                 int size = sizeCol.First();
                 if (size <= 2)
                 {
-                    DeleteLine(item.LineNumber);
-                    throw new BOReadDataException($"Line {item.LineNumber} too small, it has been deleted");
+                    DeleteLine(busLines[i].LineNumber);
+                    throw new BOReadDataException($"Line {busLines[i].LineNumber} too small, it has been deleted");
                 }
-                foreach (var station in myStations)
+                for (int j = 0; j < lineStations.Count; j++)
                 {
-                    if (station.StationNumber == id)
+                    if (lineStations[j].StationNumber == id)
                     {
-                        if (station.StationNumber == item.FirstStation)
+                        if (lineStations[j].StationNumber == busLines[i].FirstStation)
                         {
-                            DeleteLineStation(station.StationNumber, item.LineNumber);
+                            DeleteLineStation(lineStations[j].StationNumber, busLines[i].LineNumber);
                             first = true;
                             deleted = true;
                             continue;
                         }
-                        if (station.StationNumber == item.LastStation)
+                        if (lineStations[j].StationNumber == busLines[i].LastStation)
                         {
-                            lastIndex = station.Index;
-                            DeleteLineStation(station.StationNumber, item.LineNumber);
+                            lastIndex = lineStations[j].Index;
+                            DeleteLineStation(lineStations[j].StationNumber, busLines[i].LineNumber);
                             break;
                         }
                         else
                         {
-                            DeleteLineStation(station.StationNumber, item.LineNumber);
+                            DeleteLineStation(lineStations[j].StationNumber, busLines[i].LineNumber);
                             deleted = true;
                             continue;
                         }
@@ -282,23 +394,26 @@ namespace BL
                     }
                     if (deleted)
                     {
-                        station.Index--;
-                        UpdateLineStation(station);
+                        lineStations[j].Index--;
+                        UpdateLineStation(lineStations[j]);
                     }
                     if (first)
                     {
                         first = false;
-                        item.FirstStation = station.StationNumber;
-                        UpdateLine(item);
+                        busLines[i].FirstStation = lineStations[j].StationNumber;
+                        UpdateLine(busLines[i]);
                     }                                  
                 }
-                item.LastStation = myStations.FirstOrDefault(x => x.Index == lastIndex - 1).StationNumber;
-                UpdateLine(item);
+                if (lastIndex != 0)
+                {
+                    busLines[i].LastStation = lineStations.FirstOrDefault(x => x.Index == lastIndex - 1).StationNumber;
+                    UpdateLine(busLines[i]);
+                }               
             }
-            IEnumerable<PairStations> myPairStations = GetAllPairStationsBy(x => (x.FirstStationNumber == id) || (x.LastStationNumber == id));
-            foreach (var item in myPairStations)
+            var myPairStations = GetAllPairStationsBy(x => (x.FirstStationNumber == id) || (x.LastStationNumber == id)).ToList();
+            for (int i = 0; i < myPairStations.Count; i++)
             {
-                DeletePairStations(item.FirstStationNumber, item.LastStationNumber);
+                DeletePairStations(myPairStations[i].FirstStationNumber, myPairStations[i].LastStationNumber);
             }
             try
             {
@@ -326,10 +441,11 @@ namespace BL
 
         public IEnumerable<User> GetAllUsersBy(Predicate<User> predicate)
         {
-            IEnumerable<User> myUsers = from user in dal.GetAllUsers()
-                                        let userBO = UserDoBOAdapter(user)
-                                        where predicate(userBO)
-                                        select userBO;
+            var myUsers = from user in dal.GetAllUsers()
+                          let userBO = UserDoBOAdapter(user)
+                          where predicate(userBO)
+                          select userBO;
+
             if (myUsers == null)
                 throw new BOReadDataException("No User meets the conditions");
             return myUsers;
@@ -582,6 +698,26 @@ namespace BL
 
         public void AddLineDeparting(LineDeparting tmpLineDeparting)
         {
+            IEnumerable<LineDeparting> myLineDeparting = GetAllLineDepartingBy(x => x.LineNumber == tmpLineDeparting.LineNumber).OrderBy(x => x.StartTime);
+            foreach (var item in myLineDeparting)
+            {
+                if (tmpLineDeparting.StartTime >= item.StartTime && tmpLineDeparting.StopTime <= item.StopTime)
+                {
+                    AddLineDeparting(new LineDeparting() { StartTime = item.StartTime, StopTime = tmpLineDeparting.StartTime, Frequency = item.Frequency, LineNumber = item.LineNumber });
+                    item.StartTime = tmpLineDeparting.StopTime;
+                    UpdateLineDeparting(item);
+                }
+                if (tmpLineDeparting.StartTime >= item.StartTime && tmpLineDeparting.StartTime <= item.StopTime)
+                {
+                    item.StopTime = tmpLineDeparting.StartTime;
+                    UpdateLineDeparting(item);
+                }
+                if (tmpLineDeparting.StopTime >= item.StartTime && tmpLineDeparting.StopTime <= item.StopTime)
+                {
+                    item.StartTime = tmpLineDeparting.StopTime;
+                    UpdateLineDeparting(item);
+                }
+            }
             DO.LineDeparting busInTravelDO = new DO.LineDeparting();
             try
             {
@@ -678,7 +814,7 @@ namespace BL
             }
             catch (DO.BadPairStationException e)
             {
-                throw new BOBadPairStationException(e.Message, firstStation, firstStation);
+                //throw new BOBadPairStationException(e.Message, firstStation, firstStation);
             }
         }
 
@@ -770,6 +906,7 @@ namespace BL
                 throw new BOBadUserTripException(e.Message);
             }
         }
+
         #endregion
     }
 }

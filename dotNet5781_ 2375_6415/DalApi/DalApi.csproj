@@ -7,8 +7,8 @@
     <ProjectGuid>{B95A6284-EDEC-4BDD-8955-99D73E241121}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DalApi2</RootNamespace>
-    <AssemblyName>DalApi2</AssemblyName>
+    <RootNamespace>DalApi</RootNamespace>
+    <AssemblyName>DalApi</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -17,11 +17,12 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\</OutputPath>
+    <OutputPath>..\bin\debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\config.xml</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <RegisterForComInterop>false</RegisterForComInterop>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
@@ -60,9 +61,6 @@
     <Compile Include="DO\Station.cs" />
     <Compile Include="DO\User.cs" />
     <Compile Include="DO\UserTrip.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="config.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

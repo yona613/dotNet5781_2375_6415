@@ -1,0 +1,161 @@
+﻿<Window x:Class="PL.WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+        <DataTemplate  x:Key="ListLines"
+                       >
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label Name="line" 
+                       Content="Line : "
+                       Grid.Column="0"
+                       />
+                <Label Name="lineNumber"
+                       Content="{Binding Path=LineNumber}"
+                       Grid.Column="1"
+                    />
+                <Button Name="updateLine"
+                        Content="Update"
+                        Grid.Column="2"
+                        />
+                <Button Name="deleteLine"
+                        Content="Delete"
+                        Grid.Column="3" Click="deleteLine_Click"
+                        />
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="ListBuses">
+            <Grid x:Name="BusGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label Name="bus" 
+                       Content="License : "
+                       Grid.Column="0"
+                       />
+                <Label Name="busLicense"
+                       Content="{Binding Path=License}"
+                       Grid.Column="1"
+                    />
+                <Label Name="busStatus" 
+                       Content="Status : "
+                       Grid.Column="2"
+                       />
+                <Label Name="statusContent"
+                       Content="{Binding Path=BusStatus}"
+                       Grid.Column="3"
+                    />
+                <Button Name="updateBus"
+                        Content="Update"
+                        Grid.Column="4"
+                        />
+                <Button Name="deleteBus"
+                        Content="Delete"
+                        Grid.Column="5" Click="deleteBus_Click"
+                        />
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="ListStation">
+            <Grid x:Name="stationGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label Name="station" 
+                       Content="Station Number : "
+                       Grid.Column="0"
+                       />
+                <Label Name="stationNum"
+                       Content="{Binding Path=StationId}"
+                       Grid.Column="1"
+                    />
+                <Label Name="stationName" 
+                       Content="Name : "
+                       Grid.Column="2"
+                       />
+                <Label Name="stationNameContent"
+                       Content="{Binding Path=Name}"
+                       Grid.Column="3"
+                    />
+                <Button Name="updateStation"
+                        Content="Update"
+                        Grid.Column="4"
+                        />
+                <Button Name="deleteStation"
+                        Content="Delete"
+                        Grid.Column="5" Click="deleteStation_Click"
+                        />
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid Name="mainGrid" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Name="checkGrid" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <!--<RowDefinition Height="1*"/>-->
+            </Grid.RowDefinitions>
+            <CheckBox Name="lineChB" 
+                      Grid.Row="0" 
+                      VerticalAlignment="Stretch" 
+                      HorizontalAlignment="Left" 
+                      HorizontalContentAlignment="Center"
+                      VerticalContentAlignment="Center"
+                      Content="Line" FontSize="36" FontFamily="Arial" Margin="50,0,0,0" 
+                      Checked="lineChB_Checked" Unchecked="lineChB_Unchecked"
+                      
+                      />
+            <CheckBox Name="busChB" 
+                      Grid.Row="1" 
+                      VerticalAlignment="Stretch" 
+                      HorizontalAlignment="Left" 
+                      HorizontalContentAlignment="Center"
+                      VerticalContentAlignment="Center"
+                      Content="Bus" FontSize="36" FontFamily="Arial" Margin="50,0,0,0" Checked="busChB_Checked" Unchecked="busChB_Unchecked" />
+            <CheckBox Name="stationChB" 
+                      Grid.Row="2" 
+                      VerticalAlignment="Stretch" 
+                      HorizontalAlignment="Left" 
+                      HorizontalContentAlignment="Center"
+                      VerticalContentAlignment="Center"
+                      Content="Station" FontSize="36" FontFamily="Arial" Margin="50,0,0,0" Checked="stationChB_Checked" Unchecked="stationChB_Unchecked" />
+            <!--<CheckBox Name="userChB" 
+                      Grid.Row="3" 
+                      VerticalAlignment="Stretch" 
+                      HorizontalAlignment="Left" 
+                      HorizontalContentAlignment="Center"
+                      VerticalContentAlignment="Center"
+                      Content="User" FontSize="36" FontFamily="Arial" Margin="50,0,0,0" />-->
+        </Grid>
+        <Grid Name="listGrid" Grid.Column="1">
+            <ListBox Name="ListLB" ItemsSource="{Binding}" ItemTemplate="{ StaticResource ListLines}" Visibility="Collapsed"/>
+            <ListBox Name="ListB" ItemsSource="{Binding}" ItemTemplate="{ StaticResource ListBuses}" Visibility="Collapsed"/>
+            <ListBox Name="ListS" ItemsSource="{Binding}" ItemTemplate="{ StaticResource ListStation}" Visibility="Collapsed"/>
+        </Grid>
+
+    </Grid>
+</Window>

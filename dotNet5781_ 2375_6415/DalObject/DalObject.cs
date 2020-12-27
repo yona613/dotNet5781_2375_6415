@@ -212,7 +212,7 @@ namespace DalObject
             User myUser = DataSource.userList.FirstOrDefault(user => user.UserName == userName);
             if (myUser != null)
                 DataSource.userList.Remove(myUser);
-            throw new BadUserException("User doesn't exist", userName);
+            else throw new BadUserException("User doesn't exist", userName);
         }
         #endregion
 
@@ -220,13 +220,14 @@ namespace DalObject
         public IEnumerable<LineStation> GetAllLineStations()
         {
             return from lineStation in DataSource.linestationList
+                   where lineStation.MyActivity == Activity.ON
                    select lineStation.Clone();
         }
 
         public IEnumerable<LineStation> GetAllLineStationsBy(Predicate<LineStation> predicate)
         {
             IEnumerable<LineStation> myLineStations = from lineStation in DataSource.linestationList
-                                                      where predicate(lineStation)
+                                                      where predicate(lineStation) && lineStation.MyActivity == Activity.ON
                                                       select lineStation.Clone();
             if (myLineStations != null)
                 return myLineStations;
@@ -236,7 +237,7 @@ namespace DalObject
         public LineStation GetLineStation(int stationNumber, int lineNumber)
         {
             LineStation myLineStation = DataSource.linestationList.FirstOrDefault(
-                station =>station.LineNumber == lineNumber && station.StationNumber == stationNumber);
+                station =>station.LineNumber == lineNumber && station.StationNumber == stationNumber && station.MyActivity==Activity.ON);
             if (myLineStation != null)
                 return myLineStation.Clone();
             throw new BadLineStationException("Line Station doesn't exist", lineNumber,stationNumber);
@@ -244,23 +245,24 @@ namespace DalObject
 
         public void AddLineStation(LineStation tmpLineStation)
         {
-            if (DataSource.linestationList.FirstOrDefault(station => station.LineNumber == tmpLineStation.LineNumber && station.StationNumber == tmpLineStation.StationNumber) != null)
+            if (DataSource.linestationList.FirstOrDefault(station => station.LineNumber == tmpLineStation.LineNumber && station.StationNumber == tmpLineStation.StationNumber && station.MyActivity == Activity.ON) == null)
                 DataSource.linestationList.Add(tmpLineStation.Clone());
-            throw new BadLineStationException("Line Station already exist", tmpLineStation.LineNumber, tmpLineStation.StationNumber);
+            else throw new BadLineStationException("Line Station already exist", tmpLineStation.LineNumber, tmpLineStation.StationNumber);
         }
 
         public void DeleteLineStation(int stationNumber, int lineNumber)
         {
             LineStation tmpLineStation = DataSource.linestationList.FirstOrDefault(station => station.LineNumber == lineNumber && station.StationNumber == stationNumber);
             if (tmpLineStation != null)
-                DataSource.linestationList.Remove(tmpLineStation);
-            throw new BadLineStationException("Line Station doesn't exist", lineNumber, stationNumber);
+                tmpLineStation.MyActivity = Activity.OFF;
+            else throw new BadLineStationException("Line Station doesn't exist", lineNumber, stationNumber);
         }
+
 
         public void UpdateLineStation(LineStation lineStationToUpdate)
         {
-            LineStation tmpLineStation = DataSource.linestationList.FirstOrDefault(station => station.LineNumber == lineStationToUpdate.LineNumber && station.StationNumber == lineStationToUpdate.StationNumber);
-            if (tmpLineStation != null)
+            LineStation tmpLineStation = DataSource.linestationList.FirstOrDefault(station => station.LineNumber == lineStationToUpdate.LineNumber && station.StationNumber == lineStationToUpdate.StationNumber && station.MyActivity==Activity.ON);
+            if (tmpLineStation == null)
                 throw new BadLineStationException("Line Station doesn't exist", lineStationToUpdate.LineNumber, lineStationToUpdate.StationNumber);
             DeleteLineStation(tmpLineStation.StationNumber, tmpLineStation.LineNumber);
             AddLineStation(lineStationToUpdate);
