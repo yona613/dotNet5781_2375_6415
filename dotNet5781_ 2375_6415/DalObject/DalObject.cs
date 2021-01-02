@@ -245,14 +245,14 @@ namespace DalObject
 
         public void AddLineStation(LineStation tmpLineStation)
         {
-            if (DataSource.linestationList.FirstOrDefault(station => station.LineNumber == tmpLineStation.LineNumber && station.StationNumber == tmpLineStation.StationNumber && station.MyActivity == Activity.ON) == null)
-                DataSource.linestationList.Add(tmpLineStation.Clone());
-            else throw new BadLineStationException("Line Station already exist", tmpLineStation.LineNumber, tmpLineStation.StationNumber);
+            if (DataSource.linestationList.FirstOrDefault(station => station.LineNumber == tmpLineStation.LineNumber && station.StationNumber == tmpLineStation.StationNumber && station.MyActivity == Activity.ON) != null)
+                throw new BadLineStationException("Line Station already exist", tmpLineStation.LineNumber, tmpLineStation.StationNumber);
+            else DataSource.linestationList.Add(tmpLineStation.Clone());
         }
 
         public void DeleteLineStation(int stationNumber, int lineNumber)
         {
-            LineStation tmpLineStation = DataSource.linestationList.FirstOrDefault(station => station.LineNumber == lineNumber && station.StationNumber == stationNumber);
+            LineStation tmpLineStation = DataSource.linestationList.FirstOrDefault(station => station.LineNumber == lineNumber && station.StationNumber == stationNumber && station.MyActivity == Activity.ON);
             if (tmpLineStation != null)
                 tmpLineStation.MyActivity = Activity.OFF;
             else throw new BadLineStationException("Line Station doesn't exist", lineNumber, stationNumber);
