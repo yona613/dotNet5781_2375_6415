@@ -27,7 +27,7 @@ namespace PL.WPF
     {
 
         ObservableCollection<BusLine> listOfLines = new ObservableCollection<BusLine>() { };
-        IBL bl;
+        public static IBL bl;
         public MainWindow()
         {
             InitializeComponent();
@@ -92,9 +92,25 @@ namespace PL.WPF
 
         private void deleteStation_Click(object sender, RoutedEventArgs e)
         {
-            bl.DeleteStation((((sender as Button).DataContext) as BO.Station).StationId);
+            try
+            {
+                bl.DeleteStation((((sender as Button).DataContext) as BO.Station).StationId);
+            }
+            catch (Exception except)
+            {
+                MessageBox.Show(except.Message);
+            }
+            
             var stationList = bl.GetAllStations().OrderBy(x => x.StationId).ToList();
             ListS.DataContext = stationList;
+        }
+
+        private void updateLine_Click(object sender, RoutedEventArgs e)
+        {
+            BO.LineToShow myLineToShow = bl.GetBusLineToShow(((sender as Button).DataContext as BO.BusLine).LineNumber);
+            (new UpdateLine(myLineToShow)).ShowDialog();
+            var linesList = bl.GetAllBusLines().OrderBy(x => x.LineNumber).ToList();
+            ListLB.DataContext = linesList;
         }
     }
 }

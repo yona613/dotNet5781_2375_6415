@@ -23,6 +23,7 @@ namespace DalObject
         public IEnumerable<Bus> GetAllBuseBy(Predicate<Bus> predicate)
         {
             IEnumerable<Bus> allBuses = from Bus in DataSource.busList
+                                        where Bus.MyActivity == Activity.ON
                                         where predicate(Bus)
                                         select Bus.Clone();
             if (allBuses != null)
@@ -35,12 +36,13 @@ namespace DalObject
         public IEnumerable<Bus> GetAllBuses()
         {
             return from Bus in DataSource.busList
+                   where Bus.MyActivity == Activity.ON
                    select Bus.Clone();
         }
 
         public Bus GetBus(int license)
         {
-            Bus tmpBus = DataSource.busList.Find(bus => bus.License == license);
+            Bus tmpBus = DataSource.busList.Find(bus => bus.License == license && bus.MyActivity == Activity.ON);
             if (tmpBus != null)
             {
                 return tmpBus.Clone();
@@ -50,14 +52,14 @@ namespace DalObject
 
         public void AddBus(Bus myBus)
         {
-            if (DataSource.busList.FirstOrDefault(bus => bus.License == myBus.License) != null)
+            if (DataSource.busList.FirstOrDefault(bus => bus.License == myBus.License && bus.MyActivity == Activity.ON) != null)
                 throw new BadBusException("Bus already exist", myBus.License);
             DataSource.busList.Add(myBus.Clone());
         }
 
         public void UpdateBus(Bus busToUpdate)
         {
-            Bus tmpBus = DataSource.busList.FirstOrDefault(bus => bus.License == busToUpdate.License);
+            Bus tmpBus = DataSource.busList.FirstOrDefault(bus => bus.License == busToUpdate.License && bus.MyActivity == Activity.ON);
             if (tmpBus == null)
                 throw new BadBusException("Bus doesn't exist", busToUpdate.License);
             DeleteBus(tmpBus.License);
@@ -66,10 +68,10 @@ namespace DalObject
 
         public void DeleteBus(int license)
         {
-            Bus tmpBus = DataSource.busList.FirstOrDefault(bus => bus.License == license);
+            Bus tmpBus = DataSource.busList.FirstOrDefault(bus => bus.License == license && bus.MyActivity == Activity.ON);
             if (tmpBus == null)
                 throw new BadBusException("Bus doesn't exist", license);
-            DataSource.busList.Remove(tmpBus);
+            tmpBus.MyActivity = Activity.OFF;
         }
         #endregion
 
@@ -77,6 +79,7 @@ namespace DalObject
         public IEnumerable<BusLine> GetAllBusLines()
         {
             return from busLine in DataSource.lineList
+                   where busLine.MyActivity == Activity.ON
                    select busLine.Clone();
         }
 
@@ -84,6 +87,7 @@ namespace DalObject
         {
             IEnumerable<BusLine> myLineList = from busLine in DataSource.lineList
                                              where predicate(busLine)
+                                              where busLine.MyActivity == Activity.ON
                                              select busLine.Clone();
             if (myLineList != null)
                 return myLineList;
@@ -92,7 +96,7 @@ namespace DalObject
 
         public BusLine GetBusLine(int id)
         {
-            BusLine myBusLine = DataSource.lineList.Find(line => line.LineNumber == id);
+            BusLine myBusLine = DataSource.lineList.Find(line => line.LineNumber == id && line.MyActivity == Activity.ON);
             if (myBusLine != null)
                 return myBusLine.Clone();
             throw new BadLineException("the Line doesn't exist", id);
@@ -100,7 +104,7 @@ namespace DalObject
 
         public void AddLine(BusLine tmpBusLine)
         {
-            if (DataSource.lineList.FirstOrDefault(Line => Line.LineNumber == tmpBusLine.LineNumber) != null)
+            if (DataSource.lineList.FirstOrDefault(Line => Line.LineNumber == tmpBusLine.LineNumber && Line.MyActivity == Activity.ON) != null)
                 throw new BadLineException("the Line already exist", tmpBusLine.LineNumber);
             BusLine myBusLine = tmpBusLine.Clone();
             myBusLine.Key = Config.BusLineCounter;
@@ -109,7 +113,7 @@ namespace DalObject
 
         public void UpdateLine(BusLine lineToUpdate)
         {
-            BusLine tmpLine = DataSource.lineList.FirstOrDefault(line => line.LineNumber == lineToUpdate.LineNumber);
+            BusLine tmpLine = DataSource.lineList.FirstOrDefault(line => line.LineNumber == lineToUpdate.LineNumber && line.MyActivity == Activity.ON);
             if (tmpLine == null)
                 throw new BadLineException("the Line doesn't exist", lineToUpdate.LineNumber);
             DeleteLine(tmpLine.LineNumber);
@@ -118,10 +122,10 @@ namespace DalObject
 
         public void DeleteLine(int lineNumber)
         {
-            BusLine tmpLine = DataSource.lineList.FirstOrDefault(line => line.LineNumber == lineNumber);
+            BusLine tmpLine = DataSource.lineList.FirstOrDefault(line => line.LineNumber == lineNumber && line.MyActivity == Activity.ON);
             if (tmpLine == null)
                 throw new BadLineException("the Line doesn't exist", lineNumber);
-            DataSource.lineList.Remove(tmpLine);
+            tmpLine.MyActivity = Activity.OFF;
         }
         #endregion
 
@@ -129,12 +133,14 @@ namespace DalObject
         public IEnumerable<Station> GetAllStations()
         {
             return from station in DataSource.stationList
+                   where station.MyActivity == Activity.ON
                    select station.Clone();
         }
 
         public IEnumerable<Station> GetAllStationsBy(Predicate<Station> predicate)
         {
             IEnumerable<Station> myStationsList = from station in DataSource.stationList
+                                                  where station.MyActivity == Activity.ON
                                                   where predicate(station)
                                                   select station.Clone();
             if (myStationsList == null)
@@ -144,7 +150,7 @@ namespace DalObject
 
         public Station GetStation(int id)
         {
-            Station myStation = DataSource.stationList.Find(Station => Station.StationId == id);
+            Station myStation = DataSource.stationList.Find(Station => Station.StationId == id && Station.MyActivity == Activity.ON);
             if (myStation != null)
                 return myStation.Clone();
             throw new BadStationException("Station doesn't exist", id);
@@ -152,17 +158,17 @@ namespace DalObject
 
         public void AddStation(Station tmpStation)
         {
-            if (DataSource.stationList.FirstOrDefault(station =>station.StationId == tmpStation.StationId) != null)
+            if (DataSource.stationList.FirstOrDefault(station =>station.StationId == tmpStation.StationId && station.MyActivity == Activity.ON) != null)
                 throw new BadStationException("Station already exist", tmpStation.StationId);
             DataSource.stationList.Add(tmpStation.Clone());
         }
 
         public void DeleteStation(int id)
         {
-            Station myStation = DataSource.stationList.FirstOrDefault(station => station.StationId == id);
+            Station myStation = DataSource.stationList.FirstOrDefault(station => station.StationId == id && station.MyActivity == Activity.ON);
             if (myStation == null)
                 throw new BadStationException("Station doesn't exist", id);
-            DataSource.stationList.Remove(myStation);
+            myStation.MyActivity = Activity.OFF;
         }
         #endregion
 
@@ -170,12 +176,14 @@ namespace DalObject
         public IEnumerable<User> GetAllUsers()
         {
             return from user in DataSource.userList
+                   where user.MyActivity == Activity.ON
                    select user.Clone();
         }
 
         public IEnumerable<User> GetAllUsersBy(Predicate<User> predicate)
         {
             IEnumerable<User> myUsers = from user in DataSource.userList
+                                        where user.MyActivity == Activity.ON
                                         where predicate(user)
                                         select user.Clone();
             if(myUsers == null)
@@ -185,7 +193,7 @@ namespace DalObject
 
         public User GetUser(string userName)
         {
-            User myUser = DataSource.userList.FirstOrDefault(user => user.UserName == userName);
+            User myUser = DataSource.userList.FirstOrDefault(user => user.UserName == userName && user.MyActivity == Activity.ON);
             if (myUser != null)
                 return myUser.Clone();
             throw new BadUserException("User doesn't exist", userName);
@@ -193,7 +201,7 @@ namespace DalObject
 
         public void UpdateUser(User userToUpdate)
         {
-            User tmpUser = DataSource.userList.FirstOrDefault(user => user.UserName == userToUpdate.UserName);
+            User tmpUser = DataSource.userList.FirstOrDefault(user => user.UserName == userToUpdate.UserName && user.MyActivity == Activity.ON);
             if (tmpUser == null)
                 throw new BadUserException("User doesn't exist", userToUpdate.UserName);
             DeleteUser(tmpUser.UserName);
@@ -202,16 +210,16 @@ namespace DalObject
 
         public void AddUser(User tmpUser)
         {
-            if (DataSource.userList.FirstOrDefault(user => user.UserName == tmpUser.UserName) != null)
+            if (DataSource.userList.FirstOrDefault(user => user.UserName == tmpUser.UserName && user.MyActivity == Activity.ON) != null)
                 throw new BadUserException("User already exist", tmpUser.UserName);
             DataSource.userList.Add(tmpUser.Clone());
         }
 
         public void DeleteUser(string userName)
         {
-            User myUser = DataSource.userList.FirstOrDefault(user => user.UserName == userName);
+            User myUser = DataSource.userList.FirstOrDefault(user => user.UserName == userName && user.MyActivity == Activity.ON);
             if (myUser != null)
-                DataSource.userList.Remove(myUser);
+                myUser.MyActivity = Activity.OFF;
             else throw new BadUserException("User doesn't exist", userName);
         }
         #endregion
@@ -244,15 +252,15 @@ namespace DalObject
         }
 
         public void AddLineStation(LineStation tmpLineStation)
-        {
-            if (DataSource.linestationList.FirstOrDefault(station => station.LineNumber == tmpLineStation.LineNumber && station.StationNumber == tmpLineStation.StationNumber && station.MyActivity == Activity.ON) == null)
+        { LineStation tmp = DataSource.linestationList.FirstOrDefault(station => station.LineNumber == tmpLineStation.LineNumber && station.StationNumber == tmpLineStation.StationNumber && station.MyActivity == Activity.ON);
+            if ( tmp == null)
                 DataSource.linestationList.Add(tmpLineStation.Clone());
             else throw new BadLineStationException("Line Station already exist", tmpLineStation.LineNumber, tmpLineStation.StationNumber);
         }
 
         public void DeleteLineStation(int stationNumber, int lineNumber)
         {
-            LineStation tmpLineStation = DataSource.linestationList.FirstOrDefault(station => station.LineNumber == lineNumber && station.StationNumber == stationNumber);
+            LineStation tmpLineStation = DataSource.linestationList.FirstOrDefault(station => station.LineNumber == lineNumber && station.StationNumber == stationNumber && station.MyActivity == Activity.ON) ;
             if (tmpLineStation != null)
                 tmpLineStation.MyActivity = Activity.OFF;
             else throw new BadLineStationException("Line Station doesn't exist", lineNumber, stationNumber);
@@ -329,6 +337,7 @@ namespace DalObject
         #region LineDeparting
         public IEnumerable<LineDeparting> GetAllLineDeparting()
         {
+            
             return from lineDeparting in DataSource.lineDepartingList
                    where lineDeparting.MyActivity == Activity.ON
                    select lineDeparting.Clone();
@@ -344,7 +353,7 @@ namespace DalObject
             throw new ReadDataException("No LineDeparting meets the conditions");
         }
 
-        public LineDeparting GetLineDeparting(int lineNumber, DateTime startTime)
+        public LineDeparting GetLineDeparting(int lineNumber, TimeSpan startTime)
         {
             LineDeparting line = DataSource.lineDepartingList.FirstOrDefault
                 (lineDeparting => lineDeparting.LineNumber == lineNumber && lineDeparting.StartTime == startTime && lineDeparting.MyActivity == Activity.ON);
@@ -357,18 +366,19 @@ namespace DalObject
         {
             LineDeparting line = DataSource.lineDepartingList.FirstOrDefault
                 (lineDeparting => lineDeparting.LineNumber == tmpLineDeparting.LineNumber && lineDeparting.StartTime == tmpLineDeparting.StartTime && lineDeparting.MyActivity == Activity.ON);
-            if (line == null)
-                DataSource.lineDepartingList.Add(tmpLineDeparting.Clone());
-            throw new BadLineDepartingException("Line Departing already exists" , tmpLineDeparting.LineNumber, tmpLineDeparting.StartTime);
+            if (line != null)
+                throw new BadLineDepartingException("Line Departing already exists", tmpLineDeparting.LineNumber, tmpLineDeparting.StartTime);
+            DataSource.lineDepartingList.Add(tmpLineDeparting.Clone());           
         }
 
-        public void DeleteLineDeparting(int lineNumber, DateTime startTime)
+        public void DeleteLineDeparting(int lineNumber, TimeSpan startTime)
         {
             LineDeparting line = DataSource.lineDepartingList.FirstOrDefault
                 (lineDeparting => lineDeparting.LineNumber == lineNumber && lineDeparting.StartTime == startTime && lineDeparting.MyActivity == Activity.ON);
-            if (line != null)
-                line.MyActivity = Activity.OFF;
-            throw new BadLineDepartingException("LineDeparture doesn't exist" , lineNumber, startTime);
+            if (line == null)
+                throw new BadLineDepartingException("LineDeparture doesn't exist", lineNumber, startTime);
+            line.MyActivity = Activity.OFF;
+            
         }
 
         public void UpdateLineDeparting(LineDeparting lineDepartingToUpdate)

@@ -26,10 +26,12 @@
                 <Button Name="updateLine"
                         Content="Update"
                         Grid.Column="2"
+                        Click="updateLine_Click"
                         />
                 <Button Name="deleteLine"
                         Content="Delete"
-                        Grid.Column="3" Click="deleteLine_Click"
+                        Grid.Column="3" 
+                        Click="deleteLine_Click"
                         />
             </Grid>
         </DataTemplate>

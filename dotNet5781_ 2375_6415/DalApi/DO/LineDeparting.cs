@@ -16,9 +16,9 @@ namespace DO
             set { lineNumber = value; }
         }
 
-        private DateTime startTime;
+        private TimeSpan startTime;
 
-        public DateTime StartTime
+        public TimeSpan StartTime
         {
             get { return startTime; }
             set { startTime = value; }
@@ -32,9 +32,9 @@ namespace DO
             set { frequency = value; }
         }
 
-        private DateTime stopTime;
+        private TimeSpan stopTime;
 
-        public DateTime StopTime
+        public TimeSpan StopTime
         {
             get { return stopTime; }
             set { stopTime = value; }

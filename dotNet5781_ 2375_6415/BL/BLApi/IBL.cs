@@ -23,16 +23,19 @@ namespace BLApi
         IEnumerable<BusLine> GetAllBusLines();
         IEnumerable<BusLine> GetAllBusLinesBy(Predicate<BusLine> predicate);
         BusLine GetBusLine(int id);
+        LineToShow GetBusLineToShow(int id);
         void AddLine(BusLine tmpBusLine, Station firstStation, Station lastStation);
         void AddLine(BusLine tmpBusLine);
-        //void UpdateLine(BusLine lineToUpdate);
+        void UpdateLine(LineToShow lineToUpdate, int lineNumber);
         void AddStationToLine(LineStation station);
         void DeleteStationFromLine(int stationNumber, int lineNumber);
         void DeleteLine(int id);
+        IEnumerable<int> GetAllIndexesToAdd(int lineNumber);
         #endregion
 
         #region Station
         IEnumerable<Station> GetAllStations();
+
         IEnumerable<Station> GetAllStationsBy(Predicate<Station> predicate);
         Station GetStation(int id);
         void AddStation(Station tmpStation);
@@ -69,9 +72,9 @@ namespace BLApi
         #region LineDeparting
         IEnumerable<LineDeparting> GetAllLineDeparting();
         IEnumerable<LineDeparting> GetAllLineDepartingBy(Predicate<LineDeparting> predicate);
-        LineDeparting GetLineDeparting(int lineNumber, DateTime startTime);
+        LineDeparting GetLineDeparting(int lineNumber, TimeSpan startTime);
         void AddLineDeparting(LineDeparting tmpLineDeparting);
-        void DeleteLineDeparting(int lineNumber, DateTime startTime);
+        void DeleteLineDeparting(int lineNumber, TimeSpan startTime);
         void UpdateLineDeparting(LineDeparting lineDepartingToUpdate);
         #endregion
 
@@ -91,6 +94,15 @@ namespace BLApi
         void AddUserTrip(UserTrip tmpUserTrip);
         void DeleteUserTrip(string name);
         void UpdateUserTrip(UserTrip userTripToUpdate);
+        #endregion
+
+        #region LineStationToShow
+        IEnumerable<LineStationToShow> GetAllStationsOfLine(int lineNumber);
+
+        #endregion
+
+        #region StationToAdd
+        IEnumerable<StationToAdd> GetAllStationsToAdd(int lineNumber);
         #endregion
 
     }
