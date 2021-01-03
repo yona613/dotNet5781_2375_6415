@@ -54,15 +54,55 @@ namespace BL
 
         public void AddBus(Bus myBus)
         {
+            if (myBus.LicenseDate <= DateTime.Now) //checks the start date entered
+            {
+                if (myBus.TestDate <= DateTime.Now && myBus.TestDate >= myBus.LicenseDate) // test date needs to be after start date and before now
+                {
+                    if (myBus.LicenseDate.Year < 2018) //checks format of license number
+                    {
+                        if (myBus.License >= 1000000 && myBus.License < 10000000) //checks if good license number entered
+                        {
+                            AddBusPrivate(myBus);
+                        }
+                        else
+                        {
+                            throw new BOArgumentLicenseException("License not valid, enter valid number (license : 7 digits) !!!");
+                        }
+                    }
+                    else //other format of license
+                    {
+                        if (myBus.License >= 10000000 && myBus.License < 100000000) //checks that license is valid
+                        {
+                            AddBusPrivate(myBus);
+                        }
+                        else
+                        {
+                            throw new BOArgumentLicenseException("License not valid, enter valid number (license : 8 digits) !!!");
+                        }
+                    }
+                }
+                else
+                {
+                    throw new BOArgumentTestDateException("Invalid Test date (must be between start date and today's date !!!)");
+                }
+            }
+            else
+            {
+                throw new BOArgumentLicenseDateException("Invalid Start date (must be before today's date !!!)");
+            }
+        }
+
+        private void AddBusPrivate(Bus busToAdd)
+        {
             DO.Bus busDo = new DO.Bus();
-            myBus.CopyPropertiesTo(busDo);
+            busToAdd.CopyPropertiesTo(busDo);
             try
             {
                 dal.AddBus(busDo);
             }
             catch (DO.BadBusException e)
             {
-                throw new BOBadBusException(e.Message, myBus.License);
+                throw new BOBadBusException(e.Message, busToAdd.License);
             }
         }
 
@@ -200,7 +240,7 @@ namespace BL
                     dal.GetBusLine(lineToUpdate.LineNumber);
                     throw new BOBadLineException($"The line {lineNumber} already exists", lineNumber);
                 }
-                catch (DO.BadLineException exception){}
+                catch (DO.BadLineException exception) { }
             }
             DO.BusLine lineToUpdateDO = dal.GetBusLine(lineNumber);
             lineToUpdateDO.LineNumber = lineToUpdate.LineNumber;
@@ -211,7 +251,7 @@ namespace BL
                 dal.AddLine(lineToUpdateDO);
                 List<LineStation> stationList = GetAllLineStationsBy(x => x.LineNumber == lineNumber).ToList();
                 for (int i = 0; i < stationList.Count; i++)
-                {                  
+                {
                     DeleteLineStationPrivate(stationList[i].StationNumber, stationList[i].LineNumber);
                     stationList[i].LineNumber = lineToUpdateDO.LineNumber;
                     AddLineStation(stationList[i]);
@@ -376,7 +416,7 @@ namespace BL
             indexes.Add(indexes.Last() + 1);
             return from index in indexes
                    select index;
-                                 
+
         }
         #endregion
 
@@ -1137,7 +1177,7 @@ namespace BL
                                                       let stationToAdd = station.CopyPropertiesToNew(typeof(StationToAdd)) as StationToAdd
                                                       select stationToAdd;
             List<StationToAdd> stations = stationsToAdd.ToList();
-            foreach (var item in GetAllLineStationsBy(x=>x.LineNumber == lineNumber))
+            foreach (var item in GetAllLineStationsBy(x => x.LineNumber == lineNumber))
             {
                 for (int i = 0; i < stations.Count(); i++)
                 {

@@ -1,0 +1,162 @@
+﻿<Window x:Class="PL.WPF.AddBus"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Name = "AddBusWin" Title = "Add a new Bus" Height="450" Width="800">
+    <Grid Name="mainGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="5*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Column="0" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Label Content="Enter the License Number :" 
+               HorizontalAlignment="Stretch" 
+               VerticalContentAlignment="Center"
+               HorizontalContentAlignment="Center"
+               VerticalAlignment="Stretch" 
+               Grid.Column="0"
+               Grid.Row="0"
+                   />
+            <TextBox x:Name="GetlicenseTxb" 
+                 Grid.Column="1"
+                     Grid.Row="0"
+                 HorizontalAlignment="Stretch" 
+                     Height="50"
+                 VerticalAlignment="Stretch" 
+                     VerticalContentAlignment="Center"
+                     HorizontalContentAlignment="Center"
+                 PreviewTextInput="_PreviewTextInput"
+                     />
+            <ComboBox Name="brandCbb" 
+                      Grid.Column="0"
+                      Grid.Row="1"
+                      IsEditable="True" IsReadOnly="True"
+                      Text="Please Select"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch" 
+                      Width="180"
+                      Height="40"
+                      VerticalContentAlignment="Center"
+                      HorizontalContentAlignment="Center"
+                      ItemsSource="{Binding}" 
+                      SelectedIndex="-1" 
+                      FontSize="18"
+                />
+            <CheckBox Name="AcCbb"
+                      Content="Air Conditionning" 
+                      Grid.Column="1" 
+                      HorizontalAlignment="Stretch" 
+                      VerticalAlignment="Stretch" 
+                      VerticalContentAlignment="Center"
+                      HorizontalContentAlignment="Center"
+                      FontSize="20" 
+                      Grid.Row="1"
+                      />
+        </Grid>
+
+        <Label Name="KmLB"
+               Content="Enter the Kilometrage :" 
+               HorizontalAlignment="Center" 
+               VerticalContentAlignment="Center"
+               HorizontalContentAlignment="Center"
+               VerticalAlignment="Top" 
+               Grid.Column="1"
+               Grid.Row="1"
+               Height="73" 
+               Width="314"
+               IsEnabled="false"
+              
+               />
+        <TextBox Name="GetKmTxb" 
+                 Grid.Column="1"
+                 Grid.Row="1"
+                 Text="{Binding Path=Kilometrage}"
+                 HorizontalAlignment="Center" 
+                 Height="50" 
+                 Width="200"
+                 VerticalAlignment="Bottom" 
+                 PreviewTextInput="_PreviewTextInput"
+                 IsEnabled="false"
+                
+         />
+        <CheckBox Name="OldBusCB"
+                  Content="Old Bus" 
+                  VerticalContentAlignment="Center"
+                  HorizontalContentAlignment="Left"
+                  Height="30"
+                  Width="300"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Bottom" 
+                  Unchecked="OldBusCB_Unchecked"
+                  Checked="CheckBox_Checked" Margin="45,0,51,10"
+        />
+        <Grid Name="LicenseGrid"
+              Grid.Row="2"
+              Grid.Column="0"
+              IsEnabled="false"
+              
+              >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="5*"/>
+            </Grid.RowDefinitions>
+            <Calendar Name="OldBusSD" 
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Bottom"
+                  SelectedDate="{Binding Path=StartDate, Mode=OneWayToSource}"
+                  Grid.Row="1" 
+                  />
+            <Label Content="Choose Date of Licensing :" 
+                   HorizontalContentAlignment="Center"
+                   VerticalContentAlignment="Center"
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Center"
+                   Width="200"/>
+        </Grid>
+        <Grid Name="TestGrid"
+              Grid.Row="2"
+              Grid.Column="1"
+              IsEnabled="False"
+             
+              >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="5*"/>
+            </Grid.RowDefinitions>
+            <Calendar Name="OldBusTD" 
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Bottom"
+                      SelectedDate="{Binding Path=TestDate, Mode=OneWayToSource}"
+                  Grid.Row="1" 
+                  />
+            <Label Content="Choose Date of latest Test :" 
+                   HorizontalContentAlignment="Center"
+                   VerticalContentAlignment="Center"
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Center"
+                   Width="200"/>
+        </Grid>
+        <Button Name="ApplyBtn"
+                Content="Submit" 
+                Grid.Column="1" 
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Click="ApplyBtn_Click"
+                />
+    </Grid>
+</Window>

@@ -26,12 +26,12 @@
                 <Button Name="updateLine"
                         Content="Update"
                         Grid.Column="2"
-                        Click="updateLine_Click"
+                        Click="UpdateLine_Click"
                         />
                 <Button Name="deleteLine"
                         Content="Delete"
                         Grid.Column="3" 
-                        Click="deleteLine_Click"
+                        Click="DeleteLine_Click"
                         />
             </Grid>
         </DataTemplate>
@@ -67,7 +67,7 @@
                         />
                 <Button Name="deleteBus"
                         Content="Delete"
-                        Grid.Column="5" Click="deleteBus_Click"
+                        Grid.Column="5" Click="DeleteBus_Click"
                         />
             </Grid>
         </DataTemplate>
@@ -103,7 +103,7 @@
                         />
                 <Button Name="deleteStation"
                         Content="Delete"
-                        Grid.Column="5" Click="deleteStation_Click"
+                        Grid.Column="5" Click="DeleteStation_Click"
                         />
             </Grid>
         </DataTemplate>
@@ -128,7 +128,7 @@
                       HorizontalContentAlignment="Center"
                       VerticalContentAlignment="Center"
                       Content="Line" FontSize="36" FontFamily="Arial" Margin="50,0,0,0" 
-                      Checked="lineChB_Checked" Unchecked="lineChB_Unchecked"
+                      Checked="LineChB_Checked" Unchecked="LineChB_Unchecked"
                       
                       />
             <CheckBox Name="busChB" 
@@ -137,14 +137,14 @@
                       HorizontalAlignment="Left" 
                       HorizontalContentAlignment="Center"
                       VerticalContentAlignment="Center"
-                      Content="Bus" FontSize="36" FontFamily="Arial" Margin="50,0,0,0" Checked="busChB_Checked" Unchecked="busChB_Unchecked" />
+                      Content="Bus" FontSize="36" FontFamily="Arial" Margin="50,0,0,0" Checked="BusChB_Checked" Unchecked="BusChB_Unchecked" />
             <CheckBox Name="stationChB" 
                       Grid.Row="2" 
                       VerticalAlignment="Stretch" 
                       HorizontalAlignment="Left" 
                       HorizontalContentAlignment="Center"
                       VerticalContentAlignment="Center"
-                      Content="Station" FontSize="36" FontFamily="Arial" Margin="50,0,0,0" Checked="stationChB_Checked" Unchecked="stationChB_Unchecked" />
+                      Content="Station" FontSize="36" FontFamily="Arial" Margin="50,0,0,0" Checked="StationChB_Checked" Unchecked="StationChB_Unchecked" />
             <!--<CheckBox Name="userChB" 
                       Grid.Row="3" 
                       VerticalAlignment="Stretch" 
@@ -158,6 +158,24 @@
             <ListBox Name="ListB" ItemsSource="{Binding}" ItemTemplate="{ StaticResource ListBuses}" Visibility="Collapsed"/>
             <ListBox Name="ListS" ItemsSource="{Binding}" ItemTemplate="{ StaticResource ListStation}" Visibility="Collapsed"/>
         </Grid>
+        <Button Name="AddBtn"                           
+                HorizontalContentAlignment="Stretch"
+                VerticalContentAlignment="Center"
+                Grid.Column="2"
+                VerticalAlignment="Bottom" 
+                HorizontalAlignment="Stretch"
+                Height="87"
+                Click="Button_Click"
+                >
+            <Button.Content>
+                <TextBlock Name="BtnTblock"
+                           HorizontalAlignment="Center"
+                           TextAlignment="Center"
+                           Text="Please choose a  object to add"
+                           TextWrapping="WrapWithOverflow"
+                           />
+            </Button.Content>
+        </Button>
 
     </Grid>
 </Window>

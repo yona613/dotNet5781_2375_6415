@@ -17,6 +17,33 @@ namespace BO
     }
 
     [Serializable]
+    public class BOArgumentLicenseException : Exception
+    {
+        public BOArgumentLicenseException() : base() { }
+        public BOArgumentLicenseException(string message) : base(message) { }
+        public BOArgumentLicenseException(string message, Exception inner) : base(message, inner) { }
+        protected BOArgumentLicenseException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+    }
+
+    [Serializable]
+    public class BOArgumentLicenseDateException : Exception
+    {
+        public BOArgumentLicenseDateException() : base() { }
+        public BOArgumentLicenseDateException(string message) : base(message) { }
+        public BOArgumentLicenseDateException(string message, Exception inner) : base(message, inner) { }
+        protected BOArgumentLicenseDateException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+    }
+
+    [Serializable]
+    public class BOArgumentTestDateException : Exception
+    {
+        public BOArgumentTestDateException() : base() { }
+        public BOArgumentTestDateException(string message) : base(message) { }
+        public BOArgumentTestDateException(string message, Exception inner) : base(message, inner) { }
+        protected BOArgumentTestDateException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+    }
+
+    [Serializable]
     public class BOStopTimeException : Exception
     {
         public BOStopTimeException() : base() { }
