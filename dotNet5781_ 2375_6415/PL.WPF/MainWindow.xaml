@@ -6,8 +6,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Window.Resources>
-        <DataTemplate  x:Key="ListLines"
-                       >
+        <DataTemplate  x:Key="ListLines">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -100,10 +99,12 @@
                 <Button Name="updateStation"
                         Content="Update"
                         Grid.Column="4"
+                        Click="updateStation_Click"
                         />
                 <Button Name="deleteStation"
                         Content="Delete"
-                        Grid.Column="5" Click="DeleteStation_Click"
+                        Grid.Column="5"
+                        Click="DeleteStation_Click"
                         />
             </Grid>
         </DataTemplate>

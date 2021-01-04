@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Maps.MapControl.WPF;
 using System.Device.Location;
 using DO;
 
@@ -87,7 +88,7 @@ namespace DS
             for (int i = 1000; i < 1200; i++)
             {
                 int tmpInt = r.Next(0, 31);  //to get adress in array
-                Station tmpStation = new Station { StationId = i, Coordinates = new GeoCoordinate { Latitude = r.NextDouble() * 2.3 + 31, Longitude = r.NextDouble() * 1.2 + 34.3 }, Name = addressList[tmpInt], Address = addressList[tmpInt] + " " + r.Next(0, 100).ToString(), DigitalPanel = true, Invalid = true, Roof = true, MyActivity = Activity.ON };
+                Station tmpStation = new Station { StationId = i, Coordinates = new Location { Latitude = r.NextDouble() * 2.3 + 31, Longitude = r.NextDouble() * 1.2 + 34.3 }, Name = addressList[tmpInt], Address = addressList[tmpInt] + " " + r.Next(0, 100).ToString(), DigitalPanel = true, Invalid = true, Roof = true, MyActivity = Activity.ON };
                 myStationsList.Add(tmpStation);
             }
             return myStationsList;
@@ -154,12 +155,12 @@ namespace DS
                           where station.LineNumber == i && station.Index == j + 1
                           select station.StationNumber;
                     lastStationNumber = tmp.First();
-                    GeoCoordinate firstStationLocation;
-                    IEnumerable<GeoCoordinate> tmpCoo = from station in stationList
+                    Location firstStationLocation;
+                    IEnumerable<Location> tmpCoo = from station in stationList
                                                         where station.StationId == firstStationNumber
                                                         select station.Coordinates;
                     firstStationLocation = tmpCoo.First();
-                    GeoCoordinate lastStationLocation;
+                    Location lastStationLocation;
                     tmpCoo = from station in stationList
                              where station.StationId == lastStationNumber
                              select station.Coordinates;

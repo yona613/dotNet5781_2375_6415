@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Device.Location;
+using Microsoft.Maps.MapControl.WPF;
 using System.Text.RegularExpressions;
 
 namespace PL.WPF
@@ -38,7 +39,7 @@ namespace PL.WPF
             {
                 try
                 {
-                    myStation.Coordinates = new GeoCoordinate() { Longitude = double.Parse(LongitudeTb.Text), Latitude = double.Parse(LatitudeTb.Text) };
+                    myStation.Coordinates = new Location() { Longitude = double.Parse(LongitudeTb.Text), Latitude = double.Parse(LatitudeTb.Text) };
                     MainWindow.bl.AddStation(myStation);
                     BO.LineStation lineStation = new BO.LineStation() { Index = (int)indexCb.SelectedItem, LineNumber = myLine.LineNumber, StationNumber = myStation.StationId };
                     MainWindow.bl.AddStationToLine(lineStation);

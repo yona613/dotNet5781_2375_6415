@@ -38,6 +38,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Maps.MapControl.WPF">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Bing Maps WPF Control\V1\Libraries\Microsoft.Maps.MapControl.WPF.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Device" />
@@ -68,12 +71,18 @@
     <Compile Include="AddLineStation.xaml.cs">
       <DependentUpon>AddLineStation.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AddStation.xaml.cs">
+      <DependentUpon>AddStation.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Station.cs" />
     <Compile Include="UpdateLine.xaml.cs">
       <DependentUpon>UpdateLine.xaml</DependentUpon>
     </Compile>
     <Compile Include="UpdateLineDeparting.xaml.cs">
       <DependentUpon>UpdateLineDeparting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UpdateStation.xaml.cs">
+      <DependentUpon>UpdateStation.xaml</DependentUpon>
     </Compile>
     <Page Include="AddBus.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -84,6 +93,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="AddLineStation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AddStation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -107,6 +120,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UpdateLineDeparting.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UpdateStation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

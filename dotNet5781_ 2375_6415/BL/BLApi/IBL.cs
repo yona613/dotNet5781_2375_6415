@@ -35,9 +35,9 @@ namespace BLApi
 
         #region Station
         IEnumerable<Station> GetAllStations();
-
         IEnumerable<Station> GetAllStationsBy(Predicate<Station> predicate);
         Station GetStation(int id);
+        void UpdateStation(Station tmpStation);
         void AddStation(Station tmpStation);
         void DeleteStation(int id);
         #endregion

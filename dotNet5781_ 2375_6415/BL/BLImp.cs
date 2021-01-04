@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Device.Location;
+using Microsoft.Maps.MapControl.WPF;
 using DalApi;
 using BLApi;
 using BO;
@@ -490,6 +491,20 @@ namespace BL
                 throw new BOBadStationException(e.Message, tmpStation.StationId);
             }
         }
+
+        public void UpdateStation(Station tmpStation)
+        {
+            try
+            {
+                dal.DeleteStation(tmpStation.StationId);
+                dal.AddStation((DO.Station)tmpStation.CopyPropertiesToNew(typeof(DO.Station)));
+            }
+            catch (DO.BadStationException e)
+            {
+                throw new BOBadStationException(e.Message, tmpStation.StationId);
+            }
+        }
+
         public void DeleteStation(int id)
         {
             var myStations = GetAllLineStations().GroupBy(x => x.LineNumber).ToList();

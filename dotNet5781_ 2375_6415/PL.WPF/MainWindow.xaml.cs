@@ -133,16 +133,24 @@ namespace PL.WPF
                 new AddBus().ShowDialog();
                 var busList = bl.GetAllBuses().OrderBy(x => x.License).ToList();
                 ListB.DataContext = busList;
-
             }
             else if (stationChB.IsChecked == true)
             {
-                
+                new AddStation().ShowDialog();
+                var stationList = bl.GetAllStations().OrderBy(x => x.StationId).ToList();
+                ListS.DataContext = stationList;
             }
             else
             {
                 MessageBox.Show("Please choose an object to add !!");
             }
+        }
+
+        private void updateStation_Click(object sender, RoutedEventArgs e)
+        {
+            new UpdateStation(((sender as Button).DataContext) as BO.Station).ShowDialog();
+            var stationList = bl.GetAllStations().OrderBy(x => x.StationId).ToList();
+            ListS.DataContext = stationList;
         }
     }
 }
