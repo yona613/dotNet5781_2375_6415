@@ -41,7 +41,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
+                    <!--<ColumnDefinition Width="*"/>-->
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Label Name="bus" 
@@ -49,7 +49,7 @@
                        Grid.Column="0"
                        />
                 <Label Name="busLicense"
-                       Content="{Binding Path=License}"
+                       Content="{Binding Path=LicenseToShow}"
                        Grid.Column="1"
                     />
                 <Label Name="busStatus" 
@@ -60,10 +60,10 @@
                        Content="{Binding Path=BusStatus}"
                        Grid.Column="3"
                     />
-                <Button Name="updateBus"
+                <!--<Button Name="updateBus"
                         Content="Update"
                         Grid.Column="4"
-                        />
+                        />-->
                 <Button Name="deleteBus"
                         Content="Delete"
                         Grid.Column="5" Click="DeleteBus_Click"
@@ -155,9 +155,9 @@
                       Content="User" FontSize="36" FontFamily="Arial" Margin="50,0,0,0" />-->
         </Grid>
         <Grid Name="listGrid" Grid.Column="1">
-            <ListBox Name="ListLB" ItemsSource="{Binding}" ItemTemplate="{ StaticResource ListLines}" Visibility="Collapsed"/>
-            <ListBox Name="ListB" ItemsSource="{Binding}" ItemTemplate="{ StaticResource ListBuses}" Visibility="Collapsed"/>
-            <ListBox Name="ListS" ItemsSource="{Binding}" ItemTemplate="{ StaticResource ListStation}" Visibility="Collapsed"/>
+            <ListBox Name="ListLB" MouseDoubleClick="ListLB_MouseDoubleClick" ItemsSource="{Binding}" ItemTemplate="{ StaticResource ListLines}" Visibility="Collapsed"/>
+            <ListBox Name="ListB" MouseDoubleClick="ListB_MouseDoubleClick" ItemsSource="{Binding}" ItemTemplate="{ StaticResource ListBuses}" Visibility="Collapsed"/>
+            <ListBox Name="ListS" MouseDoubleClick="ListS_MouseDoubleClick" ItemsSource="{Binding}" ItemTemplate="{ StaticResource ListStation}" Visibility="Collapsed"/>
         </Grid>
         <Button Name="AddBtn"                           
                 HorizontalContentAlignment="Stretch"

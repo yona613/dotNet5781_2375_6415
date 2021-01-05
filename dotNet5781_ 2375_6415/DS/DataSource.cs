@@ -47,13 +47,13 @@ namespace DS
                 if (tmpDate.Year < 2018)
                 {
                     int tmpKm = r.Next(20500, 200000);
-                    Bus tmpBus = new Bus { License = r.Next(1000000, 10000000), LicenseDate = tmpDate, Kilometrage = tmpKm, Fuel = r.Next(0, 1201), BusStatus = Status.READY, TestDate = tmpTest, KmFromTest = r.Next(0, 18000), Brand = "Volvo", AirConditionning = true, MyActivity = Activity.ON };
+                    Bus tmpBus = new Bus { License = r.Next(1000000, 10000000), LicenseDate = tmpDate, Kilometrage = tmpKm, Fuel = r.Next(0, 1201), BusStatus = Status.Ready, TestDate = tmpTest, KmFromTest = r.Next(0, 18000), Brand = "Volvo", AirConditionning = true, MyActivity = Activity.On };
                     busList.Add(tmpBus);
                 }
                 else
                 {
                     int tmpKm = r.Next(20500, 200000);
-                    Bus tmpBus = new Bus { License = r.Next(10000000, 100000000), LicenseDate = tmpDate, Kilometrage = tmpKm, Fuel = r.Next(0, 1201), BusStatus = Status.READY, TestDate = tmpTest, KmFromTest = r.Next(0, 18000), Brand = "Volvo", AirConditionning = true, MyActivity = Activity.ON };
+                    Bus tmpBus = new Bus { License = r.Next(10000000, 100000000), LicenseDate = tmpDate, Kilometrage = tmpKm, Fuel = r.Next(0, 1201), BusStatus = Status.Ready, TestDate = tmpTest, KmFromTest = r.Next(0, 18000), Brand = "Volvo", AirConditionning = true, MyActivity = Activity.On };
                     busList.Add(tmpBus);
                 }
             }
@@ -61,21 +61,21 @@ namespace DS
             DateTime tmpDate1 = new DateTime(2015, r.Next(1, 13), r.Next(1, 28), r.Next(1, 13), r.Next(0, 60), r.Next(0, 60));
             DateTime tmpTest1 = new DateTime(2018, r.Next(1, 10), r.Next(1, 28), r.Next(1, 13), r.Next(0, 60), r.Next(0, 60));
             int tmpKm1 = r.Next(20500, 200000);
-            Bus tmpBus1 = new Bus { LicenseDate = tmpDate1, License = r.Next(1000000, 10000000), Fuel = r.Next(0, 1201), Kilometrage = tmpKm1, KmFromTest = r.Next(0, 18000), TestDate = tmpTest1, BusStatus = Status.READY, Brand = "Volvo", AirConditionning = true, MyActivity = Activity.ON };
+            Bus tmpBus1 = new Bus { LicenseDate = tmpDate1, License = r.Next(1000000, 10000000), Fuel = r.Next(0, 1201), Kilometrage = tmpKm1, KmFromTest = r.Next(0, 18000), TestDate = tmpTest1, BusStatus = Status.Ready, Brand = "Volvo", AirConditionning = true, MyActivity = Activity.On };
             busList.Add(tmpBus1);
 
             //bus close to test because of km
             tmpDate1 = new DateTime(2018, r.Next(1, 13), r.Next(1, 28), r.Next(1, 13), r.Next(0, 60), r.Next(0, 60));
             tmpTest1 = new DateTime(2020, r.Next(1, 10), r.Next(1, 28), r.Next(1, 13), r.Next(0, 60), r.Next(0, 60));
             tmpKm1 = r.Next(20500, 200000);
-            tmpBus1 = new Bus { LicenseDate = tmpDate1, License = r.Next(10000000, 100000000),Fuel = r.Next(0, 1201), Kilometrage = tmpKm1, KmFromTest= r.Next(19900, 19998), TestDate = tmpTest1, BusStatus = Status.READY, Brand = "Volvo", AirConditionning = true, MyActivity = Activity.ON };
+            tmpBus1 = new Bus { LicenseDate = tmpDate1, License = r.Next(10000000, 100000000),Fuel = r.Next(0, 1201), Kilometrage = tmpKm1, KmFromTest= r.Next(19900, 19998), TestDate = tmpTest1, BusStatus = Status.Ready, Brand = "Volvo", AirConditionning = true, MyActivity = Activity.On };
             busList.Add(tmpBus1);
 
             //bus close to refuel
             tmpDate1 = new DateTime(2019, r.Next(1, 13), r.Next(1, 28), r.Next(1, 13), r.Next(0, 60), r.Next(0, 60));
             tmpTest1 = new DateTime(2020, r.Next(1, 10), r.Next(1, 28), r.Next(1, 13), r.Next(0, 60), r.Next(0, 60));
             tmpKm1 = r.Next(20500, 200000);
-            tmpBus1 = new Bus { LicenseDate = tmpDate1, License = r.Next(10000000, 100000000), Fuel = r.Next(0, 50), Kilometrage = tmpKm1, KmFromTest = r.Next(19900, 19998), TestDate = tmpTest1, BusStatus = Status.READY, Brand = "Volvo", AirConditionning = true, MyActivity = Activity.ON };
+            tmpBus1 = new Bus { LicenseDate = tmpDate1, License = r.Next(10000000, 100000000), Fuel = r.Next(0, 50), Kilometrage = tmpKm1, KmFromTest = r.Next(19900, 19998), TestDate = tmpTest1, BusStatus = Status.Ready, Brand = "Volvo", AirConditionning = true, MyActivity = Activity.On };
             busList.Add(tmpBus1);
 
             return busList;
@@ -88,7 +88,7 @@ namespace DS
             for (int i = 1000; i < 1200; i++)
             {
                 int tmpInt = r.Next(0, 31);  //to get adress in array
-                Station tmpStation = new Station { StationId = i, Coordinates = new Location { Latitude = r.NextDouble() * 2.3 + 31, Longitude = r.NextDouble() * 1.2 + 34.3 }, Name = addressList[tmpInt], Address = addressList[tmpInt] + " " + r.Next(0, 100).ToString(), DigitalPanel = true, Invalid = true, Roof = true, MyActivity = Activity.ON };
+                Station tmpStation = new Station { StationId = i, Coordinates = new Location { Latitude = r.NextDouble() * 2.3 + 31, Longitude = r.NextDouble() * 1.2 + 34.3 }, Name = addressList[tmpInt], Address = addressList[tmpInt] + " " + r.Next(0, 100).ToString(), DigitalPanel = true, Invalid = true, Roof = true, MyActivity = Activity.On };
                 myStationsList.Add(tmpStation);
             }
             return myStationsList;
@@ -98,16 +98,16 @@ namespace DS
         {
             int i = 1;
             List<BusLine> busLines = new List<BusLine> { }; 
-            busLines.Add(new BusLine { FirstStation = 1000, Key = Config.BusLineCounter, LastStation = 1009, LineArea = (Area)r.Next(0, 4), LineNumber = i++, MyActivity = Activity.ON });
-            busLines.Add(new BusLine { FirstStation = 1001, Key = Config.BusLineCounter, LastStation = 1008, LineArea = (Area)r.Next(0, 4), LineNumber = i++, MyActivity = Activity.ON });
-            busLines.Add(new BusLine { FirstStation = 1002, Key = Config.BusLineCounter, LastStation = 1007, LineArea = (Area)r.Next(0, 4), LineNumber = i++, MyActivity = Activity.ON });
-            busLines.Add(new BusLine { FirstStation = 1003, Key = Config.BusLineCounter, LastStation = 1006, LineArea = (Area)r.Next(0, 4), LineNumber = i++, MyActivity = Activity.ON });
-            busLines.Add(new BusLine { FirstStation = 1004, Key = Config.BusLineCounter, LastStation = 1005, LineArea = (Area)r.Next(0, 4), LineNumber = i++, MyActivity = Activity.ON });
-            busLines.Add(new BusLine { FirstStation = 1001, Key = Config.BusLineCounter, LastStation = 1008, LineArea = (Area)r.Next(0, 4), LineNumber = i++, MyActivity = Activity.ON });
-            busLines.Add(new BusLine { FirstStation = 1002, Key = Config.BusLineCounter, LastStation = 1006, LineArea = (Area)r.Next(0, 4), LineNumber = i++, MyActivity = Activity.ON });
-            busLines.Add(new BusLine { FirstStation = 1004, Key = Config.BusLineCounter, LastStation = 1006, LineArea = (Area)r.Next(0, 4), LineNumber = i++, MyActivity = Activity.ON });
-            busLines.Add(new BusLine { FirstStation = 1009, Key = Config.BusLineCounter, LastStation = 1006, LineArea = (Area)r.Next(0, 4), LineNumber = i++, MyActivity = Activity.ON });
-            busLines.Add(new BusLine { FirstStation = 1008, Key = Config.BusLineCounter, LastStation = 1007, LineArea = (Area)r.Next(0, 4), LineNumber = i++, MyActivity = Activity.ON });
+            busLines.Add(new BusLine { FirstStation = 1000, Key = Config.BusLineCounter, LastStation = 1009, LineArea = (Area)r.Next(0, 4), LineNumber = i++, MyActivity = Activity.On });
+            busLines.Add(new BusLine { FirstStation = 1001, Key = Config.BusLineCounter, LastStation = 1008, LineArea = (Area)r.Next(0, 4), LineNumber = i++, MyActivity = Activity.On });
+            busLines.Add(new BusLine { FirstStation = 1002, Key = Config.BusLineCounter, LastStation = 1007, LineArea = (Area)r.Next(0, 4), LineNumber = i++, MyActivity = Activity.On });
+            busLines.Add(new BusLine { FirstStation = 1003, Key = Config.BusLineCounter, LastStation = 1006, LineArea = (Area)r.Next(0, 4), LineNumber = i++, MyActivity = Activity.On });
+            busLines.Add(new BusLine { FirstStation = 1004, Key = Config.BusLineCounter, LastStation = 1005, LineArea = (Area)r.Next(0, 4), LineNumber = i++, MyActivity = Activity.On });
+            busLines.Add(new BusLine { FirstStation = 1001, Key = Config.BusLineCounter, LastStation = 1008, LineArea = (Area)r.Next(0, 4), LineNumber = i++, MyActivity = Activity.On });
+            busLines.Add(new BusLine { FirstStation = 1002, Key = Config.BusLineCounter, LastStation = 1006, LineArea = (Area)r.Next(0, 4), LineNumber = i++, MyActivity = Activity.On });
+            busLines.Add(new BusLine { FirstStation = 1004, Key = Config.BusLineCounter, LastStation = 1006, LineArea = (Area)r.Next(0, 4), LineNumber = i++, MyActivity = Activity.On });
+            busLines.Add(new BusLine { FirstStation = 1009, Key = Config.BusLineCounter, LastStation = 1006, LineArea = (Area)r.Next(0, 4), LineNumber = i++, MyActivity = Activity.On });
+            busLines.Add(new BusLine { FirstStation = 1008, Key = Config.BusLineCounter, LastStation = 1007, LineArea = (Area)r.Next(0, 4), LineNumber = i++, MyActivity = Activity.On });
             return busLines;
         }
 
@@ -118,29 +118,29 @@ namespace DS
             {
                 for (int j = 2; j < 10; j++)
                 {
-                    lineStations.Add(new LineStation { Index = j, LineNumber = i, StationNumber = stationNum++, MyActivity = Activity.ON });
+                    lineStations.Add(new LineStation { Index = j, LineNumber = i, StationNumber = stationNum++, MyActivity = Activity.On });
                 }
             }
-            lineStations.Add(new LineStation { Index = 1, LineNumber = 1, StationNumber = 1000, MyActivity = Activity.ON });
-            lineStations.Add(new LineStation { Index = 1, LineNumber = 2, StationNumber = 1001, MyActivity = Activity.ON });
-            lineStations.Add(new LineStation { Index = 1, LineNumber = 3, StationNumber = 1002, MyActivity = Activity.ON });
-            lineStations.Add(new LineStation { Index = 1, LineNumber = 4, StationNumber = 1003, MyActivity = Activity.ON });
-            lineStations.Add(new LineStation { Index = 1, LineNumber = 5, StationNumber = 1004, MyActivity = Activity.ON });
-            lineStations.Add(new LineStation { Index = 1, LineNumber = 6, StationNumber = 1001, MyActivity = Activity.ON });
-            lineStations.Add(new LineStation { Index = 1, LineNumber = 7, StationNumber = 1002, MyActivity = Activity.ON });
-            lineStations.Add(new LineStation { Index = 1, LineNumber = 8, StationNumber = 1004, MyActivity = Activity.ON });
-            lineStations.Add(new LineStation { Index = 1, LineNumber = 9, StationNumber = 1009, MyActivity = Activity.ON });
-            lineStations.Add(new LineStation { Index = 1, LineNumber = 10, StationNumber = 1008, MyActivity = Activity.ON });
-            lineStations.Add(new LineStation { Index = 10, LineNumber = 1, StationNumber = 1009, MyActivity = Activity.ON });
-            lineStations.Add(new LineStation { Index = 10, LineNumber = 2, StationNumber = 1008, MyActivity = Activity.ON });
-            lineStations.Add(new LineStation { Index = 10, LineNumber = 3, StationNumber = 1007, MyActivity = Activity.ON });
-            lineStations.Add(new LineStation { Index = 10, LineNumber = 4, StationNumber = 1006, MyActivity = Activity.ON });
-            lineStations.Add(new LineStation { Index = 10, LineNumber = 5, StationNumber = 1005, MyActivity = Activity.ON });
-            lineStations.Add(new LineStation { Index = 10, LineNumber = 6, StationNumber = 1008, MyActivity = Activity.ON });
-            lineStations.Add(new LineStation { Index = 10, LineNumber = 7, StationNumber = 1006, MyActivity = Activity.ON });
-            lineStations.Add(new LineStation { Index = 10, LineNumber = 8, StationNumber = 1006, MyActivity = Activity.ON });
-            lineStations.Add(new LineStation { Index = 10, LineNumber = 9, StationNumber = 1006, MyActivity = Activity.ON });
-            lineStations.Add(new LineStation { Index = 10, LineNumber = 10, StationNumber = 1007, MyActivity = Activity.ON });
+            lineStations.Add(new LineStation { Index = 1, LineNumber = 1, StationNumber = 1000, MyActivity = Activity.On });
+            lineStations.Add(new LineStation { Index = 1, LineNumber = 2, StationNumber = 1001, MyActivity = Activity.On });
+            lineStations.Add(new LineStation { Index = 1, LineNumber = 3, StationNumber = 1002, MyActivity = Activity.On });
+            lineStations.Add(new LineStation { Index = 1, LineNumber = 4, StationNumber = 1003, MyActivity = Activity.On });
+            lineStations.Add(new LineStation { Index = 1, LineNumber = 5, StationNumber = 1004, MyActivity = Activity.On });
+            lineStations.Add(new LineStation { Index = 1, LineNumber = 6, StationNumber = 1001, MyActivity = Activity.On });
+            lineStations.Add(new LineStation { Index = 1, LineNumber = 7, StationNumber = 1002, MyActivity = Activity.On });
+            lineStations.Add(new LineStation { Index = 1, LineNumber = 8, StationNumber = 1004, MyActivity = Activity.On });
+            lineStations.Add(new LineStation { Index = 1, LineNumber = 9, StationNumber = 1009, MyActivity = Activity.On });
+            lineStations.Add(new LineStation { Index = 1, LineNumber = 10, StationNumber = 1008, MyActivity = Activity.On });
+            lineStations.Add(new LineStation { Index = 10, LineNumber = 1, StationNumber = 1009, MyActivity = Activity.On });
+            lineStations.Add(new LineStation { Index = 10, LineNumber = 2, StationNumber = 1008, MyActivity = Activity.On });
+            lineStations.Add(new LineStation { Index = 10, LineNumber = 3, StationNumber = 1007, MyActivity = Activity.On });
+            lineStations.Add(new LineStation { Index = 10, LineNumber = 4, StationNumber = 1006, MyActivity = Activity.On });
+            lineStations.Add(new LineStation { Index = 10, LineNumber = 5, StationNumber = 1005, MyActivity = Activity.On });
+            lineStations.Add(new LineStation { Index = 10, LineNumber = 6, StationNumber = 1008, MyActivity = Activity.On });
+            lineStations.Add(new LineStation { Index = 10, LineNumber = 7, StationNumber = 1006, MyActivity = Activity.On });
+            lineStations.Add(new LineStation { Index = 10, LineNumber = 8, StationNumber = 1006, MyActivity = Activity.On });
+            lineStations.Add(new LineStation { Index = 10, LineNumber = 9, StationNumber = 1006, MyActivity = Activity.On });
+            lineStations.Add(new LineStation { Index = 10, LineNumber = 10, StationNumber = 1007, MyActivity = Activity.On });
             for (int i = 1; i < 11; i++)
             {
                 for (int j = 1; j < 10; j++)
@@ -178,7 +178,7 @@ namespace DS
             List<string> names = new List<string> { "Yona", "Elyassaf", "Nathi", "Aharon", "David", "Dani", "Oshri", "Eliezer", "Avraham", "Itamar" };
             for (int i = 1; i < 11; i++)
             {
-                users.Add(new User { UserName = names[i - 1], Password = "1234", Permission = Permit.USER, MyActivity = Activity.ON });
+                users.Add(new User { UserName = names[i - 1], Password = "1234", Permission = Permit.User, MyActivity = Activity.On });
             }
             return users;
         }
@@ -188,7 +188,7 @@ namespace DS
             List<LineDeparting> myLineDepartings = new List<LineDeparting> { };
             for (int i = 1; i < 11; i++)
             {
-                LineDeparting tmpLineDeparting = new LineDeparting() { LineNumber = i, StartTime = new TimeSpan(07, 00, 00), MyActivity = Activity.ON, StopTime = new TimeSpan(22, 00, 00), Frequency = new TimeSpan(00, 15, 00) };
+                LineDeparting tmpLineDeparting = new LineDeparting() { LineNumber = i, StartTime = new TimeSpan(07, 00, 00), MyActivity = Activity.On, StopTime = new TimeSpan(22, 00, 00), Frequency = new TimeSpan(00, 15, 00) };
                 myLineDepartings.Add(tmpLineDeparting);
             }
             return myLineDepartings;

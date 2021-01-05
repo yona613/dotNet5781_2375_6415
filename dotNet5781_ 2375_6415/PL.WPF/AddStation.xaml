@@ -3,49 +3,144 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
         xmlns:local="clr-namespace:PL.WPF"
         mc:Ignorable="d"
-        Title="AddStation" Height="450" Width="800">
-    <Grid>
+        Title="UpdateStation" Height="450" Width="800">
+    <Grid Name="mainGrid">
         <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
             <RowDefinition Height="4*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
-        <Grid>
+        <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-        </Grid>
-        <Grid Name="newStationGrid" Grid.Row="0" >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <CheckBox Content="Roof" HorizontalAlignment="Center" IsChecked="{Binding Path=Roof}" VerticalAlignment="Top" FontSize="18" Margin="51,43,50,0"/>
-            <CheckBox Content="Invalid" HorizontalAlignment="Center" IsChecked="{Binding Path=Invalid}" VerticalAlignment="Bottom" FontSize="18" Margin="51,0,35,54"/>
-            <CheckBox Content="Digital Panel" HorizontalAlignment="Center" IsChecked="{Binding Path=DigitalPanel}" VerticalAlignment="Top" FontSize="18" Margin="30,154,10,0"/>
-            <Label Content="Station Number" Grid.Column="1" HorizontalAlignment="Center"  VerticalAlignment="Top"/>
-            <TextBox Name="numberTb" Grid.Column="1" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Text="{Binding Path=StationId}" VerticalAlignment="Center" Width="120" PreviewTextInput="_PreviewTextInput"/>
-            <Label Content="Coordinates" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <TextBox Name="LongitudeTb" Grid.Column="2" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Height="23" Text='00,0000' VerticalAlignment="Center" Width="120" Margin="19,123,19,189"/>
-            <TextBox Name="LatitudeTb" Grid.Column="2" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Height="23" Text='00,0000' Margin="19,210,19,0" VerticalAlignment="Top" Width="120"/>
-            <Label Content="Name" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <TextBox Grid.Column="3" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Height="23" Text="{Binding Path=Name}" VerticalAlignment="Center" Width="120"/>
-            <Label Content="Adress" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <TextBox Grid.Column="4" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Height="23" Text="{Binding Path=Address}" VerticalAlignment="Center" Width="120"/>
-            <Label Content="Longitude  :" Grid.Column="2" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,97,0,0"/>
-            <Label Content="Latitude :" Grid.Column="2" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,179,0,0"/>
+            <Label Content="Station Number :" 
+                   HorizontalAlignment="Stretch"                   
+                   VerticalAlignment="Stretch"
+                   VerticalContentAlignment="Center"
+                   HorizontalContentAlignment="Right" 
+                   FontSize="28"
+                   />
+            <TextBox Name="numTb"
+                   Text="{Binding Path=StationId, Mode=TwoWay}" 
+                   Grid.Column="1" 
+                   HorizontalAlignment="Stretch"                   
+                   VerticalAlignment="Stretch"
+                   VerticalContentAlignment="Center"
+                   HorizontalContentAlignment="Left" 
+                   FontSize="28"
+                   />
         </Grid>
         <Grid Grid.Row="1">
-            <Button Content="Submit" 
-                    HorizontalAlignment="Stretch" 
-                    VerticalAlignment="Stretch"
-                    Click="Button_Click"
-                    />
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="2">
+                <m:Map CredentialsProvider="DMLgCbgRrlX6OdrnLj0E~fGQjxZbw3qVLJdn7V4S5ng~AqPUSpDhuG_70NTuYftcIo65JkCYgZVbgh4L5L-PG8RnOJSmxE4155lUmW6SIhdv" x:Name="myMap" Center="{Binding Path=Coordinates}" ZoomLevel="14.000" MouseDoubleClick="MapWithPushpins_MouseDoubleClick" >
+                    <m:Pushpin Name="StationPoint"
+                               Location="{Binding Path=Coordinates, Mode=TwoWay}"
+                               />
+                </m:Map>
+            </Grid>
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Name :" 
+                           Grid.Column="0" 
+                           HorizontalAlignment="Stretch" 
+                           VerticalAlignment="Stretch"
+                           VerticalContentAlignment="Center"
+                           HorizontalContentAlignment="Right" 
+                           FontSize="24"
+                           />
+                    <TextBox Grid.Column="1"
+                             VerticalContentAlignment="Center" 
+                             HorizontalContentAlignment="Left" 
+                             HorizontalAlignment="Stretch"
+                             TextWrapping="WrapWithOverflow"
+                             Text="{Binding Path=Name}" 
+                             VerticalAlignment="Stretch"
+                             FontSize="24"
+                             />
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Address :" 
+                           Grid.Column="0" 
+                           HorizontalAlignment="Stretch" 
+                           VerticalAlignment="Stretch"
+                           VerticalContentAlignment="Center"
+                           HorizontalContentAlignment="Right" 
+                           FontSize="24"
+                           />
+                    <TextBox Grid.Column="1"
+                             VerticalContentAlignment="Center" 
+                             HorizontalContentAlignment="Left" 
+                             HorizontalAlignment="Stretch"
+                             TextWrapping="WrapWithOverflow"
+                             Text="{Binding Path=Address}" 
+                             VerticalAlignment="Stretch"
+                             FontSize="24"
+                             />
+                </Grid>
+            </Grid>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <CheckBox Content="Roof"
+                          IsChecked="{Binding Path=Roof}"
+                          Grid.Row="0"
+                          HorizontalAlignment="Stretch"                          
+                          VerticalAlignment="Stretch"
+                          VerticalContentAlignment="Center"
+                          HorizontalContentAlignment="Center"
+                          FontSize="28" 
+                          />
+                <CheckBox Content="Invalid" 
+                          IsChecked="{Binding Path=Invalid}"
+                          Grid.Row="1"
+                          HorizontalAlignment="Stretch"                          
+                          VerticalAlignment="Stretch"
+                          VerticalContentAlignment="Center"
+                          HorizontalContentAlignment="Center"
+                          FontSize="28" 
+                          />
+                <CheckBox Content="Digital Panel" 
+                          IsChecked="{Binding Path=DigitalPanel}" 
+                          Grid.Row="2"
+                          HorizontalAlignment="Stretch"                          
+                          VerticalAlignment="Stretch"
+                          VerticalContentAlignment="Center"
+                          HorizontalContentAlignment="Center"
+                          FontSize="28" 
+                          />
+            </Grid>
         </Grid>
+        <Button Content="Submit" 
+                HorizontalAlignment="Stretch" 
+                Grid.Row="2" 
+                VerticalAlignment="Stretch" 
+                FontSize="36"
+                Click="Button_Click"
+                />
     </Grid>
 </Window>

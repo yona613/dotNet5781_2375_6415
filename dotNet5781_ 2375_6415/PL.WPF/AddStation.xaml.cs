@@ -27,40 +27,37 @@ namespace PL.WPF
         public AddStation()
         {
             InitializeComponent();
-            LongitudeTb.Text = "00,0000";
-            LatitudeTb.Text = "00,0000";
             myStation = new BO.Station();
-            newStationGrid.DataContext = myStation;
+            myStation.Coordinates = new Location() { Longitude = 35.203165854 , Latitude = 31.772663576 };
+            mainGrid.DataContext = myStation;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                myStation.Coordinates = new Location() { Longitude = double.Parse(LongitudeTb.Text), Latitude = double.Parse(LatitudeTb.Text) };
+                //myStation.Coordinates = new Location() { Longitude = double.Parse(LongitudeTb.Text), Latitude = double.Parse(LatitudeTb.Text) };
                 MainWindow.bl.AddStation(myStation);
                 Close();
             }
             catch (BO.BOBadStationException stationException)
             {
                 MessageBox.Show(stationException.Message);
-                numberTb.Clear();
+                numTb.Clear();
 
             }
             catch (BO.BOBadStationCoordinatesLongitudeException longitudeException)
             {
                 MessageBox.Show(longitudeException.Message);
-                LongitudeTb.Text = "00,0000";
             }
             catch (BO.BOBadStationCoordinatesLatitudeException latitudeException)
             {
                 MessageBox.Show(latitudeException.Message);
-                LatitudeTb.Text = "00,0000";
             }
             catch (BO.BOBadStationNumberException numberException)
             {
                 MessageBox.Show(numberException.Message);
-                numberTb.Clear();
+                numTb.Clear();
             }
             catch (BO.BOBadStationNameException nameException)
             {
@@ -88,6 +85,21 @@ namespace PL.WPF
             {
                 MessageBox.Show($"Wrong Input !!!! \n {e.Text} is not a digit !!");
             }
+        }
+
+        private void MapWithPushpins_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            // Disables the default mouse double-click action.
+            e.Handled = true;
+
+            // Determin the location to place the pushpin at on the map.
+
+            //Get the mouse click coordinates
+            Point mousePosition = e.GetPosition(myMap);
+            //Convert the mouse coordinates to a locatoin on the map
+            Location pinLocation = myMap.ViewportPointToLocation(mousePosition);
+
+            StationPoint.Location = pinLocation;
         }
     }
 }

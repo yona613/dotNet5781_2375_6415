@@ -444,6 +444,16 @@ namespace BL
                 throw new BOReadDataException("No Station meets the conditions");
             return myStationsList;
         }
+
+
+        public IEnumerable<int> GetAllLinesOfStation(int id)
+        {
+            return from station in GetAllLineStations()
+                   where station.StationNumber == id
+                   orderby station.LineNumber
+                   select station.LineNumber;
+        }
+
         public Station GetStation(int id)
         {
             DO.Station stationDO;
@@ -494,8 +504,38 @@ namespace BL
 
         public void UpdateStation(Station tmpStation)
         {
+            if (tmpStation.Coordinates.Longitude > 35.5 || tmpStation.Coordinates.Longitude < 34.3)
+            {
+                throw new BOBadStationCoordinatesLongitudeException(tmpStation.Coordinates.Longitude, $"Longitude : {tmpStation.Coordinates.Longitude} out of bounds \nNeeds to be between 34.3 & 35.5");
+            }
+            if (tmpStation.Coordinates.Latitude < 31 || tmpStation.Coordinates.Latitude > 33.3)
+            {
+                throw new BOBadStationCoordinatesLatitudeException(tmpStation.Coordinates.Latitude, $"Latitude : {tmpStation.Coordinates.Latitude} out of bounds \nNeeds to be between 31 & 33.3");
+            }
+            if (tmpStation.Name == null || tmpStation.Name == "")
+            {
+                throw new BOBadStationNameException("The station needs to have a name !!");
+            }
+            if (tmpStation.Address == null || tmpStation.Address == "")
+            {
+                throw new BOBadStationAddressException("The station needs to have an address !!");
+            }
             try
             {
+                List<PairStations> pairStations = GetAllPairStationsBy(x => x.FirstStationNumber == tmpStation.StationId).ToList();
+                for (int i = 0; i < pairStations.Count; i++)
+                {
+                    Station tmpStation1 = GetStation(pairStations[i].LastStationNumber);
+                    pairStations[i].Distance = tmpStation.Coordinates.GetDistanceTo(tmpStation1.Coordinates);
+                    dal.UpdatePairStations((DO.PairStations)pairStations[i].CopyPropertiesToNew(typeof(DO.PairStations)));
+                }
+                pairStations = GetAllPairStationsBy(x => x.LastStationNumber == tmpStation.StationId).ToList();
+                for (int i = 0; i < pairStations.Count; i++)
+                {
+                    Station tmpStation1 = GetStation(pairStations[i].FirstStationNumber);
+                    pairStations[i].Distance = tmpStation1.Coordinates.GetDistanceTo(tmpStation.Coordinates);
+                    dal.UpdatePairStations((DO.PairStations)pairStations[i].CopyPropertiesToNew(typeof(DO.PairStations)));
+                }
                 dal.DeleteStation(tmpStation.StationId);
                 dal.AddStation((DO.Station)tmpStation.CopyPropertiesToNew(typeof(DO.Station)));
             }
@@ -948,9 +988,9 @@ namespace BL
                     try
                     {
                         dal.DeleteLineDeparting(item.LineNumber, item.StartTime);
-                        dal.AddLineDeparting(new DO.LineDeparting() { StartTime = item.StartTime, StopTime = tmpLineDeparting.StartTime, Frequency = item.Frequency, LineNumber = item.LineNumber, MyActivity = DO.Activity.ON });
+                        dal.AddLineDeparting(new DO.LineDeparting() { StartTime = item.StartTime, StopTime = tmpLineDeparting.StartTime, Frequency = item.Frequency, LineNumber = item.LineNumber, MyActivity = DO.Activity.On });
                         item.StartTime = tmpLineDeparting.StopTime;
-                        dal.AddLineDeparting(new DO.LineDeparting() { StartTime = item.StartTime, StopTime = item.StartTime, Frequency = item.Frequency, LineNumber = item.LineNumber, MyActivity = DO.Activity.ON });
+                        dal.AddLineDeparting(new DO.LineDeparting() { StartTime = item.StartTime, StopTime = item.StartTime, Frequency = item.Frequency, LineNumber = item.LineNumber, MyActivity = DO.Activity.On });
                     }
                     catch (DO.BadLineDepartingException e)
                     {
@@ -1205,7 +1245,6 @@ namespace BL
             return from station in stations
                    select station;
         }
-
         #endregion
     }
 }

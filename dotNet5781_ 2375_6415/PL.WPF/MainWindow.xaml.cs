@@ -152,5 +152,20 @@ namespace PL.WPF
             var stationList = bl.GetAllStations().OrderBy(x => x.StationId).ToList();
             ListS.DataContext = stationList;
         }
+
+        private void ListB_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            new BusData(ListB.SelectedItem as BO.Bus).ShowDialog();
+        }
+
+        private void ListLB_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void ListS_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            new StationData(ListS.SelectedItem as BO.Station).ShowDialog();
+        }
     }
 }

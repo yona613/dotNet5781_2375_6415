@@ -25,8 +25,6 @@ namespace PL.WPF
         {
             InitializeComponent();
             myStation = tmpStation;        
-            //myMap.Center = myStation.Coordinates;
-            //StationPoint.Location = myStation.Coordinates;
             mainGrid.DataContext = tmpStation;
         }
 

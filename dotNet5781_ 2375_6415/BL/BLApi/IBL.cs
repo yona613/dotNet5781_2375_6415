@@ -40,6 +40,7 @@ namespace BLApi
         void UpdateStation(Station tmpStation);
         void AddStation(Station tmpStation);
         void DeleteStation(int id);
+        IEnumerable<int> GetAllLinesOfStation(int id);
         #endregion
 
         #region User
