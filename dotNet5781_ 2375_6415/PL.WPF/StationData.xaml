@@ -143,8 +143,8 @@
                            HorizontalContentAlignment="Center" 
                            FontSize="24"
                            />
-                <ListBox Grid.Row="1" ItemsSource="{Binding}">
-                    <ListBox.ItemTemplate>
+                <ListBox Grid.Row="1" ItemsSource="{Binding Path=Lines}">
+                    <!--<ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -155,7 +155,7 @@
                                 <Label Grid.Column="1" Name="number" Content="{Binding}"/>
                             </Grid>
                         </DataTemplate>
-                    </ListBox.ItemTemplate>
+                    </ListBox.ItemTemplate>-->
                 </ListBox> 
             </Grid>
         </Grid>

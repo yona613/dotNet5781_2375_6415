@@ -46,7 +46,8 @@ namespace PL.WPF
                 {
                     MessageBox.Show(exception.Message);
                 }
-
+                myBus = MainWindow.bl.GetBus(myBus.License);
+                MainGrid.DataContext = myBus;
             }
             else
             {
@@ -75,6 +76,8 @@ namespace PL.WPF
                 {
                     MessageBox.Show(exception.Message);
                 }
+                myBus = MainWindow.bl.GetBus(myBus.License);
+                MainGrid.DataContext = myBus;
             }
             else
             {

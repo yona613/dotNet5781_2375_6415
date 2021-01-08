@@ -19,13 +19,13 @@ namespace PL.WPF
     /// </summary>
     public partial class StationData : Window
     {
-        BO.Station myStation;
-        public StationData(BO.Station tmpStation)
+        BO.StationToShow myStation;
+        public StationData(BO.StationToShow tmpStation)
         {
             InitializeComponent();
             myStation = tmpStation;
             mainGrid.DataContext = tmpStation;
-            lineList.DataContext = MainWindow.bl.GetAllLinesOfStation(tmpStation.StationId);
+            //lineList.DataContext = MainWindow.bl.GetAllLinesOfStation(tmpStation.StationId);
         }
     }
 }

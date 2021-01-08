@@ -176,8 +176,13 @@ namespace BL
             try
             {
                 busLineDO = dal.GetBusLine(id);
-                return (LineToShow)busLineDO.CopyPropertiesToNew(typeof(LineToShow));
-                //return BusLineDoBOAdapter(busLineDO);
+                var lineToShow = (LineToShow)busLineDO.CopyPropertiesToNew(typeof(LineToShow));
+                lineToShow.LineDepartings = from lineDeparting in GetAllLineDepartingBy(x => x.LineNumber == id)
+                                            orderby lineDeparting.StartTime
+                                            let BOLineDeparting = (BO.LineDeparting)lineDeparting.CopyPropertiesToNew(typeof(BO.LineDeparting))
+                                            select BOLineDeparting;
+                lineToShow.LineStations = GetAllStationsOfLine(id);
+                return lineToShow;
             }
             catch (DO.BadLineException e)
             {
@@ -323,7 +328,7 @@ namespace BL
                     }
                     index++;
                 }
-                if (index == station.Index)
+                if (index == station.Index + 1)
                 {
                     BusLine myLine = GetBusLine(station.LineNumber);
                     myLine.LastStation = station.StationNumber;
@@ -334,7 +339,7 @@ namespace BL
 
         public void DeleteStationFromLine(int stationNumber, int lineNumber)
         {
-            bool first = false;
+            /*bool first = false;
             bool deleted = false;
             int lastIndex = 0;
             BusLine myLine = GetBusLine(lineNumber);
@@ -354,7 +359,7 @@ namespace BL
                 {
                     if (station.StationNumber == myLine.FirstStation)
                     {
-                        DeleteLineStation(station.StationNumber, myLine.LineNumber);
+                        DeleteLineStationPrivate(station.StationNumber, myLine.LineNumber);
                         first = true;
                         deleted = true;
                         continue;
@@ -362,12 +367,12 @@ namespace BL
                     if (station.StationNumber == myLine.LastStation)
                     {
                         lastIndex = station.Index;
-                        DeleteLineStation(station.StationNumber, myLine.LineNumber);
+                        DeleteLineStationPrivate(station.StationNumber, myLine.LineNumber);
                         break;
                     }
                     else
                     {
-                        DeleteLineStation(station.StationNumber, myLine.LineNumber);
+                        DeleteLineStationPrivate(station.StationNumber, myLine.LineNumber);
                         deleted = true;
                         continue;
                     }
@@ -386,7 +391,7 @@ namespace BL
                 }
             }
             myLine.LastStation = myStations.FirstOrDefault(x => x.Index == lastIndex - 1).StationNumber;
-            UpdateLine(myLine);
+            UpdateLine(myLine);*/
         }
 
         public void DeleteLine(int lineNumber)
@@ -787,7 +792,7 @@ namespace BL
                         catch (DO.BadLineStationException e)
                         {
                             throw new BOBadLineStationException(e.Message, lineNumber, stationNumber);
-                        }
+                        }                        
                         first = true;
                         deleted = true;
                         continue;
@@ -815,6 +820,15 @@ namespace BL
                         {
                             throw new BOBadLineStationException(e.Message, lineNumber, stationNumber);
                         }
+                        Station lastStation = GetStation(lineStations[j + 1].StationNumber);
+                        Station firstStation = GetStation(lineStations[j - 1].StationNumber);
+                        double distance = firstStation.Coordinates.GetDistanceTo(lastStation.Coordinates);
+                        try
+                        {
+                            AddPairStations(new PairStations() { FirstStationNumber = firstStation.StationId, LastStationNumber = lastStation.StationId, Distance = distance, Time = new TimeSpan((int)(distance / 40.0), (int)((distance % 40.0) / (40.0 / 60.0)), (int)(((distance % 40.0) % (40.0 / 60.0)) / (40.0 / 3600.0))) });
+                        }
+                        catch (BOBadPairStationException e)
+                        { };
                         deleted = true;
                         continue;
                     }
@@ -1212,12 +1226,20 @@ namespace BL
             var myLineStationsTmp = from station in GetAllLineStationsBy(x => x.LineNumber == lineNumber)
                                     orderby station.Index
                                     let station1 = GetStation(station.StationNumber)
-                                    select new { StationId = station1.StationId, Name = station1.Name, Address = station1.Address, Index = station.Index };
-            IEnumerable<LineStationToShow> myLineStations = from station in myLineStationsTmp
+                                    select new { StationId = station1.StationId, Name = station1.Name, Address = station1.Address, Index = station.Index};
+            IEnumerable<LineStationToShow> myLineStations = from station in myLineStationsTmp                                                           
                                                             select (LineStationToShow)station.CopyPropertiesToNew(typeof(LineStationToShow));
+            var myLineStationsList = myLineStations.ToList();
+            for (int i = 0; i < myLineStationsList.Count - 1; i++)
+            {
+                var pairStation = dal.GetPairStations(myLineStationsList[i].StationId, myLineStationsList[i + 1].StationId);
+                myLineStationsList[i].Distance = pairStation.Distance;
+                myLineStationsList[i].Time = pairStation.Time;
+            }
             if (myLineStations == null)
                 throw new BOReadDataException("no stations");
-            return myLineStations;
+            return from lineStation in myLineStationsList
+                   select lineStation;
 
         }
 
@@ -1245,6 +1267,23 @@ namespace BL
             return from station in stations
                    select station;
         }
+        #endregion
+
+        #region StationToShow
+
+        public StationToShow getStationToShow(int stationNumber)
+        {
+            var stationToShow = (StationToShow)dal.GetStation(stationNumber).CopyPropertiesToNew(typeof(StationToShow));
+            stationToShow.Lines = from station in GetAllLineStationsBy(x => x.StationNumber == stationNumber)
+                                  orderby station.LineNumber
+                                  let line = "Line : " + station.LineNumber + "  --->  "
+                                  let lastStation = GetBusLine(station.LineNumber).LastStation
+                                  let name = GetStation(lastStation).Name
+                                  select line + name;
+            return stationToShow;
+
+        }
+
         #endregion
     }
 }

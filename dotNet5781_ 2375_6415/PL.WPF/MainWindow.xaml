@@ -122,30 +122,34 @@
                 <RowDefinition Height="1*"/>
                 <!--<RowDefinition Height="1*"/>-->
             </Grid.RowDefinitions>
-            <CheckBox Name="lineChB" 
+            <RadioButton Name="lineChB" 
                       Grid.Row="0" 
                       VerticalAlignment="Stretch" 
                       HorizontalAlignment="Left" 
                       HorizontalContentAlignment="Center"
                       VerticalContentAlignment="Center"
                       Content="Line" FontSize="36" FontFamily="Arial" Margin="50,0,0,0" 
-                      Checked="LineChB_Checked" Unchecked="LineChB_Unchecked"
+                      Checked="LineChB_Checked" 
+                         
+                      
                       
                       />
-            <CheckBox Name="busChB" 
+            <RadioButton Name="busChB" 
                       Grid.Row="1" 
                       VerticalAlignment="Stretch" 
                       HorizontalAlignment="Left" 
                       HorizontalContentAlignment="Center"
                       VerticalContentAlignment="Center"
-                      Content="Bus" FontSize="36" FontFamily="Arial" Margin="50,0,0,0" Checked="BusChB_Checked" Unchecked="BusChB_Unchecked" />
-            <CheckBox Name="stationChB" 
+                      Content="Bus" FontSize="36" 
+                      FontFamily="Arial" Margin="50,0,0,0" 
+                      Checked="BusChB_Checked" />
+            <RadioButton Name="stationChB" 
                       Grid.Row="2" 
                       VerticalAlignment="Stretch" 
                       HorizontalAlignment="Left" 
                       HorizontalContentAlignment="Center"
                       VerticalContentAlignment="Center"
-                      Content="Station" FontSize="36" FontFamily="Arial" Margin="50,0,0,0" Checked="StationChB_Checked" Unchecked="StationChB_Unchecked" />
+                      Content="Station" FontSize="36" FontFamily="Arial" Margin="50,0,0,0" Checked="StationChB_Checked"/>
             <!--<CheckBox Name="userChB" 
                       Grid.Row="3" 
                       VerticalAlignment="Stretch" 
@@ -155,9 +159,11 @@
                       Content="User" FontSize="36" FontFamily="Arial" Margin="50,0,0,0" />-->
         </Grid>
         <Grid Name="listGrid" Grid.Column="1">
-            <ListBox Name="ListLB" MouseDoubleClick="ListLB_MouseDoubleClick" ItemsSource="{Binding}" ItemTemplate="{ StaticResource ListLines}" Visibility="Collapsed"/>
+            <ListBox Name="MainListBox" MouseDoubleClick="ListDoubleMouseClick" ItemsSource="{Binding}"  Visibility="Visible"/>
+
+            <!--<ListBox Name="ListLB" MouseDoubleClick="ListLB_MouseDoubleClick" ItemsSource="{Binding}" ItemTemplate="{ StaticResource ListLines}" Visibility="Collapsed"/>
             <ListBox Name="ListB" MouseDoubleClick="ListB_MouseDoubleClick" ItemsSource="{Binding}" ItemTemplate="{ StaticResource ListBuses}" Visibility="Collapsed"/>
-            <ListBox Name="ListS" MouseDoubleClick="ListS_MouseDoubleClick" ItemsSource="{Binding}" ItemTemplate="{ StaticResource ListStation}" Visibility="Collapsed"/>
+            <ListBox Name="ListS" MouseDoubleClick="ListS_MouseDoubleClick" ItemsSource="{Binding}" ItemTemplate="{ StaticResource ListStation}" Visibility="Collapsed"/>-->
         </Grid>
         <Button Name="AddBtn"                           
                 HorizontalContentAlignment="Stretch"

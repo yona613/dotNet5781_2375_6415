@@ -17,6 +17,10 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Label Name="sttnNum"
                        Content="Station Number :"
@@ -25,11 +29,11 @@
                 <Label Grid.Column="1"
                        Content="{Binding Path=StationId}"
                          />
-                <Label Name="address"
-                       Content="Station Address :"
+                <Label Name="name"
+                       Content="Station Name :"
                        Grid.Column="2"/>
                 <Label Grid.Column="3"
-                       Content="{Binding Path=Address}"
+                       Content="{Binding Path=Name}"
                        />
                 <Label Name="index"
                        Content="Index :"
@@ -38,10 +42,24 @@
                 <Label Content="{Binding Path=Index}"
                        Grid.Column="5"
                        />
+                <Label Name="Distance"
+                       Content="Distance :"
+                       Grid.Column="6"
+                       />
+                <Label Content="{Binding Path=Distance}"
+                       Grid.Column="7"
+                       />
+                <Label Name="Time"
+                       Content="Time :"
+                       Grid.Column="8"
+                       />
+                <Label Content="{Binding Path=Time}"
+                       Grid.Column="9"
+                       />
                 <Button Name="deleteStt"
                         Content="delete"
                         Click="deleteStt_Click"
-                        Grid.Column="6"
+                        Grid.Column="10"
                     />
             </Grid>
         </DataTemplate>
@@ -145,12 +163,12 @@
             </Grid.RowDefinitions>
             <ListBox Name="stationsList" 
                      Grid.Column="0" 
-                     ItemsSource="{Binding}"
+                     ItemsSource="{Binding Path=LineStations}"
                      ItemTemplate="{StaticResource stationTemplt }"
                      />
             <ListBox Name="LineDepartingList" 
                      Grid.Column="1" 
-                     ItemsSource="{Binding}"
+                     ItemsSource="{Binding Path=LineDepartings}"
                      ItemTemplate="{StaticResource lineDepartingTemplate }"
                      />
             <Button Name="addSttBtn" 

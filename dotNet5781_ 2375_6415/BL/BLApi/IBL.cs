@@ -106,5 +106,10 @@ namespace BLApi
         IEnumerable<StationToAdd> GetAllStationsToAdd(int lineNumber);
         #endregion
 
+        #region StationToShow
+
+        StationToShow getStationToShow(int stationNumber);
+
+        #endregion
     }
 }

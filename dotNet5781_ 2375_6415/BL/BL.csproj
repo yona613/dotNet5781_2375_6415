@@ -63,6 +63,7 @@
     <Compile Include="BO\LineToShow.cs" />
     <Compile Include="BO\PairStations.cs" />
     <Compile Include="BO\StationToAdd.cs" />
+    <Compile Include="BO\StationToShow.cs" />
     <Compile Include="DeepCopyUtilities.cs" />
     <Compile Include="FriendFunctions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

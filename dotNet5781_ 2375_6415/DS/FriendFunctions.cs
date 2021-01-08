@@ -14,7 +14,7 @@ namespace DS
         {
             GeoCoordinate tmpFrom = new GeoCoordinate() { Longitude = from.Longitude, Latitude = from.Latitude };
             GeoCoordinate tmpTo = new GeoCoordinate() { Longitude = to.Longitude, Latitude = to.Latitude };
-            return tmpFrom.GetDistanceTo(tmpTo);
+            return tmpFrom.GetDistanceTo(tmpTo)/1000;
         }
     }
 }
