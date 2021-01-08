@@ -33,6 +33,7 @@ namespace DS
             lineList = CreateLines();
             linestationList = CreateLineStations();
             userList = CreateUsers();
+            lineDepartingList = CreateLineDeparting();
         }
 
         private static List<Bus> CreateBusList()
@@ -40,8 +41,8 @@ namespace DS
             List<Bus> busList = new List<Bus> { }; //list of buses 
             for (int i = 0; i < 17; i++)
             {
-                DateTime tmpDate = new DateTime(2000 + r.Next(0, 19), r.Next(1, 13), r.Next(1, 30), r.Next(1, 13), r.Next(0, 60), r.Next(0, 60));
-                DateTime tmpTest = new DateTime(2020, r.Next(1, 10), r.Next(1, 30), r.Next(1, 13), r.Next(0, 60), r.Next(0, 60));
+                DateTime tmpDate = new DateTime(2000 + r.Next(0, 19), r.Next(1, 13), r.Next(1, 28), r.Next(1, 13), r.Next(0, 60), r.Next(0, 60));
+                DateTime tmpTest = new DateTime(2020, r.Next(1, 10), r.Next(1, 28), r.Next(1, 13), r.Next(0, 60), r.Next(0, 60));
                 if (tmpDate.Year < 2018)
                 {
                     int tmpKm = r.Next(20500, 200000);
@@ -56,22 +57,22 @@ namespace DS
                 }
             }
             //Bus that next test time is passed
-            DateTime tmpDate1 = new DateTime(2015, r.Next(1, 13), r.Next(1, 30), r.Next(1, 13), r.Next(0, 60), r.Next(0, 60));
-            DateTime tmpTest1 = new DateTime(2018, r.Next(1, 10), r.Next(1, 30), r.Next(1, 13), r.Next(0, 60), r.Next(0, 60));
+            DateTime tmpDate1 = new DateTime(2015, r.Next(1, 13), r.Next(1, 28), r.Next(1, 13), r.Next(0, 60), r.Next(0, 60));
+            DateTime tmpTest1 = new DateTime(2018, r.Next(1, 10), r.Next(1, 28), r.Next(1, 13), r.Next(0, 60), r.Next(0, 60));
             int tmpKm1 = r.Next(20500, 200000);
             Bus tmpBus1 = new Bus { LicenseDate = tmpDate1, License = r.Next(1000000, 10000000), Fuel = r.Next(0, 1201), Kilometrage = tmpKm1, KmFromTest = r.Next(0, 18000), TestDate = tmpTest1, BusStatus = Status.READY, Brand = "Volvo", AirConditionning = true, MyActivity = Activity.ON };
             busList.Add(tmpBus1);
 
             //bus close to test because of km
-            tmpDate1 = new DateTime(2018, r.Next(1, 13), r.Next(1, 30), r.Next(1, 13), r.Next(0, 60), r.Next(0, 60));
-            tmpTest1 = new DateTime(2020, r.Next(1, 10), r.Next(1, 30), r.Next(1, 13), r.Next(0, 60), r.Next(0, 60));
+            tmpDate1 = new DateTime(2018, r.Next(1, 13), r.Next(1, 28), r.Next(1, 13), r.Next(0, 60), r.Next(0, 60));
+            tmpTest1 = new DateTime(2020, r.Next(1, 10), r.Next(1, 28), r.Next(1, 13), r.Next(0, 60), r.Next(0, 60));
             tmpKm1 = r.Next(20500, 200000);
             tmpBus1 = new Bus { LicenseDate = tmpDate1, License = r.Next(10000000, 100000000),Fuel = r.Next(0, 1201), Kilometrage = tmpKm1, KmFromTest= r.Next(19900, 19998), TestDate = tmpTest1, BusStatus = Status.READY, Brand = "Volvo", AirConditionning = true, MyActivity = Activity.ON };
             busList.Add(tmpBus1);
 
             //bus close to refuel
-            tmpDate1 = new DateTime(2019, r.Next(1, 13), r.Next(1, 30), r.Next(1, 13), r.Next(0, 60), r.Next(0, 60));
-            tmpTest1 = new DateTime(2020, r.Next(1, 10), r.Next(1, 30), r.Next(1, 13), r.Next(0, 60), r.Next(0, 60));
+            tmpDate1 = new DateTime(2019, r.Next(1, 13), r.Next(1, 28), r.Next(1, 13), r.Next(0, 60), r.Next(0, 60));
+            tmpTest1 = new DateTime(2020, r.Next(1, 10), r.Next(1, 28), r.Next(1, 13), r.Next(0, 60), r.Next(0, 60));
             tmpKm1 = r.Next(20500, 200000);
             tmpBus1 = new Bus { LicenseDate = tmpDate1, License = r.Next(10000000, 100000000), Fuel = r.Next(0, 50), Kilometrage = tmpKm1, KmFromTest = r.Next(19900, 19998), TestDate = tmpTest1, BusStatus = Status.READY, Brand = "Volvo", AirConditionning = true, MyActivity = Activity.ON };
             busList.Add(tmpBus1);
@@ -86,7 +87,7 @@ namespace DS
             for (int i = 1000; i < 1200; i++)
             {
                 int tmpInt = r.Next(0, 31);  //to get adress in array
-                Station tmpStation = new Station { StationId = i, Coordinates = new GeoCoordinate { Latitude = r.NextDouble() * 2.3 + 31, Longitude = r.NextDouble() * 1.2 + 34.3 }, Name = addressList[tmpInt], Address = r.Next(0, 100).ToString() + " " + addressList[tmpInt], DigitalPanel = true, Invalid = true, Roof = true, MyActivity = Activity.ON };
+                Station tmpStation = new Station { StationId = i, Coordinates = new GeoCoordinate { Latitude = r.NextDouble() * 2.3 + 31, Longitude = r.NextDouble() * 1.2 + 34.3 }, Name = addressList[tmpInt], Address = addressList[tmpInt] + " " + r.Next(0, 100).ToString(), DigitalPanel = true, Invalid = true, Roof = true, MyActivity = Activity.ON };
                 myStationsList.Add(tmpStation);
             }
             return myStationsList;
@@ -179,6 +180,17 @@ namespace DS
                 users.Add(new User { UserName = names[i - 1], Password = "1234", Permission = Permit.USER, MyActivity = Activity.ON });
             }
             return users;
+        }
+
+        private static List<LineDeparting> CreateLineDeparting()
+        {
+            List<LineDeparting> myLineDepartings = new List<LineDeparting> { };
+            for (int i = 1; i < 11; i++)
+            {
+                LineDeparting tmpLineDeparting = new LineDeparting() { LineNumber = i, StartTime = new TimeSpan(07, 00, 00), MyActivity = Activity.ON, StopTime = new TimeSpan(22, 00, 00), Frequency = new TimeSpan(00, 15, 00) };
+                myLineDepartings.Add(tmpLineDeparting);
+            }
+            return myLineDepartings;
         }
     }
 }

@@ -9,8 +9,8 @@ namespace BO
     public class LineDeparting
     {
         public int LineNumber  { get; set; }
-        public DateTime StartTime { get; set; }
+        public TimeSpan StartTime { get; set; }
         public TimeSpan Frequency { get; set; }
-        public DateTime StopTime { get; set; }
+        public TimeSpan StopTime { get; set; }
     }
 }

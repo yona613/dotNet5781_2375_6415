@@ -16,7 +16,54 @@ namespace BO
         protected BOReadDataException(SerializationInfo info, StreamingContext context) : base(info, context) { }
     }
 
-        [Serializable]
+    [Serializable]
+    public class BOArgumentLicenseException : Exception
+    {
+        public BOArgumentLicenseException() : base() { }
+        public BOArgumentLicenseException(string message) : base(message) { }
+        public BOArgumentLicenseException(string message, Exception inner) : base(message, inner) { }
+        protected BOArgumentLicenseException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+    }
+
+    [Serializable]
+    public class BOArgumentLicenseDateException : Exception
+    {
+        public BOArgumentLicenseDateException() : base() { }
+        public BOArgumentLicenseDateException(string message) : base(message) { }
+        public BOArgumentLicenseDateException(string message, Exception inner) : base(message, inner) { }
+        protected BOArgumentLicenseDateException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+    }
+
+    [Serializable]
+    public class BOArgumentTestDateException : Exception
+    {
+        public BOArgumentTestDateException() : base() { }
+        public BOArgumentTestDateException(string message) : base(message) { }
+        public BOArgumentTestDateException(string message, Exception inner) : base(message, inner) { }
+        protected BOArgumentTestDateException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+    }
+
+    [Serializable]
+    public class BOStopTimeException : Exception
+    {
+        public BOStopTimeException() : base() { }
+        public BOStopTimeException(string message) : base(message) { }
+        public BOStopTimeException(string message, Exception inner) : base(message, inner) { }
+        protected BOStopTimeException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+    }
+
+    [Serializable]
+    public class BOFrequencyException : Exception
+    {
+        public BOFrequencyException() : base() { }
+        public BOFrequencyException(string message) : base(message) { }
+        public BOFrequencyException(string message, Exception inner) : base(message, inner) { }
+        protected BOFrequencyException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+    }
+
+
+
+    [Serializable]
     public class BOBadBusException : Exception
     {
         public int iD;
@@ -36,6 +83,16 @@ namespace BO
         public BOBadLineException(string message, Exception inner, int id) : base(message, inner) => iD = id;
         protected BOBadLineException(SerializationInfo info, StreamingContext context, int id) : base(info, context) => iD = id;
         public override string ToString() => base.ToString() + $", bad Line id: {iD}";
+    }
+
+    [Serializable]
+    public class BOLineDeleteException : Exception
+    {
+        public int iD;
+        public BOLineDeleteException(int id) : base() => iD = id;
+        public BOLineDeleteException(string message, int id) : base(message) => iD = id;
+        public BOLineDeleteException(string message, Exception inner, int id) : base(message, inner) => iD = id;
+        protected BOLineDeleteException(SerializationInfo info, StreamingContext context, int id) : base(info, context) => iD = id;
     }
 
     [Serializable]
@@ -110,11 +167,62 @@ namespace BO
     public class BOBadLineDepartingException : Exception
     {
         public int lineNumber;
-        public DateTime startTime;
-        public BOBadLineDepartingException(int tmpLineNumber, DateTime tmpStartTime) : base() {lineNumber = tmpLineNumber; startTime = tmpStartTime; }
-        public BOBadLineDepartingException(string message, int tmpLineNumber, DateTime tmpStartTime) : base(message) { lineNumber = tmpLineNumber; startTime = tmpStartTime; }
-        public BOBadLineDepartingException(string message, Exception inner, int tmpLineNumber, DateTime tmpStartTime) : base(message, inner) { lineNumber = tmpLineNumber; startTime = tmpStartTime; }
-        protected BOBadLineDepartingException(SerializationInfo info, StreamingContext context, int tmpLineNumber, DateTime tmpStartTime) : base(info, context) { lineNumber = tmpLineNumber; startTime = tmpStartTime; }
+        public TimeSpan startTime;
+        public BOBadLineDepartingException(int tmpLineNumber, TimeSpan tmpStartTime) : base() {lineNumber = tmpLineNumber; startTime = tmpStartTime; }
+        public BOBadLineDepartingException(string message, int tmpLineNumber, TimeSpan tmpStartTime) : base(message) { lineNumber = tmpLineNumber; startTime = tmpStartTime; }
+        public BOBadLineDepartingException(string message, Exception inner, int tmpLineNumber, TimeSpan tmpStartTime) : base(message, inner) { lineNumber = tmpLineNumber; startTime = tmpStartTime; }
+        protected BOBadLineDepartingException(SerializationInfo info, StreamingContext context, int tmpLineNumber, TimeSpan tmpStartTime) : base(info, context) { lineNumber = tmpLineNumber; startTime = tmpStartTime; }
         public override string ToString() => base.ToString() + $", bad LineDeparting: lineNumber = {lineNumber}, startTime = {startTime}";
+    }
+
+    [Serializable]
+    public class BOBadStationCoordinatesLongitudeException : Exception
+    {
+        double Longitude;
+        public BOBadStationCoordinatesLongitudeException(double tmpLongitude) : base() => Longitude = tmpLongitude;
+        public BOBadStationCoordinatesLongitudeException(double tmpLongitude, string message) : base(message) => Longitude = tmpLongitude;
+        public BOBadStationCoordinatesLongitudeException(double tmpLongitude, string message, Exception inner) : base(message, inner) => Longitude = tmpLongitude;
+        protected BOBadStationCoordinatesLongitudeException(double tmpLongitude, SerializationInfo info, StreamingContext context) : base(info, context) => Longitude = tmpLongitude;
+        public override string ToString() => base.ToString() + $"Longitude : {Longitude} out of bounds \n Needs to be between 34.3 & 35.5";
+    }
+
+
+    [Serializable]
+    public class BOBadStationCoordinatesLatitudeException : Exception
+    {
+        double Latitude;
+        public BOBadStationCoordinatesLatitudeException(double tmpLatitude) : base() => Latitude = tmpLatitude;
+        public BOBadStationCoordinatesLatitudeException(double tmpLatitude, string message) : base(message) => Latitude = tmpLatitude;
+        public BOBadStationCoordinatesLatitudeException(double tmpLatitude, string message, Exception inner) : base(message, inner) => Latitude = tmpLatitude;
+        protected BOBadStationCoordinatesLatitudeException(double tmpLatitude, SerializationInfo info, StreamingContext context) : base(info, context) => Latitude = tmpLatitude;
+        public override string ToString() => base.ToString() + $"Latitude : {Latitude} out of bounds \n Needs to be between 31 & 33.3";
+    }
+
+    [Serializable]
+    public class BOBadStationNameException : Exception
+    {
+        public BOBadStationNameException() : base() { }
+        public BOBadStationNameException(string message) : base(message) { }
+        public BOBadStationNameException(string message, Exception inner) : base(message, inner) { }
+        protected BOBadStationNameException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+    }
+
+    [Serializable]
+    public class BOBadStationAddressException : Exception
+    {
+        public BOBadStationAddressException() : base() { }
+        public BOBadStationAddressException(string message) : base(message) { }
+        public BOBadStationAddressException(string message, Exception inner) : base(message, inner) { }
+        protected BOBadStationAddressException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+    }
+
+    [Serializable]
+    public class BOBadStationNumberException : Exception
+    {
+        int number;
+        public BOBadStationNumberException(int stationNumber) : base() => number = stationNumber;
+        public BOBadStationNumberException(int stationNumber, string message) : base(message) => number = stationNumber;
+        public BOBadStationNumberException(int stationNumber, string message, Exception inner) : base(message, inner) => number = stationNumber;
+        protected BOBadStationNumberException(int stationNumber, SerializationInfo info, StreamingContext context) : base(info, context) => number = stationNumber;
     }
 }

@@ -110,11 +110,11 @@ namespace DO
     public class BadLineDepartingException : Exception
     {
         public int lineNumber;
-        public DateTime startTime;
-        public BadLineDepartingException(int tmpLineNumber, DateTime tmpStartTime) : base() {lineNumber = tmpLineNumber; startTime = tmpStartTime; }
-        public BadLineDepartingException(string message, int tmpLineNumber, DateTime tmpStartTime) : base(message) { lineNumber = tmpLineNumber; startTime = tmpStartTime; }
-        public BadLineDepartingException(string message, Exception inner, int tmpLineNumber, DateTime tmpStartTime) : base(message, inner) { lineNumber = tmpLineNumber; startTime = tmpStartTime; }
-        protected BadLineDepartingException(SerializationInfo info, StreamingContext context, int tmpLineNumber, DateTime tmpStartTime) : base(info, context) { lineNumber = tmpLineNumber; startTime = tmpStartTime; }
+        public TimeSpan startTime;
+        public BadLineDepartingException(int tmpLineNumber, TimeSpan tmpStartTime) : base() {lineNumber = tmpLineNumber; startTime = tmpStartTime; }
+        public BadLineDepartingException(string message, int tmpLineNumber, TimeSpan tmpStartTime) : base(message) { lineNumber = tmpLineNumber; startTime = tmpStartTime; }
+        public BadLineDepartingException(string message, Exception inner, int tmpLineNumber, TimeSpan tmpStartTime) : base(message, inner) { lineNumber = tmpLineNumber; startTime = tmpStartTime; }
+        protected BadLineDepartingException(SerializationInfo info, StreamingContext context, int tmpLineNumber, TimeSpan tmpStartTime) : base(info, context) { lineNumber = tmpLineNumber; startTime = tmpStartTime; }
         public override string ToString() => base.ToString() + $", bad LineDeparting: lineNumber = {lineNumber}, startTime = {startTime}";
     }
 }

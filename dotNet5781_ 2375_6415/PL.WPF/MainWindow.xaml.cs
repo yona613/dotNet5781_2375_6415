@@ -25,76 +25,124 @@ namespace PL.WPF
     /// </summary>
     public partial class MainWindow : Window
     {
-
-        ObservableCollection<BusLine> listOfLines = new ObservableCollection<BusLine>() { };
-        IBL bl;
+        public static IBL bl;
         public MainWindow()
         {
             InitializeComponent();
             bl = BLFactory.GetBL();
         }
 
-        private void lineChB_Checked(object sender, RoutedEventArgs e)
+        private void LineChB_Checked(object sender, RoutedEventArgs e)
         {
             var linesList = bl.GetAllBusLines().OrderBy(x => x.LineNumber).ToList();
             ListLB.Visibility = Visibility.Visible;
             busChB.IsChecked = false;
             stationChB.IsChecked = false;
             ListLB.DataContext = linesList;
+            AddBtn.IsEnabled = true;
+            BtnTblock.Text = "Add new Line";
         }
 
-        private void lineChB_Unchecked(object sender, RoutedEventArgs e)
+        private void LineChB_Unchecked(object sender, RoutedEventArgs e)
         {         
             ListLB.Visibility = Visibility.Collapsed;
+            BtnTblock.Text = "Please choose a object to add";
+            AddBtn.IsEnabled = false;
         }
 
-        private void busChB_Checked(object sender, RoutedEventArgs e)
+        private void BusChB_Checked(object sender, RoutedEventArgs e)
         {
             var busList = bl.GetAllBuses().OrderBy(x => x.License).ToList();
             ListB.Visibility = Visibility.Visible;
             lineChB.IsChecked = false;
             stationChB.IsChecked = false;
             ListB.DataContext = busList;
+            AddBtn.IsEnabled = true;
+            BtnTblock.Text = "Add new Bus";
         }
 
-        private void busChB_Unchecked(object sender, RoutedEventArgs e)
+        private void BusChB_Unchecked(object sender, RoutedEventArgs e)
         {
             ListB.Visibility = Visibility.Collapsed;
+            BtnTblock.Text = "Please choose a object to add";
+            AddBtn.IsEnabled = false;
         }
 
-        private void stationChB_Checked(object sender, RoutedEventArgs e)
+        private void StationChB_Checked(object sender, RoutedEventArgs e)
         {
             var stationList = bl.GetAllStations().OrderBy(x => x.StationId).ToList();
             ListS.Visibility = Visibility.Visible;
             busChB.IsChecked = false;
             lineChB.IsChecked = false;
             ListS.DataContext = stationList;
+            AddBtn.IsEnabled = true;
+            BtnTblock.Text = "Add new Station";
         }
 
-        private void stationChB_Unchecked(object sender, RoutedEventArgs e)
+        private void StationChB_Unchecked(object sender, RoutedEventArgs e)
         {
             ListS.Visibility = Visibility.Collapsed;
+            BtnTblock.Text = "Please choose a object to add";
+            AddBtn.IsEnabled = false;
         }
 
-        private void deleteLine_Click(object sender, RoutedEventArgs e)
+        private void DeleteLine_Click(object sender, RoutedEventArgs e)
         {
             bl.DeleteLine((((sender as Button).DataContext) as BO.BusLine).LineNumber);
             var linesList = bl.GetAllBusLines().OrderBy(x => x.LineNumber).ToList();
             ListLB.DataContext = linesList;
         }
 
-        private void deleteBus_Click(object sender, RoutedEventArgs e)
+        private void DeleteBus_Click(object sender, RoutedEventArgs e)
         {
             bl.DeleteBus((((sender as Button).DataContext) as BO.Bus).License);
             var busList = bl.GetAllBuses().OrderBy(x => x.License).ToList();
             ListB.DataContext = busList;
         }
 
-        private void deleteStation_Click(object sender, RoutedEventArgs e)
+        private void DeleteStation_Click(object sender, RoutedEventArgs e)
         {
-            bl.DeleteStation((((sender as Button).DataContext) as BO.Station).StationId);
+            try
+            {
+                bl.DeleteStation((((sender as Button).DataContext) as BO.Station).StationId);
+            }
+            catch (Exception except)
+            {
+                MessageBox.Show(except.Message);
+            }  
             var stationList = bl.GetAllStations().OrderBy(x => x.StationId).ToList();
             ListS.DataContext = stationList;
+        }
+
+        private void UpdateLine_Click(object sender, RoutedEventArgs e)
+        {
+            BO.LineToShow myLineToShow = bl.GetBusLineToShow(((sender as Button).DataContext as BO.BusLine).LineNumber);
+            (new UpdateLine(myLineToShow)).ShowDialog();
+            var linesList = bl.GetAllBusLines().OrderBy(x => x.LineNumber).ToList();
+            ListLB.DataContext = linesList;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (lineChB.IsChecked == true)
+            {
+
+            }
+            else if (busChB.IsChecked == true)
+            {
+                new AddBus().ShowDialog();
+                var busList = bl.GetAllBuses().OrderBy(x => x.License).ToList();
+                ListB.DataContext = busList;
+
+            }
+            else if (stationChB.IsChecked == true)
+            {
+                
+            }
+            else
+            {
+                MessageBox.Show("Please choose an object to add !!");
+            }
         }
     }
 }

@@ -65,9 +65,9 @@ namespace DalApi
         #region LineDeparting
         IEnumerable<LineDeparting> GetAllLineDeparting();
         IEnumerable<LineDeparting> GetAllLineDepartingBy(Predicate<LineDeparting> predicate);
-        LineDeparting GetLineDeparting(int lineNumber, DateTime startTime);
+        LineDeparting GetLineDeparting(int lineNumber, TimeSpan startTime);
         void AddLineDeparting(LineDeparting tmpLineDeparting);
-        void DeleteLineDeparting(int lineNumber, DateTime startTime);
+        void DeleteLineDeparting(int lineNumber, TimeSpan startTime);
         void UpdateLineDeparting(LineDeparting lineDepartingToUpdate);
         #endregion
 
