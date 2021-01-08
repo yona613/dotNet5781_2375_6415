@@ -1,0 +1,93 @@
+﻿<Window x:Class="PL.WPF.BusData"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PL.WPF"
+        mc:Ignorable="d"
+        Title="BusData" 
+        Height="450" 
+        Width="800"       
+        >
+    <Grid Name="MainGrid" DataContext="{Binding}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+        <Grid HorizontalAlignment="Stretch" Height="Auto"  Grid.Row="0" VerticalAlignment="Stretch" Width="Auto">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="License Number" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <Label Grid.Column="1" Content="Entry of Service" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <Label Grid.Column="2" Content="Kilometrage" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <Label Grid.Column="3" Content="Date of latest Test" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <Label Grid.Column="4" Content="Km from latest Test" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <Label Grid.Column="5" Content="Oil" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <Label Grid.Column="6" Content="Status" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        </Grid>
+        <Grid HorizontalAlignment="Stretch" Height="Auto"  Grid.Row="1" VerticalAlignment="Stretch" Width="Auto">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBox Grid.Column="0" HorizontalAlignment="Stretch" Height="Auto"  TextWrapping="Wrap" IsReadOnly="True"  Text="{Binding Path= LicenseToShow, Mode=OneTime}" VerticalAlignment="Stretch" Width="Auto" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <TextBox Grid.Column="1" HorizontalAlignment="Stretch" Height="Auto"  TextWrapping="Wrap" IsReadOnly="True"  Text="{Binding Path= LicenseDate , Mode=TwoWay}" VerticalAlignment="Stretch" Width="Auto" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <TextBox Grid.Column="2" HorizontalAlignment="Stretch" Height="Auto"  TextWrapping="Wrap" IsReadOnly="True"  Text="{Binding Path= Kilometrage , Mode=TwoWay}" VerticalAlignment="Stretch" Width="Auto" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <TextBox Grid.Column="3" HorizontalAlignment="Stretch" Height="Auto"  TextWrapping="Wrap" IsReadOnly="True"  Text="{Binding Path= TestDate, Mode=TwoWay }" VerticalAlignment="Stretch" Width="Auto" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <TextBox Grid.Column="4" HorizontalAlignment="Stretch" Height="Auto"  TextWrapping="Wrap" IsReadOnly="True"  Text="{Binding Path= KmFromTest, Mode=TwoWay }" VerticalAlignment="Stretch" Width="Auto" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <TextBox Grid.Column="5" HorizontalAlignment="Stretch" Height="Auto"  TextWrapping="Wrap" IsReadOnly="True"  Text="{Binding Path= Fuel, Mode=TwoWay  }" VerticalAlignment="Stretch" Width="Auto" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <TextBox Grid.Column="6" HorizontalAlignment="Stretch" Height="Auto"  TextWrapping="Wrap" IsReadOnly="True" Text="{Binding Path= BusStatus, Mode=TwoWay }" VerticalAlignment="Stretch" Width="Auto" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+        </Grid>
+        <Grid HorizontalAlignment="Stretch" Height="Auto"  Grid.Row="2" VerticalAlignment="Stretch" Width="Auto">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="RefuelBt" 
+                    Grid.Column="0" 
+                    Content="Refuel"
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center" 
+                    Width="135" 
+                    Height="70" 
+                    Click="Refuel_Click" 
+                    FontSize="36">
+                <!--<Button.Content>
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="2">
+                        <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Stretch" Margin="0" Content="Refuel"/>
+                        <ProgressBar Name="refuelPB"   Value="{Binding Path=Progress, UpdateSourceTrigger=PropertyChanged}" Height="20" Width="50" Minimum="0" Maximum="12"/>
+                    </StackPanel>
+                </Button.Content>-->
+            </Button>
+            <Button x:Name="TestBt"  
+                    Grid.Column="1" 
+                    Content="Test"
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center"
+                    Width="135" 
+                    Click="Test_Click"
+                    Height="70" 
+                    FontSize="36">
+                <!--<Button.Content>
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="2">
+                        <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  Margin="0" Content="Test"/>
+                        <ProgressBar Name="TestPB"   Value="{Binding Path = Progress}" Height="20" Width="80" Minimum="0" Maximum="144"/>
+                    </StackPanel>
+                </Button.Content>-->
+            </Button>
+        </Grid>
+    </Grid>
+</Window>

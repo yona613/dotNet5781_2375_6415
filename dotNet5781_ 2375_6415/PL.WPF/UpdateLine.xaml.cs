@@ -25,11 +25,11 @@ namespace PL.WPF
         {
             InitializeComponent();
             myLine = tmpLine;
-            upGrid.DataContext = myLine;
+            MainGrid.DataContext = myLine;
             areaCboBox.SelectedIndex = (int)myLine.LineArea;
             areaCboBox.ItemsSource = Enum.GetValues(typeof(BO.Area));
             lineNumber = tmpLine.LineNumber;
-            try
+            /*try
             {
                 stationsList.DataContext = MainWindow.bl.GetAllStationsOfLine(myLine.LineNumber);
                 LineDepartingList.DataContext = MainWindow.bl.GetAllLineDepartingBy(x => x.LineNumber == myLine.LineNumber).OrderBy(x => x.StartTime).ToList();
@@ -37,13 +37,15 @@ namespace PL.WPF
             catch (Exception except)
             {
                 MessageBox.Show(except.Message);
-            }          
+            } */         
         }
 
         private void addSttBtn_Click(object sender, RoutedEventArgs e)
         {
             new AddLineStation(myLine).ShowDialog();
-            stationsList.DataContext = MainWindow.bl.GetAllStationsOfLine(myLine.LineNumber);
+            myLine = MainWindow.bl.GetBusLineToShow(lineNumber);
+            MainGrid.DataContext = myLine;
+            //stationsList.DataContext = MainWindow.bl.GetAllStationsOfLine(myLine.LineNumber);
         }
 
         private void deleteStt_Click(object sender, RoutedEventArgs e)
@@ -51,7 +53,9 @@ namespace PL.WPF
             try
             {
                 MainWindow.bl.DeleteLineStation(((sender as Button).DataContext as BO.LineStationToShow).StationId, myLine.LineNumber);
-                stationsList.DataContext = MainWindow.bl.GetAllStationsOfLine(myLine.LineNumber);
+                myLine = MainWindow.bl.GetBusLineToShow(lineNumber);
+                MainGrid.DataContext = myLine;
+                //stationsList.DataContext = MainWindow.bl.GetAllStationsOfLine(myLine.LineNumber);
             }
             catch (BO.BOLineDeleteException lineException)
             {
@@ -67,7 +71,9 @@ namespace PL.WPF
         private void addLineDepartingBtn_Click(object sender, RoutedEventArgs e)
         {
             new AddLineDeparting(myLine.LineNumber).ShowDialog();
-            LineDepartingList.DataContext = MainWindow.bl.GetAllLineDepartingBy(x => x.LineNumber == myLine.LineNumber).OrderBy(x => x.StartTime).ToList();
+            myLine = MainWindow.bl.GetBusLineToShow(lineNumber);
+            MainGrid.DataContext = myLine;
+            //LineDepartingList.DataContext = MainWindow.bl.GetAllLineDepartingBy(x => x.LineNumber == myLine.LineNumber).OrderBy(x => x.StartTime).ToList();
         }
 
         private void applyBtn_Click(object sender, RoutedEventArgs e)
@@ -94,7 +100,9 @@ namespace PL.WPF
             try
             {
                 MainWindow.bl.DeleteLineDeparting(myLine.LineNumber, ((sender as Button).DataContext as BO.LineDeparting).StartTime);
-                LineDepartingList.DataContext = MainWindow.bl.GetAllLineDepartingBy(x => x.LineNumber == myLine.LineNumber).OrderBy(x => x.StartTime).ToList();
+                myLine = MainWindow.bl.GetBusLineToShow(lineNumber);
+                MainGrid.DataContext = myLine;
+                //LineDepartingList.DataContext = MainWindow.bl.GetAllLineDepartingBy(x => x.LineNumber == myLine.LineNumber).OrderBy(x => x.StartTime).ToList();
             }
             catch (Exception except)
             {
@@ -105,7 +113,9 @@ namespace PL.WPF
         private void updateLineDepartingBtn_Click(object sender, RoutedEventArgs e)
         {
             new UpdateLineDeparting((sender as Button).DataContext as BO.LineDeparting).ShowDialog();
-            LineDepartingList.DataContext = MainWindow.bl.GetAllLineDepartingBy(x => x.LineNumber == myLine.LineNumber).OrderBy(x => x.StartTime).ToList();
+            myLine = MainWindow.bl.GetBusLineToShow(lineNumber);
+            MainGrid.DataContext = myLine;
+            //LineDepartingList.DataContext = MainWindow.bl.GetAllLineDepartingBy(x => x.LineNumber == myLine.LineNumber).OrderBy(x => x.StartTime).ToList();
         }
     }
 }

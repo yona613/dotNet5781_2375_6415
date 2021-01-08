@@ -7,7 +7,7 @@ using Microsoft.Maps.MapControl.WPF;
 
 namespace BO
 {
-    public class Station
+    public class StationToShow
     {
         public int StationId { get; set; }
 
@@ -22,5 +22,7 @@ namespace BO
         public bool Roof { get; set; }
 
         public bool DigitalPanel { get; set; }
+
+        public IEnumerable<string> Lines { get; set; }
     }
 }

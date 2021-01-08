@@ -10,5 +10,7 @@ namespace BO
     {
         public int LineNumber { get; set; }
         public Area LineArea { get; set; }
+        public IEnumerable<LineStationToShow> LineStations { get; set; }
+        public IEnumerable<LineDeparting> LineDepartings { get; set; }
     }
 }

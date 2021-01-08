@@ -1,0 +1,145 @@
+﻿<Window x:Class="PL.WPF.UpdateStation"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
+        xmlns:local="clr-namespace:PL.WPF"
+        mc:Ignorable="d"
+        Title="UpdateStation" Height="450" Width="800">
+    <Grid Name="mainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label Content="Station Number :" 
+                   HorizontalAlignment="Stretch"                   
+                   VerticalAlignment="Stretch"
+                   VerticalContentAlignment="Center"
+                   HorizontalContentAlignment="Right" 
+                   FontSize="28"
+                   />
+            <Label Content="{Binding Path=StationId}" 
+                   Grid.Column="1" 
+                   HorizontalAlignment="Stretch"                   
+                   VerticalAlignment="Stretch"
+                   VerticalContentAlignment="Center"
+                   HorizontalContentAlignment="Left" 
+                   FontSize="28"
+                   />
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="2">
+                <m:Map CredentialsProvider="DMLgCbgRrlX6OdrnLj0E~fGQjxZbw3qVLJdn7V4S5ng~AqPUSpDhuG_70NTuYftcIo65JkCYgZVbgh4L5L-PG8RnOJSmxE4155lUmW6SIhdv" x:Name="myMap" Center="{Binding Path=Coordinates}" ZoomLevel="14.000" MouseDoubleClick="MapWithPushpins_MouseDoubleClick" >
+                    <m:Pushpin Name="StationPoint"
+                               Location="{Binding Path=Coordinates, Mode=TwoWay}"
+                               />
+                </m:Map>
+            </Grid>
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Name :" 
+                           Grid.Column="0" 
+                           HorizontalAlignment="Stretch" 
+                           VerticalAlignment="Stretch"
+                           VerticalContentAlignment="Center"
+                           HorizontalContentAlignment="Right" 
+                           FontSize="24"
+                           />
+                    <TextBox Grid.Column="1"
+                             VerticalContentAlignment="Center" 
+                             HorizontalContentAlignment="Left" 
+                             HorizontalAlignment="Stretch"
+                             TextWrapping="WrapWithOverflow"
+                             Text="{Binding Path=Name}" 
+                             VerticalAlignment="Stretch"
+                             FontSize="24"
+                             />
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Address :" 
+                           Grid.Column="0" 
+                           HorizontalAlignment="Stretch" 
+                           VerticalAlignment="Stretch"
+                           VerticalContentAlignment="Center"
+                           HorizontalContentAlignment="Right" 
+                           FontSize="24"
+                           />
+                    <TextBox Grid.Column="1"
+                             VerticalContentAlignment="Center" 
+                             HorizontalContentAlignment="Left" 
+                             HorizontalAlignment="Stretch"
+                             TextWrapping="WrapWithOverflow"
+                             Text="{Binding Path=Address}" 
+                             VerticalAlignment="Stretch"
+                             FontSize="24"
+                             />
+                </Grid>
+            </Grid>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <CheckBox Content="Roof"
+                          IsChecked="{Binding Path=Roof}"
+                          Grid.Row="0"
+                          HorizontalAlignment="Stretch"                          
+                          VerticalAlignment="Stretch"
+                          VerticalContentAlignment="Center"
+                          HorizontalContentAlignment="Center"
+                          FontSize="28" 
+                          />
+                <CheckBox Content="Invalid" 
+                          IsChecked="{Binding Path=Invalid}"
+                          Grid.Row="1"
+                          HorizontalAlignment="Stretch"                          
+                          VerticalAlignment="Stretch"
+                          VerticalContentAlignment="Center"
+                          HorizontalContentAlignment="Center"
+                          FontSize="28" 
+                          />
+                <CheckBox Content="Digital Panel" 
+                          IsChecked="{Binding Path=DigitalPanel}" 
+                          Grid.Row="2"
+                          HorizontalAlignment="Stretch"                          
+                          VerticalAlignment="Stretch"
+                          VerticalContentAlignment="Center"
+                          HorizontalContentAlignment="Center"
+                          FontSize="28" 
+                          />
+            </Grid>
+        </Grid>
+        <Button Content="Apply" 
+                HorizontalAlignment="Stretch" 
+                Grid.Row="2" 
+                VerticalAlignment="Stretch" 
+                FontSize="36"
+                Click="Button_Click"
+                />
+    </Grid>
+</Window>

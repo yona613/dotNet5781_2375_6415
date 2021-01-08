@@ -35,11 +35,12 @@ namespace BLApi
 
         #region Station
         IEnumerable<Station> GetAllStations();
-
         IEnumerable<Station> GetAllStationsBy(Predicate<Station> predicate);
         Station GetStation(int id);
+        void UpdateStation(Station tmpStation);
         void AddStation(Station tmpStation);
         void DeleteStation(int id);
+        IEnumerable<int> GetAllLinesOfStation(int id);
         #endregion
 
         #region User
@@ -105,5 +106,10 @@ namespace BLApi
         IEnumerable<StationToAdd> GetAllStationsToAdd(int lineNumber);
         #endregion
 
+        #region StationToShow
+
+        StationToShow getStationToShow(int stationNumber);
+
+        #endregion
     }
 }

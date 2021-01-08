@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace BO
 {
-    public enum Activity { ON, OFF}
-    public enum Status { READY, TRAVELLING, REFUELLING, TESTING }
+    public enum Activity { On, Off}
+    public enum Status { Ready, Travelling, Refueling, Testing }
     public enum Area { General, North, South, Center, Jerusalem };
-    public enum Permit { ADMIN, USER }
+    public enum Permit { Admin, User }
 }

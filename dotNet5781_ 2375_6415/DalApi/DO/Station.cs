@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Maps.MapControl.WPF;
 using System.Device.Location;
 
 namespace DO
@@ -17,9 +18,9 @@ namespace DO
             set { stationId = value; }
         }
 
-        private GeoCoordinate coordinates;
+        private Location coordinates;
 
-        public  GeoCoordinate Coordinates
+        public Location Coordinates
         {
             get { return coordinates; }
             set { coordinates = value; }

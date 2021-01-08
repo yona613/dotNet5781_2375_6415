@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Maps.MapControl.WPF;
 using System.Device.Location;
 
 namespace BL
@@ -18,7 +19,7 @@ namespace BL
                 if (propFrom == null)
                     continue;
                 var value = propFrom.GetValue(from, null);
-                if (value is ValueType || value is string || value is GeoCoordinate)
+                if (value is ValueType || value is string || value is Location)
                     propTo.SetValue(to, value);
             }
         }
