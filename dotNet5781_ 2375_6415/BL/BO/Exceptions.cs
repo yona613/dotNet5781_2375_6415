@@ -104,6 +104,16 @@ namespace BO
         protected BONewLineInsuffisantStationsException(SerializationInfo info, StreamingContext context) : base(info, context) { }
     }
 
+
+    [Serializable]
+    public class BOBadLineNumberException : Exception
+    {
+        public BOBadLineNumberException() : base() { }
+        public BOBadLineNumberException(string message) : base(message) { }
+        public BOBadLineNumberException(string message, Exception inner) : base(message, inner) { }
+        protected BOBadLineNumberException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+    }
+
     [Serializable]
     public class BOBadStationException : Exception
     {

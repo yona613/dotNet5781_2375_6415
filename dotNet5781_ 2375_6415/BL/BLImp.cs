@@ -209,13 +209,13 @@ namespace BL
         //}
         public void AddLine(LineToShow tmpBusLine, List<BO.Station> stations, List<BO.LineStationToShow> stationsToShow)
         {
-            if (tmpBusLine.LineArea == null)
-            {
-                tmpBusLine.LineArea = Area.General;
-            }
             if (stationsToShow.Count < 2)
             {
                 throw new BONewLineInsuffisantStationsException("Line needs to deserve at least 2 stations !");
+            }
+            if (tmpBusLine.LineNumber <= 0)
+            {
+                throw new BOBadLineNumberException("Line number needs to be bigger than 0 !");
             }
             try
             {
@@ -301,7 +301,7 @@ namespace BL
                     dal.GetBusLine(lineToUpdate.LineNumber);
                     throw new BOBadLineException($"The line {lineToUpdate.LineNumber} already exists", lineNumber);
                 }
-                catch (DO.BadLineException exception) { }
+                catch (DO.BadLineException) { }
             }
             DO.BusLine lineToUpdateDO = dal.GetBusLine(lineNumber);
             lineToUpdateDO.LineNumber = lineToUpdate.LineNumber;
