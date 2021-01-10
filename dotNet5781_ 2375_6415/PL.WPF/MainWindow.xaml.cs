@@ -136,7 +136,7 @@ namespace PL.WPF
         {
             if (lineChB.IsChecked == true)
             {
-
+                new AddLine().ShowDialog();
             }
             else if (busChB.IsChecked == true)
             {
