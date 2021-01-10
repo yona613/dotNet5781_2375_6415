@@ -87,6 +87,7 @@
     <Compile Include="DistanceTimeInput.xaml.cs">
       <DependentUpon>DistanceTimeInput.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FriendFunctions.cs" />
     <Compile Include="LineData.xaml.cs">
       <DependentUpon>LineData.xaml</DependentUpon>
     </Compile>

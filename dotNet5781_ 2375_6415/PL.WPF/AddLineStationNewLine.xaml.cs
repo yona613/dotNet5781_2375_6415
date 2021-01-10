@@ -26,21 +26,21 @@ namespace PL.WPF
     {
         BO.Station myStation = null;
         BO.LineToShow myLine;
-        List<BO.Station> stations = new List<BO.Station>() { };
-        List<BO.LineStation> lineStations = new List<BO.LineStation>() { };
-        public AddLineStationNewLine(List<BO.Station> tmpStations, List<BO.LineStation> tmpLineStations, BO.LineToShow tmpLine )
+        List<BO.Station> stations;
+        //List<BO.LineStation> lineStations;
+        //List<BO.PairStations> pairStations;
+
+        ObservableCollection<BO.LineStationToShow> myLineStationsToShow;
+        public AddLineStationNewLine(List<BO.Station> tmpStations, ObservableCollection<BO.LineStationToShow> tmpLineStationsToShow, BO.LineToShow tmpLine )
         {
             InitializeComponent();
             stationCbb.ItemsSource = MainWindow.bl.GetAllStationsToAdd(0);
             myLine = tmpLine;
-            lineStations = tmpLineStations;
+            //lineStations = tmpLineStations;
             stations = tmpStations;
-            List<int> indexes = new List<int>() { };
-            for (int i = -1 ; i < lineStations.Count; i++)
-            {
-                indexes.Add(i + 2);
-            }
-            indexCb.ItemsSource = indexes;
+            myLineStationsToShow = tmpLineStationsToShow;
+            //pairStations = tmpPairStations;
+            indexLb.Content = myLineStationsToShow.Count + 1;
             //indexCb.ItemsSource = MainWindow.bl.GetAllIndexesToAdd(myLine.LineNumber);
         }
 
@@ -52,12 +52,49 @@ namespace PL.WPF
                 {
                     //myStation.Coordinates = new Location() { Longitude = double.Parse(LongitudeTb.Text), Latitude = double.Parse(LatitudeTb.Text) };
                     //MainWindow.bl.AddStation(myStation);
-                    BO.LineStation lineStation = new BO.LineStation() { Index = (int)indexCb.SelectedItem, LineNumber = myLine.LineNumber, StationNumber = myStation.StationId };
-                    lineStations.Add(lineStation);
+                    //BO.LineStation lineStation = new BO.LineStation() { Index = lineStations.Count + 1, LineNumber = myLine.LineNumber, StationNumber = myStation.StationId };
+                    //lineStations.Add(lineStation);
                     //MainWindow.bl.AddStationToLine(lineStation);
-                    stations.Add(myStation);
-
-                    Close();
+                    try
+                    {
+                        bool flag = MainWindow.bl.CheckNewStation(myStation);
+                        if (MainWindow.bl.CheckNewStation(myStation))
+                        {
+                            stations.Add(myStation);
+                            myLineStationsToShow.Add(new BO.LineStationToShow()
+                            {
+                                Name = myStation.Name,
+                                Address = myStation.Address,
+                                Coordinates = myStation.Coordinates,
+                                StationId = myStation.StationId,
+                                Index = (int)indexLb.Content,
+                                lineNumber = myLine.LineNumber
+                            }
+                            );
+                            Close();
+                        }
+                    }
+                    catch (BO.BOBadStationCoordinatesLongitudeException longitudeException)
+                    {
+                        MessageBox.Show(longitudeException.Message);
+                    }
+                    catch (BO.BOBadStationCoordinatesLatitudeException latitudeException)
+                    {
+                        MessageBox.Show(latitudeException.Message);
+                    }
+                    catch (BO.BOBadStationNumberException numberException)
+                    {
+                        MessageBox.Show(numberException.Message);
+                        numTb.Clear();
+                    }
+                    catch (BO.BOBadStationNameException nameException)
+                    {
+                        MessageBox.Show(nameException.Message);
+                    }
+                    catch (BO.BOBadStationAddressException addressException)
+                    {
+                        MessageBox.Show(addressException.Message);
+                    }                 
                 }
                 catch (BO.BOBadStationException stationException)
                 {
@@ -96,7 +133,18 @@ namespace PL.WPF
                 try
                 {
                     //MainWindow.bl.AddStationToLine(new BO.LineStation() { Index = (int)indexCb.SelectedItem, LineNumber = myLine.LineNumber, StationNumber = (stationCbb.SelectedItem as BO.StationToAdd).StationId });
-                    lineStations.Add(new BO.LineStation() { Index = (int)indexCb.SelectedItem, LineNumber = myLine.LineNumber, StationNumber = (stationCbb.SelectedItem as BO.StationToAdd).StationId });
+                    //lineStations.Add(new BO.LineStation() { Index = lineStations.Count + 1, LineNumber = myLine.LineNumber, StationNumber = (stationCbb.SelectedItem as BO.StationToAdd).StationId });
+                    BO.Station tmpStation = MainWindow.bl.GetStation((stationCbb.SelectedItem as BO.StationToAdd).StationId);
+                    myLineStationsToShow.Add(new BO.LineStationToShow()
+                    {
+                        Name = tmpStation.Name,
+                        Address = tmpStation.Address,
+                        Coordinates = tmpStation.Coordinates,
+                        StationId = tmpStation.StationId,
+                        Index = (int)indexLb.Content,
+                        lineNumber = myLine.LineNumber
+                    }
+                     );                  
                     Close();
                 }
                 catch(BO.BOBadLineStationException lineStationException)

@@ -9,102 +9,42 @@
     <Window.Resources>
         <DataTemplate x:Name="stationTemplt" x:Key="stationTemplt">
             <Grid Name="stationsGrid">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Label Name="sttnNum"
+                <Grid Name="stationDataGrid" Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Name="sttnNum"
                        Content="Station Number :"
                        Grid.Column="0"
                    />
-                <Label Grid.Column="1"
+                    <Label Grid.Column="1"
                        Content="{Binding Path=StationId}"
                          />
-                <Label Name="name"
+                    <Label Name="name"
                        Content="Station Name :"
                        Grid.Column="2"/>
-                <Label Grid.Column="3"
+                    <Label Grid.Column="3"
                        Content="{Binding Path=Name}"
                        />
-                <Label Name="index"
+                    <Label Name="index"
                        Content="Index :"
                        Grid.Column="4"
                        />
-                <Label Content="{Binding Path=Index}"
+                    <Label Content="{Binding Path=Index}"
                        Grid.Column="5"
                        />
-                <Label Name="Distance"
-                       Content="Distance :"
-                       Grid.Column="6"
-                       />
-                <Label Content="{Binding Path=Distance}"
-                       Grid.Column="7"
-                       />
-                <Label Name="Time"
-                       Content="Time :"
-                       Grid.Column="8"
-                       />
-                <Label Content="{Binding Path=Time}"
-                       Grid.Column="9"
-                       />
-                <Button Name="deleteStt"
+                    <Button Name="deleteStt"
                         Content="delete"
                         Click="DeleteStt_Click"
-                        Grid.Column="10"
-                    />
-            </Grid>
-        </DataTemplate>
-        <DataTemplate x:Key="lineDepartingTemplate">
-            <Grid Name="lineDepartingGrid">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Label Name="startTimeLbl"
-                       Content="Start Time :"
-                       Grid.Column="0"
-                   />
-                <Label Grid.Column="1"
-                       Content="{Binding Path=StartTime}"
-                         />
-                <Label Name="stopTimeLbl"
-                       Content="Stop Time :"
-                       Grid.Column="2"/>
-                <Label Grid.Column="3"
-                       Content="{Binding Path=StopTime}"
-                       />
-                <Label Name="frequencyLbl"
-                       Content="Frequency :"
-                       Grid.Column="4"
-                       />
-                <Label Content="{Binding Path=Frequency}"
-                       Grid.Column="5"
-                       />
-                <Button Name="deleteLineDepartingBtn"
-                        Content="Delete"
-                        Click="DeleteLineDeparting_Click"
                         Grid.Column="6"
                     />
-                <Button Name="updateLineDepartingBtn"
-                        Content="Update"
-                        Click="UpdateLineDepartingBtn_Click"
-                        Grid.Column="7"
-                    />
+                </Grid>
             </Grid>
         </DataTemplate>
     </Window.Resources>
@@ -141,7 +81,8 @@
                      HorizontalContentAlignment="Center"
                      TextWrapping="Wrap" 
                      Text="{Binding Path=LineNumber, Mode=TwoWay}" 
-                     VerticalAlignment="Stretch" 
+                     VerticalAlignment="Stretch"
+                     PreviewTextInput="_PreviewTextInput"
                      />
             <ComboBox Name="areaCboBox"
                       Grid.Column="3"
@@ -154,7 +95,6 @@
         <Grid Name="stationsGrid" Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="5*"/>
-                <ColumnDefinition Width="5*"/>
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
@@ -163,13 +103,8 @@
             </Grid.RowDefinitions>
             <ListBox Name="stationsList" 
                      Grid.Column="0" 
-                     ItemsSource="{Binding Path=LineStations, Mode=TwoWay}"
+                     ItemsSource="{Binding}"
                      ItemTemplate="{StaticResource stationTemplt}"
-                     />
-            <ListBox Name="LineDepartingList" 
-                     Grid.Column="1" 
-                     ItemsSource="{Binding Path=LineDepartings, Mode=TwoWay}"
-                     ItemTemplate="{StaticResource lineDepartingTemplate }"
                      />
             <Button Name="addSttBtn" 
                     HorizontalAlignment="Stretch" 
@@ -179,20 +114,12 @@
                     Grid.Column="0"
                     Grid.Row="1"
                     />
-            <Button Name="addLineDepartingBtn" 
-                    HorizontalAlignment="Stretch" 
-                    VerticalAlignment="Stretch"  
-                    Click="AddLineDepartingBtn_Click"
-                    Content="Add Line Departing" 
-                    Grid.Column="1"
-                    Grid.Row="1"
-                    />
             <Button Name="submitBtn" 
                     HorizontalAlignment="Stretch" 
                     VerticalAlignment="Stretch"  
                     Click="SubmitBtn_Click"
-                    Content="submit" 
-                    Grid.Column="2"
+                    Content="Submit" 
+                    Grid.Column="1"
                     Grid.Row="1"
                     />
         </Grid>

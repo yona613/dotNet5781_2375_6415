@@ -22,13 +22,14 @@ namespace PL.WPF
     {
         int lineNumber;
         BO.LineToShow myLine;
-        BO.LineDeparting myLineDeparting;
-        BO.Station myFirst;
-        BO.Station myLast;
-        ObservableCollection<BO.LineDeparting> lineDepartings = new ObservableCollection<BO.LineDeparting>();
-        ObservableCollection<BO.StationToShow> stationsToShows = new ObservableCollection<BO.StationToShow>();
+        //BO.LineDeparting myLineDeparting;
+        //BO.Station myFirst;
+        //BO.Station myLast;
+        //ObservableCollection<BO.LineDeparting> lineDepartings = new ObservableCollection<BO.LineDeparting>();
+        ObservableCollection<BO.LineStationToShow> stationsToShow = new ObservableCollection<BO.LineStationToShow>();
         List<BO.Station> stations = new List<BO.Station>() { };
-        List<BO.LineStation> lineStations = new List<BO.LineStation>() { };
+        //List<BO.LineStation> lineStations = new List<BO.LineStation>() { };
+        //List<BO.PairStations> pairStations = new List<BO.PairStations>() { };
 
         
         public AddLine()
@@ -42,6 +43,7 @@ namespace PL.WPF
 
             MainGrid.DataContext = myLine;
             areaCboBox.ItemsSource = Enum.GetValues(typeof(BO.Area));
+            stationsList.ItemsSource = stationsToShow;
             //lineNumber = tmpLine.LineNumber;
             /*try
             s{
@@ -56,7 +58,7 @@ namespace PL.WPF
 
         private void AddSttBtn_Click(object sender, RoutedEventArgs e)
         {
-            new AddLineStationNewLine(stations, lineStations, myLine);
+            new AddLineStationNewLine(stations, stationsToShow, myLine).ShowDialog();
             //BO.LineToShow showLine = (BO.LineToShow)myLine;
             //new AddLineStation(myLine).ShowDialog();
             //myLine = MainWindow.bl.GetBusLineToShow(lineNumber);
@@ -65,76 +67,41 @@ namespace PL.WPF
         }
 
         private void DeleteStt_Click(object sender, RoutedEventArgs e)
-        {
-            try
+        {            
+            for (int i = ((sender as Button).DataContext as BO.LineStationToShow).Index - 1; i < stationsToShow.Count; i++)
             {
-                //MainWindow.bl.DeleteLineStation(((sender as Button).DataContext as BO.LineStationToShow).StationId, myLine.LineNumber);
-                //myLine = MainWindow.bl.GetBusLineToShow(lineNumber);
-                //MainGrid.DataContext = myLine;
-                //stationsList.DataContext = MainWindow.bl.GetAllStationsOfLine(myLine.LineNumber);
+                stationsToShow[i].Index--;
             }
-            catch (BO.BOLineDeleteException lineException)
+            for (int i = 0; i < stations.Count; i++)
             {
-                MessageBox.Show(lineException.Message);
-                this.Close();
+                if (stations[i].StationId == ((sender as Button).DataContext as BO.LineStationToShow).StationId)
+                {
+                    stations.RemoveAt(i);
+                }
             }
-            catch (Exception except)
-            {
-                MessageBox.Show(except.Message);
-            }
-        }
-
-        private void AddLineDepartingBtn_Click(object sender, RoutedEventArgs e)
-        {
-            //myLineDeparting.LineNumber = myLine.LineNumber;
-            //lineDepartings.Add(myLineDeparting);
-
-            //new AddLineDeparting(myLine.LineNumber).ShowDialog();
-            //myLine = MainWindow.bl.GetBusLineToShow(lineNumber);
-            //MainGrid.DataContext = myLine;
-            //LineDepartingList.DataContext = MainWindow.bl.GetAllLineDepartingBy(x => x.LineNumber == myLine.LineNumber).OrderBy(x => x.StartTime).ToList();
+            stationsToShow.Remove((sender as Button).DataContext as BO.LineStationToShow);
+            stationsList.Items.Refresh();
         }
 
         private void SubmitBtn_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                //myLine.LineArea = (BO.Area)(int)areaCboBox.SelectedItem;
-                //MainWindow.bl.AddLine(myLine, lineNumber);
-                //Close();
+                MainWindow.bl.AddLine(myLine, stations.ToList(), stationsToShow.ToList());
+                Close();
+            }
+            catch (BO.BONewLineInsuffisantStationsException lineException)
+            {
+                MessageBox.Show(lineException.Message);
             }
             catch (BO.BOBadLineException lineException)
             {
-                myLine.LineNumber = lineNumber;
                 MessageBox.Show(lineException.Message);
             }
             //catch (Exception exception)
             //{
             //    MessageBox.Show(exception.Message);
             //}
-        }
-
-        private void DeleteLineDeparting_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-               // MainWindow.bl.DeleteLineDeparting(myLine.LineNumber, ((sender as Button).DataContext as BO.LineDeparting).StartTime);
-                //myLine = MainWindow.bl.GetBusLineToShow(lineNumber);
-                //MainGrid.DataContext = myLine;
-                //LineDepartingList.DataContext = MainWindow.bl.GetAllLineDepartingBy(x => x.LineNumber == myLine.LineNumber).OrderBy(x => x.StartTime).ToList();
-            }
-            catch (Exception except)
-            {
-                MessageBox.Show(except.Message);
-            }
-        }
-
-        private void UpdateLineDepartingBtn_Click(object sender, RoutedEventArgs e)
-        {
-            //new UpdateLineDeparting((sender as Button).DataContext as BO.LineDeparting).ShowDialog();
-            //myLine = MainWindow.bl.GetBusLineToShow(lineNumber);
-           // MainGrid.DataContext = myLine;
-            //LineDepartingList.DataContext = MainWindow.bl.GetAllLineDepartingBy(x => x.LineNumber == myLine.LineNumber).OrderBy(x => x.StartTime).ToList();
         }
 
         private void _PreviewTextInput(object sender, TextCompositionEventArgs e)

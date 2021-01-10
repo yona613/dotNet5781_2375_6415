@@ -24,8 +24,8 @@ namespace BLApi
         IEnumerable<BusLine> GetAllBusLinesBy(Predicate<BusLine> predicate);
         BusLine GetBusLine(int id);
         LineToShow GetBusLineToShow(int id);
-        void AddLine(BusLine tmpBusLine, Station firstStation, Station lastStation);
-        void AddLine(BusLine tmpBusLine);
+        //void AddLine(BusLine tmpBusLine, Station firstStation, Station lastStation);
+        void AddLine(LineToShow tmpBusLine, List<BO.Station> stations, List<BO.LineStationToShow> stationsToShow);
         void UpdateLine(LineToShow lineToUpdate, int lineNumber);
         void AddStationToLine(LineStation station);
         void DeleteStationFromLine(int stationNumber, int lineNumber);
@@ -41,6 +41,7 @@ namespace BLApi
         void AddStation(Station tmpStation);
         void DeleteStation(int id);
         IEnumerable<int> GetAllLinesOfStation(int id);
+        bool CheckNewStation(Station tmpStation);
         #endregion
 
         #region User

@@ -136,6 +136,10 @@ namespace PL.WPF
             if (lineChB.IsChecked == true)
             {
                 new AddLine().ShowDialog();
+                var linesList = bl.GetAllBusLines().OrderBy(x => x.LineNumber).ToList();
+                //ListLB.DataContext = linesList;
+                MainListBox.DataContext = linesList;
+
             }
             else if (busChB.IsChecked == true)
             {

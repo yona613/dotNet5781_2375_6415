@@ -49,7 +49,6 @@ namespace PL.WPF
                 {
                     MessageBox.Show(stationException.Message);
                     numTb.Clear();
-
                 }
                 catch (BO.BOBadStationCoordinatesLongitudeException longitudeException)
                 {

@@ -190,39 +190,94 @@ namespace BL
             }
         }
 
-        public void AddLine(BusLine tmpBusLine, Station firstStation, Station lastStation)
+        //public void AddLine(BusLine tmpBusLine, Station firstStation, Station lastStation)
+        //{
+        //    AddStation(firstStation);
+        //    AddStation(lastStation);
+        //    AddLineStation(new LineStation() { Index = 1, LineNumber = tmpBusLine.LineNumber, StationNumber = tmpBusLine.FirstStation });
+        //    AddLineStation(new LineStation() { Index = 2, LineNumber = tmpBusLine.LineNumber, StationNumber = tmpBusLine.LastStation });
+        //    double distance = firstStation.Coordinates.GetDistanceTo(lastStation.Coordinates);
+        //    AddPairStations(new PairStations() { FirstStationNumber = firstStation.StationId, LastStationNumber = lastStation.StationId, Distance = distance, Time = new TimeSpan((int)(distance / 40.0), (int)((distance % 40.0) / (40.0 / 60.0)), (int)(((distance % 40.0) % (40.0 / 60.0)) / (40.0 / 3600.0))) });
+        //    try
+        //    {
+        //        dal.AddLine((DO.BusLine)tmpBusLine.CopyPropertiesToNew(typeof(DO.BusLine)));
+        //    }
+        //    catch (DO.BadLineException e)
+        //    {
+        //        throw new BOBadLineException(e.Message, tmpBusLine.LineNumber);
+        //    }
+        //}
+        public void AddLine(LineToShow tmpBusLine, List<BO.Station> stations, List<BO.LineStationToShow> stationsToShow)
         {
-            AddStation(firstStation);
-            AddStation(lastStation);
-            AddLineStation(new LineStation() { Index = 1, LineNumber = tmpBusLine.LineNumber, StationNumber = tmpBusLine.FirstStation });
-            AddLineStation(new LineStation() { Index = 2, LineNumber = tmpBusLine.LineNumber, StationNumber = tmpBusLine.LastStation });
-            double distance = firstStation.Coordinates.GetDistanceTo(lastStation.Coordinates);
-            AddPairStations(new PairStations() { FirstStationNumber = firstStation.StationId, LastStationNumber = lastStation.StationId, Distance = distance, Time = new TimeSpan((int)(distance / 40.0), (int)((distance % 40.0) / (40.0 / 60.0)), (int)(((distance % 40.0) % (40.0 / 60.0)) / (40.0 / 3600.0))) });
+            if (tmpBusLine.LineArea == null)
+            {
+                tmpBusLine.LineArea = Area.General;
+            }
+            if (stationsToShow.Count < 2)
+            {
+                throw new BONewLineInsuffisantStationsException("Line needs to deserve at least 2 stations !");
+            }
             try
             {
-                dal.AddLine((DO.BusLine)tmpBusLine.CopyPropertiesToNew(typeof(DO.BusLine)));
+                dal.AddLine(new DO.BusLine() 
+                {
+                    LineNumber = tmpBusLine.LineNumber,
+                    LineArea = (DO.Area)tmpBusLine.LineArea,
+                    FirstStation = stationsToShow[0].StationId,
+                    LastStation = stationsToShow.Last().StationId,
+                    MyActivity = DO.Activity.On
+            });
             }
-            catch (DO.BadLineException e)
+            catch (DO.BadLineException exception )
             {
-                throw new BOBadLineException(e.Message, tmpBusLine.LineNumber);
+                throw new BO.BOBadLineException(exception.Message, tmpBusLine.LineNumber);
             }
-        }
-        public void AddLine(BusLine tmpBusLine)
-        {
-            Station firstStation = GetStation(tmpBusLine.FirstStation);
-            Station lastStation = GetStation(tmpBusLine.LastStation);
-            AddLineStation(new LineStation() { Index = 1, LineNumber = tmpBusLine.LineNumber, StationNumber = tmpBusLine.FirstStation });
-            AddLineStation(new LineStation() { Index = 2, LineNumber = tmpBusLine.LineNumber, StationNumber = tmpBusLine.LastStation });
-            double distance = firstStation.Coordinates.GetDistanceTo(lastStation.Coordinates);
-            AddPairStations(new PairStations() { FirstStationNumber = firstStation.StationId, LastStationNumber = lastStation.StationId, Distance = distance, Time = new TimeSpan((int)(distance / 40.0), (int)((distance % 40.0) / (40.0 / 60.0)), (int)(((distance % 40.0) % (40.0 / 60.0)) / (40.0 / 3600.0))) });
             try
             {
-                dal.AddLine((DO.BusLine)tmpBusLine.CopyPropertiesToNew(typeof(DO.BusLine)));
+                for (int i = 0; i < stationsToShow.Count; i++)
+                {
+                    dal.AddLineStation(new DO.LineStation()
+                    {
+                        Index = stationsToShow[i].Index,
+                        LineNumber = tmpBusLine.LineNumber,
+                        MyActivity = DO.Activity.On,
+                        StationNumber = stationsToShow[i].StationId
+                    });
+                    if (i != stationsToShow.Count - 1)
+                    {
+                        double distance = stationsToShow[i].Coordinates.GetDistanceTo(stationsToShow[i + 1].Coordinates);
+                        dal.AddPairStations(new DO.PairStations()
+                        {
+                            Distance = distance,
+                            FirstStationNumber = stationsToShow[i].StationId,
+                            LastStationNumber = stationsToShow[i + 1].StationId,
+                            Time = new TimeSpan((int)(distance / 40.0), (int)((distance % 40.0) / (40.0 / 60.0)), (int)(((distance % 40.0) % (40.0 / 60.0)) / (40.0 / 3600.0)))
+                        });
+                    }
+                }
+                foreach (var item in stations)
+                {
+                    dal.AddStation((DO.Station)item.CopyPropertiesToNew(typeof(DO.Station)));
+                }
             }
-            catch (DO.BadLineException e)
+            catch (Exception exception)
             {
-                throw new BOBadLineException(e.Message, tmpBusLine.LineNumber);
-            }
+                throw exception;
+            }          
+            //Station firstStation = GetStation(tmpBusLine.FirstStation);
+            //Station lastStation = GetStation(tmpBusLine.LastStation);
+            //AddLineStation(new LineStation() { Index = 1, LineNumber = tmpBusLine.LineNumber, StationNumber = tmpBusLine.FirstStation });
+            //AddLineStation(new LineStation() { Index = 2, LineNumber = tmpBusLine.LineNumber, StationNumber = tmpBusLine.LastStation });
+            //double distance = firstStation.Coordinates.GetDistanceTo(lastStation.Coordinates);
+            //AddPairStations(new PairStations() { FirstStationNumber = firstStation.StationId, LastStationNumber = lastStation.StationId, Distance = distance, Time = new TimeSpan((int)(distance / 40.0), (int)((distance % 40.0) / (40.0 / 60.0)), (int)(((distance % 40.0) % (40.0 / 60.0)) / (40.0 / 3600.0))) });
+            //try
+            //{
+            //    dal.AddLine((DO.BusLine)tmpBusLine.CopyPropertiesToNew(typeof(DO.BusLine)));
+            //}
+            //catch (DO.BadLineException e)
+            //{
+            //    throw new BOBadLineException(e.Message, tmpBusLine.LineNumber);
+            //}
         }
 
         private void UpdateLine(BusLine lineToUpdate)
@@ -505,6 +560,39 @@ namespace BL
             {
                 throw new BOBadStationException(e.Message, tmpStation.StationId);
             }
+        }
+
+        public bool CheckNewStation(Station tmpStation)
+        {
+            if (tmpStation.Coordinates.Longitude > 35.5 || tmpStation.Coordinates.Longitude < 34.3)
+            {
+                throw new BOBadStationCoordinatesLongitudeException(tmpStation.Coordinates.Longitude, $"Longitude : {tmpStation.Coordinates.Longitude} out of bounds \nNeeds to be between 34.3 & 35.5");
+            }
+            if (tmpStation.Coordinates.Latitude < 31 || tmpStation.Coordinates.Latitude > 33.3)
+            {
+                throw new BOBadStationCoordinatesLatitudeException(tmpStation.Coordinates.Latitude, $"Latitude : {tmpStation.Coordinates.Latitude} out of bounds \nNeeds to be between 31 & 33.3");
+            }
+            if (tmpStation.Name == null || tmpStation.Name == "")
+            {
+                throw new BOBadStationNameException("The station needs to have a name !!");
+            }
+            if (tmpStation.Address == null || tmpStation.Address == "")
+            {
+                throw new BOBadStationAddressException("The station needs to have an address !!");
+            }
+            if (tmpStation.StationId <= 0 || tmpStation.StationId > 999999)
+            {
+                throw new BOBadStationNumberException(tmpStation.StationId, $"The station number {tmpStation.StationId} is out of bounds \nNeeds to be at most 6 digits !!");
+            }
+            try
+            {
+                dal.GetStation(tmpStation.StationId);
+            }
+            catch (Exception)
+            {
+                return true;
+            }
+            return false;
         }
 
         public void UpdateStation(Station tmpStation)
@@ -792,7 +880,7 @@ namespace BL
                         catch (DO.BadLineStationException e)
                         {
                             throw new BOBadLineStationException(e.Message, lineNumber, stationNumber);
-                        }                        
+                        }
                         first = true;
                         deleted = true;
                         continue;
@@ -1226,8 +1314,8 @@ namespace BL
             var myLineStationsTmp = from station in GetAllLineStationsBy(x => x.LineNumber == lineNumber)
                                     orderby station.Index
                                     let station1 = GetStation(station.StationNumber)
-                                    select new { StationId = station1.StationId, Name = station1.Name, Address = station1.Address, Index = station.Index, Coordinates = station1.Coordinates};
-            IEnumerable<LineStationToShow> myLineStations = from station in myLineStationsTmp                                                           
+                                    select new { StationId = station1.StationId, Name = station1.Name, Address = station1.Address, Index = station.Index, Coordinates = station1.Coordinates };
+            IEnumerable<LineStationToShow> myLineStations = from station in myLineStationsTmp
                                                             select (LineStationToShow)station.CopyPropertiesToNew(typeof(LineStationToShow));
             var myLineStationsList = myLineStations.ToList();
             for (int i = 0; i < myLineStationsList.Count - 1; i++)
@@ -1252,7 +1340,7 @@ namespace BL
                 foreach (var item in GetAllStationsOfLine(myStation.lineNumber))
                 {
                     if (item.Index == myStation.Index + 1)
-                    {                       
+                    {
                         PairStations pairStation = PairStationsDoBOAdapter(dal.GetPairStations(myStation.StationId, item.StationId));
                         pairStation.Distance = myStation.Distance;
                         pairStation.Time = myStation.Time;

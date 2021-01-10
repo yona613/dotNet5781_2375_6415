@@ -96,6 +96,15 @@ namespace BO
     }
 
     [Serializable]
+    public class BONewLineInsuffisantStationsException : Exception
+    {
+        public BONewLineInsuffisantStationsException() : base() { }
+        public BONewLineInsuffisantStationsException(string message) : base(message) { }
+        public BONewLineInsuffisantStationsException(string message, Exception inner) : base(message, inner) { }
+        protected BONewLineInsuffisantStationsException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+    }
+
+    [Serializable]
     public class BOBadStationException : Exception
     {
         public int iD;

@@ -221,14 +221,15 @@
                    HorizontalContentAlignment="Right" 
                    FontSize="34"
                    />
-            <ComboBox Name="indexCb"
+            <Label Name="indexLb"
                       Grid.Column="1"
                      HorizontalAlignment="Center" 
                      Height="35"
                      VerticalAlignment="Center" 
                      Width="160"
-                      ItemsSource="{Binding}" 
-                      SelectedIndex="0" 
+                      Content="0" 
+                     VerticalContentAlignment="Center"
+                     HorizontalContentAlignment="Center"
                       FontSize="20"
                       />
             <Button Content="Submit" 
