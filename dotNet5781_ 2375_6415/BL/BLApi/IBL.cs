@@ -100,6 +100,8 @@ namespace BLApi
         #region LineStationToShow
         IEnumerable<LineStationToShow> GetAllStationsOfLine(int lineNumber);
 
+        void UpdateDistanceAndTime(LineStationToShow myStation, int lineNumber);
+
         #endregion
 
         #region StationToAdd

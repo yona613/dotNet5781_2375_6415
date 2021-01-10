@@ -16,7 +16,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using BLApi;
 using BO;
-using ViewModel;
 
 namespace PL.WPF
 {
@@ -174,10 +173,12 @@ namespace PL.WPF
             }
             else if (stationChB.IsChecked == true)
             {
-
                 new StationData(MainWindow.bl.getStationToShow((MainListBox.SelectedItem as BO.Station).StationId)).ShowDialog();
             }
-
+            else if (lineChB.IsChecked == true)
+            {
+                new LineData(MainWindow.bl.GetBusLineToShow((MainListBox.SelectedItem as BO.BusLine).LineNumber)).ShowDialog();
+            }
             //new StationData(ListS.SelectedItem as BO.Station).ShowDialog();
 
 

@@ -244,7 +244,7 @@ namespace BL
                 try
                 {
                     dal.GetBusLine(lineToUpdate.LineNumber);
-                    throw new BOBadLineException($"The line {lineNumber} already exists", lineNumber);
+                    throw new BOBadLineException($"The line {lineToUpdate.LineNumber} already exists", lineNumber);
                 }
                 catch (DO.BadLineException exception) { }
             }
@@ -1226,7 +1226,7 @@ namespace BL
             var myLineStationsTmp = from station in GetAllLineStationsBy(x => x.LineNumber == lineNumber)
                                     orderby station.Index
                                     let station1 = GetStation(station.StationNumber)
-                                    select new { StationId = station1.StationId, Name = station1.Name, Address = station1.Address, Index = station.Index};
+                                    select new { StationId = station1.StationId, Name = station1.Name, Address = station1.Address, Index = station.Index, Coordinates = station1.Coordinates};
             IEnumerable<LineStationToShow> myLineStations = from station in myLineStationsTmp                                                           
                                                             select (LineStationToShow)station.CopyPropertiesToNew(typeof(LineStationToShow));
             var myLineStationsList = myLineStations.ToList();
@@ -1235,12 +1235,35 @@ namespace BL
                 var pairStation = dal.GetPairStations(myLineStationsList[i].StationId, myLineStationsList[i + 1].StationId);
                 myLineStationsList[i].Distance = pairStation.Distance;
                 myLineStationsList[i].Time = pairStation.Time;
+                myLineStationsList[i].lineNumber = lineNumber;
             }
             if (myLineStations == null)
                 throw new BOReadDataException("no stations");
             return from lineStation in myLineStationsList
                    select lineStation;
 
+        }
+
+        public void UpdateDistanceAndTime(LineStationToShow myStation, int line)
+        {
+            try
+            {
+                ;
+                foreach (var item in GetAllStationsOfLine(myStation.lineNumber))
+                {
+                    if (item.Index == myStation.Index + 1)
+                    {                       
+                        PairStations pairStation = PairStationsDoBOAdapter(dal.GetPairStations(myStation.StationId, item.StationId));
+                        pairStation.Distance = myStation.Distance;
+                        pairStation.Time = myStation.Time;
+                        dal.UpdatePairStations((DO.PairStations)pairStation.CopyPropertiesToNew(typeof(DO.PairStations)));
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                throw exception;
+            }
         }
 
         #endregion
@@ -1283,7 +1306,6 @@ namespace BL
             return stationToShow;
 
         }
-
         #endregion
     }
 }

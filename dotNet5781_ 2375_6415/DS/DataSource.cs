@@ -508,10 +508,21 @@ namespace DS
                              select station.Coordinates;
                     lastStationLocation = tmpCoo.First();
                     double distance = firstStationLocation.GetDistanceTo(lastStationLocation);
-                    PairStationList.Add(new PairStations() { FirstStationNumber = firstStationNumber, Distance = distance, LastStationNumber = lastStationNumber, Time = new TimeSpan((int)(distance / 40.0), (int)((distance % 40.0) / (40.0 / 60.0)), (int)(((distance % 40.0) % (40.0 / 60.0)) / (40.0 / 3600.0))) });
+                    bool flag = true;
+                    foreach (var item in PairStationList)
+                    {
+                        if (item.FirstStationNumber == firstStationNumber && item.LastStationNumber == lastStationNumber)
+                        {
+                            flag = false;
+                            break;
+                        }
+                    }
+                    if (flag == true)
+                    {
+                        PairStationList.Add(new PairStations() { FirstStationNumber = firstStationNumber, Distance = distance, LastStationNumber = lastStationNumber, Time = new TimeSpan((int)(distance / 40.0), (int)((distance % 40.0) / (40.0 / 60.0)), (int)(((distance % 40.0) % (40.0 / 60.0)) / (40.0 / 3600.0))) });
+                    }                 
                 }
             }
-            //return lineStations;
         }
 
         private static List<User> CreateUsers()
@@ -522,6 +533,8 @@ namespace DS
             {
                 users.Add(new User { UserName = names[i - 1], Password = "1234", Permission = Permit.User, MyActivity = Activity.On });
             }
+            users.Add(new User() { UserName = "yona", Password = "yona", Permission = Permit.Admin, MyActivity = Activity.On });
+            users.Add(new User() { UserName = "elyassaf", Password = "elyassaf", Permission = Permit.Admin, MyActivity = Activity.On });
             return users;
         }
 

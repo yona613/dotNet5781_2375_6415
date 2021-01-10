@@ -1,0 +1,73 @@
+﻿<Window x:Class="PL.WPF.DistanceTimeInput"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PL.WPF"
+        mc:Ignorable="d"
+        Title="DistanceTimeInput" Height="450" Width="800">
+    <Grid Name="mainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label Content="Distance :"
+                   Grid.Row="0"
+                   Grid.Column="0"
+                   VerticalAlignment="Stretch"
+                   HorizontalAlignment="Stretch"
+                   VerticalContentAlignment="Center"
+                   HorizontalContentAlignment="center" 
+                   FontSize="30"
+                   />
+            <TextBox Name="distanceTxb"
+                     Grid.Row="0"
+                     Grid.Column="1"
+                     Text="{Binding Path=Distance, Mode=TwoWay, FallbackValue= 00.0000}"
+                     VerticalAlignment="Stretch"
+                     HorizontalAlignment="Stretch"
+                     VerticalContentAlignment="Center"
+                     HorizontalContentAlignment="Center"
+                     FontSize="30"
+                     />
+            <Label Content="Time :"
+                   Grid.Row="1"
+                   Grid.Column="0"
+                   VerticalAlignment="Stretch"
+                   HorizontalAlignment="Stretch"
+                   VerticalContentAlignment="Center"
+                   HorizontalContentAlignment="center" 
+                   FontSize="30"
+                   />
+            <TextBox Name="timeTxb"
+                     Grid.Row="1"
+                     Grid.Column="1"
+                     Text="{Binding Path=Time, Mode=TwoWay, StringFormat=hh\\:mm\\:ss, FallbackValue='00:00:00'}"
+                     VerticalAlignment="Stretch"
+                     HorizontalAlignment="Stretch"
+                     VerticalContentAlignment="Center"
+                     HorizontalContentAlignment="Center"
+                     FontSize="30"
+                     />
+        </Grid>
+        <Button Name="submitBtn"
+                Content="Submit"
+                Grid.Row="2"
+                VerticalAlignment="Stretch"
+                HorizontalAlignment="Stretch"
+                VerticalContentAlignment="Center"
+                HorizontalContentAlignment="Center"
+                FontSize="30"
+                Click="submitBtn_Click"
+                />
+    </Grid>
+</Window>

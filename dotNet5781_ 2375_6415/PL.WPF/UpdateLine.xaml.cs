@@ -28,16 +28,7 @@ namespace PL.WPF
             MainGrid.DataContext = myLine;
             areaCboBox.SelectedIndex = (int)myLine.LineArea;
             areaCboBox.ItemsSource = Enum.GetValues(typeof(BO.Area));
-            lineNumber = tmpLine.LineNumber;
-            /*try
-            {
-                stationsList.DataContext = MainWindow.bl.GetAllStationsOfLine(myLine.LineNumber);
-                LineDepartingList.DataContext = MainWindow.bl.GetAllLineDepartingBy(x => x.LineNumber == myLine.LineNumber).OrderBy(x => x.StartTime).ToList();
-            }
-            catch (Exception except)
-            {
-                MessageBox.Show(except.Message);
-            } */         
+            lineNumber = tmpLine.LineNumber;    
         }
 
         private void addSttBtn_Click(object sender, RoutedEventArgs e)
@@ -116,6 +107,13 @@ namespace PL.WPF
             myLine = MainWindow.bl.GetBusLineToShow(lineNumber);
             MainGrid.DataContext = myLine;
             //LineDepartingList.DataContext = MainWindow.bl.GetAllLineDepartingBy(x => x.LineNumber == myLine.LineNumber).OrderBy(x => x.StartTime).ToList();
+        }
+
+        private void distanceBtn_Click(object sender, RoutedEventArgs e)
+        {
+            new DistanceTimeInput((((sender as Button).DataContext) as BO.LineStationToShow), lineNumber).ShowDialog();
+            myLine = MainWindow.bl.GetBusLineToShow(lineNumber);
+            MainGrid.DataContext = myLine;
         }
     }
 }

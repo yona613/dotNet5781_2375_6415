@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Maps.MapControl.WPF;
 
 namespace BO
 {
@@ -14,7 +15,11 @@ namespace BO
 
         public string Address { get; set; }
 
+        public int lineNumber { get; set; }
+
         public int Index { get; set; }
+
+        public Location Coordinates { get; set; }
 
         public double Distance { get; set; }
 
