@@ -51,9 +51,11 @@ namespace DL
 
         public void AddBus(Bus myBus)
         {
-            if (XMLTools.LoadListFromXMLSerializer<Bus>(@"~bin\Xml\Bus.xml").FirstOrDefault(bus => bus.License == myBus.License && bus.MyActivity == Activity.On) != null)
+            var busList = XMLTools.LoadListFromXMLSerializer<Bus>(@"~bin\Xml\Bus.xml");
+            if (busList.FirstOrDefault(bus => bus.License == myBus.License && bus.MyActivity == Activity.On) != null)
                 throw new BadBusException("Bus already exist", myBus.License);
-            XMLTools.LoadListFromXMLSerializer<Bus>(@"~bin\Xml\Bus.xml").Add(myBus.Clone());
+            busList.Add(myBus.Clone());
+            XMLTools.SaveListToXMLSerializer<Bus>(busList, @"~bin\Xml\Bus.xml");
         }
 
         public void UpdateBus(Bus busToUpdate)
@@ -67,24 +69,26 @@ namespace DL
 
         public void DeleteBus(int license)
         {
-            Bus tmpBus = XMLTools.LoadListFromXMLSerializer<Bus>(@"~bin\Xml\Bus.xml").FirstOrDefault(bus => bus.License == license && bus.MyActivity == Activity.On);
+            var busList = XMLTools.LoadListFromXMLSerializer<Bus>(@"~bin\Xml\Bus.xml");
+            Bus tmpBus = busList.FirstOrDefault(bus => bus.License == license && bus.MyActivity == Activity.On);
             if (tmpBus == null)
                 throw new BadBusException("Bus doesn't exist", license);
             tmpBus.MyActivity = Activity.Off;
+            XMLTools.SaveListToXMLSerializer<Bus>(busList, @"~bin\Xml\Bus.xml");
         }
         #endregion
 
         #region Line
         public IEnumerable<BusLine> GetAllBusLines()
         {
-            return from busLine in DataSource.lineList
+            return from busLine in XMLTools.LoadListFromXMLSerializer<BusLine>(@"~bin\Xml\BusLine.xml")
                    where busLine.MyActivity == Activity.On
                    select busLine.Clone();
         }
 
         public IEnumerable<BusLine> GetAllBusLinesBy(Predicate<BusLine> predicate)
         {
-            IEnumerable<BusLine> myLineList = from busLine in DataSource.lineList
+            IEnumerable<BusLine> myLineList = from busLine in XMLTools.LoadListFromXMLSerializer<BusLine>(@"~bin\Xml\BusLine.xml")
                                               where predicate(busLine)
                                               where busLine.MyActivity == Activity.On
                                               select busLine.Clone();
@@ -95,7 +99,7 @@ namespace DL
 
         public BusLine GetBusLine(int id)
         {
-            BusLine myBusLine = DataSource.lineList.Find(line => line.LineNumber == id && line.MyActivity == Activity.On);
+            BusLine myBusLine = XMLTools.LoadListFromXMLSerializer<BusLine>(@"~bin\Xml\BusLine.xml").Find(line => line.LineNumber == id && line.MyActivity == Activity.On);
             if (myBusLine != null)
                 return myBusLine.Clone();
             throw new BadLineException("the Line doesn't exist", id);
@@ -103,16 +107,19 @@ namespace DL
 
         public void AddLine(BusLine tmpBusLine)
         {
-            if (DataSource.lineList.FirstOrDefault(Line => Line.LineNumber == tmpBusLine.LineNumber && Line.MyActivity == Activity.On) != null)
+            var lineList = XMLTools.LoadListFromXMLSerializer<BusLine>(@"~bin\Xml\BusLine.xml");
+            if (lineList.FirstOrDefault(Line => Line.LineNumber == tmpBusLine.LineNumber && Line.MyActivity == Activity.On) != null)
                 throw new BadLineException("the Line already exist", tmpBusLine.LineNumber);
             BusLine myBusLine = tmpBusLine.Clone();
             myBusLine.Key = Config.BusLineCounter;
-            DataSource.lineList.Add(myBusLine);
+            lineList.Add(myBusLine);
+            XMLTools.SaveListToXMLSerializer<BusLine>(lineList, @"~bin\Xml\BusLine.xml");
         }
 
         public void UpdateLine(BusLine lineToUpdate)
         {
-            BusLine tmpLine = DataSource.lineList.FirstOrDefault(line => line.LineNumber == lineToUpdate.LineNumber && line.MyActivity == Activity.On);
+            var lineList = XMLTools.LoadListFromXMLSerializer<BusLine>(@"~bin\Xml\BusLine.xml");
+            BusLine tmpLine = lineList.FirstOrDefault(line => line.LineNumber == lineToUpdate.LineNumber && line.MyActivity == Activity.On);
             if (tmpLine == null)
                 throw new BadLineException("the Line doesn't exist", lineToUpdate.LineNumber);
             DeleteLine(tmpLine.LineNumber);
@@ -121,24 +128,26 @@ namespace DL
 
         public void DeleteLine(int lineNumber)
         {
-            BusLine tmpLine = DataSource.lineList.FirstOrDefault(line => line.LineNumber == lineNumber && line.MyActivity == Activity.On);
+            var lineList = XMLTools.LoadListFromXMLSerializer<BusLine>(@"~bin\Xml\BusLine.xml");
+            BusLine tmpLine = lineList.FirstOrDefault(line => line.LineNumber == lineNumber && line.MyActivity == Activity.On);
             if (tmpLine == null)
                 throw new BadLineException("the Line doesn't exist", lineNumber);
             tmpLine.MyActivity = Activity.Off;
+            XMLTools.SaveListToXMLSerializer<BusLine>(lineList, @"~bin\Xml\BusLine.xml");
         }
         #endregion
 
         #region Station
         public IEnumerable<Station> GetAllStations()
         {
-            return from station in DataSource.stationList
+            return from station in XMLTools.LoadListFromXMLSerializer<Station>(@"~bin\Xml\Station.xml")
                    where station.MyActivity == Activity.On
                    select station.Clone();
         }
 
         public IEnumerable<Station> GetAllStationsBy(Predicate<Station> predicate)
         {
-            IEnumerable<Station> myStationsList = from station in DataSource.stationList
+            IEnumerable<Station> myStationsList = from station in XMLTools.LoadListFromXMLSerializer<Station>(@"~bin\Xml\Station.xml")
                                                   where station.MyActivity == Activity.On
                                                   where predicate(station)
                                                   select station.Clone();
@@ -149,7 +158,7 @@ namespace DL
 
         public Station GetStation(int id)
         {
-            Station myStation = DataSource.stationList.Find(Station => Station.StationId == id && Station.MyActivity == Activity.On);
+            Station myStation = XMLTools.LoadListFromXMLSerializer<Station>(@"~bin\Xml\Station.xml").Find(Station => Station.StationId == id && Station.MyActivity == Activity.On);
             if (myStation != null)
                 return myStation.Clone();
             throw new BadStationException("Station doesn't exist", id);
@@ -157,31 +166,35 @@ namespace DL
 
         public void AddStation(Station tmpStation)
         {
-            if (DataSource.stationList.FirstOrDefault(station => station.StationId == tmpStation.StationId && station.MyActivity == Activity.On) != null)
+            var stationsList = XMLTools.LoadListFromXMLSerializer<Station>(@"~bin\Xml\Station.xml");
+            if (stationsList.FirstOrDefault(station => station.StationId == tmpStation.StationId && station.MyActivity == Activity.On) != null)
                 throw new BadStationException("Station already exist", tmpStation.StationId);
-            DataSource.stationList.Add(tmpStation.Clone());
+            stationsList.Add(tmpStation.Clone());
+            XMLTools.SaveListToXMLSerializer<Station>(stationsList, @"~bin\Xml\Station.xml");
         }
 
         public void DeleteStation(int id)
         {
-            Station myStation = DataSource.stationList.FirstOrDefault(station => station.StationId == id && station.MyActivity == Activity.On);
+            var stationsList = XMLTools.LoadListFromXMLSerializer<Station>(@"~bin\Xml\Station.xml");
+            Station myStation = stationsList.FirstOrDefault(station => station.StationId == id && station.MyActivity == Activity.On);
             if (myStation == null)
                 throw new BadStationException("Station doesn't exist", id);
             myStation.MyActivity = Activity.Off;
+            XMLTools.SaveListToXMLSerializer<Station>(stationsList, @"~bin\Xml\Station.xml");
         }
         #endregion
 
         #region User
         public IEnumerable<User> GetAllUsers()
         {
-            return from user in DataSource.userList
+            return from user in XMLTools.LoadListFromXMLSerializer<User>(@"~bin\Xml\User.xml")
                    where user.MyActivity == Activity.On
                    select user.Clone();
         }
 
         public IEnumerable<User> GetAllUsersBy(Predicate<User> predicate)
         {
-            IEnumerable<User> myUsers = from user in DataSource.userList
+            IEnumerable<User> myUsers = from user in XMLTools.LoadListFromXMLSerializer<User>(@"~bin\Xml\User.xml")
                                         where user.MyActivity == Activity.On
                                         where predicate(user)
                                         select user.Clone();
@@ -192,7 +205,7 @@ namespace DL
 
         public User GetUser(string userName)
         {
-            User myUser = DataSource.userList.FirstOrDefault(user => user.UserName == userName && user.MyActivity == Activity.On);
+            User myUser = XMLTools.LoadListFromXMLSerializer<User>(@"~bin\Xml\User.xml").FirstOrDefault(user => user.UserName == userName && user.MyActivity == Activity.On);
             if (myUser != null)
                 return myUser.Clone();
             throw new BadUserException("User doesn't exist", userName);
@@ -200,7 +213,7 @@ namespace DL
 
         public void UpdateUser(User userToUpdate)
         {
-            User tmpUser = DataSource.userList.FirstOrDefault(user => user.UserName == userToUpdate.UserName && user.MyActivity == Activity.On);
+            User tmpUser = XMLTools.LoadListFromXMLSerializer<User>(@"~bin\Xml\User.xml").FirstOrDefault(user => user.UserName == userToUpdate.UserName && user.MyActivity == Activity.On);
             if (tmpUser == null)
                 throw new BadUserException("User doesn't exist", userToUpdate.UserName);
             DeleteUser(tmpUser.UserName);
@@ -209,16 +222,22 @@ namespace DL
 
         public void AddUser(User tmpUser)
         {
-            if (DataSource.userList.FirstOrDefault(user => user.UserName == tmpUser.UserName && user.MyActivity == Activity.On) != null)
+            var userList = XMLTools.LoadListFromXMLSerializer<User>(@"~bin\Xml\User.xml");
+            if (userList.FirstOrDefault(user => user.UserName == tmpUser.UserName && user.MyActivity == Activity.On) != null)
                 throw new BadUserException("User already exist", tmpUser.UserName);
-            DataSource.userList.Add(tmpUser.Clone());
+            userList.Add(tmpUser.Clone());
+            XMLTools.SaveListToXMLSerializer<User>(userList, @"~bin\Xml\User.xml");
         }
 
         public void DeleteUser(string userName)
         {
-            User myUser = DataSource.userList.FirstOrDefault(user => user.UserName == userName && user.MyActivity == Activity.On);
+            var userList = XMLTools.LoadListFromXMLSerializer<User>(@"~bin\Xml\User.xml");
+            User myUser = userList.FirstOrDefault(user => user.UserName == userName && user.MyActivity == Activity.On);
             if (myUser != null)
+            {
                 myUser.MyActivity = Activity.Off;
+                XMLTools.SaveListToXMLSerializer<User>(userList, @"~bin\Xml\User.xml");
+            }
             else throw new BadUserException("User doesn't exist", userName);
         }
         #endregion
@@ -226,14 +245,14 @@ namespace DL
         #region LineStation
         public IEnumerable<LineStation> GetAllLineStations()
         {
-            return from lineStation in DataSource.linestationList
+            return from lineStation in XMLTools.LoadListFromXMLSerializer<LineStation>(@"~bin\Xml\LineStation.xml")
                    where lineStation.MyActivity == Activity.On
                    select lineStation.Clone();
         }
 
         public IEnumerable<LineStation> GetAllLineStationsBy(Predicate<LineStation> predicate)
         {
-            IEnumerable<LineStation> myLineStations = from lineStation in DataSource.linestationList
+            IEnumerable<LineStation> myLineStations = from lineStation in XMLTools.LoadListFromXMLSerializer<LineStation>(@"~bin\Xml\LineStation.xml")
                                                       where predicate(lineStation) && lineStation.MyActivity == Activity.On
                                                       select lineStation.Clone();
             if (myLineStations != null)
@@ -243,7 +262,7 @@ namespace DL
 
         public LineStation GetLineStation(int stationNumber, int lineNumber)
         {
-            LineStation myLineStation = DataSource.linestationList.FirstOrDefault(
+            LineStation myLineStation = XMLTools.LoadListFromXMLSerializer<LineStation>(@"~bin\Xml\LineStation.xml").FirstOrDefault(
                 station => station.LineNumber == lineNumber && station.StationNumber == stationNumber && station.MyActivity == Activity.On);
             if (myLineStation != null)
                 return myLineStation.Clone();
@@ -252,24 +271,32 @@ namespace DL
 
         public void AddLineStation(LineStation tmpLineStation)
         {
-            LineStation tmp = DataSource.linestationList.FirstOrDefault(station => station.LineNumber == tmpLineStation.LineNumber && station.StationNumber == tmpLineStation.StationNumber && station.MyActivity == Activity.On);
+            var lineStationList = XMLTools.LoadListFromXMLSerializer<LineStation>(@"~bin\Xml\LineStation.xml");
+            LineStation tmp = lineStationList.FirstOrDefault(station => station.LineNumber == tmpLineStation.LineNumber && station.StationNumber == tmpLineStation.StationNumber && station.MyActivity == Activity.On);
             if (tmp == null)
-                DataSource.linestationList.Add(tmpLineStation.Clone());
+            {
+                lineStationList.Add(tmpLineStation.Clone());
+                XMLTools.SaveListToXMLSerializer<LineStation>(lineStationList, @"~bin\Xml\LineStation.xml");
+            }
             else throw new BadLineStationException("Line Station already exist", tmpLineStation.LineNumber, tmpLineStation.StationNumber);
         }
 
         public void DeleteLineStation(int stationNumber, int lineNumber)
         {
-            LineStation tmpLineStation = DataSource.linestationList.FirstOrDefault(station => station.LineNumber == lineNumber && station.StationNumber == stationNumber && station.MyActivity == Activity.On);
+            var lineStationList = XMLTools.LoadListFromXMLSerializer<LineStation>(@"~bin\Xml\LineStation.xml");
+            LineStation tmpLineStation = lineStationList.FirstOrDefault(station => station.LineNumber == lineNumber && station.StationNumber == stationNumber && station.MyActivity == Activity.On);
             if (tmpLineStation != null)
+            {
                 tmpLineStation.MyActivity = Activity.Off;
+                XMLTools.SaveListToXMLSerializer<LineStation>(lineStationList, @"~bin\Xml\LineStation.xml");
+            }
             else throw new BadLineStationException("Line Station doesn't exist", lineNumber, stationNumber);
         }
 
 
         public void UpdateLineStation(LineStation lineStationToUpdate)
         {
-            LineStation tmpLineStation = DataSource.linestationList.FirstOrDefault(station => station.LineNumber == lineStationToUpdate.LineNumber && station.StationNumber == lineStationToUpdate.StationNumber && station.MyActivity == Activity.On);
+            LineStation tmpLineStation = XMLTools.LoadListFromXMLSerializer<LineStation>(@"~bin\Xml\LineStation.xml").FirstOrDefault(station => station.LineNumber == lineStationToUpdate.LineNumber && station.StationNumber == lineStationToUpdate.StationNumber && station.MyActivity == Activity.On);
             if (tmpLineStation == null)
                 throw new BadLineStationException("Line Station doesn't exist", lineStationToUpdate.LineNumber, lineStationToUpdate.StationNumber);
             DeleteLineStation(tmpLineStation.StationNumber, tmpLineStation.LineNumber);
@@ -280,14 +307,14 @@ namespace DL
         #region BusInTravel
         public IEnumerable<BusInTravel> GetAllBusInTravel()
         {
-            return from busInTravel in DataSource.busInTravelList
+            return from busInTravel in XMLTools.LoadListFromXMLSerializer<BusInTravel>(@"~bin\Xml\BusInTravel.xml")
                    where busInTravel.MyActivity == Activity.On
                    select busInTravel.Clone();
         }
 
         public IEnumerable<BusInTravel> GetAllBusInTravelBy(Predicate<BusInTravel> predicate)
         {
-            IEnumerable<BusInTravel> myBusInTravel = from busInTravel in DataSource.busInTravelList
+            IEnumerable<BusInTravel> myBusInTravel = from busInTravel in XMLTools.LoadListFromXMLSerializer<BusInTravel>(@"~bin\Xml\BusInTravel.xml")
                                                      where busInTravel.MyActivity == Activity.On && predicate(busInTravel)
                                                      select busInTravel.Clone();
             if (myBusInTravel != null)
@@ -297,7 +324,7 @@ namespace DL
 
         public BusInTravel GetBusInTravel(int license, int line, DateTime departureTime)
         {
-            BusInTravel myBusInTravel = DataSource.busInTravelList.FirstOrDefault(
+            BusInTravel myBusInTravel = XMLTools.LoadListFromXMLSerializer<BusInTravel>(@"~bin\Xml\BusInTravel.xml").FirstOrDefault(
                 busInTravel => busInTravel.License == license && busInTravel.Line == line && busInTravel.DepartureTime == departureTime && busInTravel.MyActivity == Activity.On);
             if (myBusInTravel != null)
                 return myBusInTravel.Clone();
@@ -306,27 +333,33 @@ namespace DL
 
         public void AddBusInTravel(BusInTravel tmpBusInTravel)
         {
-            if (DataSource.busInTravelList.FirstOrDefault(
+            var busInTravelList = XMLTools.LoadListFromXMLSerializer<BusInTravel>(@"~bin\Xml\BusInTravel.xml");
+            if (busInTravelList.FirstOrDefault(
                 busInTravel => busInTravel.License == tmpBusInTravel.License && busInTravel.Line == tmpBusInTravel.Line && busInTravel.DepartureTime == tmpBusInTravel.DepartureTime) != null)
             {
                 BusInTravel myBusInTravel = tmpBusInTravel.Clone();
                 myBusInTravel.Key = Config.BusInTravelCounter;
-                DataSource.busInTravelList.Add(myBusInTravel);
+                busInTravelList.Add(myBusInTravel);
+                XMLTools.SaveListToXMLSerializer<BusInTravel>(busInTravelList, @"~bin\Xml\BusInTravel.xml");
             }
             throw new BadBusInTravelException("Bus In Travel already exist", tmpBusInTravel.License, tmpBusInTravel.Line, tmpBusInTravel.DepartureTime);
         }
 
         public void DeleteBusInTravel(int license, int line, DateTime departureTime)
         {
-            BusInTravel tmpBusInTravel = DataSource.busInTravelList.FirstOrDefault(busInTravel => busInTravel.License == license && busInTravel.Line == line && busInTravel.MyActivity == Activity.On);
+            var busInTravelList = XMLTools.LoadListFromXMLSerializer<BusInTravel>(@"~bin\Xml\BusInTravel.xml");
+            BusInTravel tmpBusInTravel = busInTravelList.FirstOrDefault(busInTravel => busInTravel.License == license && busInTravel.Line == line && busInTravel.MyActivity == Activity.On);
             if (tmpBusInTravel != null)
+            {
                 tmpBusInTravel.MyActivity = Activity.Off;
+                XMLTools.SaveListToXMLSerializer<BusInTravel>(busInTravelList, @"~bin\Xml\BusInTravel.xml");
+            }
             throw new BadBusInTravelException("Bus In Travel doesn't exist", tmpBusInTravel.License, tmpBusInTravel.Line, tmpBusInTravel.DepartureTime);
         }
 
         public void UpdateBusInTravel(BusInTravel busInTravelToUpdate)
         {
-            BusInTravel tmpBusInTravel = DataSource.busInTravelList.FirstOrDefault(busInTravel => busInTravel.License == busInTravelToUpdate.License && busInTravel.Line == busInTravelToUpdate.Line && busInTravel.MyActivity == Activity.On);
+            BusInTravel tmpBusInTravel = XMLTools.LoadListFromXMLSerializer<BusInTravel>(@"~bin\Xml\BusInTravel.xml").FirstOrDefault(busInTravel => busInTravel.License == busInTravelToUpdate.License && busInTravel.Line == busInTravelToUpdate.Line && busInTravel.MyActivity == Activity.On);
             if (tmpBusInTravel == null)
                 throw new BadBusInTravelException("Bus In Travel doesn't exist", busInTravelToUpdate.License, busInTravelToUpdate.Line, busInTravelToUpdate.DepartureTime);
             DeleteBusInTravel(tmpBusInTravel.License, tmpBusInTravel.Line, tmpBusInTravel.DepartureTime);
