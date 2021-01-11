@@ -465,18 +465,18 @@ namespace DL
 
         public void DeletePairStations(int firstStation, int secondStation)
         {
-            var PairStationsList = XMLTools.LoadListFromXMLSerializer<PairStations>(@"~bin\Xml\PairStations .xml");
+            var PairStationsList = XMLTools.LoadListFromXMLSerializer<PairStations>(@"PairStations.xml");
             PairStations pair = PairStationsList.FirstOrDefault
                (pairStations => pairStations.FirstStationNumber == firstStation && pairStations.LastStationNumber == secondStation && pairStations.MyActivity == Activity.On);
             if (pair == null)
                 throw new BadPairStationException("Pair Station doesn't exist", firstStation, secondStation);
             pair.MyActivity = Activity.Off;
-            XMLTools.SaveListToXMLSerializer<PairStations>(PairStationsList, @"~bin\Xml\PairStations .xml");
+            XMLTools.SaveListToXMLSerializer<PairStations>(PairStationsList, @"PairStations.xml");
         }
 
         public void UpdatePairStations(PairStations pairStationsToUpdate)
         {
-            PairStations tmpPair = XMLTools.LoadListFromXMLSerializer<PairStations>(@"~bin\Xml\PairStations.xml").FirstOrDefault
+            PairStations tmpPair = XMLTools.LoadListFromXMLSerializer<PairStations>(@"PairStations.xml").FirstOrDefault
                (pairStations => pairStations.FirstStationNumber == pairStationsToUpdate.FirstStationNumber && pairStations.LastStationNumber == pairStationsToUpdate.LastStationNumber && pairStations.MyActivity == Activity.On);
             if (tmpPair == null)
                 throw new BadPairStationException("Pair Station doesn't exist", pairStationsToUpdate.FirstStationNumber, pairStationsToUpdate.LastStationNumber);
@@ -488,14 +488,14 @@ namespace DL
         #region UserTrip
         public IEnumerable<UserTrip> GetAllUserTrip()
         {
-            return from userTrip in XMLTools.LoadListFromXMLSerializer<UserTrip>(@"~bin\Xml\UserTrip.xml")
+            return from userTrip in XMLTools.LoadListFromXMLSerializer<UserTrip>(@"UserTrip.xml")
                    where userTrip.MyActivity == Activity.On
                    select userTrip.Clone();
         }
 
         public IEnumerable<UserTrip> GetAllUserTripBy(Predicate<UserTrip> predicate)
         {
-            IEnumerable<UserTrip> myUserTrip = from UserTrip in XMLTools.LoadListFromXMLSerializer<UserTrip>(@"~bin\Xml\UserTrip.xml")
+            IEnumerable<UserTrip> myUserTrip = from UserTrip in XMLTools.LoadListFromXMLSerializer<UserTrip>(@"UserTrip.xml")
                                                where UserTrip.MyActivity == Activity.On && predicate(UserTrip)
                                                select UserTrip.Clone();
             if (myUserTrip != null)
@@ -505,7 +505,7 @@ namespace DL
 
         public UserTrip GetUserTrip(string name)
         {
-            UserTrip myUserTrip = XMLTools.LoadListFromXMLSerializer<UserTrip>(@"~bin\Xml\UserTrip.xml").FirstOrDefault(
+            UserTrip myUserTrip = XMLTools.LoadListFromXMLSerializer<UserTrip>(@"UserTrip.xml").FirstOrDefault(
                 userTrip => userTrip.UserName == name && userTrip.MyActivity == Activity.On);
             if (myUserTrip != null)
                 return myUserTrip.Clone();
@@ -514,25 +514,25 @@ namespace DL
 
         public void AddUserTrip(UserTrip tmpUserTrip)
         {
-            var userTripList = XMLTools.LoadListFromXMLSerializer<UserTrip>(@"~bin\Xml\UserTrip.xml");
+            var userTripList = XMLTools.LoadListFromXMLSerializer<UserTrip>(@"UserTrip.xml");
             if (userTripList.FirstOrDefault(
                             userTrip => userTrip.UserName == tmpUserTrip.UserName && userTrip.MyActivity == Activity.On) != null)
             {
                 UserTrip myUserTrip = tmpUserTrip.Clone();
                 myUserTrip.Key = Config.UserTripCounter;
                 userTripList.Add(myUserTrip);
-                XMLTools.SaveListToXMLSerializer<UserTrip>(userTripList, @"~bin\Xml\UserTrip.xml");
+                XMLTools.SaveListToXMLSerializer<UserTrip>(userTripList, @"UserTrip.xml");
             }
             throw new BadUserTripException("User Trip already exist", tmpUserTrip.UserName);
         }
 
         public void DeleteUserTrip(string name)
         {
-            var userTripList = XMLTools.LoadListFromXMLSerializer<UserTrip>(@"~bin\Xml\UserTrip.xml");
+            var userTripList = XMLTools.LoadListFromXMLSerializer<UserTrip>(@"UserTrip.xml");
             UserTrip tmpUserTrip = userTripList.FirstOrDefault(userTrip => userTrip.UserName == name && userTrip.MyActivity == Activity.On);
             if (tmpUserTrip != null) {
                 tmpUserTrip.MyActivity = Activity.Off;
-                XMLTools.SaveListToXMLSerializer<UserTrip>(userTripList, @"~bin\Xml\UserTrip.xml");
+                XMLTools.SaveListToXMLSerializer<UserTrip>(userTripList, @"UserTrip.xml");
             }
             throw new BadUserTripException("User Trip doesn't exist", tmpUserTrip.UserName);
 
@@ -540,7 +540,7 @@ namespace DL
 
         public void UpdateUserTrip(UserTrip userTripToUpdate)
         {
-            UserTrip tmpUserTrip = XMLTools.LoadListFromXMLSerializer<UserTrip>(@"~bin\Xml\UserTrip.xml").FirstOrDefault(userTrip => userTrip.UserName == userTripToUpdate.UserName && userTrip.MyActivity == Activity.On);
+            UserTrip tmpUserTrip = XMLTools.LoadListFromXMLSerializer<UserTrip>(@"UserTrip.xml").FirstOrDefault(userTrip => userTrip.UserName == userTripToUpdate.UserName && userTrip.MyActivity == Activity.On);
             if (tmpUserTrip == null)
                 throw new BadUserTripException("User Trip doesn't exist", userTripToUpdate.UserName);
             DeleteUserTrip(tmpUserTrip.UserName);
