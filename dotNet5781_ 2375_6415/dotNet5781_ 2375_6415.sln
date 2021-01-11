@@ -39,7 +39,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		bin\debug\xml\Bus.xml = bin\debug\xml\Bus.xml
 		bin\debug\xml\BusLine.xml = bin\debug\xml\BusLine.xml
-		config.xml = config.xml
+		bin\debug\config.xml = bin\debug\config.xml
 		bin\debug\xml\LineDeparting.xml = bin\debug\xml\LineDeparting.xml
 		bin\debug\xml\LineStation.xml = bin\debug\xml\LineStation.xml
 		..\..\..\..\..\Program Files (x86)\Bing Maps WPF Control\V1\Libraries\Microsoft.Maps.MapControl.WPF.dll = ..\..\..\..\..\Program Files (x86)\Bing Maps WPF Control\V1\Libraries\Microsoft.Maps.MapControl.WPF.dll
@@ -49,6 +49,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DalXml", "DalXml\DalXml.csproj", "{6E0DA637-DF20-4C00-9A90-9CDCB7741459}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp2", "ConsoleApp2\ConsoleApp2.csproj", "{F14B9F9C-9DED-4BB6-BEA7-69FEF0B5E890}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -100,6 +102,10 @@ Global
 		{6E0DA637-DF20-4C00-9A90-9CDCB7741459}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E0DA637-DF20-4C00-9A90-9CDCB7741459}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E0DA637-DF20-4C00-9A90-9CDCB7741459}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F14B9F9C-9DED-4BB6-BEA7-69FEF0B5E890}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F14B9F9C-9DED-4BB6-BEA7-69FEF0B5E890}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F14B9F9C-9DED-4BB6-BEA7-69FEF0B5E890}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F14B9F9C-9DED-4BB6-BEA7-69FEF0B5E890}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
