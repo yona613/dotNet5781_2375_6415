@@ -11,7 +11,7 @@ namespace BLApi
     {
         public static IBL GetBL()
         {
-            return new BLImp();
+            return BLImp.Instance;
         }
     }
 }
