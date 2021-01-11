@@ -337,15 +337,14 @@ namespace DL
         #region LineDeparting
         public IEnumerable<LineDeparting> GetAllLineDeparting()
         {
-
-            return from lineDeparting in DataSource.lineDepartingList
+            return from lineDeparting in XMLTools.LoadListFromXMLSerializer<LineDeparting>(@"~bin\Xml\LineDeparting.xml")
                    where lineDeparting.MyActivity == Activity.On
                    select lineDeparting.Clone();
         }
 
         public IEnumerable<LineDeparting> GetAllLineDepartingBy(Predicate<LineDeparting> predicate)
         {
-            IEnumerable<LineDeparting> mylineDeparting = from lineDeparting in DataSource.lineDepartingList
+            IEnumerable<LineDeparting> mylineDeparting = from lineDeparting in XMLTools.LoadListFromXMLSerializer<LineDeparting>(@"~bin\Xml\LineDeparting.xml")
                                                          where lineDeparting.MyActivity == Activity.On && predicate(lineDeparting)
                                                          select lineDeparting.Clone();
             if (mylineDeparting != null)
@@ -355,7 +354,7 @@ namespace DL
 
         public LineDeparting GetLineDeparting(int lineNumber, TimeSpan startTime)
         {
-            LineDeparting line = DataSource.lineDepartingList.FirstOrDefault
+            LineDeparting line = XMLTools.LoadListFromXMLSerializer<LineDeparting>(@"~bin\Xml\LineDeparting.xml").FirstOrDefault
                 (lineDeparting => lineDeparting.LineNumber == lineNumber && lineDeparting.StartTime == startTime && lineDeparting.MyActivity == Activity.On);
             if (line != null)
                 return line.Clone();
@@ -364,26 +363,27 @@ namespace DL
 
         public void AddLineDeparting(LineDeparting tmpLineDeparting)
         {
-            LineDeparting line = DataSource.lineDepartingList.FirstOrDefault
+            var LineDepartingList = XMLTools.LoadListFromXMLSerializer<LineDeparting>(@"~bin\Xml\LineDeparting.xml");
+            LineDeparting line = LineDepartingList.FirstOrDefault
                 (lineDeparting => lineDeparting.LineNumber == tmpLineDeparting.LineNumber && lineDeparting.StartTime == tmpLineDeparting.StartTime && lineDeparting.MyActivity == Activity.On);
             if (line != null)
                 throw new BadLineDepartingException("Line Departing already exists", tmpLineDeparting.LineNumber, tmpLineDeparting.StartTime);
-            DataSource.lineDepartingList.Add(tmpLineDeparting.Clone());
+            LineDepartingList.Add(tmpLineDeparting.Clone());
+            XMLTools.SaveListToXMLSerializer<LineDeparting>(LineDepartingList, @"~bin\Xml\LineDeparting.xml");
         }
 
         public void DeleteLineDeparting(int lineNumber, TimeSpan startTime)
         {
-            LineDeparting line = DataSource.lineDepartingList.FirstOrDefault
+            LineDeparting line = XMLTools.LoadListFromXMLSerializer<LineDeparting>(@"~bin\Xml\LineDeparting.xml").FirstOrDefault
                 (lineDeparting => lineDeparting.LineNumber == lineNumber && lineDeparting.StartTime == startTime && lineDeparting.MyActivity == Activity.On);
             if (line == null)
                 throw new BadLineDepartingException("LineDeparture doesn't exist", lineNumber, startTime);
             line.MyActivity = Activity.Off;
-
         }
 
         public void UpdateLineDeparting(LineDeparting lineDepartingToUpdate)
         {
-            LineDeparting tmpline = DataSource.lineDepartingList.FirstOrDefault
+            LineDeparting tmpline = XMLTools.LoadListFromXMLSerializer<LineDeparting>(@"~bin\Xml\LineDeparting.xml").FirstOrDefault
                 (lineDeparting => lineDeparting.LineNumber == lineDepartingToUpdate.LineNumber && lineDeparting.StartTime == lineDepartingToUpdate.StartTime && lineDeparting.MyActivity == Activity.On);
             if (tmpline == null)
                 throw new BadLineDepartingException("LineDeparture doesn't exist", lineDepartingToUpdate.LineNumber, lineDepartingToUpdate.StartTime);
@@ -395,14 +395,14 @@ namespace DL
         #region PairStation
         public IEnumerable<PairStations> GetAllPairStations()
         {
-            return from pairstation in DataSource.PairStationList
+            return from pairstation in XMLTools.LoadListFromXMLSerializer<PairStations>(@"~bin\Xml\PairStations.xml")
                    where pairstation.MyActivity == Activity.On
                    select pairstation.Clone();
         }
 
         public IEnumerable<PairStations> GetAllPairStationsBy(Predicate<PairStations> predicate)
         {
-            IEnumerable<PairStations> pairStations = from pairstation in DataSource.PairStationList
+            IEnumerable<PairStations> pairStations = from pairstation in XMLTools.LoadListFromXMLSerializer<PairStations>(@"~bin\Xml\PairStations.xml")
                                                      where pairstation.MyActivity == Activity.On && predicate(pairstation)
                                                      select pairstation.Clone();
             if (pairStations != null)
@@ -412,7 +412,7 @@ namespace DL
 
         public PairStations GetPairStations(int firstStation, int secondStation)
         {
-            PairStations pair = DataSource.PairStationList.FirstOrDefault
+            PairStations pair = XMLTools.LoadListFromXMLSerializer<PairStations>(@"~bin\Xml\PairStations.xml").FirstOrDefault
                 (pairStations => pairStations.FirstStationNumber == firstStation && pairStations.LastStationNumber == secondStation && pairStations.MyActivity == Activity.On);
             if (pair != null)
                 return pair.Clone();
@@ -421,27 +421,29 @@ namespace DL
 
         public void AddPairStations(PairStations tmpPairStations)
         {
-            PairStations pair = DataSource.PairStationList.FirstOrDefault
+            var PairStationsList = XMLTools.LoadListFromXMLSerializer<PairStations>(@"~bin\Xml\PairStations .xml");
+            PairStations pair = PairStationsList.FirstOrDefault
                (pairStations => pairStations.FirstStationNumber == tmpPairStations.FirstStationNumber && pairStations.LastStationNumber == tmpPairStations.LastStationNumber && pairStations.MyActivity == Activity.On);
             if (pair != null)
                 throw new BadPairStationException("Pair Station already exist", tmpPairStations.FirstStationNumber, tmpPairStations.LastStationNumber);
-            DataSource.PairStationList.Add(tmpPairStations.Clone());
-
+            XMLTools.LoadListFromXMLSerializer<PairStations>(@"~bin\Xml\PairStations.xml").Add(tmpPairStations.Clone());
+            XMLTools.SaveListToXMLSerializer<PairStations>(PairStationsList, @"~bin\Xml\PairStations .xml");
         }
 
         public void DeletePairStations(int firstStation, int secondStation)
         {
-            PairStations pair = DataSource.PairStationList.FirstOrDefault
+            var PairStationsList = XMLTools.LoadListFromXMLSerializer<PairStations>(@"~bin\Xml\PairStations .xml");
+            PairStations pair = PairStationsList.FirstOrDefault
                (pairStations => pairStations.FirstStationNumber == firstStation && pairStations.LastStationNumber == secondStation && pairStations.MyActivity == Activity.On);
             if (pair == null)
                 throw new BadPairStationException("Pair Station doesn't exist", firstStation, secondStation);
             pair.MyActivity = Activity.Off;
-
+            XMLTools.SaveListToXMLSerializer<PairStations>(PairStationsList, @"~bin\Xml\PairStations .xml");
         }
 
         public void UpdatePairStations(PairStations pairStationsToUpdate)
         {
-            PairStations tmpPair = DataSource.PairStationList.FirstOrDefault
+            PairStations tmpPair = XMLTools.LoadListFromXMLSerializer<PairStations>(@"~bin\Xml\PairStations.xml").FirstOrDefault
                (pairStations => pairStations.FirstStationNumber == pairStationsToUpdate.FirstStationNumber && pairStations.LastStationNumber == pairStationsToUpdate.LastStationNumber && pairStations.MyActivity == Activity.On);
             if (tmpPair == null)
                 throw new BadPairStationException("Pair Station doesn't exist", pairStationsToUpdate.FirstStationNumber, pairStationsToUpdate.LastStationNumber);
@@ -453,14 +455,14 @@ namespace DL
         #region UserTrip
         public IEnumerable<UserTrip> GetAllUserTrip()
         {
-            return from userTrip in DataSource.userTripList
+            return from userTrip in XMLTools.LoadListFromXMLSerializer<UserTrip>(@"~bin\Xml\UserTrip.xml")
                    where userTrip.MyActivity == Activity.On
                    select userTrip.Clone();
         }
 
         public IEnumerable<UserTrip> GetAllUserTripBy(Predicate<UserTrip> predicate)
         {
-            IEnumerable<UserTrip> myUserTrip = from UserTrip in DataSource.userTripList
+            IEnumerable<UserTrip> myUserTrip = from UserTrip in XMLTools.LoadListFromXMLSerializer<UserTrip>(@"~bin\Xml\UserTrip.xml")
                                                where UserTrip.MyActivity == Activity.On && predicate(UserTrip)
                                                select UserTrip.Clone();
             if (myUserTrip != null)
@@ -470,7 +472,7 @@ namespace DL
 
         public UserTrip GetUserTrip(string name)
         {
-            UserTrip myUserTrip = DataSource.userTripList.FirstOrDefault(
+            UserTrip myUserTrip = XMLTools.LoadListFromXMLSerializer<UserTrip>(@"~bin\Xml\UserTrip.xml").FirstOrDefault(
                 userTrip => userTrip.UserName == name && userTrip.MyActivity == Activity.On);
             if (myUserTrip != null)
                 return myUserTrip.Clone();
@@ -479,27 +481,33 @@ namespace DL
 
         public void AddUserTrip(UserTrip tmpUserTrip)
         {
-            if (DataSource.userTripList.FirstOrDefault(
+            var userTripList = XMLTools.LoadListFromXMLSerializer<UserTrip>(@"~bin\Xml\UserTrip.xml");
+            if (userTripList.FirstOrDefault(
                             userTrip => userTrip.UserName == tmpUserTrip.UserName && userTrip.MyActivity == Activity.On) != null)
             {
                 UserTrip myUserTrip = tmpUserTrip.Clone();
                 myUserTrip.Key = Config.UserTripCounter;
-                DataSource.userTripList.Add(myUserTrip);
+                userTripList.Add(myUserTrip);
+                XMLTools.SaveListToXMLSerializer<UserTrip>(userTripList, @"~bin\Xml\UserTrip.xml");
             }
             throw new BadUserTripException("User Trip already exist", tmpUserTrip.UserName);
         }
 
         public void DeleteUserTrip(string name)
         {
-            UserTrip tmpUserTrip = DataSource.userTripList.FirstOrDefault(userTrip => userTrip.UserName == name && userTrip.MyActivity == Activity.On);
-            if (tmpUserTrip != null)
+            var userTripList = XMLTools.LoadListFromXMLSerializer<UserTrip>(@"~bin\Xml\UserTrip.xml");
+            UserTrip tmpUserTrip = userTripList.FirstOrDefault(userTrip => userTrip.UserName == name && userTrip.MyActivity == Activity.On);
+            if (tmpUserTrip != null) {
                 tmpUserTrip.MyActivity = Activity.Off;
+                XMLTools.SaveListToXMLSerializer<UserTrip>(userTripList, @"~bin\Xml\UserTrip.xml");
+            }
             throw new BadUserTripException("User Trip doesn't exist", tmpUserTrip.UserName);
+
         }
 
         public void UpdateUserTrip(UserTrip userTripToUpdate)
         {
-            UserTrip tmpUserTrip = DataSource.userTripList.FirstOrDefault(userTrip => userTrip.UserName == userTripToUpdate.UserName && userTrip.MyActivity == Activity.On);
+            UserTrip tmpUserTrip = XMLTools.LoadListFromXMLSerializer<UserTrip>(@"~bin\Xml\UserTrip.xml").FirstOrDefault(userTrip => userTrip.UserName == userTripToUpdate.UserName && userTrip.MyActivity == Activity.On);
             if (tmpUserTrip == null)
                 throw new BadUserTripException("User Trip doesn't exist", userTripToUpdate.UserName);
             DeleteUserTrip(tmpUserTrip.UserName);
