@@ -1,0 +1,768 @@
+<?xml version="1.0"?>
+<ArrayOfStation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Station>
+    <StationId>38831</StationId>
+    <Coordinates>
+      <Latitude>32.183921</Latitude>
+      <Longitude>34.917806</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>Bar Lev / Ben Yehuda School</Name>
+    <Address>Ben Yehuda 76</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38832</StationId>
+    <Coordinates>
+      <Latitude>31.870034</Latitude>
+      <Longitude>34.819541</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>Herzl / Bilu Junction</Name>
+    <Address>Herzel</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38833</StationId>
+    <Coordinates>
+      <Latitude>31.984553</Latitude>
+      <Longitude>34.782828</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>The surge / fishermen</Name>
+    <Address>Hanarshol 30</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>Off</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38834</StationId>
+    <Coordinates>
+      <Latitude>31.88855</Latitude>
+      <Longitude>34.790904</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>Fried / The Six Days</Name>
+    <Address>Moshe Fried 9</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38836</StationId>
+    <Coordinates>
+      <Latitude>31.956392</Latitude>
+      <Longitude>34.898098</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>A. Lod Central / Download</Name>
+    <Address>Merkazit</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38837</StationId>
+    <Coordinates>
+      <Latitude>31.892166</Latitude>
+      <Longitude>34.796071</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>Hannah Avrech / Vulcani</Name>
+    <Address>Hanna Avrech 9</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38838</StationId>
+    <Coordinates>
+      <Latitude>31.857565</Latitude>
+      <Longitude>34.824106</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>Herzl / Moshe Sharet</Name>
+    <Address>Herzel 20</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38839</StationId>
+    <Coordinates>
+      <Latitude>31.862305</Latitude>
+      <Longitude>34.821857</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>The boys / Eli Cohen</Name>
+    <Address>Habanim 4</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38840</StationId>
+    <Coordinates>
+      <Latitude>31.865085</Latitude>
+      <Longitude>34.822237</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>Weizmann / The Boys</Name>
+    <Address>Weizmann 11</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38841</StationId>
+    <Coordinates>
+      <Latitude>31.865222</Latitude>
+      <Longitude>34.818957</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>The iris / anemone</Name>
+    <Address>Haiross 13</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38842</StationId>
+    <Coordinates>
+      <Latitude>31.867597</Latitude>
+      <Longitude>34.818392</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>The anemone / daffodil</Name>
+    <Address>Habalanit</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38844</StationId>
+    <Coordinates>
+      <Latitude>31.86244</Latitude>
+      <Longitude>34.827023</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>Eli Cohen / Ghetto Fighters</Name>
+    <Address>Eli Cohen 62</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38845</StationId>
+    <Coordinates>
+      <Latitude>31.863501</Latitude>
+      <Longitude>34.828702</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>Shabazi / Shabbat brothers</Name>
+    <Address>Shabazi 51</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38846</StationId>
+    <Coordinates>
+      <Latitude>31.865348</Latitude>
+      <Longitude>34.827102</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>Shabazi / Weizmann</Name>
+    <Address>Shabazi 31</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38847</StationId>
+    <Coordinates>
+      <Latitude>31.977409</Latitude>
+      <Longitude>34.763896</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>Haim Bar Lev / Yitzhak Rabin Boulevard</Name>
+    <Address>Haim BarLev</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38848</StationId>
+    <Coordinates>
+      <Latitude>32.300345</Latitude>
+      <Longitude>34.912708</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>Lev Hasharon Mental Health Center</Name>
+    <Address>Tzur Moshe</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38849</StationId>
+    <Coordinates>
+      <Latitude>32.301347</Latitude>
+      <Longitude>34.912602</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>Lev Hasharon Mental Health Center</Name>
+    <Address>Tzur Moshe</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38852</StationId>
+    <Coordinates>
+      <Latitude>31.914255</Latitude>
+      <Longitude>34.807944</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>Holtzman / Science</Name>
+    <Address>Haim Heltzman 2</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38854</StationId>
+    <Coordinates>
+      <Latitude>31.963668</Latitude>
+      <Longitude>34.836363</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>Zrifin Camp / Club</Name>
+    <Address>Tzrifim</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38855</StationId>
+    <Coordinates>
+      <Latitude>31.856115</Latitude>
+      <Longitude>34.825249</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>Herzl / Golani</Name>
+    <Address>Hertzel 4</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38856</StationId>
+    <Coordinates>
+      <Latitude>31.874963</Latitude>
+      <Longitude>34.81249</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>Rotem / Deganiot</Name>
+    <Address>Harotem 3</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38859</StationId>
+    <Coordinates>
+      <Latitude>32.300035</Latitude>
+      <Longitude>34.910842</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>The prairie</Name>
+    <Address>Haarava</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38860</StationId>
+    <Coordinates>
+      <Latitude>32.305234</Latitude>
+      <Longitude>34.948647</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>Introduction to the vine / Slope of the fig</Name>
+    <Address>Mevo Haguefen</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38861</StationId>
+    <Coordinates>
+      <Latitude>32.304022</Latitude>
+      <Longitude>34.943393</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>Introduction to the vine / extension</Name>
+    <Address>Mevo Haguefen</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38862</StationId>
+    <Coordinates>
+      <Latitude>32.302957</Latitude>
+      <Longitude>34.940529</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>The extension a</Name>
+    <Address>Haarchava</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38863</StationId>
+    <Coordinates>
+      <Latitude>32.300264</Latitude>
+      <Longitude>34.939512</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>The extension b</Name>
+    <Address>Haarchava</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38864</StationId>
+    <Coordinates>
+      <Latitude>32.298171</Latitude>
+      <Longitude>34.938705</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>The extension / veterans</Name>
+    <Address>Haarchava</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38865</StationId>
+    <Coordinates>
+      <Latitude>31.990876</Latitude>
+      <Longitude>34.8976</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>Airports / Aliyah Authority</Name>
+    <Address>Sderot Haaliya</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38866</StationId>
+    <Coordinates>
+      <Latitude>31.998767</Latitude>
+      <Longitude>34.879725</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>Wing / Cypress</Name>
+    <Address>Kanaf</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38867</StationId>
+    <Coordinates>
+      <Latitude>31.883019</Latitude>
+      <Longitude>34.818708</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>The gang / Dov Hoz</Name>
+    <Address>Hachaboura 24</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38869</StationId>
+    <Coordinates>
+      <Latitude>32.349776</Latitude>
+      <Longitude>34.926837</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>Beit Halevi e</Name>
+    <Address>Bet Halevi</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38870</StationId>
+    <Coordinates>
+      <Latitude>32.352953</Latitude>
+      <Longitude>34.899465</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>First / Route 5700</Name>
+    <Address>Hamigdal 13</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38872</StationId>
+    <Coordinates>
+      <Latitude>31.897286</Latitude>
+      <Longitude>34.775083</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>The genius Ben Ish Chai / Ceylon</Name>
+    <Address>Rechovot</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38873</StationId>
+    <Coordinates>
+      <Latitude>31.883941</Latitude>
+      <Longitude>34.807039</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>Okashi / Levi Eshkol</Name>
+    <Address>Israel Okshi 4</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38875</StationId>
+    <Coordinates>
+      <Latitude>31.896762</Latitude>
+      <Longitude>34.816752</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>Rest and estate / Yehuda Gorodisky</Name>
+    <Address>Menucha Venachala 31</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38876</StationId>
+    <Coordinates>
+      <Latitude>31.898463</Latitude>
+      <Longitude>34.823461</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>Gorodsky / Yechiel Paldi</Name>
+    <Address>Yehuda Grodiski 35</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38877</StationId>
+    <Coordinates>
+      <Latitude>32.076535</Latitude>
+      <Longitude>34.904907</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>Derech Menachem Begin / Yaakov Hazan</Name>
+    <Address>Menachem Begin 30</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38878</StationId>
+    <Coordinates>
+      <Latitude>32.299994</Latitude>
+      <Longitude>34.878765</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>Through the Park / Rabbi Neria</Name>
+    <Address>Derech Hapark 20</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38879</StationId>
+    <Coordinates>
+      <Latitude>31.865457</Latitude>
+      <Longitude>34.859437</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>The fig / vine</Name>
+    <Address>Hateena</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38880</StationId>
+    <Coordinates>
+      <Latitude>31.866772</Latitude>
+      <Longitude>34.864555</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>The fig / oak</Name>
+    <Address>Hateena</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38881</StationId>
+    <Coordinates>
+      <Latitude>31.809325</Latitude>
+      <Longitude>34.784347</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>Through the Flowers / Jasmine</Name>
+    <Address>Derech Haprachim 46</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38883</StationId>
+    <Coordinates>
+      <Latitude>31.80037</Latitude>
+      <Longitude>34.778239</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>Yitzhak Rabin / Pinchas Sapir</Name>
+    <Address>Derech Yitschak Rabin</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38884</StationId>
+    <Coordinates>
+      <Latitude>31.799224</Latitude>
+      <Longitude>34.782985</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>Menachem Begin / Yitzhak Rabin</Name>
+    <Address>Sderot Menachem Begin 4</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38885</StationId>
+    <Coordinates>
+      <Latitude>31.800334</Latitude>
+      <Longitude>34.785069</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>Haim Herzog / Dolev</Name>
+    <Address>Haim Hertzog 12</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38886</StationId>
+    <Coordinates>
+      <Latitude>31.802319</Latitude>
+      <Longitude>34.786735</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>Shades / Cedar School</Name>
+    <Address>Erez 2</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38887</StationId>
+    <Coordinates>
+      <Latitude>31.804595</Latitude>
+      <Longitude>34.786623</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>Through the trees / oak</Name>
+    <Address>Derech Hailanot 13</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38888</StationId>
+    <Coordinates>
+      <Latitude>31.805041</Latitude>
+      <Longitude>34.785098</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>Through the Trees / Menachem Begin</Name>
+    <Address>Haatsmaout 1</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38889</StationId>
+    <Coordinates>
+      <Latitude>31.816751</Latitude>
+      <Longitude>34.782252</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>Independence / Weizmann</Name>
+    <Address>Veitzman 19</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38890</StationId>
+    <Coordinates>
+      <Latitude>31.816579</Latitude>
+      <Longitude>34.779753</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>Weizmann / The Magic Rug</Name>
+    <Address>Tzaala 25</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38891</StationId>
+    <Coordinates>
+      <Latitude>31.801182</Latitude>
+      <Longitude>34.787199</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>Tzala / Coral</Name>
+    <Address>Tzaala 15</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38833</StationId>
+    <Coordinates>
+      <Latitude>31.981094896279131</Latitude>
+      <Longitude>34.766577389648475</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ellipsoid</AltitudeReference>
+    </Coordinates>
+    <Name>The surge / fishermen</Name>
+    <Address>Hanarshol 30</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+</ArrayOfStation>
