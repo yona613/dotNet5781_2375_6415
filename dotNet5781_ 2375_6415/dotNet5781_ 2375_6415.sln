@@ -36,9 +36,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PL.WPF", "PL.WPF\PL.WPF.csp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{74C806F2-07BD-4EEB-A78F-45F8D2348D82}"
 	ProjectSection(SolutionItems) = preProject
+		bin\Xml\Bus.xml = bin\Xml\Bus.xml
+		bin\Xml\BusLines.xml = bin\Xml\BusLines.xml
 		config.xml = config.xml
+		bin\Xml\LineDeparting.xml = bin\Xml\LineDeparting.xml
+		bin\Xml\LineStation.xml = bin\Xml\LineStation.xml
 		..\..\..\..\..\Program Files (x86)\Bing Maps WPF Control\V1\Libraries\Microsoft.Maps.MapControl.WPF.dll = ..\..\..\..\..\Program Files (x86)\Bing Maps WPF Control\V1\Libraries\Microsoft.Maps.MapControl.WPF.dll
+		bin\Xml\PairStations.xml = bin\Xml\PairStations.xml
+		bin\Xml\Station.xml = bin\Xml\Station.xml
+		bin\Xml\User.xml = bin\Xml\User.xml
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DalXml", "DalXml\DalXml.csproj", "{6E0DA637-DF20-4C00-9A90-9CDCB7741459}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -86,6 +95,10 @@ Global
 		{AFD90C81-9C51-4E0D-A930-21BC7202EB01}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AFD90C81-9C51-4E0D-A930-21BC7202EB01}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AFD90C81-9C51-4E0D-A930-21BC7202EB01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E0DA637-DF20-4C00-9A90-9CDCB7741459}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E0DA637-DF20-4C00-9A90-9CDCB7741459}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E0DA637-DF20-4C00-9A90-9CDCB7741459}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E0DA637-DF20-4C00-9A90-9CDCB7741459}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -96,6 +109,7 @@ Global
 		{1B3FE257-9E46-4C59-8373-322970A8492B} = {A275DFA9-76B8-45F4-B926-58E68E1EB301}
 		{D315E51F-35EB-4232-8CC7-21D801AFFBC3} = {C46F31EA-2B4B-4CBA-8E08-849FD4D398BF}
 		{AFD90C81-9C51-4E0D-A930-21BC7202EB01} = {FB9C97CF-B599-4292-9724-162ED409BC52}
+		{6E0DA637-DF20-4C00-9A90-9CDCB7741459} = {A275DFA9-76B8-45F4-B926-58E68E1EB301}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BDC685EC-6C7E-407D-A559-2A7715979954}

@@ -1,31 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DalApi;
 using DO;
-using DS;
-
+using DalApi;
 
 namespace DL
 {
-    sealed class DalObject : IDL
+    sealed class DalXml : IDL
     {
         #region singelton
-        static readonly DalObject instance = new DalObject();
-        static DalObject() { }// static ctor to ensure instance init is done just before first usage
-        DalObject() { } // default => private
-        public static DalObject Instance { get => instance; }// The public Instance property to use
+        static readonly DalXml instance = new DalXml();
+        static DalXml() { }// static ctor to ensure instance init is done just before first usage
+        DalXml() { } // default => private
+        public static DalXml Instance { get => instance; }// The public Instance property to use
         #endregion
 
         #region Bus
         public IEnumerable<Bus> GetAllBuseBy(Predicate<Bus> predicate)
         {
-            IEnumerable<Bus> allBuses = from Bus in DataSource.busList
-                                        where Bus.MyActivity == Activity.On
-                                        where predicate(Bus)
-                                        select Bus.Clone();
+            IEnumerable<Bus> allBuses = from bus in XMLTools.LoadListFromXMLSerializer<Bus>(@"~bin\Xml\Bus.xml")
+                                        where bus.MyActivity == Activity.On
+                                        where predicate(bus)
+                                        select bus.Clone();
             if (allBuses != null)
             {
                 return allBuses;
@@ -35,14 +34,14 @@ namespace DL
 
         public IEnumerable<Bus> GetAllBuses()
         {
-            return from Bus in DataSource.busList
+            return from Bus in XMLTools.LoadListFromXMLSerializer<Bus>(@"~bin\Xml\Bus.xml")
                    where Bus.MyActivity == Activity.On
                    select Bus.Clone();
         }
 
         public Bus GetBus(int license)
         {
-            Bus tmpBus = DataSource.busList.Find(bus => bus.License == license && bus.MyActivity == Activity.On);
+            Bus tmpBus = XMLTools.LoadListFromXMLSerializer<Bus>(@"~bin\Xml\Bus.xml").Find(bus => bus.License == license && bus.MyActivity == Activity.On);
             if (tmpBus != null)
             {
                 return tmpBus.Clone();
@@ -52,14 +51,14 @@ namespace DL
 
         public void AddBus(Bus myBus)
         {
-            if (DataSource.busList.FirstOrDefault(bus => bus.License == myBus.License && bus.MyActivity == Activity.On) != null)
+            if (XMLTools.LoadListFromXMLSerializer<Bus>(@"~bin\Xml\Bus.xml").FirstOrDefault(bus => bus.License == myBus.License && bus.MyActivity == Activity.On) != null)
                 throw new BadBusException("Bus already exist", myBus.License);
-            DataSource.busList.Add(myBus.Clone());
+            XMLTools.LoadListFromXMLSerializer<Bus>(@"~bin\Xml\Bus.xml").Add(myBus.Clone());
         }
 
         public void UpdateBus(Bus busToUpdate)
         {
-            Bus tmpBus = DataSource.busList.FirstOrDefault(bus => bus.License == busToUpdate.License && bus.MyActivity == Activity.On);
+            Bus tmpBus = XMLTools.LoadListFromXMLSerializer<Bus>(@"~bin\Xml\Bus.xml").FirstOrDefault(bus => bus.License == busToUpdate.License && bus.MyActivity == Activity.On);
             if (tmpBus == null)
                 throw new BadBusException("Bus doesn't exist", busToUpdate.License);
             DeleteBus(tmpBus.License);
@@ -68,7 +67,7 @@ namespace DL
 
         public void DeleteBus(int license)
         {
-            Bus tmpBus = DataSource.busList.FirstOrDefault(bus => bus.License == license && bus.MyActivity == Activity.On);
+            Bus tmpBus = XMLTools.LoadListFromXMLSerializer<Bus>(@"~bin\Xml\Bus.xml").FirstOrDefault(bus => bus.License == license && bus.MyActivity == Activity.On);
             if (tmpBus == null)
                 throw new BadBusException("Bus doesn't exist", license);
             tmpBus.MyActivity = Activity.Off;
@@ -86,9 +85,9 @@ namespace DL
         public IEnumerable<BusLine> GetAllBusLinesBy(Predicate<BusLine> predicate)
         {
             IEnumerable<BusLine> myLineList = from busLine in DataSource.lineList
-                                             where predicate(busLine)
+                                              where predicate(busLine)
                                               where busLine.MyActivity == Activity.On
-                                             select busLine.Clone();
+                                              select busLine.Clone();
             if (myLineList != null)
                 return myLineList;
             throw new ReadDataException("No Line meets the conditions");
@@ -158,7 +157,7 @@ namespace DL
 
         public void AddStation(Station tmpStation)
         {
-            if (DataSource.stationList.FirstOrDefault(station =>station.StationId == tmpStation.StationId && station.MyActivity == Activity.On) != null)
+            if (DataSource.stationList.FirstOrDefault(station => station.StationId == tmpStation.StationId && station.MyActivity == Activity.On) != null)
                 throw new BadStationException("Station already exist", tmpStation.StationId);
             DataSource.stationList.Add(tmpStation.Clone());
         }
@@ -186,7 +185,7 @@ namespace DL
                                         where user.MyActivity == Activity.On
                                         where predicate(user)
                                         select user.Clone();
-            if(myUsers == null)
+            if (myUsers == null)
                 throw new ReadDataException("No User meets the conditions");
             return myUsers;
         }
@@ -205,7 +204,7 @@ namespace DL
             if (tmpUser == null)
                 throw new BadUserException("User doesn't exist", userToUpdate.UserName);
             DeleteUser(tmpUser.UserName);
-            AddUser(userToUpdate);            
+            AddUser(userToUpdate);
         }
 
         public void AddUser(User tmpUser)
@@ -245,22 +244,23 @@ namespace DL
         public LineStation GetLineStation(int stationNumber, int lineNumber)
         {
             LineStation myLineStation = DataSource.linestationList.FirstOrDefault(
-                station =>station.LineNumber == lineNumber && station.StationNumber == stationNumber && station.MyActivity==Activity.On);
+                station => station.LineNumber == lineNumber && station.StationNumber == stationNumber && station.MyActivity == Activity.On);
             if (myLineStation != null)
                 return myLineStation.Clone();
-            throw new BadLineStationException("Line Station doesn't exist", lineNumber,stationNumber);
+            throw new BadLineStationException("Line Station doesn't exist", lineNumber, stationNumber);
         }
 
         public void AddLineStation(LineStation tmpLineStation)
-        { LineStation tmp = DataSource.linestationList.FirstOrDefault(station => station.LineNumber == tmpLineStation.LineNumber && station.StationNumber == tmpLineStation.StationNumber && station.MyActivity == Activity.On);
-            if ( tmp == null)
+        {
+            LineStation tmp = DataSource.linestationList.FirstOrDefault(station => station.LineNumber == tmpLineStation.LineNumber && station.StationNumber == tmpLineStation.StationNumber && station.MyActivity == Activity.On);
+            if (tmp == null)
                 DataSource.linestationList.Add(tmpLineStation.Clone());
             else throw new BadLineStationException("Line Station already exist", tmpLineStation.LineNumber, tmpLineStation.StationNumber);
         }
 
         public void DeleteLineStation(int stationNumber, int lineNumber)
         {
-            LineStation tmpLineStation = DataSource.linestationList.FirstOrDefault(station => station.LineNumber == lineNumber && station.StationNumber == stationNumber && station.MyActivity == Activity.On) ;
+            LineStation tmpLineStation = DataSource.linestationList.FirstOrDefault(station => station.LineNumber == lineNumber && station.StationNumber == stationNumber && station.MyActivity == Activity.On);
             if (tmpLineStation != null)
                 tmpLineStation.MyActivity = Activity.Off;
             else throw new BadLineStationException("Line Station doesn't exist", lineNumber, stationNumber);
@@ -269,7 +269,7 @@ namespace DL
 
         public void UpdateLineStation(LineStation lineStationToUpdate)
         {
-            LineStation tmpLineStation = DataSource.linestationList.FirstOrDefault(station => station.LineNumber == lineStationToUpdate.LineNumber && station.StationNumber == lineStationToUpdate.StationNumber && station.MyActivity==Activity.On);
+            LineStation tmpLineStation = DataSource.linestationList.FirstOrDefault(station => station.LineNumber == lineStationToUpdate.LineNumber && station.StationNumber == lineStationToUpdate.StationNumber && station.MyActivity == Activity.On);
             if (tmpLineStation == null)
                 throw new BadLineStationException("Line Station doesn't exist", lineStationToUpdate.LineNumber, lineStationToUpdate.StationNumber);
             DeleteLineStation(tmpLineStation.StationNumber, tmpLineStation.LineNumber);
@@ -312,7 +312,7 @@ namespace DL
                 BusInTravel myBusInTravel = tmpBusInTravel.Clone();
                 myBusInTravel.Key = Config.BusInTravelCounter;
                 DataSource.busInTravelList.Add(myBusInTravel);
-            }        
+            }
             throw new BadBusInTravelException("Bus In Travel already exist", tmpBusInTravel.License, tmpBusInTravel.Line, tmpBusInTravel.DepartureTime);
         }
 
@@ -337,7 +337,7 @@ namespace DL
         #region LineDeparting
         public IEnumerable<LineDeparting> GetAllLineDeparting()
         {
-            
+
             return from lineDeparting in DataSource.lineDepartingList
                    where lineDeparting.MyActivity == Activity.On
                    select lineDeparting.Clone();
@@ -368,7 +368,7 @@ namespace DL
                 (lineDeparting => lineDeparting.LineNumber == tmpLineDeparting.LineNumber && lineDeparting.StartTime == tmpLineDeparting.StartTime && lineDeparting.MyActivity == Activity.On);
             if (line != null)
                 throw new BadLineDepartingException("Line Departing already exists", tmpLineDeparting.LineNumber, tmpLineDeparting.StartTime);
-            DataSource.lineDepartingList.Add(tmpLineDeparting.Clone());           
+            DataSource.lineDepartingList.Add(tmpLineDeparting.Clone());
         }
 
         public void DeleteLineDeparting(int lineNumber, TimeSpan startTime)
@@ -378,7 +378,7 @@ namespace DL
             if (line == null)
                 throw new BadLineDepartingException("LineDeparture doesn't exist", lineNumber, startTime);
             line.MyActivity = Activity.Off;
-            
+
         }
 
         public void UpdateLineDeparting(LineDeparting lineDepartingToUpdate)
@@ -426,7 +426,7 @@ namespace DL
             if (pair != null)
                 throw new BadPairStationException("Pair Station already exist", tmpPairStations.FirstStationNumber, tmpPairStations.LastStationNumber);
             DataSource.PairStationList.Add(tmpPairStations.Clone());
-           
+
         }
 
         public void DeletePairStations(int firstStation, int secondStation)
@@ -436,7 +436,7 @@ namespace DL
             if (pair == null)
                 throw new BadPairStationException("Pair Station doesn't exist", firstStation, secondStation);
             pair.MyActivity = Activity.Off;
-            
+
         }
 
         public void UpdatePairStations(PairStations pairStationsToUpdate)
