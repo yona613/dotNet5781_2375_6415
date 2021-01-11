@@ -187,17 +187,35 @@ namespace DL
         #region User
         public IEnumerable<User> GetAllUsers()
         {
-            return from user in XMLTools.LoadListFromXMLSerializer<User>(@"User.xml")
+            var userXel = XMLTools.LoadListFromXMLElement(@"User.xml");
+            return from user in userXel.Elements()
+                   where user.Element("MyActivity").Value == "On"
+                   select new User()
+                   {
+                       UserName = user.Element("UserName").Value,
+                       Password = user.Element("Password").Value,
+                       MyActivity = (Activity)Enum.Parse(typeof(Activity), user.Element("MyActivity").Value, true),
+                       Permission = (Permit)Enum.Parse(typeof(Permit), user.Element("Permission").Value, true)
+                   };
+            /*return from user in XMLTools.LoadListFromXMLSerializer<User>(@"User.xml")
                    where user.MyActivity == Activity.On
-                   select user.Clone();
+                   select user.Clone();*/
         }
 
         public IEnumerable<User> GetAllUsersBy(Predicate<User> predicate)
         {
-            IEnumerable<User> myUsers = from user in XMLTools.LoadListFromXMLSerializer<User>(@"User.xml")
-                                        where user.MyActivity == Activity.On
-                                        where predicate(user)
-                                        select user.Clone();
+            var userXel = XMLTools.LoadListFromXMLElement(@"User.xml");
+            IEnumerable<User> myUsers = from user in userXel.Elements()
+                                        where user.Element("MyActivity").Value == "On"
+                                        let tmpUser = new User()
+                                        {
+                                            UserName = user.Element("UserName").Value,
+                                            Password = user.Element("Password").Value,
+                                            MyActivity = (Activity)Enum.Parse(typeof(Activity), user.Element("MyActivity").Value, true),
+                                            Permission = (Permit)Enum.Parse(typeof(Permit), user.Element("Permission").Value, true)
+                                        }
+                                        where predicate(tmpUser)
+                                        select tmpUser;
             if (myUsers == null)
                 throw new ReadDataException("No User meets the conditions");
             return myUsers;
@@ -205,15 +223,36 @@ namespace DL
 
         public User GetUser(string userName)
         {
-            User myUser = XMLTools.LoadListFromXMLSerializer<User>(@"User.xml").FirstOrDefault(user => user.UserName == userName && user.MyActivity == Activity.On);
+            var userXel = XMLTools.LoadListFromXMLElement(@"User.xml");
+            User myUser = (from user in userXel.Elements()
+                          where user.Element("MyActivity").Value == "On"
+                          where user.Element("UserName").Value == userName
+                          select new User()
+                          {
+                              UserName = user.Element("UserName").Value,
+                              Password = user.Element("Password").Value,
+                              MyActivity = (Activity)Enum.Parse(typeof(Activity),user.Element("MyActivity").Value, true),
+                              Permission = (Permit)Enum.Parse(typeof(Permit), user.Element("Permission").Value, true)
+                          }).FirstOrDefault();
+            /*User myUser = XMLTools.LoadListFromXMLSerializer<User>(@"User.xml").FirstOrDefault(user => user.UserName == userName && user.MyActivity == Activity.On);*/
             if (myUser != null)
-                return myUser.Clone();
+                return myUser;
             throw new BadUserException("User doesn't exist", userName);
         }
 
         public void UpdateUser(User userToUpdate)
         {
-            User tmpUser = XMLTools.LoadListFromXMLSerializer<User>(@"User.xml").FirstOrDefault(user => user.UserName == userToUpdate.UserName && user.MyActivity == Activity.On);
+            var userXel = XMLTools.LoadListFromXMLElement(@"User.xml");
+            User tmpUser = (from user in userXel.Elements()
+                           where user.Element("MyActivity").Value == "On"
+                           where user.Element("UserName").Value == userToUpdate.UserName
+                           select new User()
+                           {
+                               UserName = user.Element("UserName").Value,
+                               Password = user.Element("Password").Value,
+                               MyActivity = (Activity)Enum.Parse(typeof(Activity), user.Element("MyActivity").Value, true),
+                               Permission = (Permit)Enum.Parse(typeof(Permit), user.Element("Permission").Value, true)
+                           }).FirstOrDefault();
             if (tmpUser == null)
                 throw new BadUserException("User doesn't exist", userToUpdate.UserName);
             DeleteUser(tmpUser.UserName);
@@ -222,21 +261,40 @@ namespace DL
 
         public void AddUser(User tmpUser)
         {
-            var userList = XMLTools.LoadListFromXMLSerializer<User>(@"User.xml");
-            if (userList.FirstOrDefault(user => user.UserName == tmpUser.UserName && user.MyActivity == Activity.On) != null)
+            var userXel = XMLTools.LoadListFromXMLElement(@"User.xml");
+            User userTmp = (from user in userXel.Elements()
+                            where user.Element("MyActivity").Value == "On"
+                            where user.Element("UserName").Value == tmpUser.UserName
+                            select new User()
+                            {
+                                UserName = user.Element("UserName").Value,
+                                Password = user.Element("Password").Value,
+                                MyActivity = (Activity)Enum.Parse(typeof(Activity), user.Element("MyActivity").Value, true),
+                                Permission = (Permit)Enum.Parse(typeof(Permit), user.Element("Permission").Value, true)
+                            }).FirstOrDefault();
+            if (userTmp != null)
                 throw new BadUserException("User already exist", tmpUser.UserName);
-            userList.Add(tmpUser.Clone());
-            XMLTools.SaveListToXMLSerializer<User>(userList, @"User.xml");
+            XElement userToAdd = new XElement("User",
+                new XElement("UserName", tmpUser.UserName),
+                new XElement("Password", tmpUser.Password),
+                new XElement("Permission", tmpUser.Permission),
+                new XElement("MyActivity", tmpUser.MyActivity)
+                );
+            userXel.Add(userToAdd);
+            XMLTools.SaveListToXMLElement(userXel, @"User.xml");
         }
 
         public void DeleteUser(string userName)
         {
-            var userList = XMLTools.LoadListFromXMLSerializer<User>(@"User.xml");
-            User myUser = userList.FirstOrDefault(user => user.UserName == userName && user.MyActivity == Activity.On);
+            var userXel = XMLTools.LoadListFromXMLElement(@"User.xml");
+            XElement myUser = (from user in userXel.Elements()
+                           where user.Element("MyActivity").Value == "On"
+                               where user.Element("UserName").Value == userName
+                           select user).FirstOrDefault();
             if (myUser != null)
             {
-                myUser.MyActivity = Activity.Off;
-                XMLTools.SaveListToXMLSerializer<User>(userList, @"User.xml");
+                myUser.Element("MyActivity").Value = Activity.Off.ToString();
+                XMLTools.SaveListToXMLElement(userXel, @"User.xml");
             }
             else throw new BadUserException("User doesn't exist", userName);
         }
@@ -407,11 +465,13 @@ namespace DL
 
         public void DeleteLineDeparting(int lineNumber, TimeSpan startTime)
         {
-            LineDeparting line = XMLTools.LoadListFromXMLSerializer<LineDeparting>(@"LineDeparting.xml").FirstOrDefault
+            var LineDepartingList = XMLTools.LoadListFromXMLSerializer<LineDeparting>(@"LineDeparting.xml");
+            LineDeparting line = LineDepartingList.FirstOrDefault
                 (lineDeparting => lineDeparting.LineNumber == lineNumber && lineDeparting.StartTime == startTime && lineDeparting.MyActivity == Activity.On);
             if (line == null)
                 throw new BadLineDepartingException("LineDeparture doesn't exist", lineNumber, startTime);
             line.MyActivity = Activity.Off;
+            XMLTools.SaveListToXMLSerializer<LineDeparting>(LineDepartingList, @"LineDeparting.xml");
         }
 
         public void UpdateLineDeparting(LineDeparting lineDepartingToUpdate)

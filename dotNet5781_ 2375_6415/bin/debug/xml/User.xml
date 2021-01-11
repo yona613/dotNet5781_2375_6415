@@ -78,4 +78,10 @@
     <Permission>Admin</Permission>
     <MyActivity>On</MyActivity>
   </User>
+  <User>
+    <UserName>davidkidron</UserName>
+    <Password>kidron</Password>
+    <Permission>Admin</Permission>
+    <MyActivity>On</MyActivity>
+  </User>
 </ArrayOfUser>
