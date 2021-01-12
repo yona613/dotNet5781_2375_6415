@@ -58,7 +58,7 @@
     <Invalid>true</Invalid>
     <Roof>true</Roof>
     <DigitalPanel>true</DigitalPanel>
-    <MyActivity>On</MyActivity>
+    <MyActivity>Off</MyActivity>
   </Station>
   <Station>
     <StationId>38836</StationId>
@@ -88,7 +88,7 @@
     <Invalid>true</Invalid>
     <Roof>true</Roof>
     <DigitalPanel>true</DigitalPanel>
-    <MyActivity>On</MyActivity>
+    <MyActivity>Off</MyActivity>
   </Station>
   <Station>
     <StationId>38838</StationId>
@@ -103,7 +103,7 @@
     <Invalid>true</Invalid>
     <Roof>true</Roof>
     <DigitalPanel>true</DigitalPanel>
-    <MyActivity>On</MyActivity>
+    <MyActivity>Off</MyActivity>
   </Station>
   <Station>
     <StationId>38839</StationId>
@@ -118,7 +118,7 @@
     <Invalid>true</Invalid>
     <Roof>true</Roof>
     <DigitalPanel>true</DigitalPanel>
-    <MyActivity>On</MyActivity>
+    <MyActivity>Off</MyActivity>
   </Station>
   <Station>
     <StationId>38840</StationId>
@@ -133,7 +133,7 @@
     <Invalid>true</Invalid>
     <Roof>true</Roof>
     <DigitalPanel>true</DigitalPanel>
-    <MyActivity>On</MyActivity>
+    <MyActivity>Off</MyActivity>
   </Station>
   <Station>
     <StationId>38841</StationId>
@@ -163,7 +163,7 @@
     <Invalid>true</Invalid>
     <Roof>true</Roof>
     <DigitalPanel>true</DigitalPanel>
-    <MyActivity>On</MyActivity>
+    <MyActivity>Off</MyActivity>
   </Station>
   <Station>
     <StationId>38844</StationId>
@@ -178,7 +178,7 @@
     <Invalid>true</Invalid>
     <Roof>true</Roof>
     <DigitalPanel>true</DigitalPanel>
-    <MyActivity>On</MyActivity>
+    <MyActivity>Off</MyActivity>
   </Station>
   <Station>
     <StationId>38845</StationId>
@@ -193,7 +193,7 @@
     <Invalid>true</Invalid>
     <Roof>true</Roof>
     <DigitalPanel>true</DigitalPanel>
-    <MyActivity>On</MyActivity>
+    <MyActivity>Off</MyActivity>
   </Station>
   <Station>
     <StationId>38846</StationId>
@@ -208,7 +208,7 @@
     <Invalid>true</Invalid>
     <Roof>true</Roof>
     <DigitalPanel>true</DigitalPanel>
-    <MyActivity>On</MyActivity>
+    <MyActivity>Off</MyActivity>
   </Station>
   <Station>
     <StationId>38847</StationId>
@@ -268,7 +268,7 @@
     <Invalid>true</Invalid>
     <Roof>true</Roof>
     <DigitalPanel>true</DigitalPanel>
-    <MyActivity>On</MyActivity>
+    <MyActivity>Off</MyActivity>
   </Station>
   <Station>
     <StationId>38854</StationId>
@@ -283,7 +283,7 @@
     <Invalid>true</Invalid>
     <Roof>true</Roof>
     <DigitalPanel>true</DigitalPanel>
-    <MyActivity>On</MyActivity>
+    <MyActivity>Off</MyActivity>
   </Station>
   <Station>
     <StationId>38855</StationId>
@@ -298,7 +298,7 @@
     <Invalid>true</Invalid>
     <Roof>true</Roof>
     <DigitalPanel>true</DigitalPanel>
-    <MyActivity>On</MyActivity>
+    <MyActivity>Off</MyActivity>
   </Station>
   <Station>
     <StationId>38856</StationId>
@@ -313,7 +313,7 @@
     <Invalid>true</Invalid>
     <Roof>true</Roof>
     <DigitalPanel>true</DigitalPanel>
-    <MyActivity>On</MyActivity>
+    <MyActivity>Off</MyActivity>
   </Station>
   <Station>
     <StationId>38859</StationId>
@@ -373,7 +373,7 @@
     <Invalid>true</Invalid>
     <Roof>true</Roof>
     <DigitalPanel>true</DigitalPanel>
-    <MyActivity>On</MyActivity>
+    <MyActivity>Off</MyActivity>
   </Station>
   <Station>
     <StationId>38863</StationId>

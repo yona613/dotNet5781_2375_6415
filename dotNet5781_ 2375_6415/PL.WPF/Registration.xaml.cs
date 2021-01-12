@@ -50,6 +50,11 @@ namespace PL.WPF
         }
         private void Submit_Click(object sender, RoutedEventArgs e)
         {
+            Submition();
+        }
+
+        private void Submition()
+        {
             if (passwordBox1.Password.Length == 0)
             {
                 errormessage.Text = "Enter password.";
@@ -92,42 +97,7 @@ namespace PL.WPF
         {
             if (e.Key == Key.Enter)
             {
-                if (passwordBox1.Password.Length == 0)
-                {
-                    errormessage.Text = "Enter password.";
-                    passwordBox1.Focus();
-                }
-                else if (passwordBoxConfirm.Password.Length == 0)
-                {
-                    errormessage.Text = "Enter Confirm password.";
-                    passwordBoxConfirm.Focus();
-                }
-                else if (passwordBox1.Password != passwordBoxConfirm.Password)
-                {
-                    errormessage.Text = "Confirm password must be same as password.";
-                    passwordBoxConfirm.Focus();
-                }
-                else
-                {
-                    BO.User user = new BO.User()
-                    {
-                        UserName = textBoxName.Text,
-                        Password = passwordBox1.Password,
-                        Permission = BO.Permit.Admin
-                    };
-                    errormessage.Text = "";
-                    try
-                    {
-                        bl.AddUser(user);
-                        errormessage.Text = "You have Registered successfully.";
-                        Reset();
-                    }
-                    catch (BO.BOBadUserException exception)
-                    {
-                        errormessage.Text = exception.Message;
-                        Reset();
-                    }
-                }
+                Submition();
             }
         }
     }
