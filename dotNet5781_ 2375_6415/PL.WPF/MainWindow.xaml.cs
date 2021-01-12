@@ -38,7 +38,7 @@ namespace PL.WPF
             //busChB.IsChecked = false;
             //stationChB.IsChecked = false;
             //ListLB.DataContext = linesList;
-            MainListBox.IsEnabled = false;
+            //MainListBox.IsEnabled = false;
             stationDataGrid.Visibility = Visibility.Hidden;
             busDataGrid.Visibility = Visibility.Hidden;
             lineDataGrid.Visibility = Visibility.Visible;
@@ -67,8 +67,8 @@ namespace PL.WPF
             stationDataGrid.Visibility = Visibility.Hidden;
             busDataGrid.Visibility = Visibility.Visible;
             busDataGrid.ItemsSource = busList;
-            MainListBox.DataContext = busList;
-            MainListBox.ItemTemplate = (DataTemplate)this.Resources["ListBuses"];
+            //MainListBox.DataContext = busList;
+            //MainListBox.ItemTemplate = (DataTemplate)this.Resources["ListBuses"];
             AddBtn.IsEnabled = true;
             BtnTblock.Text = "Add new Bus";
         }
