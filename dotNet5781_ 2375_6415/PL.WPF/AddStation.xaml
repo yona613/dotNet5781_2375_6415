@@ -6,7 +6,7 @@
         xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
         xmlns:local="clr-namespace:PL.WPF"
         mc:Ignorable="d"
-        Title="UpdateStation" Height="450" Width="800">
+        Title="AddStation" Height="450" Width="800">
     <Grid Name="mainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
@@ -109,7 +109,7 @@
                 <CheckBox Content="Roof"
                           IsChecked="{Binding Path=Roof}"
                           Grid.Row="0"
-                          HorizontalAlignment="Stretch"                          
+                          HorizontalAlignment="Center"                          
                           VerticalAlignment="Stretch"
                           VerticalContentAlignment="Center"
                           HorizontalContentAlignment="Center"
@@ -118,7 +118,7 @@
                 <CheckBox Content="Invalid" 
                           IsChecked="{Binding Path=Invalid}"
                           Grid.Row="1"
-                          HorizontalAlignment="Stretch"                          
+                          HorizontalAlignment="Center"                          
                           VerticalAlignment="Stretch"
                           VerticalContentAlignment="Center"
                           HorizontalContentAlignment="Center"
@@ -127,7 +127,7 @@
                 <CheckBox Content="Digital Panel" 
                           IsChecked="{Binding Path=DigitalPanel}" 
                           Grid.Row="2"
-                          HorizontalAlignment="Stretch"                          
+                          HorizontalAlignment="Center"                          
                           VerticalAlignment="Stretch"
                           VerticalContentAlignment="Center"
                           HorizontalContentAlignment="Center"

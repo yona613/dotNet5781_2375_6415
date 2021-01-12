@@ -1406,7 +1406,7 @@ namespace BL
             var stationToShow = (StationToShow)dal.GetStation(stationNumber).CopyPropertiesToNew(typeof(StationToShow));
             stationToShow.Lines = from station in GetAllLineStationsBy(x => x.StationNumber == stationNumber)
                                   orderby station.LineNumber
-                                  let line = "Line : " + station.LineNumber + "  --->  "
+                                  let line = station.LineNumber + "  --->  "
                                   let lastStation = GetBusLine(station.LineNumber).LastStation
                                   let name = GetStation(lastStation).Name
                                   select line + name;

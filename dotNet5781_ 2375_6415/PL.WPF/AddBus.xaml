@@ -47,7 +47,7 @@
                       Grid.Column="0"
                       Grid.Row="1"
                       IsEditable="True" IsReadOnly="True"
-                      Text="Please Select"
+                      Text="Select Brand"
                       HorizontalAlignment="Stretch"
                       VerticalAlignment="Stretch" 
                       Width="180"
@@ -61,7 +61,7 @@
             <CheckBox Name="AcCbb"
                       Content="Air Conditionning" 
                       Grid.Column="1" 
-                      HorizontalAlignment="Stretch" 
+                      HorizontalAlignment="Center" 
                       VerticalAlignment="Stretch" 
                       VerticalContentAlignment="Center"
                       HorizontalContentAlignment="Center"
@@ -157,9 +157,11 @@
                 Content="Submit" 
                 Grid.Column="1" 
                 Grid.Row="2"
-                HorizontalAlignment="Stretch"
+                HorizontalAlignment="Center"
                 VerticalAlignment="Stretch"
                 Click="ApplyBtn_Click"
+                Height="80"
+                Width="100"
                 />
     </Grid>
 </Window>

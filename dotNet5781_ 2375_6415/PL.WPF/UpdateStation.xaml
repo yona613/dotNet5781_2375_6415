@@ -31,7 +31,7 @@
                    VerticalAlignment="Stretch"
                    VerticalContentAlignment="Center"
                    HorizontalContentAlignment="Left" 
-                   FontSize="28" FlowDirection="RightToLeft"
+                   FontSize="28"
                    />
         </Grid>
         <Grid Grid.Row="1">
