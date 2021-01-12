@@ -31,7 +31,7 @@
                    VerticalAlignment="Stretch"
                    VerticalContentAlignment="Center"
                    HorizontalContentAlignment="Left" 
-                   FontSize="28"
+                   FontSize="28" FlowDirection="RightToLeft"
                    />
         </Grid>
         <Grid Grid.Row="1">
@@ -71,7 +71,7 @@
                              HorizontalAlignment="Stretch"
                              TextWrapping="WrapWithOverflow"
                              Text="{Binding Path=Name}" 
-                             VerticalAlignment="Stretch"
+                             VerticalAlignment="Center"
                              FontSize="24"
                              />
                 </Grid>
@@ -94,7 +94,7 @@
                              HorizontalAlignment="Stretch"
                              TextWrapping="WrapWithOverflow"
                              Text="{Binding Path=Address}" 
-                             VerticalAlignment="Stretch"
+                             VerticalAlignment="Center"
                              FontSize="24"
                              />
                 </Grid>
@@ -108,7 +108,7 @@
                 <CheckBox Content="Roof"
                           IsChecked="{Binding Path=Roof}"
                           Grid.Row="0"
-                          HorizontalAlignment="Stretch"                          
+                          HorizontalAlignment="Center"                          
                           VerticalAlignment="Stretch"
                           VerticalContentAlignment="Center"
                           HorizontalContentAlignment="Center"
@@ -117,7 +117,7 @@
                 <CheckBox Content="Invalid" 
                           IsChecked="{Binding Path=Invalid}"
                           Grid.Row="1"
-                          HorizontalAlignment="Stretch"                          
+                          HorizontalAlignment="Center"                          
                           VerticalAlignment="Stretch"
                           VerticalContentAlignment="Center"
                           HorizontalContentAlignment="Center"
@@ -126,7 +126,7 @@
                 <CheckBox Content="Digital Panel" 
                           IsChecked="{Binding Path=DigitalPanel}" 
                           Grid.Row="2"
-                          HorizontalAlignment="Stretch"                          
+                          HorizontalAlignment="Center"                          
                           VerticalAlignment="Stretch"
                           VerticalContentAlignment="Center"
                           HorizontalContentAlignment="Center"
@@ -140,6 +140,8 @@
                 VerticalAlignment="Stretch" 
                 FontSize="36"
                 Click="Button_Click"
+                Height="Auto"
+                
                 />
     </Grid>
 </Window>

@@ -11,14 +11,15 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="2*"/>
             <RowDefinition Height="3*"/>
-            <RowDefinition Height="5*"/>
+            <RowDefinition Height="3*"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Column="0" Grid.Row="1">
+        <Grid Grid.Column="0" Grid.Row="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="198*"/>
+                <ColumnDefinition Width="49*"/>
+                <ColumnDefinition Width="150*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
@@ -40,7 +41,7 @@
                  VerticalAlignment="Stretch" 
                      VerticalContentAlignment="Center"
                      HorizontalContentAlignment="Center"
-                 PreviewTextInput="_PreviewTextInput"
+                 PreviewTextInput="_PreviewTextInput" Grid.ColumnSpan="2" Margin="0,10"
                      />
             <ComboBox Name="brandCbb" 
                       Grid.Column="0"
@@ -55,7 +56,7 @@
                       HorizontalContentAlignment="Center"
                       ItemsSource="{Binding}" 
                       SelectedIndex="-1" 
-                      FontSize="18"
+                      FontSize="18" Margin="9,15"
                 />
             <CheckBox Name="AcCbb"
                       Content="Air Conditionning" 
@@ -65,10 +66,9 @@
                       VerticalContentAlignment="Center"
                       HorizontalContentAlignment="Center"
                       FontSize="20" 
-                      Grid.Row="1"
+                      Grid.Row="1" Grid.ColumnSpan="2"
                       />
         </Grid>
-
         <Label Name="KmLB"
                Content="Enter the Kilometrage :" 
                HorizontalAlignment="Center" 
@@ -76,7 +76,7 @@
                HorizontalContentAlignment="Center"
                VerticalAlignment="Top" 
                Grid.Column="1"
-               Grid.Row="1"
+               Grid.Row="0"
                Height="73" 
                Width="314"
                IsEnabled="false"
@@ -84,7 +84,7 @@
                />
         <TextBox Name="GetKmTxb" 
                  Grid.Column="1"
-                 Grid.Row="1"
+                 Grid.Row="0"
                  Text="{Binding Path=Kilometrage}"
                  HorizontalAlignment="Center" 
                  Height="50" 
@@ -101,25 +101,27 @@
                   Height="30"
                   Width="300"
                   HorizontalAlignment="Center"
-                  VerticalAlignment="Bottom" 
+                  VerticalAlignment="Center" 
                   Unchecked="OldBusCB_Unchecked"
-                  Checked="CheckBox_Checked" Margin="45,0,51,10"
-        />
+                  Checked="CheckBox_Checked"
+                  FontSize="20"
+                  />
         <Grid Name="LicenseGrid"
-              Grid.Row="2"
+              Grid.Row="1"
               Grid.Column="0"
-              IsEnabled="false"
-              
+              IsEnabled="false"              
               >
-            <Grid.RowDefinitions>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="5*"/>
-            </Grid.RowDefinitions>
-            <Calendar Name="OldBusSD" 
-                  HorizontalAlignment="Stretch"
-                  VerticalAlignment="Bottom"
-                  SelectedDate="{Binding Path=StartDate, Mode=OneWayToSource}"
-                  Grid.Row="1" 
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <DatePicker Style="{StaticResource MaterialDesignDatePicker}"
+                        IsTodayHighlighted="True"
+                        Name="OldBusSD" 
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        SelectedDate="{Binding Path=StartDate, Mode=OneWayToSource}"
+                        Grid.Column="1" 
                   />
             <Label Content="Choose Date of Licensing :" 
                    HorizontalContentAlignment="Center"
@@ -129,20 +131,20 @@
                    Width="200"/>
         </Grid>
         <Grid Name="TestGrid"
-              Grid.Row="2"
+              Grid.Row="1"
               Grid.Column="1"
-              IsEnabled="False"
-             
+              IsEnabled="False"           
               >
-            <Grid.RowDefinitions>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="5*"/>
-            </Grid.RowDefinitions>
-            <Calendar Name="OldBusTD" 
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <DatePicker
+                  Name="OldBusTD" 
                   HorizontalAlignment="Stretch"
-                  VerticalAlignment="Bottom"
-                      SelectedDate="{Binding Path=TestDate, Mode=OneWayToSource}"
-                  Grid.Row="1" 
+                  VerticalAlignment="Center"
+                  SelectedDate="{Binding Path=TestDate, Mode=OneWayToSource}"
+                  Grid.Column="1" 
                   />
             <Label Content="Choose Date of latest Test :" 
                    HorizontalContentAlignment="Center"
@@ -154,6 +156,7 @@
         <Button Name="ApplyBtn"
                 Content="Submit" 
                 Grid.Column="1" 
+                Grid.Row="2"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
                 Click="ApplyBtn_Click"

@@ -33,7 +33,7 @@
                      Grid.Row="0"
                      Grid.Column="1"
                      Text="{Binding Path=Distance, Mode=TwoWay, FallbackValue= 00.0000}"
-                     VerticalAlignment="Stretch"
+                     VerticalAlignment="Center"
                      HorizontalAlignment="Stretch"
                      VerticalContentAlignment="Center"
                      HorizontalContentAlignment="Center"
@@ -42,7 +42,7 @@
             <Label Content="Time :"
                    Grid.Row="1"
                    Grid.Column="0"
-                   VerticalAlignment="Stretch"
+                   VerticalAlignment="Center"
                    HorizontalAlignment="Stretch"
                    VerticalContentAlignment="Center"
                    HorizontalContentAlignment="center" 
@@ -52,7 +52,7 @@
                      Grid.Row="1"
                      Grid.Column="1"
                      Text="{Binding Path=Time, Mode=TwoWay, StringFormat=hh\\:mm\\:ss, FallbackValue='00:00:00'}"
-                     VerticalAlignment="Stretch"
+                     VerticalAlignment="Center"
                      HorizontalAlignment="Stretch"
                      VerticalContentAlignment="Center"
                      HorizontalContentAlignment="Center"
@@ -68,6 +68,8 @@
                 HorizontalContentAlignment="Center"
                 FontSize="30"
                 Click="submitBtn_Click"
+                Height="Auto"
+                Width="Auto"
                 />
     </Grid>
 </Window>

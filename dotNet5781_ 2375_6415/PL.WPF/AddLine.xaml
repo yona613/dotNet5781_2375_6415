@@ -81,7 +81,7 @@
                      HorizontalContentAlignment="Center"
                      TextWrapping="Wrap" 
                      Text="{Binding Path=LineNumber, Mode=TwoWay}" 
-                     VerticalAlignment="Stretch"
+                     VerticalAlignment="Center"
                      PreviewTextInput="_PreviewTextInput"
                      />
             <ComboBox Name="areaCboBox"

@@ -30,6 +30,7 @@ namespace PL.WPF
             myStation = new BO.Station();
             myStation.Coordinates = new Location() { Longitude = 35.203165854 , Latitude = 31.772663576 };
             mainGrid.DataContext = myStation;
+            myMap.Center = myStation.Coordinates;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
