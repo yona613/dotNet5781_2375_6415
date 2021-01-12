@@ -80,4 +80,20 @@
     <LastStation>38877</LastStation>
     <MyActivity>On</MyActivity>
   </BusLine>
+  <BusLine>
+    <Key>1</Key>
+    <LineNumber>4</LineNumber>
+    <LineArea>Center</LineArea>
+    <FirstStation>38832</FirstStation>
+    <LastStation>38854</LastStation>
+    <MyActivity>Off</MyActivity>
+  </BusLine>
+  <BusLine>
+    <Key>2</Key>
+    <LineNumber>4</LineNumber>
+    <LineArea>Center</LineArea>
+    <FirstStation>38832</FirstStation>
+    <LastStation>38854</LastStation>
+    <MyActivity>On</MyActivity>
+  </BusLine>
 </ArrayOfBusLine>

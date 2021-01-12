@@ -259,4 +259,18 @@
     <Time>PT23M29S</Time>
     <MyActivity>On</MyActivity>
   </PairStations>
+  <PairStations>
+    <FirstStationNumber>38832</FirstStationNumber>
+    <LastStationNumber>38841</LastStationNumber>
+    <Distance>0.5383689927558305</Distance>
+    <Time>PT48S</Time>
+    <MyActivity>On</MyActivity>
+  </PairStations>
+  <PairStations>
+    <FirstStationNumber>38832</FirstStationNumber>
+    <LastStationNumber>38832</LastStationNumber>
+    <Distance>0</Distance>
+    <Time>PT0S</Time>
+    <MyActivity>On</MyActivity>
+  </PairStations>
 </ArrayOfPairStations>

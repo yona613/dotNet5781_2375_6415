@@ -36,14 +36,16 @@
                  Width="247" />
         <PasswordBox Height="23" 
                      HorizontalAlignment="Left" 
-                     Margin="118,168,0,0" 
+                     Margin="118,176,0,0" 
                      Name="passwordBox1"
                      VerticalAlignment="Top" 
-                     Width="247" />
+                     Width="247" 
+                     KeyDown="passwordBox1_KeyDown"
+                      />
         <Button Content="Login"
                 Height="23" 
                 HorizontalAlignment="Left"
-                Margin="118,211,0,0" 
+                Margin="118,215,0,0" 
                 Name="button1" 
                 VerticalAlignment="Top" 
                 Width="104" 

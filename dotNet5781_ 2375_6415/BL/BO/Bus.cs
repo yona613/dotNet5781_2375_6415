@@ -9,7 +9,6 @@ namespace BO
 {
     public class Bus //: INotifyPropertyChanged
     {
-
         public string LicenseToShow
         {
             get
