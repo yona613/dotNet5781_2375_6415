@@ -73,7 +73,7 @@
     <Invalid>true</Invalid>
     <Roof>true</Roof>
     <DigitalPanel>true</DigitalPanel>
-    <MyActivity>On</MyActivity>
+    <MyActivity>Off</MyActivity>
   </Station>
   <Station>
     <StationId>38837</StationId>

@@ -6,7 +6,7 @@
     <LineArea>Center</LineArea>
     <FirstStation>38831</FirstStation>
     <LastStation>38841</LastStation>
-    <MyActivity>On</MyActivity>
+    <MyActivity>Off</MyActivity>
   </BusLine>
   <BusLine>
     <Key>0</Key>
@@ -14,7 +14,7 @@
     <LineArea>Center</LineArea>
     <FirstStation>38834</FirstStation>
     <LastStation>38845</LastStation>
-    <MyActivity>On</MyActivity>
+    <MyActivity>Off</MyActivity>
   </BusLine>
   <BusLine>
     <Key>0</Key>
@@ -30,7 +30,7 @@
     <LineArea>Center</LineArea>
     <FirstStation>38841</FirstStation>
     <LastStation>38854</LastStation>
-    <MyActivity>On</MyActivity>
+    <MyActivity>Off</MyActivity>
   </BusLine>
   <BusLine>
     <Key>0</Key>
@@ -46,7 +46,7 @@
     <LineArea>Center</LineArea>
     <FirstStation>38848</FirstStation>
     <LastStation>38862</LastStation>
-    <MyActivity>On</MyActivity>
+    <MyActivity>Off</MyActivity>
   </BusLine>
   <BusLine>
     <Key>0</Key>
