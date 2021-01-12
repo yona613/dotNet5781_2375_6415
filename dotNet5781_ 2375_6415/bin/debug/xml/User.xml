@@ -102,4 +102,10 @@
     <Permission>Admin</Permission>
     <MyActivity>On</MyActivity>
   </User>
+  <User>
+    <UserName>yoyo</UserName>
+    <Password>yoyo</Password>
+    <Permission>Admin</Permission>
+    <MyActivity>On</MyActivity>
+  </User>
 </ArrayOfUser>
