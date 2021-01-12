@@ -90,4 +90,16 @@
     <Permission>Admin</Permission>
     <MyActivity>On</MyActivity>
   </User>
+  <User>
+    <UserName>moshe</UserName>
+    <Password>moshe</Password>
+    <Permission>Admin</Permission>
+    <MyActivity>On</MyActivity>
+  </User>
+  <User>
+    <UserName>dodo</UserName>
+    <Password>dodo</Password>
+    <Permission>Admin</Permission>
+    <MyActivity>On</MyActivity>
+  </User>
 </ArrayOfUser>
