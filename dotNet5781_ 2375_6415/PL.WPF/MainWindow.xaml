@@ -12,7 +12,7 @@
         TextOptions.TextRenderingMode="Auto"        
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="MainWindow" Height="450" Width="800" WindowStartupLocation="CenterScreen" WindowState="Maximized">
+        Title="MainWindow" Height="450" Width="800" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <DataTemplate  x:Key="ListLines">
             <Grid>
@@ -119,9 +119,9 @@
     </Window.Resources>
     <Grid Name="mainGrid" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="5*"/>
-            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="99*"/>
+            <ColumnDefinition Width="164*"/>
+            <ColumnDefinition Width="133*"/>
         </Grid.ColumnDefinitions>
         <Grid Name="checkGrid" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Grid.RowDefinitions>
