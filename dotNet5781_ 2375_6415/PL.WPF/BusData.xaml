@@ -7,7 +7,8 @@
         mc:Ignorable="d"
         Title="BusData" 
         Height="450" 
-        Width="800"       
+        Width="800"   
+        WindowStartupLocation="CenterScreen"
         >
     <Grid Name="MainGrid" DataContext="{Binding}">
         <Grid.RowDefinitions>

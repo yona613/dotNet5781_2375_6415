@@ -6,7 +6,7 @@
         xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
         xmlns:local="clr-namespace:PL.WPF"
         mc:Ignorable="d"
-        Title="AddLineStatinoNewLine" Height="450" Width="800">
+        Title="AddLineStatinoNewLine" Height="450" Width="800" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>

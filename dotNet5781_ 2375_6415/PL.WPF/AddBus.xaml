@@ -4,7 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Name = "AddBusWin" Title = "Add a new Bus" Height="450" Width="800">
+        Name = "AddBusWin" Title = "Add a new Bus" Height="450" Width="800" WindowStartupLocation="CenterScreen"
+        >
     <Grid Name="mainGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -160,8 +161,6 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Stretch"
                 Click="ApplyBtn_Click"
-                Height="80"
-                Width="100"
                 />
     </Grid>
 </Window>

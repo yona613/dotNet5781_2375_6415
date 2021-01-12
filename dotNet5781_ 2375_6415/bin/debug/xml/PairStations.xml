@@ -75,7 +75,7 @@
     <LastStationNumber>38844</LastStationNumber>
     <Distance>0.9974506043356236</Distance>
     <Time>PT1M29S</Time>
-    <MyActivity>On</MyActivity>
+    <MyActivity>Off</MyActivity>
   </PairStations>
   <PairStations>
     <FirstStationNumber>38844</FirstStationNumber>
@@ -264,6 +264,13 @@
     <LastStationNumber>38855</LastStationNumber>
     <Distance>36.926805672978894</Distance>
     <Time>PT55M23S</Time>
+    <MyActivity>On</MyActivity>
+  </PairStations>
+  <PairStations>
+    <FirstStationNumber>38842</FirstStationNumber>
+    <LastStationNumber>38844</LastStationNumber>
+    <Distance>0.9974506043356236</Distance>
+    <Time>PT20M29S</Time>
     <MyActivity>On</MyActivity>
   </PairStations>
 </ArrayOfPairStations>
