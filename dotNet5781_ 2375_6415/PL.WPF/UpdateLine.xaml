@@ -15,28 +15,28 @@
                 </Grid.RowDefinitions>
                 <Grid Name="stationDataGrid" Grid.Row="0">
                     <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                <Label Name="sttnNum"
+                    <Label Name="sttnNum"
                        Content="Station Number :"
                        Grid.Column="0"
                    />
-                <Label Grid.Column="1"
+                    <Label Grid.Column="1"
                        Content="{Binding Path=StationId}"
                          />
-                <Label Name="name"
+                    <Label Name="name"
                        Content="Station Name :"
                        Grid.Column="2"/>
-                <Label Grid.Column="3"
+                    <Label Grid.Column="3"
                        Content="{Binding Path=Name}"
                        />
-                <Label Name="index"
+                    <Label Name="index"
                        Content="Index :"
                        Grid.Column="4"
                        />
@@ -158,7 +158,7 @@
                      HorizontalContentAlignment="Center"
                      TextWrapping="Wrap" 
                      Text="{Binding Path=LineNumber, Mode=TwoWay}" 
-                     VerticalAlignment="Stretch" 
+                     VerticalAlignment="Center" 
                      />
             <ComboBox Name="areaCboBox"
                       Grid.Column="3"
@@ -178,7 +178,102 @@
                 <RowDefinition Height="5*"/>
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
-            <ListBox Name="stationsList" 
+            <DataGrid Grid.Column="0"  
+                          Name="stationsDataGrid" 
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True"                     
+                          ItemsSource="{Binding Path=LineStations}" 
+                          GridLinesVisibility="None"
+                          FontSize="15"
+                          >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Number"
+                                            Binding="{Binding Path=StationId}"                         
+                                            />
+                    <DataGridTextColumn Header="Name"
+                                            Binding="{Binding Path=Name}"                           
+                                            />
+                    <DataGridTextColumn Header="Index"
+                                            Binding="{Binding Path=Index}"                           
+                                            />
+                    <DataGridTemplateColumn Header="Distance">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <Label Content="{Binding Path=Distance}"
+                                           Grid.Row="0"
+                                        />
+                                    <Button Name="distanceBtn"
+                                            Grid.Row="1"
+                                            Content="Update"
+                                            Click="distanceBtn_Click"
+                                            Height="20"
+                                            FontSize="10"
+                                            VerticalContentAlignment="Stretch"
+                                            HorizontalContentAlignment="Center"
+                                            />
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Time"
+                                            Binding="{Binding Path=Time}"                           
+                                            />
+                </DataGrid.Columns>
+            </DataGrid>
+            <DataGrid Grid.Column="1"                           
+                          Name="lineDepartingsDataGrid" 
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True"                     
+                          ItemsSource="{Binding Path=LineDepartings}" 
+                          GridLinesVisibility="None"
+                          FontSize="15"
+                          >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Start Time"
+                                            Binding="{Binding Path=StartTime}"                         
+                                            />
+                    <DataGridTextColumn Header="Stop Time"
+                                            Binding="{Binding Path=StopTime}"                          
+                                            />
+                    <DataGridTextColumn Header="Frequency"
+                                            Binding="{Binding Path=Frequency}"                          
+                                            />
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Name="deleteLineDepartingBtn"
+                                        Content="Delete"
+                                        Click="deleteLineDeparting_Click"
+                                        Height="20"
+                                        FontSize="10"
+                                        VerticalContentAlignment="Stretch"
+                                        HorizontalContentAlignment="Center"
+                                        />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Name="updateLineDepartingBtn"
+                                        Content="Update"
+                                        Click="updateLineDepartingBtn_Click"
+                                        Height="20"
+                                        FontSize="10"
+                                        VerticalContentAlignment="Stretch"
+                                        HorizontalContentAlignment="Center"
+                                        />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+            <!--<ListBox Name="stationsList" 
                      Grid.Column="0" 
                      ItemsSource="{Binding Path=LineStations}"
                      ItemTemplate="{StaticResource stationTemplt }"
@@ -187,7 +282,7 @@
                      Grid.Column="1" 
                      ItemsSource="{Binding Path=LineDepartings}"
                      ItemTemplate="{StaticResource lineDepartingTemplate }"
-                     />
+                     />-->
             <Button Name="addSttBtn" 
                     HorizontalAlignment="Stretch" 
                     VerticalAlignment="Stretch"  
@@ -195,6 +290,7 @@
                     Content="Add station" 
                     Grid.Column="0"
                     Grid.Row="1"
+                    Height="Auto"
                     />
             <Button Name="addLineDepartingBtn" 
                     HorizontalAlignment="Stretch" 
@@ -202,7 +298,8 @@
                     Click="addLineDepartingBtn_Click"
                     Content="Add Line Departing" 
                     Grid.Column="1"
-                    Grid.Row="1"
+                    Grid.Row="1" 
+                    Height="Auto"
                     />
             <Button Name="applyBtn" 
                     HorizontalAlignment="Stretch" 
@@ -211,6 +308,7 @@
                     Content="Apply" 
                     Grid.Column="2"
                     Grid.Row="1"
+                    Height="Auto"
                     />
         </Grid>
     </Grid>

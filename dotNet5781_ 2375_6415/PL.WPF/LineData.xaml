@@ -204,11 +204,16 @@
                      ItemTemplate="{StaticResource lineDepartingTemplate }"
                      />-->
             </Grid>
-            <Button Content="Map" 
-                    HorizontalAlignment="Stretch" 
+            <Button Style="{StaticResource MaterialDesignFloatingActionButton}"                       
+                    Content="Map"
+                    Grid.Row="1" 
+                    FontSize="15"
+                    HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
-                    Grid.Row="1" FontSize="20"  
-                    Click="Button_Click"
+                    Click="Button_Click" 
+                    Margin="368,0" 
+                    Height="Auto"
+                    Width="Auto"
                     />
         </Grid>
     </Grid>
