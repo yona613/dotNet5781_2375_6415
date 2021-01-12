@@ -135,7 +135,9 @@
                           />
             </Grid>
         </Grid>
-        <Button Content="Submit" 
+        <Button Content="Submit"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
                 HorizontalAlignment="Stretch" 
                 Grid.Row="2" 
                 VerticalAlignment="Stretch" 
