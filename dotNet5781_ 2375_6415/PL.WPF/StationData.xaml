@@ -143,7 +143,21 @@
                            HorizontalContentAlignment="Center" 
                            FontSize="24"
                            />
-                <ListBox Grid.Row="1" ItemsSource="{Binding Path=Lines}">
+                <DataGrid Grid.Row="1"                           
+                          Name="lineDepartingsDataGrid" 
+                          IsReadOnly="True"                     
+                          ItemsSource="{Binding Path=Lines}" 
+                          GridLinesVisibility="None"
+                          AutoGenerateColumns="False"
+                          >
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Lines"
+                                            Binding="{Binding}"
+                                            />
+                    </DataGrid.Columns>
+                </DataGrid>
+                <!--<ListBox Grid.Row="1" ItemsSource="{Binding Path=Lines}">
+                </ListBox>-->
                     <!--<ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid>
@@ -156,7 +170,7 @@
                             </Grid>
                         </DataTemplate>
                     </ListBox.ItemTemplate>-->
-                </ListBox> 
+
             </Grid>
         </Grid>
     </Grid>

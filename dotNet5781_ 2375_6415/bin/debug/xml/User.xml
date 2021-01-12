@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0"?>
 <ArrayOfUser xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <User>
     <UserName>Yona</UserName>
@@ -69,36 +69,6 @@
   <User>
     <UserName>elyassaf</UserName>
     <Password>elyassaf</Password>
-    <Permission>Admin</Permission>
-    <MyActivity>On</MyActivity>
-  </User>
-  <User>
-    <UserName>yoni</UserName>
-    <Password>yoni</Password>
-    <Permission>Admin</Permission>
-    <MyActivity>On</MyActivity>
-  </User>
-  <User>
-    <UserName>davidkidron</UserName>
-    <Password>kidron</Password>
-    <Permission>Admin</Permission>
-    <MyActivity>On</MyActivity>
-  </User>
-  <User>
-    <UserName>dani</UserName>
-    <Password>dani</Password>
-    <Permission>Admin</Permission>
-    <MyActivity>On</MyActivity>
-  </User>
-  <User>
-    <UserName>moshe</UserName>
-    <Password>moshe</Password>
-    <Permission>Admin</Permission>
-    <MyActivity>On</MyActivity>
-  </User>
-  <User>
-    <UserName>dodo</UserName>
-    <Password>dodo</Password>
     <Permission>Admin</Permission>
     <MyActivity>On</MyActivity>
   </User>

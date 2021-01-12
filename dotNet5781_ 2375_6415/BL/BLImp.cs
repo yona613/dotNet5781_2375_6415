@@ -685,6 +685,17 @@ namespace BL
                         else
                         {
                             DeleteLineStationPrivate(lineStations[j].StationNumber, busLines[i].LineNumber);
+                            Station firstStation = StationDoBOAdapter(dal.GetStation(lineStations[j - 1].StationNumber));
+                            Station lastStation = StationDoBOAdapter(dal.GetStation(lineStations[j + 1].StationNumber));
+                            double distance = firstStation.Coordinates.GetDistanceTo(lastStation.Coordinates);
+                            dal.AddPairStations(new DO.PairStations()
+                            {
+                                FirstStationNumber = firstStation.StationId,
+                                LastStationNumber = lastStation.StationId,
+                                MyActivity = DO.Activity.On,
+                                Distance = distance,
+                                Time = new TimeSpan((int)(distance / 40.0), (int)((distance % 40.0) / (40.0 / 60.0)), (int)(((distance % 40.0) % (40.0 / 60.0)) / (40.0 / 3600.0)))
+                            });
                             deleted = true;
                             continue;
                         }
