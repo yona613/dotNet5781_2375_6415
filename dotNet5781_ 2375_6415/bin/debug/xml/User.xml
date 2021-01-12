@@ -84,4 +84,10 @@
     <Permission>Admin</Permission>
     <MyActivity>On</MyActivity>
   </User>
+  <User>
+    <UserName>dani</UserName>
+    <Password>dani</Password>
+    <Permission>Admin</Permission>
+    <MyActivity>On</MyActivity>
+  </User>
 </ArrayOfUser>
