@@ -157,12 +157,11 @@
                                         Binding="{Binding Path=LineNumber}"
                                             />
                     <DataGridTextColumn Header="Arrival Time :"
-                                        Binding="{Binding Path=ArrivalTime}"
-                                        SortDirection="Ascending"
+                                        Binding="{Binding Path=ArrivalTime, StringFormat=hh\\:mm\\:ss}"                                        
                                         />
                     <DataGridTextColumn Header="Last Station :"
-                                            Binding="{Binding Path=LastStation}"
-                                            />
+                                        Binding="{Binding Path=LastStation}"
+                                        />
                 </DataGrid.Columns>
             </DataGrid>
             <!--<ListBox Grid.Row="1" ItemsSource="{Binding Path=Lines}">

@@ -74,7 +74,6 @@
     <Compile Include="BO\Station.cs" />
     <Compile Include="BO\User.cs" />
     <Compile Include="BO\UserTrip.cs" />
-    <Compile Include="TravelSimulator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DalApi\DalApi.csproj">

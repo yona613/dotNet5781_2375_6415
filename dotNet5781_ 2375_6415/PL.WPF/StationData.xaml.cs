@@ -47,7 +47,7 @@ namespace PL.WPF
 
         void MyDigitalPanelDoWork(object sender , DoWorkEventArgs e)
         {
-            while (bl.IsSimulator())
+            while (bl.IsSimulator() && !(sender as BackgroundWorker).CancellationPending)
             {
                 Dispatcher.Invoke(new Action(() => myLineTimings.Clear()));
                 bl.SetStationPanel(myStation, new Action<LineTiming>(x =>

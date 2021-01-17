@@ -1507,17 +1507,35 @@ namespace BL
         void LineDepartingDoWork(object sender , DoWorkEventArgs e)
         {
             LineDepartingSimulation myLineDeparting = e.Argument as LineDepartingSimulation;
+            TimeSpan travelTime = new TimeSpan();
+            foreach (var item in myLineDeparting.LineStations)
+            {
+                travelTime += item.Time;
+            }
+            for (TimeSpan i = myLineDeparting.StartTime; i < SimulatorClock.Instance.Time; i += myLineDeparting.Frequency)
+            {
+                if (i + travelTime >= SimulatorClock.Instance.Time)
+                {
+                    BackgroundWorker lineTravelBw = new BackgroundWorker();
+                    lineTravelBw.DoWork += LineInTravelSimulatorDoWork;
+                    LineInTravelSimulator myLineIntravel = new LineInTravelSimulator()
+                    {
+                        LineNumber = myLineDeparting.LineNumber,
+                        StartTime = i,
+                        ElapsedTime = SimulatorClock.Instance.Time - i,
+                        TravelTime = travelTime,
+                        LastStation = myLineDeparting.LastStation
+                    };
+                    lineInTravelSimulators.Add(myLineIntravel);
+                    lineTravelBw.RunWorkerAsync(myLineIntravel);
+                }
+            }
             while (SimulatorClock.Instance.Cancel == false)
             {
                 if (myLineDeparting.StartTime <= SimulatorClock.Instance.Time && myLineDeparting.StopTime >= SimulatorClock.Instance.Time)
                 {
                     BackgroundWorker lineTravelBw = new BackgroundWorker();
                     lineTravelBw.DoWork += LineInTravelSimulatorDoWork;
-                    TimeSpan travelTime = new TimeSpan();
-                    foreach (var item in myLineDeparting.LineStations)
-                    {
-                        travelTime += item.Time;
-                    }
                     LineInTravelSimulator myLineIntravel = new LineInTravelSimulator()
                     {
                         LineNumber = myLineDeparting.LineNumber,
@@ -1538,9 +1556,9 @@ namespace BL
             LineInTravelSimulator myLineInTravel = e.Argument as LineInTravelSimulator;
             while (myLineInTravel.ElapsedTime < myLineInTravel.TravelTime && SimulatorClock.Instance.Cancel == false)
             {
-                TimeSpan myElapsedTime = new TimeSpan(0,0 , 1 +r.Next(0,13) - r.Next(0, 2));
+                TimeSpan myElapsedTime = new TimeSpan(0, 1 , 0) + new TimeSpan(0,0,r.Next(0,60)) - new TimeSpan(0, 0, r.Next(0, 7));
                 myLineInTravel.ElapsedTime += myElapsedTime;
-                Thread.Sleep(6000 / SimulatorClock.Instance.Rate);
+                Thread.Sleep(60000 / SimulatorClock.Instance.Rate);
             }
             lineInTravelSimulators.Remove(myLineInTravel);
         }

@@ -201,7 +201,8 @@ namespace PL.WPF
             else if (stationChB.IsChecked == true)
             {
                 BackgroundWorker digitalPanelBw = new BackgroundWorker();
-                new StationData(MainWindow.bl.getStationToShow((stationDataGrid.SelectedItem as BO.Station).StationId), digitalPanelBw).ShowDialog();
+                digitalPanelBw.WorkerSupportsCancellation = true;
+                new StationData(bl.getStationToShow((stationDataGrid.SelectedItem as BO.Station).StationId), digitalPanelBw).ShowDialog();
                 digitalPanelBw.CancelAsync();
             }
             else if (lineChB.IsChecked == true)
@@ -209,23 +210,6 @@ namespace PL.WPF
                 new LineData(MainWindow.bl.GetBusLineToShow((lineDataGrid.SelectedItem as BO.BusLine).LineNumber)).ShowDialog();
                 //new LineData(MainWindow.bl.GetBusLineToShow((MainListBox.SelectedItem as BO.BusLine).LineNumber)).ShowDialog();
             }
-            //new StationData(ListS.SelectedItem as BO.Station).ShowDialog();
-
-
         }
-        //private void ListB_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        //{
-        //    new BusData(ListB.SelectedItem as BO.Bus).ShowDialog();
-        //}
-
-        //private void ListLB_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        //{
-
-        //}
-
-        //private void ListS_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        //{
-        //    new StationData(ListS.SelectedItem as BO.Station).ShowDialog();
-        //}
     }
 }
