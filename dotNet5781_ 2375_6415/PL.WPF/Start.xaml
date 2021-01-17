@@ -3,16 +3,22 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PL.WPF"
+        xmlns:local="clr-namespace:PL.WPF" 
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="Start" Height="450" Width="800" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" WindowState="Maximized">
+        Title="Start" Height="450" Width="800" WindowStartupLocation="CenterScreen" WindowState="Maximized">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Button Name="ManagerBtn"
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Name="loginGrid" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Button Name="ManagerBtn"
                 Content="Manager" 
                 HorizontalAlignment="Center" 
                 Grid.Row="0" 
@@ -21,7 +27,7 @@
                 Height="50"
                 Click="ManagerBtn_Click"
                 />
-        <Button Name="UserBtn" 
+            <Button Name="UserBtn" 
                 Content="User" 
                 HorizontalAlignment="Center" 
                 Grid.Row="1" 
@@ -30,7 +36,7 @@
                 Height="50"
                 Click="UserBtn_Click"
                 />
-        <Button Name="ExitBtn"
+            <Button Name="ExitBtn"
                 Content="Exit" 
                 HorizontalAlignment="Center" 
                 Grid.Row="2" 
@@ -39,5 +45,87 @@
                 Height="50"
                 Click="ExitBtn_Click"
                 />
+        </Grid>
+        <Grid Name="simulatorGrid" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" 
+                   Grid.Column="0" 
+                   Content="Simulation Start Time :"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"
+                   FontSize="20"
+                   />
+            <materialDesign:TimePicker Name="startTimePicker"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       HorizontalContentAlignment="Center"
+                                       VerticalContentAlignment="Center"
+                                       Grid.Row="0"
+                                       Grid.Column="1"
+                                       FontSize="20"
+                                       />
+            <Label Grid.Row="1" 
+                   Grid.Column="0" 
+                   Content="Simulation Clock Rate :"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"
+                   FontSize="20"
+                   />
+            <TextBox Name="rateTb"
+                     Grid.Row="1"
+                     Grid.Column="1"
+                     VerticalAlignment="Center"
+                     HorizontalAlignment="Stretch"
+                     VerticalContentAlignment="Center"
+                     HorizontalContentAlignment="Center"
+                     FontSize="20"
+                     Text="00"
+                     />
+            <Label Grid.Row="2"
+                   Grid.Column="0"
+                   Content="Simulation Time :"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Stretch"
+                   VerticalContentAlignment="Center"
+                   HorizontalContentAlignment="Right"
+                   FontSize="20"
+                   />
+            <Label Grid.Row="2" 
+                   Grid.Column="1"
+                   Name="timeLbl"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Center"
+                   HorizontalContentAlignment="Center"
+                   VerticalContentAlignment="Center"
+                   FontSize="20"
+                   Content="00:00:00"
+                   />
+            <Button Name="startBtn"
+                    Grid.Column="0"
+                    Grid.Row="3"
+                    Content="Start"
+                    Opacity="100"
+                    Click="startBtn_Click"
+                    Background="Green"
+                />
+            <Button Name="stopBtn"
+                    Grid.Column="2"
+                    Content="Stop"
+                    Click="stopBtn_Click"
+                    Grid.Row="3"
+                    IsEnabled="False" 
+                    Opacity="100"
+                    Background="red"
+                    />
+        </Grid>
     </Grid>
 </Window>

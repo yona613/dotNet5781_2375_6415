@@ -26,7 +26,7 @@
     <LastStationNumber>38836</LastStationNumber>
     <Distance>12.630582977791324</Distance>
     <Time>PT18M56S</Time>
-    <MyActivity>On</MyActivity>
+    <MyActivity>Off</MyActivity>
   </PairStations>
   <PairStations>
     <FirstStationNumber>38836</FirstStationNumber>
@@ -47,21 +47,21 @@
     <LastStationNumber>38839</LastStationNumber>
     <Distance>0.56874278519102628</Distance>
     <Time>PT51S</Time>
-    <MyActivity>On</MyActivity>
+    <MyActivity>Off</MyActivity>
   </PairStations>
   <PairStations>
     <FirstStationNumber>38839</FirstStationNumber>
     <LastStationNumber>38840</LastStationNumber>
     <Distance>0.311466658302225</Distance>
     <Time>PT28S</Time>
-    <MyActivity>On</MyActivity>
+    <MyActivity>Off</MyActivity>
   </PairStations>
   <PairStations>
     <FirstStationNumber>38840</FirstStationNumber>
     <LastStationNumber>38841</LastStationNumber>
     <Distance>0.31039567003549406</Distance>
     <Time>PT27S</Time>
-    <MyActivity>On</MyActivity>
+    <MyActivity>Off</MyActivity>
   </PairStations>
   <PairStations>
     <FirstStationNumber>38841</FirstStationNumber>
@@ -271,6 +271,83 @@
     <LastStationNumber>38844</LastStationNumber>
     <Distance>0.9974506043356236</Distance>
     <Time>PT20M29S</Time>
+    <MyActivity>On</MyActivity>
+  </PairStations>
+  <PairStations>
+    <FirstStationNumber>38841</FirstStationNumber>
+    <LastStationNumber>22229</LastStationNumber>
+    <Distance>37.765050324079589</Distance>
+    <Time>PT56M38S</Time>
+    <MyActivity>On</MyActivity>
+  </PairStations>
+  <PairStations>
+    <FirstStationNumber>22229</FirstStationNumber>
+    <LastStationNumber>22229</LastStationNumber>
+    <Distance>0</Distance>
+    <Time>PT0S</Time>
+    <MyActivity>On</MyActivity>
+  </PairStations>
+  <PairStations>
+    <FirstStationNumber>38833</FirstStationNumber>
+    <LastStationNumber>34567</LastStationNumber>
+    <Distance>46.081664007055956</Distance>
+    <Time>PT1H9M7S</Time>
+    <MyActivity>On</MyActivity>
+  </PairStations>
+  <PairStations>
+    <FirstStationNumber>38834</FirstStationNumber>
+    <LastStationNumber>38836</LastStationNumber>
+    <Distance>12.630582977791324</Distance>
+    <Time>PT18M56S</Time>
+    <MyActivity>On</MyActivity>
+  </PairStations>
+  <PairStations>
+    <FirstStationNumber>38889</FirstStationNumber>
+    <LastStationNumber>38849</LastStationNumber>
+    <Distance>55.314738422526418</Distance>
+    <Time>PT1H22M58S</Time>
+    <MyActivity>On</MyActivity>
+  </PairStations>
+  <PairStations>
+    <FirstStationNumber>38840</FirstStationNumber>
+    <LastStationNumber>38841</LastStationNumber>
+    <Distance>0.31039567003549406</Distance>
+    <Time>PT27S</Time>
+    <MyActivity>Off</MyActivity>
+  </PairStations>
+  <PairStations>
+    <FirstStationNumber>38839</FirstStationNumber>
+    <LastStationNumber>38840</LastStationNumber>
+    <Distance>0.311466658302225</Distance>
+    <Time>PT28S</Time>
+    <MyActivity>Off</MyActivity>
+  </PairStations>
+  <PairStations>
+    <FirstStationNumber>38840</FirstStationNumber>
+    <LastStationNumber>38841</LastStationNumber>
+    <Distance>0.17633474631717355</Distance>
+    <Time>PT27S</Time>
+    <MyActivity>On</MyActivity>
+  </PairStations>
+  <PairStations>
+    <FirstStationNumber>38839</FirstStationNumber>
+    <LastStationNumber>38840</LastStationNumber>
+    <Distance>0.330295386625789</Distance>
+    <Time>PT28S</Time>
+    <MyActivity>Off</MyActivity>
+  </PairStations>
+  <PairStations>
+    <FirstStationNumber>38839</FirstStationNumber>
+    <LastStationNumber>38840</LastStationNumber>
+    <Distance>0.18846335913536455</Distance>
+    <Time>PT28S</Time>
+    <MyActivity>On</MyActivity>
+  </PairStations>
+  <PairStations>
+    <FirstStationNumber>38838</FirstStationNumber>
+    <LastStationNumber>38839</LastStationNumber>
+    <Distance>0.74551548945859814</Distance>
+    <Time>PT51S</Time>
     <MyActivity>On</MyActivity>
   </PairStations>
 </ArrayOfPairStations>

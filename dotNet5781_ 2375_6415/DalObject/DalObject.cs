@@ -13,9 +13,9 @@ namespace DL
     sealed class DalObject : IDL
     {
         #region singelton
-        static readonly DalObject instance = new DalObject();
+        private static readonly DalObject instance = new DalObject();
         static DalObject() { }// static ctor to ensure instance init is done just before first usage
-        DalObject() { } // default => private
+        private DalObject() { } // default => private
         public static DalObject Instance { get => instance; }// The public Instance property to use
         #endregion
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,5 +25,8 @@ namespace BO
         public bool DigitalPanel { get; set; }
 
         public IEnumerable<string> Lines { get; set; }
+
+        public IEnumerable<int> LineNumbers { get; set; }
+        public Hashtable TimesToStation { get; set; }
     }
 }

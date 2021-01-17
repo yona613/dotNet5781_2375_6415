@@ -5,7 +5,7 @@
     <StartTime>PT7H</StartTime>
     <Frequency>PT15M</Frequency>
     <StopTime>PT22H</StopTime>
-    <MyActivity>On</MyActivity>
+    <MyActivity>Off</MyActivity>
   </LineDeparting>
   <LineDeparting>
     <LineNumber>2</LineNumber>
@@ -75,7 +75,7 @@
     <StartTime>PT7H</StartTime>
     <Frequency>PT15M</Frequency>
     <StopTime>PT22H</StopTime>
-    <MyActivity>On</MyActivity>
+    <MyActivity>Off</MyActivity>
   </LineDeparting>
   <LineDeparting>
     <LineNumber>4</LineNumber>
@@ -83,6 +83,27 @@
     <Frequency>PT15M</Frequency>
     <StopTime>PT21H</StopTime>
     <MyActivity>Off</MyActivity>
+  </LineDeparting>
+  <LineDeparting>
+    <LineNumber>4</LineNumber>
+    <StartTime>PT7H</StartTime>
+    <Frequency>PT15M</Frequency>
+    <StopTime>PT21H</StopTime>
+    <MyActivity>Off</MyActivity>
+  </LineDeparting>
+  <LineDeparting>
+    <LineNumber>1</LineNumber>
+    <StartTime>PT7H</StartTime>
+    <Frequency>PT15M</Frequency>
+    <StopTime>PT22H</StopTime>
+    <MyActivity>On</MyActivity>
+  </LineDeparting>
+  <LineDeparting>
+    <LineNumber>2</LineNumber>
+    <StartTime>PT7H</StartTime>
+    <Frequency>PT15M</Frequency>
+    <StopTime>PT22H</StopTime>
+    <MyActivity>On</MyActivity>
   </LineDeparting>
   <LineDeparting>
     <LineNumber>4</LineNumber>

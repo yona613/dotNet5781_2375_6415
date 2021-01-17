@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime;
 using System.Text;
@@ -199,7 +200,9 @@ namespace PL.WPF
             }
             else if (stationChB.IsChecked == true)
             {
-                new StationData(MainWindow.bl.getStationToShow((stationDataGrid.SelectedItem as BO.Station).StationId)).ShowDialog();
+                BackgroundWorker digitalPanelBw = new BackgroundWorker();
+                new StationData(MainWindow.bl.getStationToShow((stationDataGrid.SelectedItem as BO.Station).StationId), digitalPanelBw).ShowDialog();
+                digitalPanelBw.CancelAsync();
             }
             else if (lineChB.IsChecked == true)
             {

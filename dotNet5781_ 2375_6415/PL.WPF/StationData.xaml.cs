@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +13,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using BO;
+using BLApi;
+using System.Threading;
 
 namespace PL.WPF
 {
@@ -20,12 +25,37 @@ namespace PL.WPF
     public partial class StationData : Window
     {
         BO.StationToShow myStation;
-        public StationData(BO.StationToShow tmpStation)
+        ObservableCollection<LineTiming> myLineTimings = new ObservableCollection<LineTiming>() { };
+        IBL bl = BLFactory.GetBL();
+        BackgroundWorker myDigitalPanelBw = null;
+
+
+        public StationData(BO.StationToShow tmpStation, BackgroundWorker tmpBackgroundWorker)
         {
             InitializeComponent();
             myStation = tmpStation;
             mainGrid.DataContext = tmpStation;
-            //lineList.DataContext = MainWindow.bl.GetAllLinesOfStation(tmpStation.StationId);
+            digitalPanelDataGrid.ItemsSource = myLineTimings;
+            if (myStation.DigitalPanel == true)
+            {
+                myDigitalPanelBw = tmpBackgroundWorker;
+                myDigitalPanelBw.DoWork += MyDigitalPanelDoWork;
+                myDigitalPanelBw.RunWorkerAsync();
+                myDigitalPanelBw.WorkerSupportsCancellation = true;
+            }
+        }
+
+        void MyDigitalPanelDoWork(object sender , DoWorkEventArgs e)
+        {
+            while (bl.IsSimulator())
+            {
+                Dispatcher.Invoke(new Action(() => myLineTimings.Clear()));
+                bl.SetStationPanel(myStation, new Action<LineTiming>(x =>
+                {
+                    Dispatcher.Invoke(new Action(() => myLineTimings.Add(x)));
+                }));
+                Thread.Sleep(6000);
+            }
         }
     }
 }

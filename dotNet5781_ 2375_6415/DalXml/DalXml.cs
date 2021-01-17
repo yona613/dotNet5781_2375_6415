@@ -12,9 +12,10 @@ namespace DL
     sealed class DalXml : IDL
     {
         #region singelton
-        static readonly DalXml instance = new DalXml();
+        
+        private static readonly DalXml instance = new DalXml();
         static DalXml() { }// static ctor to ensure instance init is done just before first usage
-        DalXml() { } // default => private
+        private DalXml() { } // default => private
         public static DalXml Instance { get => instance; }// The public Instance property to use
         #endregion
 

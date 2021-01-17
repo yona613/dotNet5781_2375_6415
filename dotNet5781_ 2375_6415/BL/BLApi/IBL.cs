@@ -110,5 +110,12 @@ namespace BLApi
         #region StationToShow
         StationToShow getStationToShow(int stationNumber);
         #endregion
+
+        #region Simulation
+        void StartSimulator(TimeSpan startTime, int Rate, Action<TimeSpan> updateTime);
+        void StopSimulator();
+        void SetStationPanel(StationToShow station, Action<LineTiming> updatePanel);
+        bool IsSimulator();
+        #endregion
     }
 }

@@ -118,7 +118,7 @@
     <Invalid>true</Invalid>
     <Roof>true</Roof>
     <DigitalPanel>true</DigitalPanel>
-    <MyActivity>On</MyActivity>
+    <MyActivity>Off</MyActivity>
   </Station>
   <Station>
     <StationId>38840</StationId>
@@ -133,7 +133,7 @@
     <Invalid>true</Invalid>
     <Roof>true</Roof>
     <DigitalPanel>true</DigitalPanel>
-    <MyActivity>On</MyActivity>
+    <MyActivity>Off</MyActivity>
   </Station>
   <Station>
     <StationId>38841</StationId>
@@ -763,6 +763,66 @@
     <Invalid>true</Invalid>
     <Roof>true</Roof>
     <DigitalPanel>false</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>34567</StationId>
+    <Coordinates>
+      <Latitude>31.771199574593069</Latitude>
+      <Longitude>35.200723768504794</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ellipsoid</AltitudeReference>
+    </Coordinates>
+    <Name>Burla / Davidson</Name>
+    <Address>Burla 40</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38840</StationId>
+    <Coordinates>
+      <Latitude>31.865085</Latitude>
+      <Longitude>34.822237</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ground</AltitudeReference>
+    </Coordinates>
+    <Name>Weizmann / The Boys</Name>
+    <Address>Weizmann 11</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>Off</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38840</StationId>
+    <Coordinates>
+      <Latitude>31.865139178858996</Latitude>
+      <Longitude>34.820820059262509</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ellipsoid</AltitudeReference>
+    </Coordinates>
+    <Name>Weizmann / The Boys</Name>
+    <Address>Weizmann 11</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
+    <MyActivity>On</MyActivity>
+  </Station>
+  <Station>
+    <StationId>38839</StationId>
+    <Coordinates>
+      <Latitude>31.864105024933032</Latitude>
+      <Longitude>34.822398988354145</Longitude>
+      <Altitude>0</Altitude>
+      <AltitudeReference>Ellipsoid</AltitudeReference>
+    </Coordinates>
+    <Name>The boys / Eli Cohen</Name>
+    <Address>Habanim 4</Address>
+    <Invalid>true</Invalid>
+    <Roof>true</Roof>
+    <DigitalPanel>true</DigitalPanel>
     <MyActivity>On</MyActivity>
   </Station>
 </ArrayOfStation>

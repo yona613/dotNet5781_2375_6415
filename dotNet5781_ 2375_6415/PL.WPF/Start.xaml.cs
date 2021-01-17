@@ -11,6 +11,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using BLApi;
+using BL;
+using System.ComponentModel;
 
 namespace PL.WPF
 {
@@ -19,6 +22,7 @@ namespace PL.WPF
     /// </summary>
     public partial class Start : Window
     {
+        public static IBL bl = BLFactory.GetBL();
         public Start()
         {
             InitializeComponent();
@@ -37,6 +41,63 @@ namespace PL.WPF
         private void ExitBtn_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void startBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (startTimePicker.SelectedTime != null)
+            {
+                if (rateTb.Text != "00")
+                {
+                    stopBtn.IsEnabled = true;
+                    startBtn.IsEnabled = false;
+                    startBtn.Background = Brushes.Red;
+                    stopBtn.Background = Brushes.Green;
+                    rateTb.IsEnabled = false;
+                    startTimePicker.IsEnabled = false;
+                    BackgroundWorker simulator = new BackgroundWorker();
+                    simulator.DoWork += StartSimulator;
+                    simulator.RunWorkerAsync();
+                }
+                else
+                {
+                    MessageBox.Show("Choose a Rate !");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Choose a Starting Time !");
+            }
+        }
+
+        private void stopBtn_Click(object sender, RoutedEventArgs e)
+        {
+            startTimePicker.IsEnabled = true;
+            startTimePicker.SelectedTime = null;
+            rateTb.IsEnabled = true;
+            rateTb.Text = "00";
+            stopBtn.IsEnabled = false;
+            stopBtn.Background = Brushes.Red;
+            startBtn.Background = Brushes.Green;
+            startBtn.IsEnabled = true;
+            bl.StopSimulator();
+        }
+
+        public void StartSimulator(object sender, DoWorkEventArgs e)
+        {
+            TimeSpan myTimeSpan = new TimeSpan();
+            int rate = 0;
+            Dispatcher.Invoke(new Action(() => GetValues(out myTimeSpan, out rate)));
+            bl.StartSimulator(myTimeSpan, rate, x => {
+            myTimeSpan = x;
+            Dispatcher.BeginInvoke(new Action(() => timeLbl.Content = myTimeSpan.ToString("hh\\:mm\\:ss")));          
+            });
+        }
+
+        public void GetValues(out TimeSpan myTimeSpan , out int rate)
+        {
+            myTimeSpan = startTimePicker.SelectedTime.Value.TimeOfDay;
+            int.TryParse(rateTb.Text, out rate);
         }
     }
 }
