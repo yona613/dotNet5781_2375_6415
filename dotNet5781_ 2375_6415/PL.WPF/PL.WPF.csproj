@@ -95,9 +95,11 @@
     <Compile Include="DistanceTimeInput.xaml.cs">
       <DependentUpon>DistanceTimeInput.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FriendFunctions.cs" />
     <Compile Include="LineData.xaml.cs">
       <DependentUpon>LineData.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LineInTravel.xaml.cs">
+      <DependentUpon>LineInTravel.xaml</DependentUpon>
     </Compile>
     <Compile Include="LineMap.xaml.cs">
       <DependentUpon>LineMap.xaml</DependentUpon>
@@ -159,6 +161,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="LineInTravel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="LineMap.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -179,7 +185,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Enums.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

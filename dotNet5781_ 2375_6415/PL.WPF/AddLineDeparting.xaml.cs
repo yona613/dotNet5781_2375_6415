@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BLApi;
+using System;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace PL.WPF
 {
@@ -19,7 +9,9 @@ namespace PL.WPF
     /// </summary>
     public partial class AddLineDeparting : Window
     {
+        //to get input from window
         BO.LineDeparting myLineDeparting = new BO.LineDeparting() { StartTime = new TimeSpan(0, 0, 0), StopTime = new TimeSpan(0, 0, 0), Frequency = new TimeSpan(0, 0, 0) };
+        IBL bl = BLFactory.GetBL();
         public AddLineDeparting(int lineNumber)
         {
             InitializeComponent();
@@ -27,11 +19,18 @@ namespace PL.WPF
             formGrid.DataContext = myLineDeparting;
         }
 
+
+        /// <summary>
+        /// Event when submit button clicked
+        /// adds line departing to data by query to bl
+        /// </summary>
+        /// <param name="sender">Submit button</param>
+        /// <param name="e"></param>
         private void submitBtn_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                MainWindow.bl.AddLineDeparting(myLineDeparting);
+                bl.AddLineDeparting(myLineDeparting);
                 Close();
             }
             catch (BO.BOStopTimeException dataException)

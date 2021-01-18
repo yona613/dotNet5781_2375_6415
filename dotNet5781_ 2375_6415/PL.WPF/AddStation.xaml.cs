@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using Microsoft.Maps.MapControl.WPF;
 using System.Device.Location;
 using System.Text.RegularExpressions;
+using BLApi;
 
 namespace PL.WPF
 {
@@ -21,23 +22,30 @@ namespace PL.WPF
     /// Interaction logic for AddLineStation.xaml
     /// </summary>
     public partial class AddStation : Window
-
     {
+        IBL bl = BLFactory.GetBL();
+        //station gets input from window
         BO.Station myStation = null;
         public AddStation()
         {
             InitializeComponent();
             myStation = new BO.Station();
+            //initializes the map
             myStation.Coordinates = new Location() { Longitude = 35.203165854 , Latitude = 31.772663576 };
             mainGrid.DataContext = myStation;
             myMap.Center = myStation.Coordinates;
         }
 
+        /// <summary>
+        /// Event when add button clicked
+        /// adds physical station to data
+        /// </summary>
+        /// <param name="sender">Add Button</param>
+        /// <param name="e"></param>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                //myStation.Coordinates = new Location() { Longitude = double.Parse(LongitudeTb.Text), Latitude = double.Parse(LatitudeTb.Text) };
                 MainWindow.bl.AddStation(myStation);
                 Close();
             }
@@ -75,19 +83,12 @@ namespace PL.WPF
 
         }
 
-        private void _PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            if (e.Text != "\r") //checks that key wasn't enter
-            {
-                Regex myReg = new Regex("[^0-9]+"); //gets regular expression that allows only digits
-                e.Handled = myReg.IsMatch(e.Text); //checks taht key entered is regular expression
-            }
-            if (e.Handled) //if not regular expression
-            {
-                MessageBox.Show($"Wrong Input !!!! \n {e.Text} is not a digit !!");
-            }
-        }
-
+        /// <summary>
+        /// Implementation of double click on map
+        /// get coordinates of mouse double click and updates station coordinates
+        /// </summary>
+        /// <param name="sender">Mouse double click</param>
+        /// <param name="e"></param>
         private void MapWithPushpins_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             // Disables the default mouse double-click action.

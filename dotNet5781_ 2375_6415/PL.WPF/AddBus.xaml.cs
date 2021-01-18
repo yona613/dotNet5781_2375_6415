@@ -1,17 +1,9 @@
-﻿using System;
+﻿using BLApi;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace PL.WPF
 {
@@ -20,9 +12,12 @@ namespace PL.WPF
     /// </summary>
     public partial class AddBus : Window
     {
+
+        public IBL bl = BLFactory.GetBL();
         public AddBus()
         {
             InitializeComponent();
+            //gets brands list for adding new buses
             List<string> brands = new List<string>() { "Volvo", "Mercedes", "Merkavim", "Man", "Chevrolet", "Renault", "Ford" };
             brands.Sort();
             brandCbb.ItemsSource = brands;
@@ -31,6 +26,7 @@ namespace PL.WPF
         /// <summary>
         /// Event that is raised every key down
         /// used to raise when enter is pressed
+        /// gets input and adds bus by querying bl
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -40,13 +36,13 @@ namespace PL.WPF
             int tmpKm;
             if (int.TryParse(GetlicenseTxb.Text, out tmpInt))
             {
-                if (OldBusCB.IsChecked == true)
+                if (OldBusCB.IsChecked == true) //input depends on old/new bus
                 {
                     if (int.TryParse(GetKmTxb.Text, out tmpKm))
                     {
                         try
                         {
-                            MainWindow.bl.AddBus(new BO.Bus() { License = tmpInt, Kilometrage = tmpKm, TestDate = (DateTime)OldBusTD.SelectedDate, LicenseDate = (DateTime)OldBusSD.SelectedDate, Fuel = 1200, KmFromTest = 0, AirConditionning = (bool)AcCbb.IsChecked, Brand = (string)brandCbb.SelectedItem });
+                            bl.AddBus(new BO.Bus() { License = tmpInt, Kilometrage = tmpKm, TestDate = (DateTime)OldBusTD.SelectedDate, LicenseDate = (DateTime)OldBusSD.SelectedDate, Fuel = 1200, KmFromTest = 0, AirConditionning = (bool)AcCbb.IsChecked, Brand = (string)brandCbb.SelectedItem });
                             Close();
                         }
                         catch (BO.BOArgumentLicenseException exception)
@@ -78,7 +74,7 @@ namespace PL.WPF
                 {
                     try
                     {
-                        MainWindow.bl.AddBus(new BO.Bus() { License = tmpInt, Kilometrage = 0, LicenseDate = DateTime.Now, TestDate = DateTime.Now, KmFromTest = 0, Fuel = 1200, AirConditionning = (bool)AcCbb.IsChecked, Brand = (string)brandCbb.SelectedItem });
+                        bl.AddBus(new BO.Bus() { License = tmpInt, Kilometrage = 0, LicenseDate = DateTime.Now, TestDate = DateTime.Now, KmFromTest = 0, Fuel = 1200, AirConditionning = (bool)AcCbb.IsChecked, Brand = (string)brandCbb.SelectedItem });
                         Close();
                     }
                     catch (BO.BOArgumentLicenseException exception)

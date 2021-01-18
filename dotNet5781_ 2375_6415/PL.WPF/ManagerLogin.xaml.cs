@@ -1,19 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+﻿using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Data;
-using System.Data.SqlClient;
-using System.Text.RegularExpressions;
 using BLApi;
 
 namespace PL.WPF
@@ -29,18 +15,33 @@ namespace PL.WPF
             InitializeComponent();
             bl = BLFactory.GetBL();
         }
-
+        /// <summary>
+        /// Login Button event
+        /// </summary>
+        /// <param name="sender">Login Button</param>
+        /// <param name="e"></param>
         private void button1_Click(object sender, RoutedEventArgs e)
         {
             Login();
         }
 
+        /// <summary>
+        /// Register button event
+        /// opens registration's page
+        /// </summary>
+        /// <param name="sender">Register Button</param>
+        /// <param name="e"></param>
         private void buttonRegister_Click(object sender, RoutedEventArgs e)
         {
             new Registration().ShowDialog();
             Close();
         }
 
+        /// <summary>
+        /// When enter key pushed then submit
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void passwordBox1_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
@@ -49,6 +50,12 @@ namespace PL.WPF
             }
         }
 
+        /// <summary>
+        /// login implementation
+        /// checks that fields are full
+        /// then send login query to bl and checks if user exists and password is true
+        /// if yes then opens program eklse error message
+        /// </summary>
         private void Login()
         {
             if (textBoxName.Text.Length == 0)

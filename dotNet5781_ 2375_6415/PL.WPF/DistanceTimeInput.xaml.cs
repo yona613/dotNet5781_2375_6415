@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BLApi;
+using System;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace PL.WPF
 {
@@ -19,6 +9,7 @@ namespace PL.WPF
     /// </summary>
     public partial class DistanceTimeInput : Window
     {
+        IBL bl = BLFactory.GetBL();
         BO.LineStationToShow myStation;
         int lineNumber;
         public DistanceTimeInput(BO.LineStationToShow tmpStation, int tmpLineNumber)
@@ -29,11 +20,17 @@ namespace PL.WPF
             mainGrid.DataContext = myStation;
         }
 
+        /// <summary>
+        /// Event when submit button clicked
+        /// update pair station's distance and time
+        /// </summary>
+        /// <param name="sender">submit button</param>
+        /// <param name="e"></param>
         private void submitBtn_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                MainWindow.bl.UpdateDistanceAndTime(myStation, lineNumber);
+                bl.UpdateDistanceAndTime(myStation, lineNumber);
                 Close();
             }
             catch (Exception exception)

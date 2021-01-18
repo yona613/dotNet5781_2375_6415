@@ -1,18 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+﻿using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Data;
-using System.Data.SqlClient;
-using System.Text.RegularExpressions;
 using BLApi;
 
 namespace PL.WPF
@@ -28,31 +15,63 @@ namespace PL.WPF
             InitializeComponent();
             bl = BLFactory.GetBL();
         }
+
+        /// <summary>
+        /// When click on login opens login window and closes this window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Login_Click(object sender, RoutedEventArgs e)
         {
             ManagerLogin login = new ManagerLogin();
             login.Show();
             Close();
         }
+
+        /// <summary>
+        /// Button reset event
+        /// </summary>
+        /// <param name="sender">Reset Button</param>
+        /// <param name="e"></param>
         private void button2_Click(object sender, RoutedEventArgs e)
         {
             Reset();
         }
+
+        /// <summary>
+        /// to reset registration
+        /// </summary>
         public void Reset()
         {
             textBoxName.Text = "";
             passwordBox1.Password = "";
             passwordBoxConfirm.Password = "";
         }
+
+        /// <summary>
+        /// Close Button event
+        /// </summary>
+        /// <param name="sender">Close Button</param>
+        /// <param name="e"></param>
         private void button3_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
+
+        /// <summary>
+        /// Submit Button event
+        /// </summary>
+        /// <param name="sender">Submit Button</param>
+        /// <param name="e"></param>
         private void Submit_Click(object sender, RoutedEventArgs e)
         {
             Submition();
         }
 
+        /// <summary>
+        /// Submition of registration
+        /// checks that fields are full and sends registration to bl
+        /// </summary>
         private void Submition()
         {
             if (passwordBox1.Password.Length == 0)
@@ -72,7 +91,7 @@ namespace PL.WPF
             }
             else
             {
-                BO.User user = new BO.User()
+                BO.User user = new BO.User() //creates new user to register
                 {
                     UserName = textBoxName.Text,
                     Password = passwordBox1.Password,
@@ -81,7 +100,7 @@ namespace PL.WPF
                 errormessage.Text = "";
                 try
                 {
-                    bl.AddUser(user);
+                    bl.AddUser(user); //registers user
                     errormessage.Text = "You have Registered successfully.";
                     Reset();
                 }
@@ -93,6 +112,11 @@ namespace PL.WPF
             }
         }
 
+        /// <summary>
+        /// When enter key then submit form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void passwordBoxConfirm_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)

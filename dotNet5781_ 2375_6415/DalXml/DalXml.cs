@@ -199,9 +199,6 @@ namespace DL
                        MyActivity = (Activity)Enum.Parse(typeof(Activity), user.Element("MyActivity").Value, true),
                        Permission = (Permit)Enum.Parse(typeof(Permit), user.Element("Permission").Value, true)
                    };
-            /*return from user in XMLTools.LoadListFromXMLSerializer<User>(@"User.xml")
-                   where user.MyActivity == Activity.On
-                   select user.Clone();*/
         }
 
         public IEnumerable<User> GetAllUsersBy(Predicate<User> predicate)

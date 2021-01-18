@@ -32,97 +32,93 @@ namespace PL.WPF
             bl = BLFactory.GetBL();
         }
 
+        /// <summary>
+        /// Event when line is checked
+        /// Display data grid of lines and add ew line button
+        /// </summary>
+        /// <param name="sender">Line Radio button</param>
+        /// <param name="e"></param>
         private void LineChB_Checked(object sender, RoutedEventArgs e)
         {
             var linesList = bl.GetAllBusLines().OrderBy(x => x.LineNumber).ToList();
-            //ListLB.Visibility = Visibility.Visible;
-            //busChB.IsChecked = false;
-            //stationChB.IsChecked = false;
-            //ListLB.DataContext = linesList;
-            //MainListBox.IsEnabled = false;
             stationDataGrid.Visibility = Visibility.Hidden;
             busDataGrid.Visibility = Visibility.Hidden;
             lineDataGrid.Visibility = Visibility.Visible;
             lineDataGrid.ItemsSource = linesList;
-            //MainListBox.DataContext = linesList;
-            //MainListBox.ItemTemplate = (DataTemplate)this.Resources["ListLines"];
             AddBtn.IsEnabled = true;
             BtnTblock.Text = "Add new Line";
         }
 
-        private void LineChB_Unchecked(object sender, RoutedEventArgs e)
-        {         
-            //ListLB.Visibility = Visibility.Collapsed;
-            //BtnTblock.Text = "Please choose a object to add";
-           // AddBtn.IsEnabled = false;
-        }
-
+        /// <summary>
+        /// Event when bus is checked
+        /// Display data grid of buses and add new bus button
+        /// </summary>
+        /// <param name="sender">bus Radio button</param>
+        /// <param name="e"></param>
         private void BusChB_Checked(object sender, RoutedEventArgs e)
         {
             var busList = bl.GetAllBuses().OrderBy(x => x.License).ToList();
-            //ListB.Visibility = Visibility.Visible;
-            //lineChB.IsChecked = false;
-            //stationChB.IsChecked = false;
-            ///ListB.DataContext = busList;
             lineDataGrid.Visibility = Visibility.Hidden;
             stationDataGrid.Visibility = Visibility.Hidden;
             busDataGrid.Visibility = Visibility.Visible;
             busDataGrid.ItemsSource = busList;
-            //MainListBox.DataContext = busList;
-            //MainListBox.ItemTemplate = (DataTemplate)this.Resources["ListBuses"];
             AddBtn.IsEnabled = true;
             BtnTblock.Text = "Add new Bus";
         }
-
-        private void BusChB_Unchecked(object sender, RoutedEventArgs e)
-        {
-            //ListB.Visibility = Visibility.Collapsed;
-            //BtnTblock.Text = "Please choose a object to add";
-           // AddBtn.IsEnabled = false;
-        }
-
+        /// <summary>
+        /// Event when station is checked
+        /// Display data grid of stations and add new station button
+        /// </summary>
+        /// <param name="sender">bus station button</param>
+        /// <param name="e"></param>
         private void StationChB_Checked(object sender, RoutedEventArgs e)
         {
             var stationList = bl.GetAllStations().OrderBy(x => x.StationId).ToList();
-            //ListS.Visibility = Visibility.Visible;
-            //busChB.IsChecked = false;
-            //lineChB.IsChecked = false;         
-            //ListS.DataContext = stationList;
             lineDataGrid.Visibility = Visibility.Hidden;
             busDataGrid.Visibility = Visibility.Hidden;
             stationDataGrid.Visibility = Visibility.Visible;
             stationDataGrid.ItemsSource = stationList;
             AddBtn.IsEnabled = true;
-            //MainListBox.DataContext = stationList;
-            //MainListBox.ItemTemplate = (DataTemplate)this.Resources["ListStation"];
             BtnTblock.Text = "Add new Station";
         }
 
-        private void StationChB_Unchecked(object sender, RoutedEventArgs e)
-        {
-            //ListS.Visibility = Visibility.Collapsed;
-            //BtnTblock.Text = "Please choose a object to add";
-            //AddBtn.IsEnabled = false;
-        }
-
+        /// <summary>
+        /// Event when delete line button clicked
+        /// send delete line query to bl
+        /// and updates lines list
+        /// </summary>
+        /// <param name="sender">Delete line button</param>
+        /// <param name="e"></param>
         private void DeleteLine_Click(object sender, RoutedEventArgs e)
         {
             bl.DeleteLine((((sender as Button).DataContext) as BO.BusLine).LineNumber);
             var linesList = bl.GetAllBusLines().OrderBy(x => x.LineNumber).ToList();
-            //ListLB.DataContext = linesList;
-            //MainListBox.DataContext = linesList;
             lineDataGrid.ItemsSource = linesList;
         }
 
+
+        /// <summary>
+        /// Event when delete bus button clicked
+        /// send delete bus query to bl
+        /// and updates buses list
+        /// </summary>
+        /// <param name="sender">Delete bus button</param>
+        /// <param name="e"></param>
         private void DeleteBus_Click(object sender, RoutedEventArgs e)
         {
-            bl.DeleteBus((((sender as Button).DataContext) as BO.Bus).License);
+            bl.DeleteBus((((sender as Button).DataContext) as Bus).License);
             var busList = bl.GetAllBuses().OrderBy(x => x.License).ToList();
-            //ListB.DataContext = busList;
-            //MainListBox.DataContext = busList;
             busDataGrid.ItemsSource = busList;
         }
 
+
+        /// <summary>
+        /// Event when delete station button clicked
+        /// send delete station query to bl
+        /// and updates station list
+        /// </summary>
+        /// <param name="sender">Delete station button</param>
+        /// <param name="e"></param>
         private void DeleteStation_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -134,46 +130,62 @@ namespace PL.WPF
                 MessageBox.Show(except.Message);
             }  
             var stationList = bl.GetAllStations().OrderBy(x => x.StationId).ToList();
-            //ListS.DataContext = stationList;
-            //MainListBox.DataContext = stationList;
             stationDataGrid.ItemsSource = stationList;
         }
 
+        /// <summary>
+        /// Event when update line button clicked
+        /// opens update line window
+        /// and updates lines list
+        /// </summary>
+        /// <param name="sender">Update line button</param>
+        /// <param name="e"></param>
         private void UpdateLine_Click(object sender, RoutedEventArgs e)
         {
             BO.LineToShow myLineToShow = bl.GetBusLineToShow(((sender as Button).DataContext as BO.BusLine).LineNumber);
             (new UpdateLine(myLineToShow)).ShowDialog();
             var linesList = bl.GetAllBusLines().OrderBy(x => x.LineNumber).ToList();
-            //ListLB.DataContext = linesList;
-            //MainListBox.DataContext = linesList;
             lineDataGrid.ItemsSource = linesList;
         }
 
+        /// <summary>
+        /// Event when update station button clicked
+        /// opens update station window
+        /// and updates stations list
+        /// </summary>
+        /// <param name="sender">Update station button</param>
+        /// <param name="e"></param>
+        private void updateStation_Click(object sender, RoutedEventArgs e)
+        {
+            new UpdateStation(((sender as Button).DataContext) as BO.Station).ShowDialog();
+            var stationList = bl.GetAllStations().OrderBy(x => x.StationId).ToList();
+            stationDataGrid.ItemsSource = stationList;
+        }
+
+        /// <summary>
+        /// Event when add button clicked
+        /// depends opens window to add type that is checked
+        /// </summary>
+        /// <param name="sender">Add new button</param>
+        /// <param name="e"></param>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             if (lineChB.IsChecked == true)
             {
                 new AddLine().ShowDialog();
                 var linesList = bl.GetAllBusLines().OrderBy(x => x.LineNumber).ToList();
-                //ListLB.DataContext = linesList;
-                //MainListBox.DataContext = linesList;
                 lineDataGrid.ItemsSource = linesList;
-
             }
             else if (busChB.IsChecked == true)
             {
                 new AddBus().ShowDialog();
                 var busList = bl.GetAllBuses().OrderBy(x => x.License).ToList();
-                //ListB.DataContext = busList;
-                //MainListBox.DataContext = busList;
                 busDataGrid.ItemsSource = busList;
             }
             else if (stationChB.IsChecked == true)
             {
                 new AddStation().ShowDialog();
                 var stationList = bl.GetAllStations().OrderBy(x => x.StationId).ToList();
-                //ListS.DataContext = stationList;
-                //MainListBox.DataContext = stationList;
                 stationDataGrid.ItemsSource = stationList;
             }
             else
@@ -182,33 +194,30 @@ namespace PL.WPF
             }
         }
 
-        private void updateStation_Click(object sender, RoutedEventArgs e)
-        {
-            new UpdateStation(((sender as Button).DataContext) as BO.Station).ShowDialog();
-            var stationList = bl.GetAllStations().OrderBy(x => x.StationId).ToList();
-            //ListS.DataContext = stationList;
-            //MainListBox.DataContext = stationList;
-            stationDataGrid.ItemsSource = stationList;
-        }
+
+        /// <summary>
+        /// Event when object double clicked in list
+        /// opens data window of that object
+        /// </summary>
+        /// <param name="sender">Mouse double Click</param>
+        /// <param name="e"></param>
         private void ListDoubleMouseClick(object sender, MouseButtonEventArgs e)
         {
-            //new BusData(ListB.SelectedItem as BO.Bus).ShowDialog();
             if (busChB.IsChecked == true)
             {
                 new BusData(busDataGrid.SelectedItem as BO.Bus).ShowDialog();
-                //new BusData(MainListBox.SelectedItem as BO.Bus).ShowDialog();
             }
             else if (stationChB.IsChecked == true)
             {
+                //for process of digital panel, because we need to be able to cancell process when closing window
                 BackgroundWorker digitalPanelBw = new BackgroundWorker();
                 digitalPanelBw.WorkerSupportsCancellation = true;
                 new StationData(bl.getStationToShow((stationDataGrid.SelectedItem as BO.Station).StationId), digitalPanelBw).ShowDialog();
-                digitalPanelBw.CancelAsync();
+                digitalPanelBw.CancelAsync();//when window closed cancel backgroundworker's work
             }
             else if (lineChB.IsChecked == true)
             {
                 new LineData(MainWindow.bl.GetBusLineToShow((lineDataGrid.SelectedItem as BO.BusLine).LineNumber)).ShowDialog();
-                //new LineData(MainWindow.bl.GetBusLineToShow((MainListBox.SelectedItem as BO.BusLine).LineNumber)).ShowDialog();
             }
         }
     }

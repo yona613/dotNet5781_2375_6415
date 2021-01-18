@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BLApi\BLFactory.cs" />
+    <Compile Include="BO\LineInTravelSimulator.cs" />
     <Compile Include="LineDepartingSimulation.cs" />
     <Compile Include="LineInTravelSimulator.cs" />
     <Compile Include="BLImp.cs" />

@@ -27,15 +27,24 @@ namespace PL.WPF
         {
             InitializeComponent();
         }
-
+        /// <summary>
+        /// Login for manager
+        /// </summary>
+        /// <param name="sender">Manager login Button</param>
+        /// <param name="e"></param>
         private void ManagerBtn_Click(object sender, RoutedEventArgs e)
         {
             new ManagerLogin().ShowDialog();
         }
-
+        /// <summary>
+        /// Login for User
+        /// </summary>
+        /// <param name="sender">User login button</param>
+        /// <param name="e"></param>
         private void UserBtn_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Not implemented yet ... in buiding !!! !!!");
+            new LineInTravel().ShowDialog();
+            //MessageBox.Show("Not implemented yet ... in buiding !!! !!!");
         }
 
         private void ExitBtn_Click(object sender, RoutedEventArgs e)
@@ -43,6 +52,12 @@ namespace PL.WPF
             Close();
         }
 
+        /// <summary>
+        /// Start Simulator Button click
+        /// starts the simulator and changes display for buttons and simulator clock
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void startBtn_Click(object sender, RoutedEventArgs e)
         {
             if (startTimePicker.SelectedTime != null)
@@ -69,7 +84,12 @@ namespace PL.WPF
                 MessageBox.Show("Choose a Starting Time !");
             }
         }
-
+        /// <summary>
+        /// Event for Stop Simulation clock Button
+        /// Stops simulation and changes display for simulation button and clock
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void stopBtn_Click(object sender, RoutedEventArgs e)
         {
             startTimePicker.IsEnabled = true;
@@ -82,18 +102,28 @@ namespace PL.WPF
             startBtn.IsEnabled = true;
             bl.StopSimulator();
         }
-
+        /// <summary>
+        /// Event do work of simulator background worker
+        /// starts bl simulation and sends function of update of window by argument
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void StartSimulator(object sender, DoWorkEventArgs e)
         {
             TimeSpan myTimeSpan = new TimeSpan();
             int rate = 0;
-            Dispatcher.Invoke(new Action(() => GetValues(out myTimeSpan, out rate)));
+            Dispatcher.Invoke(new Action(() => GetValues(out myTimeSpan, out rate))); //get values for time and rate
             bl.StartSimulator(myTimeSpan, rate, x => {
-            myTimeSpan = x;
-            Dispatcher.BeginInvoke(new Action(() => timeLbl.Content = myTimeSpan.ToString("hh\\:mm\\:ss")));          
+            myTimeSpan = x; //get new time value
+            Dispatcher.BeginInvoke(new Action(() => timeLbl.Content = myTimeSpan.ToString("hh\\:mm\\:ss")));  //update display         
             });
         }
 
+        /// <summary>
+        /// Function to get values of time and rate from display
+        /// </summary>
+        /// <param name="myTimeSpan">Simulator time</param>
+        /// <param name="rate">Simulator rate</param>
         public void GetValues(out TimeSpan myTimeSpan , out int rate)
         {
             myTimeSpan = startTimePicker.SelectedTime.Value.TimeOfDay;
