@@ -43,7 +43,7 @@ namespace PL.WPF
         /// <param name="e"></param>
         private void UserBtn_Click(object sender, RoutedEventArgs e)
         {
-            new LineInTravel().ShowDialog();
+            new UserWindow().ShowDialog();
             //MessageBox.Show("Not implemented yet ... in buiding !!! !!!");
         }
 

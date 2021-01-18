@@ -146,12 +146,13 @@
                 </DataGrid.Columns>
             </DataGrid>
             <DataGrid Grid.Column="1"
-                          Name="digitalPanelDataGrid" 
-                          IsReadOnly="True" 
-                          ItemsSource="{Binding}" 
-                          GridLinesVisibility="None"
-                          AutoGenerateColumns="False"
-                          >
+                      Name="digitalPanelDataGrid" 
+                      IsReadOnly="True" 
+                      ItemsSource="{Binding}" 
+                      GridLinesVisibility="None"
+                      AutoGenerateColumns="False"
+                      SelectionChanged="digitalPanelDataGrid_SelectionChanged"
+                      >
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Line :"
                                         Binding="{Binding Path=LineNumber}"

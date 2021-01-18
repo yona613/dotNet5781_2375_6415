@@ -163,7 +163,7 @@
                       VerticalContentAlignment="Center"
                       Content="User" FontSize="36" FontFamily="Arial" Margin="50,0,0,0" />-->
         </Grid>
-            <DataGrid Grid.Column="1"                       
+        <DataGrid Grid.Column="1"                       
                       ColumnHeaderHeight="50"
                       ColumnWidth="*"
                       Visibility="Hidden" 
@@ -174,35 +174,35 @@
                       GridLinesVisibility="None"
                       MouseDoubleClick="ListDoubleMouseClick"
                       >
-                <DataGrid.Columns>
-                    <DataGridTextColumn x:Name="lineNumber"
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Name="lineNumber"
                                         Header="Line Number"
                                         Binding="{Binding Path=LineNumber}"
                                         FontSize="20"
                                         />
-                    <DataGridTemplateColumn>
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button Name="updateLine"
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Name="updateLine"
                                         Content="Update"
                                         Click="UpdateLine_Click"
                                         />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTemplateColumn>
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button Name="deleteLine"
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Name="deleteLine"
                                         Content="Delete"
                                         Click="DeleteLine_Click"
                                         />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-            </DataGrid>
-            <DataGrid Grid.Column="1" 
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <DataGrid Grid.Column="1" 
                       ColumnWidth="*"
                       Visibility="Hidden" 
                       Name="busDataGrid" 
@@ -212,28 +212,28 @@
                       GridLinesVisibility="None"
                       MouseDoubleClick="ListDoubleMouseClick"
                       >
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="License"
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="License"
                                         Binding="{Binding Path=LicenseToShow}"
                                         FontSize="20"
                                         />
-                    <DataGridTextColumn Header="Status"
+                <DataGridTextColumn Header="Status"
                                         Binding="{Binding Path=BusStatus}"
                                         FontSize="20"
                                         />
-                    <DataGridTemplateColumn>
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button Name="deleteBus"
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Name="deleteBus"
                                         Content="Delete"
                                         Click="DeleteBus_Click"
                                         />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-            </DataGrid>
-            <DataGrid Grid.Column="1" 
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <DataGrid Grid.Column="1" 
                       Visibility="Hidden"
                       ColumnWidth="*"
                       Name="stationDataGrid" 
@@ -243,39 +243,39 @@
                       GridLinesVisibility="None"
                       MouseDoubleClick="ListDoubleMouseClick"
                       >
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Number"
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Number"
                                         Binding="{Binding Path=StationId}"
                                         FontSize="20"
                                         />
-                    <DataGridTextColumn Header="Name"
+                <DataGridTextColumn Header="Name"
                                         Binding="{Binding Path=Name}"
                                         FontSize="20"
                                         />
-                    <DataGridTemplateColumn>
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button Name="updateStation"
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Name="updateStation"
                                         Content="Update"
                                         Click="updateStation_Click"
                                         />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTemplateColumn>
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button Name="deleteStation"
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Name="deleteStation"
                                         Content="Delete"
                                         Click="DeleteStation_Click"
                                         />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-            </DataGrid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
 
-            <!--<ListBox Name="ListLB" MouseDoubleClick="ListLB_MouseDoubleClick" ItemsSource="{Binding}" ItemTemplate="{ StaticResource ListLines}" Visibility="Collapsed"/>
+        <!--<ListBox Name="ListLB" MouseDoubleClick="ListLB_MouseDoubleClick" ItemsSource="{Binding}" ItemTemplate="{ StaticResource ListLines}" Visibility="Collapsed"/>
             <ListBox Name="ListB" MouseDoubleClick="ListB_MouseDoubleClick" ItemsSource="{Binding}" ItemTemplate="{ StaticResource ListBuses}" Visibility="Collapsed"/>
             <ListBox Name="ListS" MouseDoubleClick="ListS_MouseDoubleClick" ItemsSource="{Binding}" ItemTemplate="{ StaticResource ListStation}" Visibility="Collapsed"/>-->
         <Button Name="AddBtn"                           
