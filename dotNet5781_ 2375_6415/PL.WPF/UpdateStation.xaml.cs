@@ -1,18 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Microsoft.Maps.MapControl.WPF;
-    
+
 namespace PL.WPF
 {
     /// <summary>
@@ -28,6 +18,12 @@ namespace PL.WPF
             mainGrid.DataContext = tmpStation;
         }
 
+        /// <summary>
+        /// Event when update Button clicked
+        /// Updates station by sending update to bl
+        /// </summary>
+        /// <param name="sender">Update button</param>
+        /// <param name="e"></param>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -41,6 +37,13 @@ namespace PL.WPF
             }
         }
 
+
+        /// <summary>
+        /// Implementation of double click on map
+        /// get coordinates of mouse double click and updates station coordinates
+        /// </summary>
+        /// <param name="sender">Mouse double click</param>
+        /// <param name="e"></param>
         private void MapWithPushpins_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             // Disables the default mouse double-click action.

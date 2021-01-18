@@ -27,7 +27,7 @@ namespace BL
 
         IDL dal = DalFactory.GetDal();
 
-        List<LineInTravelSimulator> lineInTravelSimulators = new List<LineInTravelSimulator>() { };
+        List<LineInTravelSimulator> lineInTravelSimulators;// = new List<LineInTravelSimulator>() { };
 
         Random r = new Random(DateTime.Now.Millisecond);
 
@@ -1441,6 +1441,7 @@ namespace BL
             simulatorClock.Rate = rate;
             simulatorClock.stopWatch.Restart();
             simulatorClock.ClockObserver += updateTime;
+            simulatorClock.Time = startTime;
             SendLinesToTravel();
             while (simulatorClock.Cancel != true)
             {
@@ -1483,7 +1484,8 @@ namespace BL
 
         void SendLinesToTravel()
         {
-            foreach (var line in GetAllBusLines())
+            lineInTravelSimulators = new List<LineInTravelSimulator>() { };
+            foreach (var line in GetAllBusLines().OrderBy(x => x.LineNumber))
             {
                 foreach (var lineDeparting in GetAllLineDepartingBy(x => x.LineNumber == line.LineNumber).OrderBy(x=> x.StartTime))
                 {
@@ -1584,5 +1586,12 @@ namespace BL
         }
 
         #endregion
+
+       public IEnumerable<BO.LineInTravelSimulator> GetLineInTravel()
+        {
+            return from line in lineInTravelSimulators
+                   select (BO.LineInTravelSimulator)line.CopyPropertiesToNew(typeof(BO.LineInTravelSimulator));
+        }
+
     }
 }

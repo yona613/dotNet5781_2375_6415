@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using System.Device.Location;
 using Microsoft.Maps.MapControl.WPF;
 using System.Text.RegularExpressions;
+using BLApi;
 
 namespace PL.WPF
 {
@@ -21,28 +22,38 @@ namespace PL.WPF
     /// Interaction logic for AddLineStation.xaml
     /// </summary>
     public partial class AddLineStation : Window
-
     {
+        //station to get input from window
         BO.Station myStation = null;
         BO.LineToShow myLine;
+        IBL bl = BLFactory.GetBL();
+
         public AddLineStation(BO.LineToShow tmpLine)
         {
             InitializeComponent();
+            //get all stations we can add to line
             stationCbb.ItemsSource = MainWindow.bl.GetAllStationsToAdd(tmpLine.LineNumber);
             myLine = tmpLine;
+            //get indexes we can add to line
             indexCb.ItemsSource = MainWindow.bl.GetAllIndexesToAdd(myLine.LineNumber);
         }
 
+        /// <summary>
+        /// Event when add button clicked
+        /// adds station to line
+        /// if new station then adds physical station to data
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (stationCb.IsChecked == true)
+            if (stationCb.IsChecked == true) //if new physical station
             {
                 try
                 {
-                    //myStation.Coordinates = new Location() { Longitude = double.Parse(LongitudeTb.Text), Latitude = double.Parse(LatitudeTb.Text) };
-                    MainWindow.bl.AddStation(myStation);
+                    bl.AddStation(myStation); //add station to data
                     BO.LineStation lineStation = new BO.LineStation() { Index = (int)indexCb.SelectedItem, LineNumber = myLine.LineNumber, StationNumber = myStation.StationId };
-                    MainWindow.bl.AddStationToLine(lineStation);
+                    bl.AddStationToLine(lineStation); //add line station to line
                     Close();
                 }
                 catch (BO.BOBadStationException stationException)
@@ -80,7 +91,8 @@ namespace PL.WPF
             {
                 try
                 {
-                    MainWindow.bl.AddStationToLine(new BO.LineStation() { Index = (int)indexCb.SelectedItem, LineNumber = myLine.LineNumber, StationNumber = (stationCbb.SelectedItem as BO.StationToAdd).StationId });
+                    //only adds line station
+                    bl.AddStationToLine(new BO.LineStation() { Index = (int)indexCb.SelectedItem, LineNumber = myLine.LineNumber, StationNumber = (stationCbb.SelectedItem as BO.StationToAdd).StationId });
                     Close();
                 }
                 catch(BO.BOBadLineStationException lineStationException)
@@ -94,6 +106,12 @@ namespace PL.WPF
             }
         }
 
+        /// <summary>
+        /// Event when new station checkbox checked
+        /// enables input of new station data
+        /// </summary>
+        /// <param name="sender">New station checkbox</param>
+        /// <param name="e"></param>
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
             myStation = new BO.Station();
@@ -104,6 +122,12 @@ namespace PL.WPF
             newStationGrid.DataContext = myStation;
         }
 
+        /// <summary>
+        /// Event when new station checkbox unchecked
+        /// disables input of new station data
+        /// </summary>
+        /// <param name="sender">New station checkbox</param>
+        /// <param name="e"></param>
         private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
             stationCbb.IsEnabled = true;
@@ -111,25 +135,18 @@ namespace PL.WPF
             myStation = null;
         }
 
-        private void _PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            if (e.Text != "\r") //checks that key wasn't enter
-            {
-                Regex myReg = new Regex("[^0-9]+"); //gets regular expression that allows only digits
-                e.Handled = myReg.IsMatch(e.Text); //checks taht key entered is regular expression
-            }
-            if (e.Handled) //if not regular expression
-            {
-                MessageBox.Show($"Wrong Input !!!! \n {e.Text} is not a digit !!");
-            }
-        }
-
+        /// <summary>
+        /// Implementation of double click on map
+        /// get coordinates of mouse double click and updates station coordinates
+        /// </summary>
+        /// <param name="sender">Mouse double click</param>
+        /// <param name="e"></param>
         private void MapWithPushpins_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             // Disables the default mouse double-click action.
             e.Handled = true;
 
-            // Determin the location to place the pushpin at on the map.
+            // Determine the location to place the pushpin at on the map.
 
             //Get the mouse click coordinates
             Point mousePosition = e.GetPosition(myMap);

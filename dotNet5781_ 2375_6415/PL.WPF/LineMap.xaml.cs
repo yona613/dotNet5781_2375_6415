@@ -1,17 +1,6 @@
 ﻿using Microsoft.Maps.MapControl.WPF;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace PL.WPF
 {
@@ -25,6 +14,8 @@ namespace PL.WPF
             InitializeComponent();
             mainGrid.DataContext = tmpLine;
             myMap.Center = tmpLine.LineStations.ElementAt(tmpLine.LineStations.Count() / 2).Coordinates;
+
+            //creates Line's route on the map
             MapPolyline polyline = new MapPolyline();
             polyline.Stroke = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Blue);
             polyline.Locations = new LocationCollection() { };

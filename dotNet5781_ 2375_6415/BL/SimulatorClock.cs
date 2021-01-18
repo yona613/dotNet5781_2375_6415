@@ -8,9 +8,12 @@ using System.Threading.Tasks;
 namespace BL
 {
     public delegate void Notify();
+
+    /// <summary>
+    /// Class used for simulation of clock 
+    /// </summary>
     class SimulatorClock
     {
-
         #region Singleton
         static readonly SimulatorClock instance = new SimulatorClock();
 
@@ -43,12 +46,12 @@ namespace BL
 
         public event Action<TimeSpan> ClockObserver
         {
-            add 
+            add //only add one function at a time
             {
-                ClockObserver -= value;
+                ClockObserver -= value; //delete all functions
                 clockObserver += value; 
             }
-            remove
+            remove  //delete all functions
             {
                 if (clockObserver != null)
                 {

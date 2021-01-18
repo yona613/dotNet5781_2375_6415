@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BLApi;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,6 +20,7 @@ namespace PL.WPF
     /// </summary>
     public partial class UpdateLine : Window
     {
+        IBL bl = BLFactory.GetBL();
         int lineNumber;
         BO.LineToShow myLine;
         public UpdateLine(BO.LineToShow tmpLine)
@@ -31,22 +33,33 @@ namespace PL.WPF
             lineNumber = tmpLine.LineNumber;    
         }
 
+        /// <summary>
+        /// Event when Add station Button clicked
+        /// opens add station window for that specific line
+        /// </summary>
+        /// <param name="sender">Add station Button</param>
+        /// <param name="e"></param>
         private void addSttBtn_Click(object sender, RoutedEventArgs e)
         {
             new AddLineStation(myLine).ShowDialog();
-            myLine = MainWindow.bl.GetBusLineToShow(lineNumber);
+            myLine = bl.GetBusLineToShow(lineNumber);
             MainGrid.DataContext = myLine;
-            //stationsList.DataContext = MainWindow.bl.GetAllStationsOfLine(myLine.LineNumber);
         }
 
+
+        /// <summary>
+        /// Event when Delete station Button clicked
+        /// deletes the station from the line
+        /// </summary>
+        /// <param name="sender">Delete station Button</param>
+        /// <param name="e"></param>
         private void deleteStt_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                MainWindow.bl.DeleteLineStation(((sender as Button).DataContext as BO.LineStationToShow).StationId, myLine.LineNumber);
-                myLine = MainWindow.bl.GetBusLineToShow(lineNumber);
+                bl.DeleteLineStation(((sender as Button).DataContext as BO.LineStationToShow).StationId, myLine.LineNumber);
+                myLine = bl.GetBusLineToShow(lineNumber);
                 MainGrid.DataContext = myLine;
-                //stationsList.DataContext = MainWindow.bl.GetAllStationsOfLine(myLine.LineNumber);
             }
             catch (BO.BOLineDeleteException lineException)
             {
@@ -59,20 +72,33 @@ namespace PL.WPF
             }
         }
 
+        /// <summary>
+        /// Event when Add Line Departing Button clicked
+        /// opens add Line Departing window for that specific line
+        /// </summary>
+        /// <param name="sender">Add Line Departing Button</param>
+        /// <param name="e"></param>
         private void addLineDepartingBtn_Click(object sender, RoutedEventArgs e)
         {
             new AddLineDeparting(myLine.LineNumber).ShowDialog();
-            myLine = MainWindow.bl.GetBusLineToShow(lineNumber);
+            myLine = bl.GetBusLineToShow(lineNumber);
             MainGrid.DataContext = myLine;
-            //LineDepartingList.DataContext = MainWindow.bl.GetAllLineDepartingBy(x => x.LineNumber == myLine.LineNumber).OrderBy(x => x.StartTime).ToList();
         }
 
+
+        /// <summary>
+        /// Evenet when apply button clicked
+        /// Updates line by sending update to bl
+        /// closes the window
+        /// </summary>
+        /// <param name="sender">Apply button</param>
+        /// <param name="e"></param>
         private void applyBtn_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 myLine.LineArea = (BO.Area)(int)areaCboBox.SelectedItem;
-                MainWindow.bl.UpdateLine(myLine, lineNumber);
+                bl.UpdateLine(myLine, lineNumber);
                 Close();
             }
             catch (BO.BOBadLineException lineException)
@@ -80,12 +106,15 @@ namespace PL.WPF
                 myLine.LineNumber = lineNumber;
                 MessageBox.Show(lineException.Message);
             }
-            //catch (Exception exception)
-            //{
-            //    MessageBox.Show(exception.Message);
-            //}
         }
 
+
+        /// <summary>
+        /// Event when Delete Line Departing Button clicked
+        /// deletes Line Departing from that line
+        /// </summary>
+        /// <param name="sender">Delete Line Departing Button</param>
+        /// <param name="e"></param>
         private void deleteLineDeparting_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -93,7 +122,6 @@ namespace PL.WPF
                 MainWindow.bl.DeleteLineDeparting(myLine.LineNumber, ((sender as Button).DataContext as BO.LineDeparting).StartTime);
                 myLine = MainWindow.bl.GetBusLineToShow(lineNumber);
                 MainGrid.DataContext = myLine;
-                //LineDepartingList.DataContext = MainWindow.bl.GetAllLineDepartingBy(x => x.LineNumber == myLine.LineNumber).OrderBy(x => x.StartTime).ToList();
             }
             catch (Exception except)
             {
@@ -101,18 +129,29 @@ namespace PL.WPF
             }
         }
 
+        /// <summary>
+        /// Event when Update Line Departing Button clicked
+        /// opens update line departing window
+        /// </summary>
+        /// <param name="sender">Update Line Departing Button</param>
+        /// <param name="e"></param>
         private void updateLineDepartingBtn_Click(object sender, RoutedEventArgs e)
         {
             new UpdateLineDeparting((sender as Button).DataContext as BO.LineDeparting).ShowDialog();
-            myLine = MainWindow.bl.GetBusLineToShow(lineNumber);
+            myLine = bl.GetBusLineToShow(lineNumber);
             MainGrid.DataContext = myLine;
-            //LineDepartingList.DataContext = MainWindow.bl.GetAllLineDepartingBy(x => x.LineNumber == myLine.LineNumber).OrderBy(x => x.StartTime).ToList();
         }
 
+        /// <summary>
+        /// Event when update distance Button clicked
+        /// opens update distance window
+        /// </summary>
+        /// <param name="sender">update distance Button</param>
+        /// <param name="e"></param>
         private void distanceBtn_Click(object sender, RoutedEventArgs e)
         {
             new DistanceTimeInput((((sender as Button).DataContext) as BO.LineStationToShow), lineNumber).ShowDialog();
-            myLine = MainWindow.bl.GetBusLineToShow(lineNumber);
+            myLine = bl.GetBusLineToShow(lineNumber);
             MainGrid.DataContext = myLine;
         }
     }

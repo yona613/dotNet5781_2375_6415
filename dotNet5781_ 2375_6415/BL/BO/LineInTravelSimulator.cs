@@ -4,13 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BL
+namespace BO
 {
-    /// <summary>
-    /// Class for simulation of line in travel
-    /// gets all data needed in the process
-    /// </summary>
-    class LineInTravelSimulator
+    public class LineInTravelSimulator
     {
         public int LineNumber { get; set; }
         public string LastStation { get; set; }

@@ -117,5 +117,6 @@ namespace BLApi
         void SetStationPanel(StationToShow station, Action<LineTiming> updatePanel);
         bool IsSimulator();
         #endregion
+        IEnumerable<LineInTravelSimulator> GetLineInTravel();
     }
 }

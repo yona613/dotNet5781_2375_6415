@@ -7,6 +7,10 @@ using BO;
 
 namespace BL
 {
+    /// <summary>
+    /// Class for simulation of line departing
+    /// gets all data needed in the process
+    /// </summary>
     class LineDepartingSimulation
     {
         public int LineNumber { get; set; }

@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BLApi;
+using System;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace PL.WPF
 {
@@ -19,6 +9,7 @@ namespace PL.WPF
     /// </summary>
     public partial class UpdateLineDeparting : Window
     {
+        IBL bl = BLFactory.GetBL();
         BO.LineDeparting myLineDeparting;
         public UpdateLineDeparting(BO.LineDeparting tmpLineDeparting)
         {
@@ -27,11 +18,17 @@ namespace PL.WPF
             formGrid.DataContext = tmpLineDeparting;
         }
 
+        /// <summary>
+        /// Event when Apply button clicked
+        /// Updates Line departing by sending update to bl
+        /// </summary>
+        /// <param name="sender">Update Button</param>
+        /// <param name="e"></param>
         private void applyBtn_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                MainWindow.bl.UpdateLineDeparting(myLineDeparting);
+                bl.UpdateLineDeparting(myLineDeparting);
                 Close();
             }
             catch (BO.BOStopTimeException dataException)
