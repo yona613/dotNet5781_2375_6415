@@ -1,18 +1,18 @@
-<?xml version="1.0"?>
-<ArrayOfLineDeparting xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfLineDeparting>
   <LineDeparting>
     <LineNumber>1</LineNumber>
     <StartTime>PT7H</StartTime>
     <Frequency>PT15M</Frequency>
     <StopTime>PT22H</StopTime>
-    <MyActivity>Off</MyActivity>
+    <MyActivity>On</MyActivity>
   </LineDeparting>
   <LineDeparting>
     <LineNumber>2</LineNumber>
     <StartTime>PT7H</StartTime>
     <Frequency>PT15M</Frequency>
     <StopTime>PT22H</StopTime>
-    <MyActivity>Off</MyActivity>
+    <MyActivity>On</MyActivity>
   </LineDeparting>
   <LineDeparting>
     <LineNumber>3</LineNumber>
@@ -26,7 +26,7 @@
     <StartTime>PT7H</StartTime>
     <Frequency>PT15M</Frequency>
     <StopTime>PT22H</StopTime>
-    <MyActivity>Off</MyActivity>
+    <MyActivity>On</MyActivity>
   </LineDeparting>
   <LineDeparting>
     <LineNumber>5</LineNumber>
@@ -68,48 +68,6 @@
     <StartTime>PT7H</StartTime>
     <Frequency>PT15M</Frequency>
     <StopTime>PT22H</StopTime>
-    <MyActivity>On</MyActivity>
-  </LineDeparting>
-  <LineDeparting>
-    <LineNumber>2</LineNumber>
-    <StartTime>PT7H</StartTime>
-    <Frequency>PT15M</Frequency>
-    <StopTime>PT22H</StopTime>
-    <MyActivity>Off</MyActivity>
-  </LineDeparting>
-  <LineDeparting>
-    <LineNumber>4</LineNumber>
-    <StartTime>PT7H</StartTime>
-    <Frequency>PT15M</Frequency>
-    <StopTime>PT21H</StopTime>
-    <MyActivity>Off</MyActivity>
-  </LineDeparting>
-  <LineDeparting>
-    <LineNumber>4</LineNumber>
-    <StartTime>PT7H</StartTime>
-    <Frequency>PT15M</Frequency>
-    <StopTime>PT21H</StopTime>
-    <MyActivity>Off</MyActivity>
-  </LineDeparting>
-  <LineDeparting>
-    <LineNumber>1</LineNumber>
-    <StartTime>PT7H</StartTime>
-    <Frequency>PT15M</Frequency>
-    <StopTime>PT22H</StopTime>
-    <MyActivity>On</MyActivity>
-  </LineDeparting>
-  <LineDeparting>
-    <LineNumber>2</LineNumber>
-    <StartTime>PT7H</StartTime>
-    <Frequency>PT15M</Frequency>
-    <StopTime>PT22H</StopTime>
-    <MyActivity>On</MyActivity>
-  </LineDeparting>
-  <LineDeparting>
-    <LineNumber>4</LineNumber>
-    <StartTime>PT7H</StartTime>
-    <Frequency>PT15M</Frequency>
-    <StopTime>PT21H</StopTime>
     <MyActivity>On</MyActivity>
   </LineDeparting>
 </ArrayOfLineDeparting>

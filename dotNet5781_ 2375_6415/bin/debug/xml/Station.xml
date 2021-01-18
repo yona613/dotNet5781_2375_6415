@@ -8,7 +8,7 @@
       <Altitude>0</Altitude>
       <AltitudeReference>Ground</AltitudeReference>
     </Coordinates>
-    <Name>Bar Lev / Ben Yehuda School</Name>
+    <Name>Bar Lev School/ Ben Yehuda</Name>
     <Address>Ben Yehuda 76</Address>
     <Invalid>true</Invalid>
     <Roof>true</Roof>
@@ -38,8 +38,8 @@
       <Altitude>0</Altitude>
       <AltitudeReference>Ground</AltitudeReference>
     </Coordinates>
-    <Name>The surge / fishermen</Name>
-    <Address>Hanarshol 30</Address>
+    <Name>Hanachshol / Hadayagim</Name>
+    <Address>Hanachshol 30</Address>
     <Invalid>true</Invalid>
     <Roof>true</Roof>
     <DigitalPanel>true</DigitalPanel>
@@ -68,7 +68,7 @@
       <Altitude>0</Altitude>
       <AltitudeReference>Ground</AltitudeReference>
     </Coordinates>
-    <Name>A. Lod Central / Download</Name>
+    <Name>Tachana Merkazit Lod / Horada</Name>
     <Address>Merkazit</Address>
     <Invalid>true</Invalid>
     <Roof>true</Roof>
@@ -88,7 +88,7 @@
     <Invalid>true</Invalid>
     <Roof>true</Roof>
     <DigitalPanel>true</DigitalPanel>
-    <MyActivity>Off</MyActivity>
+    <MyActivity>On</MyActivity>
   </Station>
   <Station>
     <StationId>38838</StationId>
@@ -113,12 +113,12 @@
       <Altitude>0</Altitude>
       <AltitudeReference>Ground</AltitudeReference>
     </Coordinates>
-    <Name>The boys / Eli Cohen</Name>
+    <Name>Habanim / Eli Cohen</Name>
     <Address>Habanim 4</Address>
     <Invalid>true</Invalid>
     <Roof>true</Roof>
     <DigitalPanel>true</DigitalPanel>
-    <MyActivity>Off</MyActivity>
+    <MyActivity>On</MyActivity>
   </Station>
   <Station>
     <StationId>38840</StationId>
@@ -128,12 +128,12 @@
       <Altitude>0</Altitude>
       <AltitudeReference>Ground</AltitudeReference>
     </Coordinates>
-    <Name>Weizmann / The Boys</Name>
+    <Name>Weizmann / Habanim</Name>
     <Address>Weizmann 11</Address>
     <Invalid>true</Invalid>
     <Roof>true</Roof>
     <DigitalPanel>true</DigitalPanel>
-    <MyActivity>Off</MyActivity>
+    <MyActivity>On</MyActivity>
   </Station>
   <Station>
     <StationId>38841</StationId>
@@ -143,8 +143,8 @@
       <Altitude>0</Altitude>
       <AltitudeReference>Ground</AltitudeReference>
     </Coordinates>
-    <Name>The iris / anemone</Name>
-    <Address>Haiross 13</Address>
+    <Name>Ha'irus / Ha'kalanit</Name>
+    <Address>Hairus 13</Address>
     <Invalid>true</Invalid>
     <Roof>true</Roof>
     <DigitalPanel>true</DigitalPanel>
@@ -158,7 +158,7 @@
       <Altitude>0</Altitude>
       <AltitudeReference>Ground</AltitudeReference>
     </Coordinates>
-    <Name>The anemone / daffodil</Name>
+    <Name>Ha'kalanit / Ha'narkis</Name>
     <Address>Habalanit</Address>
     <Invalid>true</Invalid>
     <Roof>true</Roof>
@@ -173,7 +173,7 @@
       <Altitude>0</Altitude>
       <AltitudeReference>Ground</AltitudeReference>
     </Coordinates>
-    <Name>Eli Cohen / Ghetto Fighters</Name>
+    <Name>Eli Cohen / Lo'hame Hagetaot</Name>
     <Address>Eli Cohen 62</Address>
     <Invalid>true</Invalid>
     <Roof>true</Roof>
@@ -188,7 +188,7 @@
       <Altitude>0</Altitude>
       <AltitudeReference>Ground</AltitudeReference>
     </Coordinates>
-    <Name>Shabazi / Shabbat brothers</Name>
+    <Name>Shabazi / Shevet Achim</Name>
     <Address>Shabazi 51</Address>
     <Invalid>true</Invalid>
     <Roof>true</Roof>
@@ -263,7 +263,7 @@
       <Altitude>0</Altitude>
       <AltitudeReference>Ground</AltitudeReference>
     </Coordinates>
-    <Name>Holtzman / Science</Name>
+    <Name>Holtzman / Hamada</Name>
     <Address>Haim Heltzman 2</Address>
     <Invalid>true</Invalid>
     <Roof>true</Roof>
@@ -279,7 +279,7 @@
       <AltitudeReference>Ground</AltitudeReference>
     </Coordinates>
     <Name>Zrifin Camp / Club</Name>
-    <Address>Tzrifim</Address>
+    <Address>Tzrifin</Address>
     <Invalid>true</Invalid>
     <Roof>true</Roof>
     <DigitalPanel>true</DigitalPanel>
@@ -323,8 +323,8 @@
       <Altitude>0</Altitude>
       <AltitudeReference>Ground</AltitudeReference>
     </Coordinates>
-    <Name>The prairie</Name>
-    <Address>Haarava</Address>
+    <Name>Ha'arava</Name>
+    <Address>Ha'arava</Address>
     <Invalid>true</Invalid>
     <Roof>true</Roof>
     <DigitalPanel>true</DigitalPanel>
@@ -338,8 +338,8 @@
       <Altitude>0</Altitude>
       <AltitudeReference>Ground</AltitudeReference>
     </Coordinates>
-    <Name>Introduction to the vine / Slope of the fig</Name>
-    <Address>Mevo Haguefen</Address>
+    <Name>Mevo Hagefen / Morad Hate'ena</Name>
+    <Address>Mevo Hagefen</Address>
     <Invalid>true</Invalid>
     <Roof>true</Roof>
     <DigitalPanel>true</DigitalPanel>
@@ -353,8 +353,8 @@
       <Altitude>0</Altitude>
       <AltitudeReference>Ground</AltitudeReference>
     </Coordinates>
-    <Name>Introduction to the vine / extension</Name>
-    <Address>Mevo Haguefen</Address>
+    <Name>Mevo Hagefen / Haharchava</Name>
+    <Address>Mevo Hagefen</Address>
     <Invalid>true</Invalid>
     <Roof>true</Roof>
     <DigitalPanel>true</DigitalPanel>
@@ -368,8 +368,8 @@
       <Altitude>0</Altitude>
       <AltitudeReference>Ground</AltitudeReference>
     </Coordinates>
-    <Name>The extension a</Name>
-    <Address>Haarchava</Address>
+    <Name>Haharchava a</Name>
+    <Address>Harchava</Address>
     <Invalid>true</Invalid>
     <Roof>true</Roof>
     <DigitalPanel>true</DigitalPanel>
@@ -383,8 +383,8 @@
       <Altitude>0</Altitude>
       <AltitudeReference>Ground</AltitudeReference>
     </Coordinates>
-    <Name>The extension b</Name>
-    <Address>Haarchava</Address>
+    <Name>Haharchava b</Name>
+    <Address>Harchava</Address>
     <Invalid>true</Invalid>
     <Roof>true</Roof>
     <DigitalPanel>true</DigitalPanel>
@@ -398,8 +398,8 @@
       <Altitude>0</Altitude>
       <AltitudeReference>Ground</AltitudeReference>
     </Coordinates>
-    <Name>The extension / veterans</Name>
-    <Address>Haarchava</Address>
+    <Name>Haharchava / Havatikim</Name>
+    <Address>Harchava</Address>
     <Invalid>true</Invalid>
     <Roof>true</Roof>
     <DigitalPanel>true</DigitalPanel>
@@ -413,8 +413,8 @@
       <Altitude>0</Altitude>
       <AltitudeReference>Ground</AltitudeReference>
     </Coordinates>
-    <Name>Airports / Aliyah Authority</Name>
-    <Address>Sderot Haaliya</Address>
+    <Name>Airports / Ha'aliyah</Name>
+    <Address>Sderot Ha'aliya</Address>
     <Invalid>true</Invalid>
     <Roof>true</Roof>
     <DigitalPanel>true</DigitalPanel>
@@ -428,7 +428,7 @@
       <Altitude>0</Altitude>
       <AltitudeReference>Ground</AltitudeReference>
     </Coordinates>
-    <Name>Wing / Cypress</Name>
+    <Name>Kanaf/ Brosh</Name>
     <Address>Kanaf</Address>
     <Invalid>true</Invalid>
     <Roof>true</Roof>
@@ -443,8 +443,8 @@
       <Altitude>0</Altitude>
       <AltitudeReference>Ground</AltitudeReference>
     </Coordinates>
-    <Name>The gang / Dov Hoz</Name>
-    <Address>Hachaboura 24</Address>
+    <Name>Hachavura / Dov Hoz</Name>
+    <Address>Hachavura 24</Address>
     <Invalid>true</Invalid>
     <Roof>true</Roof>
     <DigitalPanel>true</DigitalPanel>
@@ -473,7 +473,7 @@
       <Altitude>0</Altitude>
       <AltitudeReference>Ground</AltitudeReference>
     </Coordinates>
-    <Name>First / Route 5700</Name>
+    <Name>Harishonim / Kvish 5700</Name>
     <Address>Hamigdal 13</Address>
     <Invalid>true</Invalid>
     <Roof>true</Roof>
@@ -488,7 +488,7 @@
       <Altitude>0</Altitude>
       <AltitudeReference>Ground</AltitudeReference>
     </Coordinates>
-    <Name>The genius Ben Ish Chai / Ceylon</Name>
+    <Name>Ben Ish Chai / Tse'elon</Name>
     <Address>Rechovot</Address>
     <Invalid>true</Invalid>
     <Roof>true</Roof>
@@ -504,7 +504,7 @@
       <AltitudeReference>Ground</AltitudeReference>
     </Coordinates>
     <Name>Okashi / Levi Eshkol</Name>
-    <Address>Israel Okshi 4</Address>
+    <Address>Israel Okashi 4</Address>
     <Invalid>true</Invalid>
     <Roof>true</Roof>
     <DigitalPanel>true</DigitalPanel>
@@ -518,7 +518,7 @@
       <Altitude>0</Altitude>
       <AltitudeReference>Ground</AltitudeReference>
     </Coordinates>
-    <Name>Rest and estate / Yehuda Gorodisky</Name>
+    <Name>Menuch Venachala/ Yehuda Gorodisky</Name>
     <Address>Menucha Venachala 31</Address>
     <Invalid>true</Invalid>
     <Roof>true</Roof>
@@ -563,7 +563,7 @@
       <Altitude>0</Altitude>
       <AltitudeReference>Ground</AltitudeReference>
     </Coordinates>
-    <Name>Through the Park / Rabbi Neria</Name>
+    <Name>Derech Hapark / Rabbi Neria</Name>
     <Address>Derech Hapark 20</Address>
     <Invalid>true</Invalid>
     <Roof>true</Roof>
@@ -578,8 +578,8 @@
       <Altitude>0</Altitude>
       <AltitudeReference>Ground</AltitudeReference>
     </Coordinates>
-    <Name>The fig / vine</Name>
-    <Address>Hateena</Address>
+    <Name>Hate'ena / Hagefen</Name>
+    <Address>Hate'ena</Address>
     <Invalid>true</Invalid>
     <Roof>true</Roof>
     <DigitalPanel>true</DigitalPanel>
@@ -593,8 +593,8 @@
       <Altitude>0</Altitude>
       <AltitudeReference>Ground</AltitudeReference>
     </Coordinates>
-    <Name>The fig / oak</Name>
-    <Address>Hateena</Address>
+    <Name>Hagefen / Ha'alon</Name>
+    <Address>Hate'ena</Address>
     <Invalid>true</Invalid>
     <Roof>true</Roof>
     <DigitalPanel>true</DigitalPanel>
@@ -608,7 +608,7 @@
       <Altitude>0</Altitude>
       <AltitudeReference>Ground</AltitudeReference>
     </Coordinates>
-    <Name>Through the Flowers / Jasmine</Name>
+    <Name>Derech Haprachim / Yasmin</Name>
     <Address>Derech Haprachim 46</Address>
     <Invalid>true</Invalid>
     <Roof>true</Roof>
@@ -668,7 +668,7 @@
       <Altitude>0</Altitude>
       <AltitudeReference>Ground</AltitudeReference>
     </Coordinates>
-    <Name>Shades / Cedar School</Name>
+    <Name>Gvanim School / Erez</Name>
     <Address>Erez 2</Address>
     <Invalid>true</Invalid>
     <Roof>true</Roof>
@@ -683,8 +683,8 @@
       <Altitude>0</Altitude>
       <AltitudeReference>Ground</AltitudeReference>
     </Coordinates>
-    <Name>Through the trees / oak</Name>
-    <Address>Derech Hailanot 13</Address>
+    <Name>Derech Ha'ilanot / Ha'alon</Name>
+    <Address>Derech Ha'ilanot 13</Address>
     <Invalid>true</Invalid>
     <Roof>true</Roof>
     <DigitalPanel>true</DigitalPanel>
@@ -698,8 +698,8 @@
       <Altitude>0</Altitude>
       <AltitudeReference>Ground</AltitudeReference>
     </Coordinates>
-    <Name>Through the Trees / Menachem Begin</Name>
-    <Address>Haatsmaout 1</Address>
+    <Name>Derech Ha'ilanot / Menachem Begin</Name>
+    <Address>Ha'atsmaout 1</Address>
     <Invalid>true</Invalid>
     <Roof>true</Roof>
     <DigitalPanel>true</DigitalPanel>
@@ -713,7 +713,7 @@
       <Altitude>0</Altitude>
       <AltitudeReference>Ground</AltitudeReference>
     </Coordinates>
-    <Name>Independence / Weizmann</Name>
+    <Name>Ha'atsmaut / Weizmann</Name>
     <Address>Veitzman 19</Address>
     <Invalid>true</Invalid>
     <Roof>true</Roof>
@@ -728,8 +728,8 @@
       <Altitude>0</Altitude>
       <AltitudeReference>Ground</AltitudeReference>
     </Coordinates>
-    <Name>Weizmann / The Magic Rug</Name>
-    <Address>Tzaala 25</Address>
+    <Name>Weizmann / Marvad Haksamim</Name>
+    <Address>Tza'ala 25</Address>
     <Invalid>true</Invalid>
     <Roof>true</Roof>
     <DigitalPanel>true</DigitalPanel>
@@ -743,83 +743,8 @@
       <Altitude>0</Altitude>
       <AltitudeReference>Ground</AltitudeReference>
     </Coordinates>
-    <Name>Tzala / Coral</Name>
-    <Address>Tzaala 15</Address>
-    <Invalid>true</Invalid>
-    <Roof>true</Roof>
-    <DigitalPanel>true</DigitalPanel>
-    <MyActivity>On</MyActivity>
-  </Station>
-  <Station>
-    <StationId>22229</StationId>
-    <Coordinates>
-      <Latitude>31.772663576</Latitude>
-      <Longitude>35.203165854</Longitude>
-      <Altitude>0</Altitude>
-      <AltitudeReference>Ground</AltitudeReference>
-    </Coordinates>
-    <Name>Shakhal</Name>
-    <Address>Shakhal 49</Address>
-    <Invalid>true</Invalid>
-    <Roof>true</Roof>
-    <DigitalPanel>false</DigitalPanel>
-    <MyActivity>On</MyActivity>
-  </Station>
-  <Station>
-    <StationId>34567</StationId>
-    <Coordinates>
-      <Latitude>31.771199574593069</Latitude>
-      <Longitude>35.200723768504794</Longitude>
-      <Altitude>0</Altitude>
-      <AltitudeReference>Ellipsoid</AltitudeReference>
-    </Coordinates>
-    <Name>Burla / Davidson</Name>
-    <Address>Burla 40</Address>
-    <Invalid>true</Invalid>
-    <Roof>true</Roof>
-    <DigitalPanel>true</DigitalPanel>
-    <MyActivity>On</MyActivity>
-  </Station>
-  <Station>
-    <StationId>38840</StationId>
-    <Coordinates>
-      <Latitude>31.865085</Latitude>
-      <Longitude>34.822237</Longitude>
-      <Altitude>0</Altitude>
-      <AltitudeReference>Ground</AltitudeReference>
-    </Coordinates>
-    <Name>Weizmann / The Boys</Name>
-    <Address>Weizmann 11</Address>
-    <Invalid>true</Invalid>
-    <Roof>true</Roof>
-    <DigitalPanel>true</DigitalPanel>
-    <MyActivity>Off</MyActivity>
-  </Station>
-  <Station>
-    <StationId>38840</StationId>
-    <Coordinates>
-      <Latitude>31.865139178858996</Latitude>
-      <Longitude>34.820820059262509</Longitude>
-      <Altitude>0</Altitude>
-      <AltitudeReference>Ellipsoid</AltitudeReference>
-    </Coordinates>
-    <Name>Weizmann / The Boys</Name>
-    <Address>Weizmann 11</Address>
-    <Invalid>true</Invalid>
-    <Roof>true</Roof>
-    <DigitalPanel>true</DigitalPanel>
-    <MyActivity>On</MyActivity>
-  </Station>
-  <Station>
-    <StationId>38839</StationId>
-    <Coordinates>
-      <Latitude>31.864105024933032</Latitude>
-      <Longitude>34.822398988354145</Longitude>
-      <Altitude>0</Altitude>
-      <AltitudeReference>Ellipsoid</AltitudeReference>
-    </Coordinates>
-    <Name>The boys / Eli Cohen</Name>
-    <Address>Habanim 4</Address>
+    <Name>Tza'ala / Coral</Name>
+    <Address>Tza'ala 15</Address>
     <Invalid>true</Invalid>
     <Roof>true</Roof>
     <DigitalPanel>true</DigitalPanel>

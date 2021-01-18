@@ -6,13 +6,14 @@ using System.Text;
 using System.Threading.Tasks;
 using DO;
 using DalApi;
+using System.Xml;
 
 namespace DL
 {
     sealed class DalXml : IDL
     {
         #region singelton
-        
+
         private static readonly DalXml instance = new DalXml();
         static DalXml() { }// static ctor to ensure instance init is done just before first usage
         private DalXml() { } // default => private
@@ -226,15 +227,15 @@ namespace DL
         {
             var userXel = XMLTools.LoadListFromXMLElement(@"User.xml");
             User myUser = (from user in userXel.Elements()
-                          where user.Element("MyActivity").Value == "On"
-                          where user.Element("UserName").Value == userName
-                          select new User()
-                          {
-                              UserName = user.Element("UserName").Value,
-                              Password = user.Element("Password").Value,
-                              MyActivity = (Activity)Enum.Parse(typeof(Activity),user.Element("MyActivity").Value, true),
-                              Permission = (Permit)Enum.Parse(typeof(Permit), user.Element("Permission").Value, true)
-                          }).FirstOrDefault();
+                           where user.Element("MyActivity").Value == "On"
+                           where user.Element("UserName").Value == userName
+                           select new User()
+                           {
+                               UserName = user.Element("UserName").Value,
+                               Password = user.Element("Password").Value,
+                               MyActivity = (Activity)Enum.Parse(typeof(Activity), user.Element("MyActivity").Value, true),
+                               Permission = (Permit)Enum.Parse(typeof(Permit), user.Element("Permission").Value, true)
+                           }).FirstOrDefault();
             /*User myUser = XMLTools.LoadListFromXMLSerializer<User>(@"User.xml").FirstOrDefault(user => user.UserName == userName && user.MyActivity == Activity.On);*/
             if (myUser != null)
                 return myUser;
@@ -245,15 +246,15 @@ namespace DL
         {
             var userXel = XMLTools.LoadListFromXMLElement(@"User.xml");
             User tmpUser = (from user in userXel.Elements()
-                           where user.Element("MyActivity").Value == "On"
-                           where user.Element("UserName").Value == userToUpdate.UserName
-                           select new User()
-                           {
-                               UserName = user.Element("UserName").Value,
-                               Password = user.Element("Password").Value,
-                               MyActivity = (Activity)Enum.Parse(typeof(Activity), user.Element("MyActivity").Value, true),
-                               Permission = (Permit)Enum.Parse(typeof(Permit), user.Element("Permission").Value, true)
-                           }).FirstOrDefault();
+                            where user.Element("MyActivity").Value == "On"
+                            where user.Element("UserName").Value == userToUpdate.UserName
+                            select new User()
+                            {
+                                UserName = user.Element("UserName").Value,
+                                Password = user.Element("Password").Value,
+                                MyActivity = (Activity)Enum.Parse(typeof(Activity), user.Element("MyActivity").Value, true),
+                                Permission = (Permit)Enum.Parse(typeof(Permit), user.Element("Permission").Value, true)
+                            }).FirstOrDefault();
             if (tmpUser == null)
                 throw new BadUserException("User doesn't exist", userToUpdate.UserName);
             DeleteUser(tmpUser.UserName);
@@ -289,9 +290,9 @@ namespace DL
         {
             var userXel = XMLTools.LoadListFromXMLElement(@"User.xml");
             XElement myUser = (from user in userXel.Elements()
-                           where user.Element("MyActivity").Value == "On"
+                               where user.Element("MyActivity").Value == "On"
                                where user.Element("UserName").Value == userName
-                           select user).FirstOrDefault();
+                               select user).FirstOrDefault();
             if (myUser != null)
             {
                 myUser.Element("MyActivity").Value = Activity.Off.ToString();
@@ -427,78 +428,154 @@ namespace DL
         #endregion
 
         #region LineDeparting
+
         public IEnumerable<LineDeparting> GetAllLineDeparting()
         {
-            return from lineDeparting in XMLTools.LoadListFromXMLSerializer<LineDeparting>(@"LineDeparting.xml")
-                   where lineDeparting.MyActivity == Activity.On
-                   select lineDeparting.Clone();
+            var lineDepartingXel = XMLTools.LoadListFromXMLElement(@"LineDeparting.xml");
+            return from myLineDeparting in lineDepartingXel.Elements()
+                   where myLineDeparting.Element("MyActivity").Value == "On"
+                   select new LineDeparting()
+                   {
+                       LineNumber = int.Parse(myLineDeparting.Element("LineNumber").Value),
+                       StartTime = XmlConvert.ToTimeSpan(myLineDeparting.Element("StartTime").Value),
+                       Frequency = XmlConvert.ToTimeSpan(myLineDeparting.Element("Frequency").Value),
+                       StopTime = XmlConvert.ToTimeSpan(myLineDeparting.Element("StopTime").Value),
+                       MyActivity = (Activity)Enum.Parse(typeof(Activity), myLineDeparting.Element("MyActivity").Value, true)
+                   };
         }
 
         public IEnumerable<LineDeparting> GetAllLineDepartingBy(Predicate<LineDeparting> predicate)
         {
-            IEnumerable<LineDeparting> mylineDeparting = from lineDeparting in XMLTools.LoadListFromXMLSerializer<LineDeparting>(@"LineDeparting.xml")
-                                                         where lineDeparting.MyActivity == Activity.On && predicate(lineDeparting)
-                                                         select lineDeparting.Clone();
-            if (mylineDeparting != null)
-                return mylineDeparting;
+            var lineDepartingXel = XMLTools.LoadListFromXMLElement(@"LineDeparting.xml");
+            IEnumerable<LineDeparting> myLineDeparting = from lineDeparting in lineDepartingXel.Elements()
+                                                         where lineDepartingXel.Element("MyActivity").Value == "On"
+                                                         let tmpLineDeparting = new LineDeparting()
+                                                         {
+                                                             LineNumber = int.Parse(lineDeparting.Element("LineNumber").Value),
+                                                             StartTime = XmlConvert.ToTimeSpan(lineDeparting.Element("StartTime").Value),
+                                                             Frequency = XmlConvert.ToTimeSpan(lineDeparting.Element("Frequency").Value),
+                                                             StopTime = XmlConvert.ToTimeSpan(lineDeparting.Element("StopTime").Value),
+                                                             MyActivity = (Activity)Enum.Parse(typeof(Activity), lineDeparting.Element("MyActivity").Value, true)
+                                                         }
+                                                         where predicate(tmpLineDeparting)
+                                                         select tmpLineDeparting;
+            if (myLineDeparting != null)
+                return myLineDeparting;
             throw new ReadDataException("No LineDeparting meets the conditions");
         }
 
         public LineDeparting GetLineDeparting(int lineNumber, TimeSpan startTime)
         {
-            LineDeparting line = XMLTools.LoadListFromXMLSerializer<LineDeparting>(@"LineDeparting.xml").FirstOrDefault
-                (lineDeparting => lineDeparting.LineNumber == lineNumber && lineDeparting.StartTime == startTime && lineDeparting.MyActivity == Activity.On);
+            var lineDepartingXel = XMLTools.LoadListFromXMLElement(@"LineDeparting.xml");
+            LineDeparting line = (from myLineDeparting in lineDepartingXel.Elements()
+                                  where myLineDeparting.Element("MyActivity").Value == "On"
+                                  where int.Parse(myLineDeparting.Element("LineNumber").Value) == lineNumber
+                                  where XmlConvert.ToTimeSpan(myLineDeparting.Element("startTime").Value) == startTime
+                                  select new LineDeparting()
+                                  {
+                                      LineNumber = int.Parse(myLineDeparting.Element("LineNumber").Value),
+                                      StartTime = XmlConvert.ToTimeSpan(myLineDeparting.Element("StartTime").Value),
+                                      Frequency = XmlConvert.ToTimeSpan(myLineDeparting.Element("Frequency").Value),
+                                      StopTime = XmlConvert.ToTimeSpan(myLineDeparting.Element("StopTime").Value),
+                                      MyActivity = (Activity)Enum.Parse(typeof(Activity), myLineDeparting.Element("MyActivity").Value, true)
+                                  }).FirstOrDefault();
             if (line != null)
-                return line.Clone();
+                return line;
             throw new BadLineDepartingException("Linedeparting doesn't exist ", lineNumber, startTime);
         }
 
         public void AddLineDeparting(LineDeparting tmpLineDeparting)
         {
-            var LineDepartingList = XMLTools.LoadListFromXMLSerializer<LineDeparting>(@"LineDeparting.xml");
-            LineDeparting line = LineDepartingList.FirstOrDefault
-                (lineDeparting => lineDeparting.LineNumber == tmpLineDeparting.LineNumber && lineDeparting.StartTime == tmpLineDeparting.StartTime && lineDeparting.MyActivity == Activity.On);
+            var lineDepartingXel = XMLTools.LoadListFromXMLElement(@"LineDeparting.xml");
+            LineDeparting line = (from myLineDeparting in lineDepartingXel.Elements()
+                                  where myLineDeparting.Element("MyActivity").Value == "On"
+                                  select new LineDeparting()
+                                  {
+                                      LineNumber = int.Parse(myLineDeparting.Element("LineNumber").Value),
+                                      StartTime = XmlConvert.ToTimeSpan(myLineDeparting.Element("StartTime").Value),
+                                      Frequency = XmlConvert.ToTimeSpan(myLineDeparting.Element("Frequency").Value),
+                                      StopTime = XmlConvert.ToTimeSpan(myLineDeparting.Element("StopTime").Value),
+                                      MyActivity = (Activity)Enum.Parse(typeof(Activity), myLineDeparting.Element("MyActivity").Value, true)
+                                  }).FirstOrDefault();
             if (line != null)
                 throw new BadLineDepartingException("Line Departing already exists", tmpLineDeparting.LineNumber, tmpLineDeparting.StartTime);
-            LineDepartingList.Add(tmpLineDeparting.Clone());
-            XMLTools.SaveListToXMLSerializer<LineDeparting>(LineDepartingList, @"LineDeparting.xml");
+            XElement lineDepartingToAdd = new XElement("LineDeparting",
+               new XElement("LineNumber", tmpLineDeparting.LineNumber),
+               new XElement("StartTime", tmpLineDeparting.StartTime),
+               new XElement("Frequency", tmpLineDeparting.Frequency),
+               new XElement("StopTime", tmpLineDeparting.StopTime),
+               new XElement("MyActivity", tmpLineDeparting.MyActivity)
+               );
+            lineDepartingXel.Add(lineDepartingToAdd);
+            XMLTools.SaveListToXMLElement(lineDepartingXel, @"LineDeparting.xml");
         }
 
         public void DeleteLineDeparting(int lineNumber, TimeSpan startTime)
         {
-            var LineDepartingList = XMLTools.LoadListFromXMLSerializer<LineDeparting>(@"LineDeparting.xml");
-            LineDeparting line = LineDepartingList.FirstOrDefault
-                (lineDeparting => lineDeparting.LineNumber == lineNumber && lineDeparting.StartTime == startTime && lineDeparting.MyActivity == Activity.On);
+            var lineDepartingXel = XMLTools.LoadListFromXMLElement(@"LineDeparting.xml");
+            XElement line = (from myLineDeparting in lineDepartingXel.Elements()
+                                  where myLineDeparting.Element("MyActivity").Value == "On"
+                                  where int.Parse(myLineDeparting.Element("LineNumber").Value) == lineNumber
+                                  where XmlConvert.ToTimeSpan(myLineDeparting.Element("startTime").Value) == startTime
+                                  select myLineDeparting).FirstOrDefault();
             if (line == null)
                 throw new BadLineDepartingException("LineDeparture doesn't exist", lineNumber, startTime);
-            line.MyActivity = Activity.Off;
-            XMLTools.SaveListToXMLSerializer<LineDeparting>(LineDepartingList, @"LineDeparting.xml");
+            line.Element("MyActivity").Value = Activity.Off.ToString();
+            XMLTools.SaveListToXMLElement(lineDepartingXel, @"LineDeparting.xml");
         }
 
         public void UpdateLineDeparting(LineDeparting lineDepartingToUpdate)
         {
-            LineDeparting tmpline = XMLTools.LoadListFromXMLSerializer<LineDeparting>(@"LineDeparting.xml").FirstOrDefault
-                (lineDeparting => lineDeparting.LineNumber == lineDepartingToUpdate.LineNumber && lineDeparting.StartTime == lineDepartingToUpdate.StartTime && lineDeparting.MyActivity == Activity.On);
-            if (tmpline == null)
+            var lineDepartingXel = XMLTools.LoadListFromXMLElement(@"LineDeparting.xml");
+            LineDeparting line = (from myLineDeparting in lineDepartingXel.Elements()
+                                  where myLineDeparting.Element("MyActivity").Value == "On"
+                                  select new LineDeparting()
+                                  {
+                                      LineNumber = int.Parse(myLineDeparting.Element("LineNumber").Value),
+                                      StartTime = XmlConvert.ToTimeSpan(myLineDeparting.Element("StartTime").Value),
+                                      Frequency = XmlConvert.ToTimeSpan(myLineDeparting.Element("Frequency").Value),
+                                      StopTime = XmlConvert.ToTimeSpan(myLineDeparting.Element("StopTime").Value),
+                                      MyActivity = (Activity)Enum.Parse(typeof(Activity), myLineDeparting.Element("MyActivity").Value, true)
+                                  }).FirstOrDefault();
+            if (line == null)
                 throw new BadLineDepartingException("LineDeparture doesn't exist", lineDepartingToUpdate.LineNumber, lineDepartingToUpdate.StartTime);
-            DeleteLineDeparting(tmpline.LineNumber, tmpline.StartTime);
+            DeleteLineDeparting(line.LineNumber, line.StartTime);
             AddLineDeparting(lineDepartingToUpdate);
         }
         #endregion
 
         #region PairStation
+
         public IEnumerable<PairStations> GetAllPairStations()
         {
-            return from pairstation in XMLTools.LoadListFromXMLSerializer<PairStations>(@"PairStations.xml")
-                   where pairstation.MyActivity == Activity.On
-                   select pairstation.Clone();
+            var pairStationsXel = XMLTools.LoadListFromXMLElement(@"PairStations.xml");
+            return from pairStation in pairStationsXel.Elements()
+                   where pairStation.Element("MyActivity").Value == "On"
+                   select new PairStations()
+                   {
+                       FirstStationNumber = int.Parse(pairStation.Element("FirstStationNumber").Value),
+                       LastStationNumber = int.Parse(pairStation.Element("LastStationNumber").Value),
+                       Distance = double.Parse(pairStation.Element("Distance").Value),
+                       Time = XmlConvert.ToTimeSpan(pairStation.Element("Time").Value),
+                       MyActivity = (Activity)Enum.Parse(typeof(Activity), pairStation.Element("MyActivity").Value, true),
+                   };
         }
 
         public IEnumerable<PairStations> GetAllPairStationsBy(Predicate<PairStations> predicate)
         {
-            IEnumerable<PairStations> pairStations = from pairstation in XMLTools.LoadListFromXMLSerializer<PairStations>(@"PairStations.xml")
-                                                     where pairstation.MyActivity == Activity.On && predicate(pairstation)
-                                                     select pairstation.Clone();
+            var pairStationsXel = XMLTools.LoadListFromXMLElement(@"PairStations.xml");
+            IEnumerable<PairStations> pairStations = from pairStation in pairStationsXel.Elements()
+                                                     where pairStation.Element("MyActivity").Value == "On"
+                                                     let tmpPairStations = new PairStations()
+                                                     {
+                                                         FirstStationNumber = int.Parse(pairStation.Element("FirstStationNumber").Value),
+                                                         LastStationNumber = int.Parse(pairStation.Element("LastStationNumber").Value),
+                                                         Distance = double.Parse(pairStation.Element("Distance").Value),
+                                                         Time = XmlConvert.ToTimeSpan(pairStation.Element("Time").Value),
+                                                         MyActivity = (Activity)Enum.Parse(typeof(Activity), pairStation.Element("MyActivity").Value, true),
+                                                     }
+                                                     where predicate(tmpPairStations)
+                                                     select tmpPairStations;
             if (pairStations != null)
                 return pairStations;
             throw new ReadDataException("No Pair station meets the conditions");
@@ -506,8 +583,20 @@ namespace DL
 
         public PairStations GetPairStations(int firstStation, int secondStation)
         {
-            PairStations pair = XMLTools.LoadListFromXMLSerializer<PairStations>(@"PairStations.xml").FirstOrDefault
-                (pairStations => pairStations.FirstStationNumber == firstStation && pairStations.LastStationNumber == secondStation && pairStations.MyActivity == Activity.On);
+            var pairStationsXel = XMLTools.LoadListFromXMLElement(@"PairStations.xml");
+            PairStations pair = (from pairStation in pairStationsXel.Elements()
+                                 where pairStation.Element("MyActivity").Value == "On"
+                                 where int.Parse(pairStation.Element("FirstStationNumber").Value) == firstStation
+                                 where int.Parse(pairStation.Element("LastStationNumber").Value) == secondStation
+                                 select new PairStations()
+                                 {
+                                     FirstStationNumber = int.Parse(pairStation.Element("FirstStationNumber").Value),
+                                     LastStationNumber = int.Parse(pairStation.Element("LastStationNumber").Value),
+                                     Distance = double.Parse(pairStation.Element("Distance").Value),
+                                     Time = XmlConvert.ToTimeSpan(pairStation.Element("Time").Value),
+                                     MyActivity = (Activity)Enum.Parse(typeof(Activity), pairStation.Element("MyActivity").Value, true),
+                                 }).FirstOrDefault();
+
             if (pair != null)
                 return pair.Clone();
             throw new BadPairStationException("Pair Station doesn't exist", firstStation, secondStation);
@@ -515,33 +604,64 @@ namespace DL
 
         public void AddPairStations(PairStations tmpPairStations)
         {
-            var PairStationsList = XMLTools.LoadListFromXMLSerializer<PairStations>(@"PairStations.xml");
-            PairStations pair = PairStationsList.FirstOrDefault
-               (pairStations => pairStations.FirstStationNumber == tmpPairStations.FirstStationNumber && pairStations.LastStationNumber == tmpPairStations.LastStationNumber && pairStations.MyActivity == Activity.On);
+            var pairStationsXel = XMLTools.LoadListFromXMLElement(@"PairStations.xml");
+            PairStations pair = (from pairStation in pairStationsXel.Elements()
+                                 where pairStation.Element("MyActivity").Value == "On"
+                                 where int.Parse(pairStation.Element("FirstStationNumber").Value) == tmpPairStations.FirstStationNumber
+                                 where int.Parse(pairStation.Element("LastStationNumber").Value) == tmpPairStations.LastStationNumber
+                                 select new PairStations()
+                                 {
+                                     FirstStationNumber = int.Parse(pairStation.Element("FirstStationNumber").Value),
+                                     LastStationNumber = int.Parse(pairStation.Element("LastStationNumber").Value),
+                                     Distance = double.Parse(pairStation.Element("Distance").Value),
+                                     Time = XmlConvert.ToTimeSpan(pairStation.Element("Time").Value),
+                                     MyActivity = (Activity)Enum.Parse(typeof(Activity), pairStation.Element("MyActivity").Value, true),
+                                 }).FirstOrDefault();
             if (pair != null)
                 throw new BadPairStationException("Pair Station already exist", tmpPairStations.FirstStationNumber, tmpPairStations.LastStationNumber);
-            PairStationsList.Add(tmpPairStations.Clone());
-            XMLTools.SaveListToXMLSerializer<PairStations>(PairStationsList, @"PairStations.xml");
+            XElement pairStationToAdd = new XElement("PairStation",
+                new XElement("FirstStationNumber", pair.FirstStationNumber),
+                new XElement("LastStationNumber", pair.LastStationNumber),
+                new XElement("Distance", pair.Distance),
+                new XElement("Time", pair.Time),
+                new XElement("MyActivity", pair.MyActivity)
+                );
+            pairStationsXel.Add(pairStationToAdd);
+            XMLTools.SaveListToXMLElement(pairStationsXel, @"PairStations.xml");
         }
 
         public void DeletePairStations(int firstStation, int secondStation)
         {
-            var PairStationsList = XMLTools.LoadListFromXMLSerializer<PairStations>(@"PairStations.xml");
-            PairStations pair = PairStationsList.FirstOrDefault
-               (pairStations => pairStations.FirstStationNumber == firstStation && pairStations.LastStationNumber == secondStation && pairStations.MyActivity == Activity.On);
+            var pairStationsXel = XMLTools.LoadListFromXMLElement(@"PairStations.xml");
+            XElement pair = (from pairStation in pairStationsXel.Elements()
+                             where pairStation.Element("MyActivity").Value == "On"
+                             where int.Parse(pairStation.Element("FirstStationNumber").Value) == firstStation
+                             where int.Parse(pairStation.Element("LastStationNumber").Value) == secondStation
+                             select pairStation).FirstOrDefault();
             if (pair == null)
                 throw new BadPairStationException("Pair Station doesn't exist", firstStation, secondStation);
-            pair.MyActivity = Activity.Off;
-            XMLTools.SaveListToXMLSerializer<PairStations>(PairStationsList, @"PairStations.xml");
+            pair.Element("MyActivity").Value = Activity.Off.ToString();
+            XMLTools.SaveListToXMLElement(pairStationsXel, @"PairStations.xml");
         }
 
         public void UpdatePairStations(PairStations pairStationsToUpdate)
         {
-            PairStations tmpPair = XMLTools.LoadListFromXMLSerializer<PairStations>(@"PairStations.xml").FirstOrDefault
-               (pairStations => pairStations.FirstStationNumber == pairStationsToUpdate.FirstStationNumber && pairStations.LastStationNumber == pairStationsToUpdate.LastStationNumber && pairStations.MyActivity == Activity.On);
-            if (tmpPair == null)
+            var pairStationsXel = XMLTools.LoadListFromXMLElement(@"PairStations.xml");
+            PairStations pair = (from pairStation in pairStationsXel.Elements()
+                                 where pairStation.Element("MyActivity").Value == "On"
+                                 where int.Parse(pairStation.Element("FirstStationNumber").Value) == pairStationsToUpdate.FirstStationNumber
+                                 where int.Parse(pairStation.Element("LastStationNumber").Value) == pairStationsToUpdate.LastStationNumber
+                                 select new PairStations()
+                                 {
+                                     FirstStationNumber = int.Parse(pairStation.Element("FirstStationNumber").Value),
+                                     LastStationNumber = int.Parse(pairStation.Element("LastStationNumber").Value),
+                                     Distance = double.Parse(pairStation.Element("Distance").Value),
+                                     Time = XmlConvert.ToTimeSpan(pairStation.Element("Time").Value),
+                                     MyActivity = (Activity)Enum.Parse(typeof(Activity), pairStation.Element("MyActivity").Value, true),
+                                 }).FirstOrDefault();
+            if (pair == null)
                 throw new BadPairStationException("Pair Station doesn't exist", pairStationsToUpdate.FirstStationNumber, pairStationsToUpdate.LastStationNumber);
-            DeletePairStations(tmpPair.FirstStationNumber, tmpPair.LastStationNumber);
+            DeletePairStations(pair.FirstStationNumber, pair.LastStationNumber);
             AddPairStations(pairStationsToUpdate);
         }
         #endregion
@@ -591,7 +711,8 @@ namespace DL
         {
             var userTripList = XMLTools.LoadListFromXMLSerializer<UserTrip>(@"UserTrip.xml");
             UserTrip tmpUserTrip = userTripList.FirstOrDefault(userTrip => userTrip.UserName == name && userTrip.MyActivity == Activity.On);
-            if (tmpUserTrip != null) {
+            if (tmpUserTrip != null)
+            {
                 tmpUserTrip.MyActivity = Activity.Off;
                 XMLTools.SaveListToXMLSerializer<UserTrip>(userTripList, @"UserTrip.xml");
             }

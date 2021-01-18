@@ -35,25 +35,10 @@ namespace DO
             set { distance = value; }
         }
 
-        private TimeSpan time;
-
-        [XmlIgnore]
-        public TimeSpan Time
-        {
-            get { return time; }
-            set { time = value; }
-        }
-
-
-        [XmlElement("Time", DataType = "duration")]
-        [DefaultValue("PT10M")]
-        public string XmlTime
-        {
-            get { return XmlConvert.ToString(time); }
-            set { time = XmlConvert.ToTimeSpan(value); }
-        }
+        public TimeSpan Time { get; set; }
 
         private Activity myActivity;
+
         public Activity MyActivity
         {
             get { return myActivity; }

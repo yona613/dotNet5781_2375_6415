@@ -19,59 +19,14 @@ namespace DO
             set { lineNumber = value; }
         }
 
-        private TimeSpan startTime;
+        public TimeSpan StartTime { get; set;}
 
-        [XmlIgnore]
-        public TimeSpan StartTime
-        {
-            get { return startTime; }
-            set { startTime = value; }
-        }
+        public TimeSpan Frequency { get; set; }
 
-        [XmlElement("StartTime", DataType = "duration")]
-        [DefaultValue("PT10M")]
-        public string XmlStartTime
-        {
-            get { return XmlConvert.ToString(startTime); }
-            set { startTime = XmlConvert.ToTimeSpan(value); }
-        }
-
-        private TimeSpan frequency;
-
-        [XmlIgnore]
-        public TimeSpan Frequency
-        {
-            get { return frequency; }
-            set { frequency = value; }
-        }
-
-        [XmlElement("Frequency", DataType = "duration")]
-        [DefaultValue("PT10M")]
-        public string XmlFrequency
-        {
-            get { return XmlConvert.ToString(frequency); }
-            set { frequency = XmlConvert.ToTimeSpan(value); }
-        }
-
-        private TimeSpan stopTime;
-
-        [XmlIgnore]
-        public TimeSpan StopTime
-        {
-            get { return stopTime; }
-            set { stopTime = value; }
-        }
-
-
-        [XmlElement("StopTime", DataType = "duration")]
-        [DefaultValue("PT10M")]
-        public string XmlStopTime
-        {
-            get { return XmlConvert.ToString(stopTime); }
-            set { stopTime = XmlConvert.ToTimeSpan(value); }
-        }
+        public TimeSpan StopTime { get; set; }
 
         private Activity myActivity;
+
         public Activity MyActivity
         {
             get { return myActivity; }

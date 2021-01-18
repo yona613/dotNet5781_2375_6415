@@ -6,7 +6,7 @@
     <LineArea>Center</LineArea>
     <FirstStation>38831</FirstStation>
     <LastStation>38841</LastStation>
-    <MyActivity>Off</MyActivity>
+    <MyActivity>On</MyActivity>
   </BusLine>
   <BusLine>
     <Key>0</Key>
@@ -14,7 +14,7 @@
     <LineArea>Center</LineArea>
     <FirstStation>38834</FirstStation>
     <LastStation>38845</LastStation>
-    <MyActivity>Off</MyActivity>
+    <MyActivity>On</MyActivity>
   </BusLine>
   <BusLine>
     <Key>0</Key>
@@ -30,7 +30,7 @@
     <LineArea>Center</LineArea>
     <FirstStation>38841</FirstStation>
     <LastStation>38854</LastStation>
-    <MyActivity>Off</MyActivity>
+    <MyActivity>On</MyActivity>
   </BusLine>
   <BusLine>
     <Key>0</Key>
@@ -78,78 +78,6 @@
     <LineArea>Center</LineArea>
     <FirstStation>38865</FirstStation>
     <LastStation>38877</LastStation>
-    <MyActivity>On</MyActivity>
-  </BusLine>
-  <BusLine>
-    <Key>1</Key>
-    <LineNumber>15</LineNumber>
-    <LineArea>General</LineArea>
-    <FirstStation>22229</FirstStation>
-    <LastStation>38855</LastStation>
-    <MyActivity>On</MyActivity>
-  </BusLine>
-  <BusLine>
-    <Key>1</Key>
-    <LineNumber>2</LineNumber>
-    <LineArea>Center</LineArea>
-    <FirstStation>38834</FirstStation>
-    <LastStation>38845</LastStation>
-    <MyActivity>Off</MyActivity>
-  </BusLine>
-  <BusLine>
-    <Key>1</Key>
-    <LineNumber>4</LineNumber>
-    <LineArea>South</LineArea>
-    <FirstStation>38841</FirstStation>
-    <LastStation>38854</LastStation>
-    <MyActivity>Off</MyActivity>
-  </BusLine>
-  <BusLine>
-    <Key>1</Key>
-    <LineNumber>1</LineNumber>
-    <LineArea>Center</LineArea>
-    <FirstStation>38831</FirstStation>
-    <LastStation>22229</LastStation>
-    <MyActivity>Off</MyActivity>
-  </BusLine>
-  <BusLine>
-    <Key>2</Key>
-    <LineNumber>1</LineNumber>
-    <LineArea>Center</LineArea>
-    <FirstStation>38831</FirstStation>
-    <LastStation>22229</LastStation>
-    <MyActivity>On</MyActivity>
-  </BusLine>
-  <BusLine>
-    <Key>3</Key>
-    <LineNumber>12</LineNumber>
-    <LineArea>General</LineArea>
-    <FirstStation>38833</FirstStation>
-    <LastStation>34567</LastStation>
-    <MyActivity>On</MyActivity>
-  </BusLine>
-  <BusLine>
-    <Key>1</Key>
-    <LineNumber>2</LineNumber>
-    <LineArea>Center</LineArea>
-    <FirstStation>38834</FirstStation>
-    <LastStation>38845</LastStation>
-    <MyActivity>On</MyActivity>
-  </BusLine>
-  <BusLine>
-    <Key>2</Key>
-    <LineNumber>45</LineNumber>
-    <LineArea>General</LineArea>
-    <FirstStation>38889</FirstStation>
-    <LastStation>38849</LastStation>
-    <MyActivity>On</MyActivity>
-  </BusLine>
-  <BusLine>
-    <Key>1</Key>
-    <LineNumber>4</LineNumber>
-    <LineArea>South</LineArea>
-    <FirstStation>38841</FirstStation>
-    <LastStation>38854</LastStation>
     <MyActivity>On</MyActivity>
   </BusLine>
 </ArrayOfBusLine>
