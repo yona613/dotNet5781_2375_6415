@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace BO
 {
+    /// <summary>
+    /// Implements station of line
+    /// </summary>
     public class LineStation
     {
         public int LineNumber { get; set; }

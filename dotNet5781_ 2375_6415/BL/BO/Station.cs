@@ -7,6 +7,9 @@ using Microsoft.Maps.MapControl.WPF;
 
 namespace BO
 {
+    /// <summary>
+    /// Implements physical station
+    /// </summary>
     public class Station
     {
         public int StationId { get; set; }

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace BO
 {
+    /// <summary>
+    /// Implements distance and time between two stations
+    /// </summary>
     public class PairStations
     {
         public int FirstStationNumber { get; set; }

@@ -99,9 +99,6 @@
     <Compile Include="LineData.xaml.cs">
       <DependentUpon>LineData.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LineInTravel.xaml.cs">
-      <DependentUpon>LineInTravel.xaml</DependentUpon>
-    </Compile>
     <Compile Include="LineMap.xaml.cs">
       <DependentUpon>LineMap.xaml</DependentUpon>
     </Compile>
@@ -165,10 +162,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="LineData.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="LineInTravel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

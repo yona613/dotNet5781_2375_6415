@@ -50,7 +50,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BLApi\BLFactory.cs" />
-    <Compile Include="BO\LineInTravelSimulator.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="LineDepartingSimulation.cs" />
     <Compile Include="LineInTravel.cs" />
@@ -68,6 +67,7 @@
     <Compile Include="BO\LineTiming.cs" />
     <Compile Include="BO\LineToShow.cs" />
     <Compile Include="BO\PairStations.cs" />
+    <Compile Include="SimulationLogic.cs" />
     <Compile Include="SimulatorClock.cs" />
     <Compile Include="BO\StationToAdd.cs" />
     <Compile Include="BO\StationToShow.cs" />

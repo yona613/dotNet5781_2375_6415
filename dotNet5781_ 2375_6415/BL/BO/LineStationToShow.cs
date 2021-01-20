@@ -8,6 +8,10 @@ using Microsoft.Maps.MapControl.WPF;
 
 namespace BO
 {
+    /// <summary>
+    /// Implements station to send to upper layer
+    /// gets all data needed to be shown
+    /// </summary>
     public class LineStationToShow
     {
         public int StationId { get; set; }

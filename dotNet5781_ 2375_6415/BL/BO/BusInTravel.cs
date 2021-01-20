@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace BO
 {
+    [Obsolete("This Class wasn't used in the project, needs more implementation")]
     public class BusInTravel
     {
         public int License { get; set; }

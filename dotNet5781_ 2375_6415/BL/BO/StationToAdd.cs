@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace BO
 {
+
+    /// <summary>
+    /// Implements station that can be added to line
+    /// overrides to string
+    /// </summary>
     public class StationToAdd
     {
         public int StationId { get; set; }

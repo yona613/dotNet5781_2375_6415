@@ -25,20 +25,29 @@ namespace BL
         public static BLImp Instance { get => instance; }// The public Instance property to use
         #endregion
 
-        IDL dal = DalFactory.GetDal();
-
-        List<LineInTravelSimulator> lineInTravelSimulators;// = new List<LineInTravelSimulator>() { };
-
+        IDL dal = DalFactory.GetDal(); //Access to Dal
         Random r = new Random(DateTime.Now.Millisecond);
 
         #region Bus
+
+        /// <summary>
+        /// Adapter to copy Do.bus to BO.bus
+        /// </summary>
+        /// <param name="busDO">DO.Bus</param>
+        /// <returns>BO.Bus</returns>
         Bus BusDoBOAdapter(DO.Bus busDO)
         {
             Bus busBO = new Bus();
             busDO.CopyPropertiesTo(busBO);
             return busBO;
         }
-
+        /// <summary>
+        /// Returns Ienumerable of all Buses that satisfies the condiction
+        /// 
+        /// Throws BOReadDataException if no bus
+        /// </summary>
+        /// <param name="predicate">Condition</param>
+        /// <returns></returns>
         public IEnumerable<Bus> GetAllBuseBy(Predicate<Bus> predicate)
         {
             IEnumerable<Bus> busList = from item in dal.GetAllBuses()
@@ -50,11 +59,23 @@ namespace BL
             throw new BOReadDataException("No Bus meets the conditions");
         }
 
+        /// <summary>
+        /// Returns all buses
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<Bus> GetAllBuses()
         {
             return from item in dal.GetAllBuses()
                    select BusDoBOAdapter(item);
         }
+
+        /// <summary>
+        /// Returns the Bus that has this id
+        /// 
+        /// Throws BOReadBusException if not found
+        /// </summary>
+        /// <param name="license">Bus License</param>
+        /// <returns>Bus</returns>
         public Bus GetBus(int license)
         {
             DO.Bus busDO;
@@ -69,6 +90,15 @@ namespace BL
             }
         }
 
+        /// <summary>
+        /// Adds bus to data
+        /// Checks that the data of the bus is good else throws :
+        /// 
+        /// BOArgumentLicenseException
+        /// BOArgumentLicenseDateException
+        /// BOArgumentTestDateException
+        /// </summary>
+        /// <param name="myBus"></param>
         public void AddBus(Bus myBus)
         {
             if (myBus.LicenseDate <= DateTime.Now) //checks the start date entered
@@ -109,6 +139,14 @@ namespace BL
             }
         }
 
+        /// <summary>
+        /// If bus needs to be added straight to data
+        /// uses this private function
+        /// doesn't check data of bus
+        /// 
+        /// Throws BOBadBusException
+        /// </summary>
+        /// <param name="busToAdd"></param>
         private void AddBusPrivate(Bus busToAdd)
         {
             DO.Bus busDo = new DO.Bus();
@@ -123,6 +161,12 @@ namespace BL
             }
         }
 
+        /// <summary>
+        /// Updates bus in data
+        /// 
+        /// Throws BOBadBusException
+        /// </summary>
+        /// <param name="busToUpdate">Bus to be Updated</param>
         public void UpdateBus(Bus busToUpdate)
         {
             try
@@ -134,6 +178,13 @@ namespace BL
                 throw new BOBadBusException(e.Message, busToUpdate.License);
             }
         }
+
+        /// <summary>
+        /// Deletes bus from Data
+        /// 
+        /// Throws BOBadBusException if not found
+        /// </summary>
+        /// <param name="license">License of bus to be deleted</param>
         public void DeleteBus(int license)
         {
             try
@@ -148,6 +199,12 @@ namespace BL
         #endregion
 
         #region Line
+
+        /// <summary>
+        /// Adapter to copy Do.Line to BO.Line
+        /// </summary>
+        /// <param name="busDO">DO.Line</param>
+        /// <returns>BO.Line</returns>
         BusLine BusLineDoBOAdapter(DO.BusLine lineDO)
         {
             BusLine lineBO = new BusLine();
@@ -155,12 +212,22 @@ namespace BL
             return lineBO;
         }
 
+        /// <summary>
+        /// </summary>
+        /// <returns>all lines in data</returns>
         public IEnumerable<BusLine> GetAllBusLines()
         {
             return from busLine in dal.GetAllBusLines()
                    select BusLineDoBOAdapter(busLine);
         }
 
+        /// <summary>
+        /// Returns all lines that meet the condition
+        /// 
+        /// Throws BOReadDataException
+        /// </summary>
+        /// <param name="predicate">Condition</param>
+        /// <returns>All lines that meet condition</returns>
         public IEnumerable<BusLine> GetAllBusLinesBy(Predicate<BusLine> predicate)
         {
             IEnumerable<BusLine> myLinesList = from busLine in dal.GetAllBusLines()
@@ -171,13 +238,20 @@ namespace BL
                 return myLinesList;
             throw new BOReadDataException("No Line meets the conditions");
         }
+
+        /// <summary>
+        /// Returns Bus Line with this number
+        /// 
+        /// Throws BOBadLineException if not found
+        /// </summary>
+        /// <param name="id">Line Number</param>
+        /// <returns>Bus Line</returns>
         public BusLine GetBusLine(int id)
         {
             DO.BusLine busLineDO;
             try
             {
                 busLineDO = dal.GetBusLine(id);
-                //return (LineToShow)busLineDO.CopyPropertiesToNew(typeof(LineToShow));
                 return BusLineDoBOAdapter(busLineDO);
             }
             catch (DO.BadLineException e)
@@ -186,23 +260,18 @@ namespace BL
             }
         }
 
-        //public void AddLine(BusLine tmpBusLine, Station firstStation, Station lastStation)
-        //{
-        //    AddStation(firstStation);
-        //    AddStation(lastStation);
-        //    AddLineStation(new LineStation() { Index = 1, LineNumber = tmpBusLine.LineNumber, StationNumber = tmpBusLine.FirstStation });
-        //    AddLineStation(new LineStation() { Index = 2, LineNumber = tmpBusLine.LineNumber, StationNumber = tmpBusLine.LastStation });
-        //    double distance = firstStation.Coordinates.GetDistanceTo(lastStation.Coordinates);
-        //    AddPairStations(new PairStations() { FirstStationNumber = firstStation.StationId, LastStationNumber = lastStation.StationId, Distance = distance, Time = new TimeSpan((int)(distance / 40.0), (int)((distance % 40.0) / (40.0 / 60.0)), (int)(((distance % 40.0) % (40.0 / 60.0)) / (40.0 / 3600.0))) });
-        //    try
-        //    {
-        //        dal.AddLine((DO.BusLine)tmpBusLine.CopyPropertiesToNew(typeof(DO.BusLine)));
-        //    }
-        //    catch (DO.BadLineException e)
-        //    {
-        //        throw new BOBadLineException(e.Message, tmpBusLine.LineNumber);
-        //    }
-        //}
+        /// <summary>
+        /// Adds line to data
+        /// checks all data of line then adds it
+        /// if data is not good throws :
+        /// 
+        /// BONewLineInsuffisantStationsException
+        /// BOBadLineNumberException
+        /// BOBadLineException if line already exists
+        /// </summary>
+        /// <param name="tmpBusLine">BusLine to add</param>
+        /// <param name="stations">Physical Stations to add</param>
+        /// <param name="stationsToShow">Stations to add</param>
         public void AddLine(LineToShow tmpBusLine, List<BO.Station> stations, List<BO.LineStationToShow> stationsToShow)
         {
             if (stationsToShow.Count < 2)
@@ -213,36 +282,36 @@ namespace BL
             {
                 throw new BOBadLineNumberException("Line number needs to be bigger than 0 !");
             }
-            try
+            try //tries if line doesn't already exist
             {
-                dal.AddLine(new DO.BusLine() 
+                dal.AddLine(new DO.BusLine() //creates the line based on data
                 {
                     LineNumber = tmpBusLine.LineNumber,
                     LineArea = (DO.Area)tmpBusLine.LineArea,
                     FirstStation = stationsToShow[0].StationId,
                     LastStation = stationsToShow.Last().StationId,
                     MyActivity = DO.Activity.On
-            });
+                });
             }
-            catch (DO.BadLineException exception )
+            catch (DO.BadLineException exception) //if line already exist
             {
                 throw new BO.BOBadLineException(exception.Message, tmpBusLine.LineNumber);
             }
-            try
+            try //add all line stations
             {
                 for (int i = 0; i < stationsToShow.Count; i++)
                 {
-                    dal.AddLineStation(new DO.LineStation()
+                    dal.AddLineStation(new DO.LineStation() //creates line station
                     {
                         Index = stationsToShow[i].Index,
                         LineNumber = tmpBusLine.LineNumber,
                         MyActivity = DO.Activity.On,
                         StationNumber = stationsToShow[i].StationId
                     });
-                    if (i != stationsToShow.Count - 1)
+                    if (i != stationsToShow.Count - 1) //calculates distance between stations
                     {
                         double distance = stationsToShow[i].Coordinates.GetDistanceTo(stationsToShow[i + 1].Coordinates);
-                        dal.AddPairStations(new DO.PairStations()
+                        dal.AddPairStations(new DO.PairStations() //adds pair stations
                         {
                             Distance = distance,
                             FirstStationNumber = stationsToShow[i].StationId,
@@ -251,31 +320,22 @@ namespace BL
                         });
                     }
                 }
-                foreach (var item in stations)
+                foreach (var item in stations) //adds all physical stations
                 {
                     dal.AddStation((DO.Station)item.CopyPropertiesToNew(typeof(DO.Station)));
                 }
             }
-            catch (Exception exception)
+            catch (Exception exception) // can get a lot of kinds of exception
             {
                 throw exception;
-            }          
-            //Station firstStation = GetStation(tmpBusLine.FirstStation);
-            //Station lastStation = GetStation(tmpBusLine.LastStation);
-            //AddLineStation(new LineStation() { Index = 1, LineNumber = tmpBusLine.LineNumber, StationNumber = tmpBusLine.FirstStation });
-            //AddLineStation(new LineStation() { Index = 2, LineNumber = tmpBusLine.LineNumber, StationNumber = tmpBusLine.LastStation });
-            //double distance = firstStation.Coordinates.GetDistanceTo(lastStation.Coordinates);
-            //AddPairStations(new PairStations() { FirstStationNumber = firstStation.StationId, LastStationNumber = lastStation.StationId, Distance = distance, Time = new TimeSpan((int)(distance / 40.0), (int)((distance % 40.0) / (40.0 / 60.0)), (int)(((distance % 40.0) % (40.0 / 60.0)) / (40.0 / 3600.0))) });
-            //try
-            //{
-            //    dal.AddLine((DO.BusLine)tmpBusLine.CopyPropertiesToNew(typeof(DO.BusLine)));
-            //}
-            //catch (DO.BadLineException e)
-            //{
-            //    throw new BOBadLineException(e.Message, tmpBusLine.LineNumber);
-            //}
+            }
         }
 
+        /// <summary>
+        /// Updates a line in data
+        /// Throws BOBadLineException
+        /// </summary>
+        /// <param name="lineToUpdate">Line To Update</param>
         private void UpdateLine(BusLine lineToUpdate)
         {
             try
@@ -288,33 +348,41 @@ namespace BL
             }
         }
 
+        /// <summary>
+        /// Update Line 
+        /// checks all data of line and appeal to update line private
+        /// 
+        /// throws BOBadLineException
+        /// </summary>
+        /// <param name="lineToUpdate">Line to update</param>
+        /// <param name="lineNumber">line number</param>
         public void UpdateLine(LineToShow lineToUpdate, int lineNumber)
         {
-            if (lineNumber != lineToUpdate.LineNumber)
+            if (lineNumber != lineToUpdate.LineNumber) //if changed number
             {
-                try
+                try //checks if line already exists
                 {
                     dal.GetBusLine(lineToUpdate.LineNumber);
                     throw new BOBadLineException($"The line {lineToUpdate.LineNumber} already exists", lineNumber);
                 }
                 catch (DO.BadLineException) { }
             }
-            DO.BusLine lineToUpdateDO = dal.GetBusLine(lineNumber);
+            DO.BusLine lineToUpdateDO = dal.GetBusLine(lineNumber); //get the line and changes his data
             lineToUpdateDO.LineNumber = lineToUpdate.LineNumber;
             lineToUpdateDO.LineArea = (DO.Area)((int)lineToUpdate.LineArea);
             try
             {
-                dal.DeleteLine(lineNumber);
-                dal.AddLine(lineToUpdateDO);
+                dal.DeleteLine(lineNumber); //delete old data
+                dal.AddLine(lineToUpdateDO); //add new data
                 List<LineStation> stationList = GetAllLineStationsBy(x => x.LineNumber == lineNumber).ToList();
-                for (int i = 0; i < stationList.Count; i++)
+                for (int i = 0; i < stationList.Count; i++) //update all stations to new number of line
                 {
                     DeleteLineStationPrivate(stationList[i].StationNumber, stationList[i].LineNumber);
                     stationList[i].LineNumber = lineToUpdateDO.LineNumber;
                     AddLineStation(stationList[i]);
                 }
                 List<LineDeparting> lineDepartingList = GetAllLineDepartingBy(x => x.LineNumber == lineNumber).ToList();
-                for (int i = 0; i < lineDepartingList.Count; i++)
+                for (int i = 0; i < lineDepartingList.Count; i++) //update all line departing to new number of line
                 {
                     DeleteLineDeparting(lineDepartingList[i].LineNumber, lineDepartingList[i].StartTime);
                     lineDepartingList[i].LineNumber = lineToUpdateDO.LineNumber;
@@ -327,15 +395,23 @@ namespace BL
             }
         }
 
+        /// <summary>
+        /// Adds station to line
+        /// 
+        /// Throws BOBadLineStationException if already exists
+        /// </summary>
+        /// <param name="station">Station to add</param>
         public void AddStationToLine(LineStation station)
         {
+            //checks if already exist in line
             LineStation lineStation = GetAllLineStationsBy(x => x.LineNumber == station.LineNumber && x.StationNumber == station.StationNumber).FirstOrDefault();
             if (lineStation != null)
                 throw new BOBadLineStationException($"Cannot add station {station.StationNumber}, it already exists in line {station.LineNumber}", station.LineNumber, station.StationNumber);
-            else
+            else //adds station and updates index of all other stations after it in line
             {
-                if (station.Index == 1)
+                if (station.Index == 1) //if first station
                 {
+                    //update line
                     BusLine myLine = GetBusLine(station.LineNumber);
                     myLine.FirstStation = station.StationNumber;
                     UpdateLine(myLine);
@@ -343,9 +419,9 @@ namespace BL
                 int index = 1;
                 AddLineStation(station);
                 IEnumerable<LineStation> myLineStations = GetAllLineStationsBy(x => x.LineNumber == station.LineNumber).OrderBy(x => x.Index);
-                foreach (var item in myLineStations)
+                foreach (var item in myLineStations) //updates all stations after this one in line
                 {
-                    if (item.Index == station.Index - 1)
+                    if (item.Index == station.Index - 1) //creates pair station for station before
                     {
                         Station lastStation = GetStation(station.StationNumber);
                         Station firstStation = GetStation(item.StationNumber);
@@ -355,9 +431,9 @@ namespace BL
                             AddPairStations(new PairStations() { FirstStationNumber = firstStation.StationId, LastStationNumber = lastStation.StationId, Distance = distance, Time = new TimeSpan((int)(distance / 40.0), (int)((distance % 40.0) / (40.0 / 60.0)), (int)(((distance % 40.0) % (40.0 / 60.0)) / (40.0 / 3600.0))) });
                         }
                         catch (BOBadPairStationException e)
-                        { };
+                        { }; //if pair station already exist we get a exception but it doesn't bother us
                     }
-                    if (item.Index == station.Index)
+                    if (item.Index == station.Index) //creates pair station to station after
                     {
                         Station firstStation = GetStation(station.StationNumber);
                         Station lastStation = GetStation(item.StationNumber);
@@ -367,9 +443,9 @@ namespace BL
                             AddPairStations(new PairStations() { FirstStationNumber = firstStation.StationId, LastStationNumber = lastStation.StationId, Distance = distance, Time = new TimeSpan((int)(distance / 40.0), (int)((distance % 40.0) / (40.0 / 60.0)), (int)(((distance % 40.0) % (40.0 / 60.0)) / (40.0 / 3600.0))) });
                         }
                         catch (BOBadPairStationException e)
-                        { };
+                        { };//if pair station already exist we get a exception but it doesn't bother us
                     }
-                    if (item.Index >= station.Index)
+                    if (item.Index >= station.Index) //updates indexes
                     {
                         if (item.StationNumber != station.StationNumber)
                         {
@@ -379,7 +455,7 @@ namespace BL
                     }
                     index++;
                 }
-                if (index == station.Index + 1)
+                if (index == station.Index + 1) //if last station update line
                 {
                     BusLine myLine = GetBusLine(station.LineNumber);
                     myLine.LastStation = station.StationNumber;
@@ -388,78 +464,29 @@ namespace BL
             }
         }
 
-        public void DeleteStationFromLine(int stationNumber, int lineNumber)
-        {
-            /*bool first = false;
-            bool deleted = false;
-            int lastIndex = 0;
-            BusLine myLine = GetBusLine(lineNumber);
-            IEnumerable<LineStation> myStations = GetAllLineStationsBy(x => x.LineNumber == lineNumber).OrderBy(x => x.Index);
-            IEnumerable<int> sizeCol = from station in myStations
-                                       where station.StationNumber == myLine.LastStation
-                                       select station.Index;
-            int size = sizeCol.First();
-            if (size <= 2)
-            {
-                DeleteLine(lineNumber);
-                throw new BOReadDataException($"Line {lineNumber} too small, it has been deleted");
-            }
-            foreach (var station in myStations)
-            {
-                if (station.StationNumber == stationNumber)
-                {
-                    if (station.StationNumber == myLine.FirstStation)
-                    {
-                        DeleteLineStationPrivate(station.StationNumber, myLine.LineNumber);
-                        first = true;
-                        deleted = true;
-                        continue;
-                    }
-                    if (station.StationNumber == myLine.LastStation)
-                    {
-                        lastIndex = station.Index;
-                        DeleteLineStationPrivate(station.StationNumber, myLine.LineNumber);
-                        break;
-                    }
-                    else
-                    {
-                        DeleteLineStationPrivate(station.StationNumber, myLine.LineNumber);
-                        deleted = true;
-                        continue;
-                    }
 
-                }
-                if (deleted)
-                {
-                    station.Index--;
-                    UpdateLineStation(station);
-                }
-                if (first)
-                {
-                    first = false;
-                    myLine.FirstStation = station.StationNumber;
-                    UpdateLine(myLine);
-                }
-            }
-            myLine.LastStation = myStations.FirstOrDefault(x => x.Index == lastIndex - 1).StationNumber;
-            UpdateLine(myLine);*/
-        }
-
+        /// <summary>
+        /// Deletes line from data
+        /// delets all stations of that line
+        /// 
+        /// Throws BOBadLineException
+        /// </summary>
+        /// <param name="lineNumber">Number of line to delete</param>
         public void DeleteLine(int lineNumber)
         {
             var myLineStationsList = GetAllLineStationsBy(x => x.LineNumber == lineNumber).ToList();
-            for (int i = 0; i < myLineStationsList.Count; i++)
+            for (int i = 0; i < myLineStationsList.Count; i++) //deletes all stations of line
             {
                 DeleteLineStationPrivate(myLineStationsList[i].StationNumber, myLineStationsList[i].LineNumber);
             }
             var myLineDepartingList = GetAllLineDepartingBy(x => x.LineNumber == lineNumber).ToList();
-            for (int i = 0; i < myLineDepartingList.Count; i++)
+            for (int i = 0; i < myLineDepartingList.Count; i++)//deletes all line departings of line
             {
                 DeleteLineDeparting(lineNumber, myLineDepartingList[i].StartTime);
             }
             try
             {
-                dal.DeleteLine(lineNumber);
+                dal.DeleteLine(lineNumber); //delete line
             }
             catch (DO.BadLineException e)
             {
@@ -467,10 +494,15 @@ namespace BL
             }
         }
 
+        /// <summary>
+        /// Returns all indexes where we can add station to line
+        /// </summary>
+        /// <param name="lineNumber"Number of line></param>
+        /// <returns></returns>
         public IEnumerable<int> GetAllIndexesToAdd(int lineNumber)
         {
             List<int> indexes = GetAllLineStationsBy(x => x.LineNumber == lineNumber).OrderBy(x => x.Index).Select(x => x.Index).ToList();
-            indexes.Add(indexes.Last() + 1);
+            indexes.Add(indexes.Last() + 1); //adds last index
             return from index in indexes
                    select index;
 
@@ -478,18 +510,35 @@ namespace BL
         #endregion
 
         #region Station
+
+        /// <summary>
+        /// Adapter to copy Do.Station to BO.Station
+        /// </summary>
+        /// <param name="stationDO">DO.Station</param>
+        /// <returns>BO.Station</returns>
         Station StationDoBOAdapter(DO.Station stationDO)
         {
             Station stationBO = new Station();
             stationDO.CopyPropertiesTo(stationBO);
             return stationBO;
         }
+
+        /// <summary>
+        /// </summary>
+        /// <returns>all stations</returns>
         public IEnumerable<Station> GetAllStations()
         {
             return from station in dal.GetAllStations()
                    select StationDoBOAdapter(station);
         }
 
+        /// <summary>
+        /// Returns all stations that meet the condition
+        /// 
+        /// Throws BOReadDataException
+        /// </summary>
+        /// <param name="predicate">condition</param>
+        /// <returns></returns>
         public IEnumerable<Station> GetAllStationsBy(Predicate<Station> predicate)
         {
             IEnumerable<Station> myStationsList = from station in dal.GetAllStations()
@@ -501,7 +550,11 @@ namespace BL
             return myStationsList;
         }
 
-
+        /// <summary>
+        /// Returns all lines that pass by a station
+        /// </summary>
+        /// <param name="id">Station id</param>
+        /// <returns>ordered list of lines</returns>
         public IEnumerable<int> GetAllLinesOfStation(int id)
         {
             return from station in GetAllLineStations()
@@ -510,6 +563,13 @@ namespace BL
                    select station.LineNumber;
         }
 
+        /// <summary>
+        /// Returns station
+        /// 
+        /// Throws BOBadStationException
+        /// </summary>
+        /// <param name="id">Station number</param>
+        /// <returns></returns>
         public Station GetStation(int id)
         {
             DO.Station stationDO;
@@ -524,6 +584,19 @@ namespace BL
             }
         }
 
+
+        /// <summary>
+        /// Adds station to data
+        /// checks data of station 
+        /// if not good throws :
+        /// 
+        /// BOBadStationCoordinatesLongitudeException
+        /// BOBadStationCoordinatesLatitudeException
+        /// BOBadStationNameException
+        /// BOBadStationAddressException
+        /// BOBadStationNumberException
+        /// </summary>
+        /// <param name="tmpStation">Station to add</param>
         public void AddStation(Station tmpStation)
         {
             if (tmpStation.Coordinates.Longitude > 35.5 || tmpStation.Coordinates.Longitude < 34.3)
@@ -558,6 +631,20 @@ namespace BL
             }
         }
 
+        /// <summary>
+        /// Checks if new station has got good data
+        /// 
+        /// if not good throws :
+        /// 
+        /// BOBadStationCoordinatesLongitudeException
+        /// BOBadStationCoordinatesLatitudeException
+        /// BOBadStationNameException
+        /// BOBadStationAddressException
+        /// BOBadStationNumberException
+        /// 
+        /// </summary>
+        /// <param name="tmpStation"></param>
+        /// <returns>is good ?</returns>
         public bool CheckNewStation(Station tmpStation)
         {
             if (tmpStation.Coordinates.Longitude > 35.5 || tmpStation.Coordinates.Longitude < 34.3)
@@ -584,13 +671,26 @@ namespace BL
             {
                 dal.GetStation(tmpStation.StationId);
             }
-            catch (Exception)
+            catch (Exception) //if exception then station doesn't exist
             {
                 return true;
             }
             return false;
         }
 
+
+        /// <summary>
+        /// Updates station in data
+        /// checks data of station 
+        /// if not good throws :
+        /// 
+        /// BOBadStationCoordinatesLongitudeException
+        /// BOBadStationCoordinatesLatitudeException
+        /// BOBadStationNameException
+        /// BOBadStationAddressException
+        /// BOBadStationNumberException
+        /// </summary>
+        /// <param name="tmpStation">Station to update</param>
         public void UpdateStation(Station tmpStation)
         {
             if (tmpStation.Coordinates.Longitude > 35.5 || tmpStation.Coordinates.Longitude < 34.3)
@@ -611,6 +711,7 @@ namespace BL
             }
             try
             {
+                //update all pair stations where on of the stations is the one to update
                 List<PairStations> pairStations = GetAllPairStationsBy(x => x.FirstStationNumber == tmpStation.StationId).ToList();
                 for (int i = 0; i < pairStations.Count; i++)
                 {
@@ -625,8 +726,8 @@ namespace BL
                     pairStations[i].Distance = tmpStation1.Coordinates.GetDistanceTo(tmpStation.Coordinates);
                     dal.UpdatePairStations((DO.PairStations)pairStations[i].CopyPropertiesToNew(typeof(DO.PairStations)));
                 }
-                dal.DeleteStation(tmpStation.StationId);
-                dal.AddStation((DO.Station)tmpStation.CopyPropertiesToNew(typeof(DO.Station)));
+                dal.DeleteStation(tmpStation.StationId); //deletes old data
+                dal.AddStation((DO.Station)tmpStation.CopyPropertiesToNew(typeof(DO.Station))); // add new data
             }
             catch (DO.BadStationException e)
             {
@@ -634,31 +735,53 @@ namespace BL
             }
         }
 
+        /// <summary>
+        /// Deletes station from data
+        /// updates all lines
+        /// 
+        /// Throws BOLineDeleteException if line was deleted
+        /// </summary>
+        /// <param name="id">Number of station to delete</param>
         public void DeleteStation(int id)
         {
-            var myStations = GetAllLineStations().GroupBy(x => x.LineNumber).ToList();
-            var busLines = GetAllBusLines().ToList();
-            for (int i = 0; i < busLines.Count; i++)
+            var myStations = GetAllLineStations().GroupBy(x => x.LineNumber).ToList(); //gets all stations
+            var busLines = GetAllBusLines().ToList(); //gets all lines
+            List<int> linesDeleted = new List<int>() { };
+            for (int i = 0; i < busLines.Count; i++) //for each line update all stations if this station was in line
             {
-                bool first = false;
-                bool deleted = false;
-                int lastIndex = 0;
-                var lineStations = myStations.FirstOrDefault(x => x.Key == busLines[i].LineNumber).OrderBy(x => x.Index).ToList();
+                bool first = false; //if the station deleted was first
+                bool deleted = false; //if the station was in this line and was deleted
+                int lastIndex = 0; //last index updated
+                var lineStations = myStations.FirstOrDefault(x => x.Key == busLines[i].LineNumber).OrderBy(x => x.Index).ToList(); //gets all stations of this line
                 IEnumerable<int> sizeCol = from station in lineStations
                                            where station.StationNumber == busLines[i].LastStation
                                            select station.Index;
-                int size = sizeCol.First();
-                if (size <= 2)
+                int size = sizeCol.First(); //number of stations
+                if (size <= 2) //if only 2 stations and we delete one then no enough station so delete line
                 {
-                    DeleteLine(busLines[i].LineNumber);
-                    throw new BOLineDeleteException($"Line {busLines[i].LineNumber} too small, it has been deleted", busLines[i].LineNumber);
+
+                    LineStation station = null;
+                    try
+                    {
+                        station = GetLineStation(id, busLines[i].LineNumber);
+                    }
+                    catch (Exception) { } //exception will be sent if station does'nt exist , it doesn't bother us
+                    if (station != null) //the deleted station is in the line
+                    {
+                        DeleteLine(busLines[i].LineNumber);
+                        linesDeleted.Add(busLines[i].LineNumber); //adds line deleted to list for exception throw
+                        continue;
+                        //<throw new BOLineDeleteException($"Line {busLines[i].LineNumber} too small, it has been deleted", busLines[i].LineNumber);
+                    }
+
                 }
-                for (int j = 0; j < lineStations.Count; j++)
+                for (int j = 0; j < lineStations.Count; j++) //updates all indexes of stations of line where the deleted station was
                 {
-                    if (lineStations[j].StationNumber == id)
+                    if (lineStations[j].StationNumber == id) //if the station needs to be deleted
                     {
                         if (lineStations[j].StationNumber == busLines[i].FirstStation)
                         {
+                            //first station
                             DeleteLineStationPrivate(lineStations[j].StationNumber, busLines[i].LineNumber);
                             first = true;
                             deleted = true;
@@ -666,76 +789,112 @@ namespace BL
                         }
                         if (lineStations[j].StationNumber == busLines[i].LastStation)
                         {
+                            //last station
                             lastIndex = lineStations[j].Index;
                             DeleteLineStationPrivate(lineStations[j].StationNumber, busLines[i].LineNumber);
                             break;
                         }
                         else
                         {
+                            //delete station and adds pair station between station before and station after
                             DeleteLineStationPrivate(lineStations[j].StationNumber, busLines[i].LineNumber);
                             Station firstStation = StationDoBOAdapter(dal.GetStation(lineStations[j - 1].StationNumber));
                             Station lastStation = StationDoBOAdapter(dal.GetStation(lineStations[j + 1].StationNumber));
                             double distance = firstStation.Coordinates.GetDistanceTo(lastStation.Coordinates);
-                            dal.AddPairStations(new DO.PairStations()
+                            try
                             {
-                                FirstStationNumber = firstStation.StationId,
-                                LastStationNumber = lastStation.StationId,
-                                MyActivity = DO.Activity.On,
-                                Distance = distance,
-                                Time = new TimeSpan((int)(distance / 40.0), (int)((distance % 40.0) / (40.0 / 60.0)), (int)(((distance % 40.0) % (40.0 / 60.0)) / (40.0 / 3600.0)))
-                            });
-                            deleted = true;
+                                dal.AddPairStations(new DO.PairStations()
+                                {
+                                    FirstStationNumber = firstStation.StationId,
+                                    LastStationNumber = lastStation.StationId,
+                                    MyActivity = DO.Activity.On,
+                                    Distance = distance,
+                                    Time = new TimeSpan((int)(distance / 40.0), (int)((distance % 40.0) / (40.0 / 60.0)), (int)(((distance % 40.0) % (40.0 / 60.0)) / (40.0 / 3600.0)))
+                                });
+                            }
+                            catch (Exception) { }
+                            deleted = true; //station in line was deleted
                             continue;
                         }
-
                     }
-                    if (deleted)
+                    if (deleted) //we need to update indexes in next stations
                     {
                         lineStations[j].Index--;
                         UpdateLineStation(lineStations[j]);
                     }
-                    if (first)
+                    if (first)// need to update line
                     {
-                        first = false;
+                        first = false; //not to update in next iteration
                         busLines[i].FirstStation = lineStations[j].StationNumber;
                         UpdateLine(busLines[i]);
                     }
                 }
-                if (lastIndex != 0)
+                if (lastIndex != 0) //last station was deleted
                 {
                     busLines[i].LastStation = lineStations.FirstOrDefault(x => x.Index == lastIndex - 1).StationNumber;
                     UpdateLine(busLines[i]);
                 }
             }
             var myPairStations = GetAllPairStationsBy(x => (x.FirstStationNumber == id) || (x.LastStationNumber == id)).ToList();
-            for (int i = 0; i < myPairStations.Count; i++)
+            for (int i = 0; i < myPairStations.Count; i++) //delete all pair stations where this station was
             {
                 DeletePairStations(myPairStations[i].FirstStationNumber, myPairStations[i].LastStationNumber);
             }
             try
             {
-                dal.DeleteStation(id);
+                dal.DeleteStation(id); //delete the station
             }
             catch (DO.BadStationException e)
             {
                 throw new BOBadStationException(e.Message, id);
             }
+            finally
+            {
+                //throws exception if lines where deleted
+                if (linesDeleted.Count != 0)
+                {
+                    string message = "No enough stations, Those lines have been deleted : \n";
+                    foreach (var item in linesDeleted)
+                    {
+                        message += item.ToString() + "  ";
+                    }
+                    throw new BONewLineInsuffisantStationsException(message);
+                }
+            }
         }
         #endregion
 
         #region User
+
+        /// <summary>
+        /// Copy DO.User to BO.User
+        /// </summary>
+        /// <param name="userDO">DO.User</param>
+        /// <returns>BO.User</returns>
         User UserDoBOAdapter(DO.User userDO)
         {
             User userBO = new User();
             userDO.CopyPropertiesTo(userBO);
             return userBO;
         }
+
+        /// <summary>
+        /// Returns all users 
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<User> GetAllUsers()
         {
             return from user in dal.GetAllUsers()
                    select UserDoBOAdapter(user);
         }
 
+        /// <summary>
+        /// Returns all users that meet the condition
+        /// 
+        /// Throws BOReadDataException
+        /// </summary>
+        /// <param name="predicate">Condition</param>
+        /// <returns></returns>
         public IEnumerable<User> GetAllUsersBy(Predicate<User> predicate)
         {
             var myUsers = from user in dal.GetAllUsers()
@@ -747,6 +906,14 @@ namespace BL
                 throw new BOReadDataException("No User meets the conditions");
             return myUsers;
         }
+
+        /// <summary>
+        /// Returns User that has that name
+        /// 
+        /// Throws BOBadUserException
+        /// </summary>
+        /// <param name="userName">Name of user</param>
+        /// <returns></returns>
         public User GetUser(string userName)
         {
             DO.User userDO;
@@ -761,6 +928,13 @@ namespace BL
             }
         }
 
+
+        /// <summary>
+        /// Updates user in data
+        /// 
+        /// Throws BOBadUserException
+        /// </summary>
+        /// <param name="userToUpdate">User to update</param>
         public void UpdateUser(User userToUpdate)
         {
             DO.User userDO = new DO.User();
@@ -774,6 +948,13 @@ namespace BL
             }
         }
 
+
+        /// <summary>
+        /// Adds User to data
+        /// 
+        /// Throws BOBadUserException
+        /// </summary>
+        /// <param name="tmpUser"></param>
         public void AddUser(User tmpUser)
         {
             DO.User userDO = new DO.User();
@@ -786,6 +967,13 @@ namespace BL
                 throw new BOBadUserException(e.Message, tmpUser.UserName);
             }
         }
+
+        /// <summary>
+        /// Deletes user from data
+        /// 
+        /// Throws BOBadUserException
+        /// </summary>
+        /// <param name="userName"></param>
         public void DeleteUser(string userName)
         {
             try
@@ -800,18 +988,36 @@ namespace BL
         #endregion
 
         #region LineStation
+
+        /// <summary>
+        /// Copy DO.LineStation to BO.LineStation
+        /// </summary>
+        /// <param name="lineStationDO">DO.LineStation</param>
+        /// <returns>BO.LineStation</returns>
         LineStation LineStationDoBOAdapter(DO.LineStation lineStationDO)
         {
             LineStation lineStationBO = new LineStation();
             lineStationDO.CopyPropertiesTo(lineStationBO);
             return lineStationBO;
         }
+
+        /// <summary>
+        /// Returns all line stations
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<LineStation> GetAllLineStations()
         {
             return from lineStation in dal.GetAllLineStations()
                    select LineStationDoBOAdapter(lineStation);
         }
 
+        /// <summary>
+        /// Returns all line stations that meet the condition
+        /// 
+        /// Throws BOReadDataException
+        /// </summary>
+        /// <param name="predicate">Condition</param>
+        /// <returns></returns>
         public IEnumerable<LineStation> GetAllLineStationsBy(Predicate<LineStation> predicate)
         {
             IEnumerable<LineStation> myLineStations = from lineStation in dal.GetAllLineStations()
@@ -823,6 +1029,14 @@ namespace BL
             throw new BOReadDataException("No LineStation meets the conditions");
         }
 
+        /// <summary>
+        /// Returns line station in this line with this number
+        /// 
+        /// Throws BOBadLineStationException
+        /// </summary>
+        /// <param name="stationNumber">Station Number</param>
+        /// <param name="lineNumber">Line Number</param>
+        /// <returns></returns>
         public LineStation GetLineStation(int stationNumber, int lineNumber)
         {
             DO.LineStation lineStationDO;
@@ -837,6 +1051,13 @@ namespace BL
             }
         }
 
+
+        /// <summary>
+        /// Adds station to line in data
+        /// 
+        /// Throws BOBadLineStationException
+        /// </summary>
+        /// <param name="tmpLineStation">Station to Add</param>
         public void AddLineStation(LineStation tmpLineStation)
         {
             DO.LineStation lineStationDO = new DO.LineStation();
@@ -850,6 +1071,15 @@ namespace BL
             }
         }
 
+
+        /// <summary>
+        /// Delete station straight from data
+        /// Private use of the logic class
+        /// 
+        /// Throws BOBadLineStationException
+        /// </summary>
+        /// <param name="stationNumber">Number of station to delete</param>
+        /// <param name="lineNumber">Line Number</param>
         private void DeleteLineStationPrivate(int stationNumber, int lineNumber)
         {
             try
@@ -862,23 +1092,33 @@ namespace BL
             }
         }
 
+
+        /// <summary>
+        /// Deletes station from line
+        /// Updates all indexes of stations after it in line
+        /// Creates pair stations if needed
+        /// 
+        /// Throws BOBadLineStationException
+        /// </summary>
+        /// <param name="stationNumber">Number of station to delete</param>
+        /// <param name="lineNumber">Line Number</param>
         public void DeleteLineStation(int stationNumber, int lineNumber)
         {
-            bool first = false;
-            bool deleted = false;
-            int lastIndex = 0;
-            var myLine = GetAllBusLinesBy(x => x.LineNumber == lineNumber).FirstOrDefault();
-            var lineStations = GetAllLineStationsBy(x => x.LineNumber == lineNumber).OrderBy(x => x.Index).ToList();
-            if (lineStations.Count <= 2)
+            bool first = false; //if first station
+            bool deleted = false; //to know when deleted
+            int lastIndex = 0; //to know if last station was deleted
+            var myLine = GetAllBusLinesBy(x => x.LineNumber == lineNumber).FirstOrDefault(); //gets line
+            var lineStations = GetAllLineStationsBy(x => x.LineNumber == lineNumber).OrderBy(x => x.Index).ToList(); //gets all stations of the line ordered by index
+            if (lineStations.Count <= 2) //if line has only 2 stations and we delete one then the aal line needs to be deleted
             {
                 DeleteLine(lineNumber);
                 throw new BOLineDeleteException($"Line {lineNumber} too small, it has been deleted", lineNumber);
             }
-            for (int j = 0; j < lineStations.Count; j++)
+            for (int j = 0; j < lineStations.Count; j++) //searches for line station to delete
             {
-                if (lineStations[j].StationNumber == stationNumber)
+                if (lineStations[j].StationNumber == stationNumber) //when needs to be deleted
                 {
-                    if (lineStations[j].StationNumber == myLine.FirstStation)
+                    if (lineStations[j].StationNumber == myLine.FirstStation) //if first station
                     {
                         try
                         {
@@ -888,13 +1128,13 @@ namespace BL
                         {
                             throw new BOBadLineStationException(e.Message, lineNumber, stationNumber);
                         }
-                        first = true;
-                        deleted = true;
+                        first = true; //first was deleted
+                        deleted = true; //station was deleted
                         continue;
                     }
-                    if (lineStations[j].StationNumber == myLine.LastStation)
+                    if (lineStations[j].StationNumber == myLine.LastStation) // if last station
                     {
-                        lastIndex = lineStations[j].Index;
+                        lastIndex = lineStations[j].Index; //gets the index
                         try
                         {
                             dal.DeleteLineStation(stationNumber, lineNumber);
@@ -915,39 +1155,48 @@ namespace BL
                         {
                             throw new BOBadLineStationException(e.Message, lineNumber, stationNumber);
                         }
+                        //creates pair station for station before and station after
                         Station lastStation = GetStation(lineStations[j + 1].StationNumber);
                         Station firstStation = GetStation(lineStations[j - 1].StationNumber);
                         double distance = firstStation.Coordinates.GetDistanceTo(lastStation.Coordinates);
                         try
                         {
+                            //adds pair station
                             AddPairStations(new PairStations() { FirstStationNumber = firstStation.StationId, LastStationNumber = lastStation.StationId, Distance = distance, Time = new TimeSpan((int)(distance / 40.0), (int)((distance % 40.0) / (40.0 / 60.0)), (int)(((distance % 40.0) % (40.0 / 60.0)) / (40.0 / 3600.0))) });
                         }
-                        catch (BOBadPairStationException e)
+                        catch (BOBadPairStationException e)//exception will be throwed if pair station already exist but it doesn't bother us
                         { };
-                        deleted = true;
+                        deleted = true;//station was deleted
                         continue;
                     }
 
                 }
-                if (deleted)
+                if (deleted)//we need to update indexes
                 {
                     lineStations[j].Index--;
                     UpdateLineStation(lineStations[j]);
                 }
-                if (first)
+                if (first)//need to update line's first station
                 {
                     first = false;
                     myLine.FirstStation = lineStations[j].StationNumber;
                     UpdateLine(myLine);
                 }
             }
-            if (lastIndex != 0)
+            if (lastIndex != 0)//need to update line's last station 
             {
                 myLine.LastStation = lineStations.FirstOrDefault(x => x.Index == lastIndex - 1).StationNumber;
                 UpdateLine(myLine);
             }
         }
 
+
+        /// <summary>
+        /// Updates line statuion in data
+        /// 
+        /// Throws BOBadLineStationException
+        /// </summary>
+        /// <param name="lineStationToUpdate">Line Station to update</param>
         public void UpdateLineStation(LineStation lineStationToUpdate)
         {
             DO.LineStation lineStationDO = new DO.LineStation();
@@ -964,18 +1213,22 @@ namespace BL
         #endregion
 
         #region BusInTravel
+        [Obsolete("This Class wasn't used in the project, needs more implementation")]
         BusInTravel BusInTravelDOBOAdapter(DO.BusInTravel busInTravelDO)
         {
             BusInTravel busInTravelBO = new BusInTravel();
             busInTravelDO.CopyPropertiesTo(busInTravelBO);
             return busInTravelBO;
         }
+
+        [Obsolete("This Class wasn't used in the project, needs more implementation")]
         public IEnumerable<BusInTravel> GetAllBusInTravel()
         {
             return from busInTravel in dal.GetAllBusInTravel()
                    select BusInTravelDOBOAdapter(busInTravel);
         }
 
+        [Obsolete("This Class wasn't used in the project, needs more implementation")]
         public IEnumerable<BusInTravel> GetAllBusInTravelBy(Predicate<BusInTravel> predicate)
         {
             IEnumerable<BusInTravel> myBusInTravel = from busInTravel in dal.GetAllBusInTravel()
@@ -987,6 +1240,7 @@ namespace BL
             throw new BOReadDataException("No BusInTravel meets the conditions");
         }
 
+        [Obsolete("This Class wasn't used in the project, needs more implementation")]
         public BusInTravel GetBusInTravel(int license, int line, DateTime departureTime)
         {
             DO.BusInTravel busInTravelDO;
@@ -1001,6 +1255,7 @@ namespace BL
             }
         }
 
+        [Obsolete("This Class wasn't used in the project, needs more implementation")]
         public void AddBusInTravel(BusInTravel tmpBusInTravel)
         {
             DO.BusInTravel busInTravelDO = new DO.BusInTravel();
@@ -1014,6 +1269,7 @@ namespace BL
             }
         }
 
+        [Obsolete("This Class wasn't used in the project, needs more implementation")]
         public void DeleteBusInTravel(int license, int line, DateTime departureTime)
         {
             try
@@ -1026,6 +1282,7 @@ namespace BL
             }
         }
 
+        [Obsolete("This Class wasn't used in the project, needs more implementation")]
         public void UpdateBusInTravel(BusInTravel busInTravelToUpdate)
         {
             DO.BusInTravel busInTravelDO = new DO.BusInTravel();
@@ -1041,6 +1298,12 @@ namespace BL
         #endregion
 
         #region LineDeparting
+
+        /// <summary>
+        /// Copy DO.LineDeparting to BO.LineDeparting
+        /// </summary>
+        /// <param name="lineDepartingDO">DO.LineDEparting</param>
+        /// <returns>BO.LineDeparting</returns>
         LineDeparting LineDepartingDOBOAdapter(DO.LineDeparting lineDepartingDO)
         {
             LineDeparting lineDepartingBO = new LineDeparting();
@@ -1048,12 +1311,24 @@ namespace BL
             return lineDepartingBO;
         }
 
+        /// <summary>
+        /// Returns all Line departings
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<LineDeparting> GetAllLineDeparting()
         {
             return from lineDeparting in dal.GetAllLineDeparting()
                    select LineDepartingDOBOAdapter(lineDeparting);
         }
 
+
+        /// <summary>
+        /// Returns all line departings thet meet the condition
+        /// 
+        /// Throws BOReadDataException
+        /// </summary>
+        /// <param name="predicate">Condition</param>
+        /// <returns></returns>
         public IEnumerable<LineDeparting> GetAllLineDepartingBy(Predicate<LineDeparting> predicate)
         {
             IEnumerable<LineDeparting> mylineDeparting = from lineDeparting in dal.GetAllLineDeparting()
@@ -1065,6 +1340,14 @@ namespace BL
             throw new BOReadDataException("No LineDeparting meets the conditions");
         }
 
+        /// <summary>
+        /// Returns line departing that meets that data
+        /// 
+        /// Throws BOBadLineDepartingException
+        /// </summary>
+        /// <param name="lineNumber">Number of Line</param>
+        /// <param name="startTime"></param>
+        /// <returns></returns>
         public LineDeparting GetLineDeparting(int lineNumber, TimeSpan startTime)
         {
             DO.LineDeparting lineDepartingDO;
@@ -1079,19 +1362,32 @@ namespace BL
             }
         }
 
+
+        /// <summary>
+        /// Adds line departing to data 
+        /// checks data , if not good throws
+        /// 
+        /// BOStopTimeException
+        /// BOFrequencyException
+        /// BOBadLineDepartingException
+        /// 
+        /// </summary>
+        /// <param name="tmpLineDeparting"></param>
         public void AddLineDeparting(LineDeparting tmpLineDeparting)
         {
-            if (tmpLineDeparting.StartTime >= tmpLineDeparting.StopTime)
+            if (tmpLineDeparting.StartTime >= tmpLineDeparting.StopTime)//needs to be on same day
             {
                 throw new BOStopTimeException("Error : Start Time and Stop Time need to be on the same day !");
             }
             if (tmpLineDeparting.Frequency > tmpLineDeparting.StopTime - tmpLineDeparting.StartTime)
             {
+                //frequency needs to be less than entire time 
                 throw new BOFrequencyException("Error : Frequency must be less or equal to interval !");
             }
             IEnumerable<LineDeparting> myLineDeparting = GetAllLineDepartingBy(x => x.LineNumber == tmpLineDeparting.LineNumber).OrderBy(x => x.StartTime);
-            foreach (var item in myLineDeparting)
+            foreach (var item in myLineDeparting) //checks if there is no line departing in that hours
             {
+                //if there is one we need to update it
                 if (tmpLineDeparting.StartTime >= item.StartTime && tmpLineDeparting.StopTime <= item.StopTime)
                 {
                     try
@@ -1105,7 +1401,6 @@ namespace BL
                     {
                         throw new BOBadLineDepartingException(e.Message, tmpLineDeparting.LineNumber, tmpLineDeparting.StartTime);
                     }
-                    //AddLineDeparting(new LineDeparting() { StartTime = item.StartTime, StopTime = tmpLineDeparting.StartTime, Frequency = item.Frequency, LineNumber = item.LineNumber });      
                 }
                 if (tmpLineDeparting.StartTime >= item.StartTime && tmpLineDeparting.StartTime <= item.StopTime)
                 {
@@ -1128,6 +1423,14 @@ namespace BL
             }
         }
 
+
+        /// <summary>
+        /// Deletes line departing from data
+        /// 
+        /// throws BOBadLineDepartingException
+        /// </summary>
+        /// <param name="lineNumber">Number of line</param>
+        /// <param name="startTime">Starting time</param>
         public void DeleteLineDeparting(int lineNumber, TimeSpan startTime)
         {
             try
@@ -1140,6 +1443,15 @@ namespace BL
             }
         }
 
+        /// <summary>
+        /// Update line departing
+        /// checks data , if not good throws :
+        /// 
+        /// BOStopTimeException
+        /// BOFrequencyException
+        /// BOBadLineDepartingException
+        /// </summary>
+        /// <param name="lineDepartingToUpdate"></param>
         public void UpdateLineDeparting(LineDeparting lineDepartingToUpdate)
         {
             if (lineDepartingToUpdate.StartTime >= lineDepartingToUpdate.StopTime)
@@ -1163,6 +1475,12 @@ namespace BL
         #endregion
 
         #region PairStations
+
+        /// <summary>
+        /// Copy DO.PairStations to BO.PairStations
+        /// </summary>
+        /// <param name="pairStationsDO">DO.PairStations</param>
+        /// <returns>BO.PairStations</returns>
         PairStations PairStationsDoBOAdapter(DO.PairStations pairStationsDO)
         {
             PairStations pairStationsBO = new PairStations();
@@ -1170,12 +1488,23 @@ namespace BL
             return pairStationsBO;
         }
 
+        /// <summary>
+        /// Returns all pair stations 
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<PairStations> GetAllPairStations()
         {
             return from pairStations in dal.GetAllPairStations()
                    select PairStationsDoBOAdapter(pairStations);
         }
 
+        /// <summary>
+        /// Returns all pair stations that meet the condition
+        /// 
+        /// Throws BOReadDataException
+        /// </summary>
+        /// <param name="predicate">Condition</param>
+        /// <returns></returns>
         public IEnumerable<PairStations> GetAllPairStationsBy(Predicate<PairStations> predicate)
         {
             IEnumerable<PairStations> myPairStationsList = from pairStations in dal.GetAllPairStations()
@@ -1187,6 +1516,14 @@ namespace BL
             throw new BOReadDataException("No Pair Stations meets the conditions");
         }
 
+        /// <summary>
+        /// Returns Pair station that meets the data
+        /// 
+        /// Throws BOBadPairStationException
+        /// </summary>
+        /// <param name="firstStations">First Station Number</param>
+        /// <param name="secondStation">Last Station Number</param>
+        /// <returns></returns>
         public PairStations GetPairStations(int firstStations, int secondStation)
         {
             DO.PairStations pairStationsDo;
@@ -1201,6 +1538,13 @@ namespace BL
             }
         }
 
+
+        /// <summary>
+        /// Adds pair station ton data
+        /// 
+        /// Throws BOBadPairStationException
+        /// </summary>
+        /// <param name="tmpPairStations">Pair station to add</param>
         public void AddPairStations(PairStations tmpPairStations)
         {
             try
@@ -1213,6 +1557,14 @@ namespace BL
             }
         }
 
+
+        /// <summary>
+        /// Deletes pair station from data
+        /// 
+        /// Throws BOBadPairStationException
+        /// </summary>
+        /// <param name="firstStation">First station number</param>
+        /// <param name="secondStation">Last station number</param>
         public void DeletePairStations(int firstStation, int secondStation)
         {
             try
@@ -1225,6 +1577,13 @@ namespace BL
             }
         }
 
+
+        /// <summary>
+        /// Updates pair station in data
+        /// 
+        /// Throws BOBadPairStationException
+        /// </summary>
+        /// <param name="pairStationsToUpdate">Pair Station to update</param>
         public void UpdatePairStations(PairStations pairStationsToUpdate)
         {
             try
@@ -1240,6 +1599,13 @@ namespace BL
         #endregion
 
         #region UserTrip
+
+        [Obsolete("Class not used in program, needs more implementation")]
+        /// <summary>
+        /// Copy DO.UserTrip to BO.UserTrip
+        /// </summary>
+        /// <param name="userTripDO">DO.UserTrip</param>
+        /// <returns>BO.UserTrip</returns>
         UserTrip UserTripDoBOAdapter(DO.UserTrip userTripDO)
         {
             UserTrip userTripBO = new UserTrip();
@@ -1247,12 +1613,14 @@ namespace BL
             return userTripBO;
         }
 
+        [Obsolete("Class not used in program, needs more implementation")]
         public IEnumerable<UserTrip> GetAllUserTrip()
         {
             return from userTrip in dal.GetAllUserTrip()
                    select UserTripDoBOAdapter(userTrip);
         }
 
+        [Obsolete("Class not used in program, needs more implementation")]
         public IEnumerable<UserTrip> GetAllUserTripBy(Predicate<UserTrip> predicate)
         {
             IEnumerable<UserTrip> myUserTripList = from userTrip in dal.GetAllUserTrip()
@@ -1264,6 +1632,7 @@ namespace BL
             throw new BOBadUserTripException("No Line meets the conditions");
         }
 
+        [Obsolete("Class not used in program, needs more implementation")]
         public UserTrip GetUserTrip(string name)
         {
             DO.UserTrip userTripDo;
@@ -1278,6 +1647,7 @@ namespace BL
             }
         }
 
+        [Obsolete("Class not used in program, needs more implementation")]
         public void AddUserTrip(UserTrip tmpUserTrip)
         {
             try
@@ -1290,6 +1660,7 @@ namespace BL
             }
         }
 
+        [Obsolete("Class not used in program, needs more implementation")]
         public void DeleteUserTrip(string name)
         {
             try
@@ -1302,6 +1673,7 @@ namespace BL
             }
         }
 
+        [Obsolete("Class not used in program, needs more implementation")]
         public void UpdateUserTrip(UserTrip userTripToUpdate)
         {
             try
@@ -1316,8 +1688,18 @@ namespace BL
         #endregion
 
         #region LineStationToShow
+
+        /// <summary>
+        /// returns all Line stations of line to show 
+        /// each station has all data needed to be showed
+        /// 
+        /// Throws BOReadDataException
+        /// </summary>
+        /// <param name="lineNumber">Number of Line</param>
+        /// <returns></returns>
         public IEnumerable<LineStationToShow> GetAllStationsOfLine(int lineNumber)
         {
+            //gets all data by querying dal
             var myLineStationsTmp = from station in GetAllLineStationsBy(x => x.LineNumber == lineNumber)
                                     orderby station.Index
                                     let station1 = GetStation(station.StationNumber)
@@ -1339,15 +1721,25 @@ namespace BL
 
         }
 
+
+        /// <summary>
+        /// Update Distance and time in line station to show
+        /// Updates the pair station 
+        /// Checks data
+        /// 
+        /// Throws exception gotten from DO encapsulated in Exception
+        /// </summary>
+        /// <param name="myStation"></param>
+        /// <param name="line"></param>
         public void UpdateDistanceAndTime(LineStationToShow myStation, int line)
         {
             try
             {
-                ;
                 foreach (var item in GetAllStationsOfLine(myStation.lineNumber))
                 {
                     if (item.Index == myStation.Index + 1)
                     {
+                        //Updates the adequat pair station
                         PairStations pairStation = PairStationsDoBOAdapter(dal.GetPairStations(myStation.StationId, item.StationId));
                         pairStation.Distance = myStation.Distance;
                         pairStation.Time = myStation.Time;
@@ -1365,13 +1757,20 @@ namespace BL
 
         #region StationToAdd
 
+        /// <summary>
+        /// Returns all stations that can be added to a line 
+        /// </summary>
+        /// <param name="lineNumber">Number of line</param>
+        /// <returns></returns>
         public IEnumerable<StationToAdd> GetAllStationsToAdd(int lineNumber)
         {
+            //Get all stations 
             IEnumerable<StationToAdd> stationsToAdd = from station in GetAllStations()
                                                       orderby station.StationId
                                                       let stationToAdd = station.CopyPropertiesToNew(typeof(StationToAdd)) as StationToAdd
                                                       select stationToAdd;
             List<StationToAdd> stations = stationsToAdd.ToList();
+            //remove the stations already in the line
             foreach (var item in GetAllLineStationsBy(x => x.LineNumber == lineNumber))
             {
                 for (int i = 0; i < stations.Count(); i++)
@@ -1389,8 +1788,14 @@ namespace BL
 
         #region StationToShow
 
+        /// <summary>
+        /// Returns a station to show that meets the station Number
+        /// </summary>
+        /// <param name="stationNumber">Number of station</param>
+        /// <returns></returns>
         public StationToShow getStationToShow(int stationNumber)
         {
+            //creates the station to show with all the data
             var stationToShow = (StationToShow)dal.GetStation(stationNumber).CopyPropertiesToNew(typeof(StationToShow));
             stationToShow.Lines = from station in GetAllLineStationsBy(x => x.StationNumber == stationNumber)
                                   orderby station.LineNumber
@@ -1398,14 +1803,6 @@ namespace BL
                                   let lastStation = GetBusLine(station.LineNumber).LastStation
                                   let name = GetStation(lastStation).Name
                                   select line + name;
-            stationToShow.LineNumbers = from station in GetAllLineStationsBy(x => x.StationNumber == stationNumber)
-                                        orderby station.LineNumber
-                                        select station.LineNumber;
-            stationToShow.TimesToStation = new Hashtable();
-            foreach (var item in GetAllLineStationsBy(x => x.StationNumber == stationNumber))
-            {
-                stationToShow.TimesToStation.Add(item.LineNumber, TimeToStation(item.LineNumber, stationNumber));
-            }
             return stationToShow;
 
         }
@@ -1413,8 +1810,13 @@ namespace BL
 
         #region LineToShow
 
+        /// <summary>
+        /// Returns all lines to be showed
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<LineToShow> GetAllLinesToShow()
         {
+            //Creates line to show with all the dtata for all lines in data
             var lines = GetAllBusLines().OrderBy(x => x.LineNumber);
             List<LineToShow> lineToShowList = new List<LineToShow>() { };
             foreach (var item in lines)
@@ -1432,11 +1834,19 @@ namespace BL
                    select line;
         }
 
+        /// <summary>
+        /// Returns line to show for a specific line
+        /// 
+        /// Throws BOBadLineException
+        /// </summary>
+        /// <param name="id">Line number</param>
+        /// <returns></returns>
         public LineToShow GetBusLineToShow(int id)
         {
             DO.BusLine busLineDO;
             try
             {
+                //gets all data from dal and creates line to show
                 busLineDO = dal.GetBusLine(id);
                 var lineToShow = (LineToShow)busLineDO.CopyPropertiesToNew(typeof(LineToShow));
                 lineToShow.LineDepartings = from lineDeparting in GetAllLineDepartingBy(x => x.LineNumber == id)
@@ -1457,8 +1867,6 @@ namespace BL
         #region Simulation
         public void StartSimulator(TimeSpan startTime, int rate, Action<TimeSpan> updateTime)
         {
-            //Stopwatch stopWatch = new Stopwatch();
-            //stopWatch.Restart();
             SimulatorClock.Instance.Cancel = false;
             SimulatorClock simulatorClock = SimulatorClock.Instance;
             simulatorClock.Rate = rate;
@@ -1479,69 +1887,18 @@ namespace BL
 
         public void SetStationPanel(int station, Action<LineTiming> updatePanel)
         {
-            //foreach (var item in GetAllLineStationsBy(x => x.StationNumber == station.StationId))
-            /*foreach (var item in station.LineNumbers)
-            {
-                //TimeSpan timeToStation = TimeToStation(item.LineNumber, station.StationId);
-                TimeSpan timeToStation = (TimeSpan)station.TimesToStation[item];
-                for (int i = 0; i < lineInTravelSimulators.Count; i++)
-                {
-                    if (lineInTravelSimulators[i].LineNumber == item)
-                    {
-                        if (lineInTravelSimulators[i].ElapsedTime <= timeToStation)
-                        {
-                            LineTiming mylineTiming = new LineTiming()
-                            {
-                                LineNumber = lineInTravelSimulators[i].LineNumber,
-                                LastStation = lineInTravelSimulators[i].LastStation,
-                                ArrivalTime = timeToStation - lineInTravelSimulators[i].ElapsedTime
-                            };
-                            updatePanel(mylineTiming);
-                        }
-                    }
-                }
-            }*/
             TravelSimulator.Instance.StationNumber = station;
             TravelSimulator.Instance.SetDigitalPanel += updatePanel;
         }
 
-        public void SetStationPanel1(StationToShow station, Action<LineTiming> updatePanel)
+        public void SendLinesToTravel()
         {
-            //foreach (var item in GetAllLineStationsBy(x => x.StationNumber == station.StationId))
-            /*foreach (var item in station.LineNumbers)
-            {
-                //TimeSpan timeToStation = TimeToStation(item.LineNumber, station.StationId);
-                TimeSpan timeToStation = (TimeSpan)station.TimesToStation[item];
-                for (int i = 0; i < lineInTravelSimulators.Count; i++)
-                {
-                    if (lineInTravelSimulators[i].LineNumber == item)
-                    {
-                        if (lineInTravelSimulators[i].ElapsedTime <= timeToStation)
-                        {
-                            LineTiming mylineTiming = new LineTiming()
-                            {
-                                LineNumber = lineInTravelSimulators[i].LineNumber,
-                                LastStation = lineInTravelSimulators[i].LastStation,
-                                ArrivalTime = timeToStation - lineInTravelSimulators[i].ElapsedTime
-                            };
-                            updatePanel(mylineTiming);
-                        }
-                    }
-                }
-            }*/
-            TravelSimulator.Instance.StationNumber = station.StationId;
-            TravelSimulator.Instance.SetDigitalPanel += updatePanel;
-        }
-
-        void SendLinesToTravel()
-        {
-            lineInTravelSimulators = new List<LineInTravelSimulator>() { };
             foreach (var line in GetAllBusLines().OrderBy(x => x.LineNumber))
             {
-                foreach (var lineDeparting in GetAllLineDepartingBy(x => x.LineNumber == line.LineNumber).OrderBy(x=> x.StartTime))
+                foreach (var lineDeparting in GetAllLineDepartingBy(x => x.LineNumber == line.LineNumber).OrderBy(x => x.StartTime))
                 {
                     BackgroundWorker LineDepartingBw = new BackgroundWorker();
-                    LineDepartingBw.DoWork += LineDepartingDoWork;
+                    LineDepartingBw.DoWork += SimulationLogic.LineDepartingDoWork;
                     LineToShow myLine = GetBusLineToShow(lineDeparting.LineNumber);
                     LineDepartingSimulation myLineDeparting = new LineDepartingSimulation()
                     {
@@ -1556,181 +1913,12 @@ namespace BL
                 }
             }
         }
-
-        void LineDepartingDoWork(object sender , DoWorkEventArgs e)
-        {
-            LineDepartingSimulation myLineDeparting = e.Argument as LineDepartingSimulation;
-            TimeSpan travelTime = new TimeSpan();
-            /*foreach (var item in myLineDeparting.LineStations)
-            {
-                travelTime += item.Time;
-            }
-            for (TimeSpan i = myLineDeparting.StartTime; i < SimulatorClock.Instance.Time; i += myLineDeparting.Frequency)
-            {
-                if (i + travelTime >= SimulatorClock.Instance.Time)
-                {
-                    /*BackgroundWorker lineTravelBw = new BackgroundWorker();
-                    lineTravelBw.DoWork += LineInTravelSimulatorDoWork;
-                    LineInTravelSimulator myLineIntravel = new LineInTravelSimulator()
-                    {
-                        LineNumber = myLineDeparting.LineNumber,
-                        StartTime = i,
-                        ElapsedTime = SimulatorClock.Instance.Time - i,
-                        TravelTime = travelTime,
-                        LastStation = myLineDeparting.LastStation
-                    };
-                    lineInTravelSimulators.Add(myLineIntravel);
-                    lineTravelBw.RunWorkerAsync(myLineIntravel);
-                    TimeSpan elapsedTime = new TimeSpan();
-                    List<LineStationToShow> stations = new List<LineStationToShow>();
-            for (int j = 0; j < myLineDeparting.LineStations.Count(); j++)
-                    {
-                        if (i + elapsedTime + myLineDeparting.LineStations.ElementAt(j).Time < SimulatorClock.Instance.Time)
-                        {
-                            stations.Add(myLineDeparting.LineStations.ElementAt(j));
-                        }
-                    }
-                    BackgroundWorker lineTravelBw = new BackgroundWorker();
-                    lineTravelBw.DoWork += LineInTravelSimulatorDoWork1;
-                    LineInTravel myLineIntravel = new LineInTravel()
-                    {
-                        LineNumber = myLineDeparting.LineNumber,
-                        Key = Config.Number,
-                        LastStation = myLineDeparting.LastStation,
-                        LineStations = stations
-                    };
-                    lineTravelBw.RunWorkerAsync(myLineIntravel);
-                    //new Thread(LineInTravelSimulatorDoWork1).Start(new LineInTravel { LineNumber = myLineDeparting.LineNumber, Key = Config.Number, LastStation = myLineDeparting.LastStation, LineStations = stations });
-                }
-            }*/
-            while (SimulatorClock.Instance.Cancel == false)
-            {
-                if (myLineDeparting.StartTime <= SimulatorClock.Instance.Time && myLineDeparting.StopTime >= SimulatorClock.Instance.Time)
-                {
-                    /*BackgroundWorker lineTravelBw = new BackgroundWorker();
-                    lineTravelBw.DoWork += LineInTravelSimulatorDoWork;
-                    LineInTravelSimulator myLineIntravel = new LineInTravelSimulator()
-                    {
-                        LineNumber = myLineDeparting.LineNumber,
-                        StartTime = SimulatorClock.Instance.Time,
-                        ElapsedTime = new TimeSpan(),
-                        TravelTime = travelTime,
-                        LastStation = myLineDeparting.LastStation
-                    };
-                    lineInTravelSimulators.Add(myLineIntravel);
-                    lineTravelBw.RunWorkerAsync(myLineIntravel);*/
-                    BackgroundWorker lineTravelBw = new BackgroundWorker();
-                    lineTravelBw.DoWork += LineInTravelSimulatorDoWork1;
-                    LineInTravel myLineIntravel = new LineInTravel()
-                    { 
-                        LineNumber = myLineDeparting.LineNumber, 
-                        Key = Config.Number, 
-                        LastStation = myLineDeparting.LastStation, 
-                        LineStations = myLineDeparting.LineStations.ToList() 
-                    };
-                    lineTravelBw.RunWorkerAsync(myLineIntravel);
-                    //new Thread(LineInTravelSimulatorDoWork1).Start(new LineInTravel { LineNumber = myLineDeparting.LineNumber, Key = Config.Number, LastStation =myLineDeparting.LastStation, LineStations = myLineDeparting.LineStations.ToList() });
-                }
-                Thread.Sleep((int)myLineDeparting.Frequency.TotalMilliseconds / SimulatorClock.Instance.Rate);
-            }
-        }
-
-        void LineInTravelSimulatorDoWork1(object sender, DoWorkEventArgs e)
-        {
-            LineInTravel myLine = e.Argument as LineInTravel;
-            bool flag = false;
-            int station = TravelSimulator.Instance.StationNumber;
-            TimeSpan timeToStation;
-            for (int i = 0; i < myLine.LineStations.Count && SimulatorClock.Instance.Cancel == false; i++)
-            {
-                timeToStation = new TimeSpan();
-                for (int j = i ; j < myLine.LineStations.Count; j++)
-                {
-                    if (myLine.LineStations[i].StationId == TravelSimulator.Instance.StationNumber)
-                    {
-                        flag = true;
-                        station = TravelSimulator.Instance.StationNumber;
-                        timeToStation = TimeSpan.Zero;
-                        TravelSimulator.Instance.LineTiming = new LineTiming { Key = myLine.Key, ArrivalTime = timeToStation, LastStation = myLine.LastStation, LineNumber = myLine.LineNumber };
-                        break;
-                    }
-                    if (myLine.LineStations[j].StationId == TravelSimulator.Instance.StationNumber)
-                    {
-                        flag = true;
-                        station = TravelSimulator.Instance.StationNumber;
-                        TravelSimulator.Instance.LineTiming = new LineTiming { Key = myLine.Key, ArrivalTime = timeToStation, LastStation = myLine.LastStation, LineNumber = myLine.LineNumber };
-                        break;
-                    }
-                    timeToStation += myLine.LineStations[j].Time;
-                }
-                int timeToSleep = (int)(myLine.LineStations[i].Time.TotalMilliseconds / SimulatorClock.Instance.Rate);
-                while (timeToSleep >= 1000)
-                {
-                    Thread.Sleep(1000);
-                    timeToSleep -= 1000;
-                    for (int k = i; k < myLine.LineStations.Count; k++)
-                    {
-                        if (myLine.LineStations[k].StationId == TravelSimulator.Instance.StationNumber && TravelSimulator.Instance.StationNumber == station)
-                        {
-                            if (timeToStation != TimeSpan.Zero)// && TravelSimulator.Instance.StationNumber == station && flag)
-                            {
-                                timeToStation = timeToStation.Subtract(new TimeSpan(10000000 * SimulatorClock.Instance.Rate));
-                                TravelSimulator.Instance.LineTiming = new LineTiming { Key = myLine.Key, ArrivalTime = timeToStation, LastStation = myLine.LastStation, LineNumber = myLine.LineNumber };
-                            }
-                        }
-                    }
-                }           
-                Thread.Sleep(timeToSleep);
-                flag = false;
-            }
-            /*while (myLineInTravel.ElapsedTime < myLineInTravel.TravelTime && SimulatorClock.Instance.Cancel == false)
-            {
-                TimeSpan myElapsedTime = new TimeSpan(0, 1, 0) + new TimeSpan(0, 0, r.Next(0, 60)) - new TimeSpan(0, 0, r.Next(0, 7));
-                myLineInTravel.ElapsedTime += myElapsedTime;
-                Thread.Sleep(60000 / SimulatorClock.Instance.Rate);
-            }
-            lineInTravelSimulators.Remove(myLineInTravel);*/
-        }
-
-        void LineInTravelSimulatorDoWork(object sender , DoWorkEventArgs e)
-        {
-            LineInTravelSimulator myLineInTravel = e.Argument as LineInTravelSimulator;
-            while (myLineInTravel.ElapsedTime < myLineInTravel.TravelTime && SimulatorClock.Instance.Cancel == false)
-            {
-                TimeSpan myElapsedTime = new TimeSpan(0, 1 , 0) + new TimeSpan(0,0,r.Next(0,60)) - new TimeSpan(0, 0, r.Next(0, 7));
-                myLineInTravel.ElapsedTime += myElapsedTime;
-                Thread.Sleep(60000 / SimulatorClock.Instance.Rate);
-            }
-            lineInTravelSimulators.Remove(myLineInTravel);
-        }
-
-        TimeSpan TimeToStation(int lineNumber, int stationNumber)
-        {
-            TimeSpan timeToStation = new TimeSpan();
-            var index = GetLineStation(stationNumber, lineNumber).Index;
-            var stations = from station in GetAllLineStationsBy(x => x.LineNumber == lineNumber)
-                           orderby station.Index
-                           where station.Index <= index
-                           select new { Index = station.Index, Number = station.StationNumber };
-            for (int i = 0; i < stations.Count() - 1; i++)
-            {
-                var pairStation = dal.GetPairStations(stations.ElementAt(i).Number, stations.ElementAt(i + 1).Number);
-                timeToStation += pairStation.Time;  
-            }
-            return timeToStation;
-        }
         public bool IsSimulator()
         {
             return SimulatorClock.Instance.Cancel != true;
         }
 
         #endregion
-
-       public IEnumerable<BO.LineInTravelSimulator> GetLineInTravel()
-        {
-            return from line in lineInTravelSimulators
-                   select (BO.LineInTravelSimulator)line.CopyPropertiesToNew(typeof(BO.LineInTravelSimulator));
-        }
 
     }
 }
