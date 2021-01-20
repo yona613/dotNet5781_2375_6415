@@ -130,7 +130,7 @@
     <KmFromTest>6616</KmFromTest>
     <Brand>Volvo</Brand>
     <AirConditionning>true</AirConditionning>
-    <MyActivity>On</MyActivity>
+    <MyActivity>Off</MyActivity>
   </Bus>
   <Bus>
     <License>2430252</License>
@@ -154,7 +154,7 @@
     <KmFromTest>13524</KmFromTest>
     <Brand>Volvo</Brand>
     <AirConditionning>true</AirConditionning>
-    <MyActivity>On</MyActivity>
+    <MyActivity>Off</MyActivity>
   </Bus>
   <Bus>
     <License>1453919</License>
@@ -236,6 +236,42 @@
     <BusStatus>Ready</BusStatus>
     <TestDate>2020-08-27T04:45:30</TestDate>
     <KmFromTest>19976</KmFromTest>
+    <Brand>Volvo</Brand>
+    <AirConditionning>true</AirConditionning>
+    <MyActivity>On</MyActivity>
+  </Bus>
+  <Bus>
+    <License>5000201</License>
+    <LicenseDate>2007-10-24T05:43:02</LicenseDate>
+    <Kilometrage>34339</Kilometrage>
+    <Fuel>1200</Fuel>
+    <BusStatus>Ready</BusStatus>
+    <TestDate>2020-06-21T07:38:59</TestDate>
+    <KmFromTest>6616</KmFromTest>
+    <Brand>Volvo</Brand>
+    <AirConditionning>true</AirConditionning>
+    <MyActivity>On</MyActivity>
+  </Bus>
+  <Bus>
+    <License>2494452</License>
+    <LicenseDate>2004-02-27T09:24:30</LicenseDate>
+    <Kilometrage>128124</Kilometrage>
+    <Fuel>1200</Fuel>
+    <BusStatus>Ready</BusStatus>
+    <TestDate>2021-01-20T16:16:04.2630499+02:00</TestDate>
+    <KmFromTest>0</KmFromTest>
+    <Brand>Volvo</Brand>
+    <AirConditionning>true</AirConditionning>
+    <MyActivity>Off</MyActivity>
+  </Bus>
+  <Bus>
+    <License>2494452</License>
+    <LicenseDate>2004-02-27T09:24:30</LicenseDate>
+    <Kilometrage>128124</Kilometrage>
+    <Fuel>1200</Fuel>
+    <BusStatus>Ready</BusStatus>
+    <TestDate>2021-01-20T16:16:04.2630499+02:00</TestDate>
+    <KmFromTest>0</KmFromTest>
     <Brand>Volvo</Brand>
     <AirConditionning>true</AirConditionning>
     <MyActivity>On</MyActivity>

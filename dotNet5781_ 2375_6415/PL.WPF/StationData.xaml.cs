@@ -69,5 +69,10 @@ namespace PL.WPF
                 Thread.Sleep(6000);
             }
         }
+
+        private void digitalPanelDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }
