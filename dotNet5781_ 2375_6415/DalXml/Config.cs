@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace DL
 {
+    /// <summary>
+    /// create Continuous number (key) to the appropriate entities
+    /// </summary>
     public static class Config
     {
         static int busInTravelCounter = 0;

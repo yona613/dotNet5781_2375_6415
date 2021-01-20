@@ -9,6 +9,9 @@ using System.Xml.Serialization;
 
 namespace DO
 {
+    /// <summary>
+    /// implements pair-stations (for calculates distances)
+    /// </summary>
     public class PairStations
     {
         private int firstStationNumber;

@@ -10,6 +10,12 @@ namespace DS
 {
     public static class FriendFunctions
     {
+        /// <summary>
+        /// for calculating distance between pair-stations
+        /// </summary>
+        /// <param name="from">first station location</param>
+        /// <param name="to">second station location</param>
+        /// <returns></returns>
         static public double GetDistanceTo(this Location from, Location to)
         {
             GeoCoordinate tmpFrom = new GeoCoordinate() { Longitude = from.Longitude, Latitude = from.Latitude };

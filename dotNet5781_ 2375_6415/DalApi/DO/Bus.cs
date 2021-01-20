@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace DO
 {
+    /// <summary>
+    /// implements bus
+    /// </summary>
     public class Bus
     {
         private int license;

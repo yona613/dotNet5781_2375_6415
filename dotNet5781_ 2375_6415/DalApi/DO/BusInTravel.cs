@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace DO
 {
+    [Obsolete("This Class wasn't used in the project, needs more implementation")]
     public class BusInTravel
     {
         private int key;

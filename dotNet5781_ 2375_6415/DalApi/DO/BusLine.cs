@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace DO
 {
+    /// <summary>
+    /// implements line
+    /// </summary>
     public class BusLine
     {
         private int key;

@@ -8,6 +8,9 @@ using System.Device.Location;
 
 namespace DO
 {
+    /// <summary>
+    /// implement station
+    /// </summary>
     public class Station
     {
         private int stationId;

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace DO
 {
+    /// <summary>
+    /// implement station in line
+    /// </summary>
     public class LineStation
     {
         private int lineNumber;

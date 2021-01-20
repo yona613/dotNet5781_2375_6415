@@ -13,7 +13,9 @@ namespace DL
     sealed class DalXml : IDL
     {
         #region singelton
-
+        /// <summary>
+        /// new static read-only dalxml
+        /// </summary>
         private static readonly DalXml instance = new DalXml();
         static DalXml() { }// static ctor to ensure instance init is done just before first usage
         private DalXml() { } // default => private
@@ -21,6 +23,12 @@ namespace DL
         #endregion
 
         #region Bus
+        /// <summary>
+        /// get all bus that satisfies the condition
+        /// throw ReadDataException
+        /// </summary>
+        /// <param name="predicate">the condition (bool)</param>
+        /// <returns>IEnumerable implemented by buses satisfies the cindition</returns>
         public IEnumerable<Bus> GetAllBuseBy(Predicate<Bus> predicate)
         {
             IEnumerable<Bus> allBuses = from bus in XMLTools.LoadListFromXMLSerializer<Bus>(@"Bus.xml")
@@ -33,14 +41,22 @@ namespace DL
             }
             throw new ReadDataException("No Bus meets the conditions");
         }
-
+        /// <summary>
+        /// get all bus
+        /// </summary>
+        /// <returns>IEnumerable implemented by buses</returns>
         public IEnumerable<Bus> GetAllBuses()
         {
             return from Bus in XMLTools.LoadListFromXMLSerializer<Bus>(@"Bus.xml")
                    where Bus.MyActivity == Activity.On
                    select Bus.Clone();
         }
-
+        /// <summary>
+        /// get solid bus by condition
+        /// throw BadBusException
+        /// </summary>
+        /// <param name="license"></param>
+        /// <returns>the appropriate bus</returns>
         public Bus GetBus(int license)
         {
             Bus tmpBus = XMLTools.LoadListFromXMLSerializer<Bus>(@"Bus.xml").Find(bus => bus.License == license && bus.MyActivity == Activity.On);
@@ -50,7 +66,11 @@ namespace DL
             }
             throw new BadBusException("Bus doesn't exist", license);
         }
-
+        /// <summary>
+        /// adding bus to bus-list
+        /// throw BadBusException
+        /// </summary>
+        /// <param name="myBus">bus to add</param>
         public void AddBus(Bus myBus)
         {
             var busList = XMLTools.LoadListFromXMLSerializer<Bus>(@"Bus.xml");
@@ -59,7 +79,11 @@ namespace DL
             busList.Add(myBus.Clone());
             XMLTools.SaveListToXMLSerializer<Bus>(busList, @"Bus.xml");
         }
-
+        /// <summary>
+        /// update bus by deleting it and adding it with the news updates
+        /// throw BadBusException
+        /// </summary>
+        /// <param name="busToUpdate">bus To Update</param>
         public void UpdateBus(Bus busToUpdate)
         {
             Bus tmpBus = XMLTools.LoadListFromXMLSerializer<Bus>(@"Bus.xml").FirstOrDefault(bus => bus.License == busToUpdate.License && bus.MyActivity == Activity.On);
@@ -68,7 +92,11 @@ namespace DL
             DeleteBus(tmpBus.License);
             AddBus(busToUpdate);
         }
-
+        /// <summary>
+        /// delete bus by turns its activity off
+        /// throw BadBusException
+        /// </summary>
+        /// <param name="license"></param>
         public void DeleteBus(int license)
         {
             var busList = XMLTools.LoadListFromXMLSerializer<Bus>(@"Bus.xml");
@@ -81,13 +109,22 @@ namespace DL
         #endregion
 
         #region Line
+        /// <summary>
+        /// Get All Lines
+        /// </summary>
+        /// <returns>IEnumerable implemented by lines</returns>
         public IEnumerable<BusLine> GetAllBusLines()
         {
             return from busLine in XMLTools.LoadListFromXMLSerializer<BusLine>(@"BusLine.xml")
                    where busLine.MyActivity == Activity.On
                    select busLine.Clone();
         }
-
+        /// <summary>
+        /// get all lines that satisfies the condition
+        /// throw ReadDataException
+        /// </summary>
+        /// <param name="predicate">the condition (bool)</param>
+        /// <returns>IEnumerable implemented by lines satisfies the cindition</returns>
         public IEnumerable<BusLine> GetAllBusLinesBy(Predicate<BusLine> predicate)
         {
             IEnumerable<BusLine> myLineList = from busLine in XMLTools.LoadListFromXMLSerializer<BusLine>(@"BusLine.xml")
@@ -98,7 +135,12 @@ namespace DL
                 return myLineList;
             throw new ReadDataException("No Line meets the conditions");
         }
-
+        /// <summary>
+        /// get solid line by condition
+        /// throw BadLineException
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>the appropriate line</returns>
         public BusLine GetBusLine(int id)
         {
             BusLine myBusLine = XMLTools.LoadListFromXMLSerializer<BusLine>(@"BusLine.xml").Find(line => line.LineNumber == id && line.MyActivity == Activity.On);
@@ -106,7 +148,11 @@ namespace DL
                 return myBusLine.Clone();
             throw new BadLineException("the Line doesn't exist", id);
         }
-
+        /// <summary>
+        /// adding line to line-list
+        /// throw BadLineException
+        /// </summary>
+        /// <param name="tmpBusLine">line to add</param>
         public void AddLine(BusLine tmpBusLine)
         {
             var lineList = XMLTools.LoadListFromXMLSerializer<BusLine>(@"BusLine.xml");
@@ -117,7 +163,11 @@ namespace DL
             lineList.Add(myBusLine);
             XMLTools.SaveListToXMLSerializer<BusLine>(lineList, @"BusLine.xml");
         }
-
+        /// <summary>
+        /// update line by deleting it and adding it with the news updates
+        /// throw BadLineException
+        /// </summary>
+        /// <param name="lineToUpdate">line To Update</param>
         public void UpdateLine(BusLine lineToUpdate)
         {
             var lineList = XMLTools.LoadListFromXMLSerializer<BusLine>(@"BusLine.xml");
@@ -127,7 +177,11 @@ namespace DL
             DeleteLine(tmpLine.LineNumber);
             AddLine(lineToUpdate);
         }
-
+        /// <summary>
+        /// delete line by turns its activity off
+        /// throw BadLineException
+        /// </summary>
+        /// <param name="lineNumber"></param>
         public void DeleteLine(int lineNumber)
         {
             var lineList = XMLTools.LoadListFromXMLSerializer<BusLine>(@"BusLine.xml");
@@ -140,13 +194,22 @@ namespace DL
         #endregion
 
         #region Station
+        /// <summary>
+        /// get all stations
+        /// </summary>
+        /// <returns>IEnumerable implemented by stations</returns>
         public IEnumerable<Station> GetAllStations()
         {
             return from station in XMLTools.LoadListFromXMLSerializer<Station>(@"Station.xml")
                    where station.MyActivity == Activity.On
                    select station.Clone();
         }
-
+        /// <summary>
+        /// get all stations that satisfies the condition
+        /// throw ReadDataException
+        /// </summary>
+        /// <param name="predicate">the condition (bool)</param>
+        /// <returns>IEnumerable implemented by buses satisfies the cindition</returns>
         public IEnumerable<Station> GetAllStationsBy(Predicate<Station> predicate)
         {
             IEnumerable<Station> myStationsList = from station in XMLTools.LoadListFromXMLSerializer<Station>(@"Station.xml")
@@ -157,7 +220,12 @@ namespace DL
                 throw new ReadDataException("No Station meets the conditions");
             return myStationsList;
         }
-
+        /// <summary>
+        /// get solid station by condition
+        /// throw BadStationException
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>the appropriate station</returns>
         public Station GetStation(int id)
         {
             Station myStation = XMLTools.LoadListFromXMLSerializer<Station>(@"Station.xml").Find(Station => Station.StationId == id && Station.MyActivity == Activity.On);
@@ -165,7 +233,11 @@ namespace DL
                 return myStation.Clone();
             throw new BadStationException("Station doesn't exist", id);
         }
-
+        /// <summary>
+        /// adding station to station-list
+        /// throw BadStationException
+        /// </summary>
+        /// <param name="tmpStation">station to add</param>
         public void AddStation(Station tmpStation)
         {
             var stationsList = XMLTools.LoadListFromXMLSerializer<Station>(@"Station.xml");
@@ -174,7 +246,11 @@ namespace DL
             stationsList.Add(tmpStation.Clone());
             XMLTools.SaveListToXMLSerializer<Station>(stationsList, @"Station.xml");
         }
-
+        /// <summary>
+        /// delete station by turns its activity to off
+        /// throw BadStationException
+        /// </summary>
+        /// <param name="id">number of the station going to been deleted</param>
         public void DeleteStation(int id)
         {
             var stationsList = XMLTools.LoadListFromXMLSerializer<Station>(@"Station.xml");
@@ -187,6 +263,10 @@ namespace DL
         #endregion
 
         #region User
+        /// <summary>
+        /// get all users
+        /// </summary>
+        /// <returns>IEnumerable implemented by users</returns>
         public IEnumerable<User> GetAllUsers()
         {
             var userXel = XMLTools.LoadListFromXMLElement(@"User.xml");
@@ -200,7 +280,12 @@ namespace DL
                        Permission = (Permit)Enum.Parse(typeof(Permit), user.Element("Permission").Value, true)
                    };
         }
-
+        /// <summary>
+        /// get all users that satisfies the condition
+        /// throw ReadDataException
+        /// </summary>
+        /// <param name="predicate">the condition (bool)</param>
+        /// <returns>IEnumerable implemented by users satisfies the cindition</returns>
         public IEnumerable<User> GetAllUsersBy(Predicate<User> predicate)
         {
             var userXel = XMLTools.LoadListFromXMLElement(@"User.xml");
@@ -219,7 +304,12 @@ namespace DL
                 throw new ReadDataException("No User meets the conditions");
             return myUsers;
         }
-
+        /// <summary>
+        /// get solid user by his name
+        /// throw BadUserException
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
         public User GetUser(string userName)
         {
             var userXel = XMLTools.LoadListFromXMLElement(@"User.xml");
@@ -233,12 +323,16 @@ namespace DL
                                MyActivity = (Activity)Enum.Parse(typeof(Activity), user.Element("MyActivity").Value, true),
                                Permission = (Permit)Enum.Parse(typeof(Permit), user.Element("Permission").Value, true)
                            }).FirstOrDefault();
-            /*User myUser = XMLTools.LoadListFromXMLSerializer<User>(@"User.xml").FirstOrDefault(user => user.UserName == userName && user.MyActivity == Activity.On);*/
+
             if (myUser != null)
                 return myUser;
             throw new BadUserException("User doesn't exist", userName);
         }
-
+        /// <summary>
+        /// update user (delete the old and add the new)
+        /// throw BadUserException
+        /// </summary>
+        /// <param name="userToUpdate">user To Update</param>
         public void UpdateUser(User userToUpdate)
         {
             var userXel = XMLTools.LoadListFromXMLElement(@"User.xml");
@@ -257,7 +351,11 @@ namespace DL
             DeleteUser(tmpUser.UserName);
             AddUser(userToUpdate);
         }
-
+        /// <summary>
+        /// add user
+        /// throw BadUserException
+        /// </summary>
+        /// <param name="tmpUser">user to add</param>
         public void AddUser(User tmpUser)
         {
             var userXel = XMLTools.LoadListFromXMLElement(@"User.xml");
@@ -282,7 +380,11 @@ namespace DL
             userXel.Add(userToAdd);
             XMLTools.SaveListToXMLElement(userXel, @"User.xml");
         }
-
+        /// <summary>
+        /// delete user
+        /// throw BadUserException
+        /// </summary>
+        /// <param name="userName">name of user to delete</param>
         public void DeleteUser(string userName)
         {
             var userXel = XMLTools.LoadListFromXMLElement(@"User.xml");
@@ -300,13 +402,22 @@ namespace DL
         #endregion
 
         #region LineStation
+        /// <summary>
+        /// Get All Line Stations
+        /// </summary>
+        /// <returns>IEnumerable implements by lineStation</returns>
         public IEnumerable<LineStation> GetAllLineStations()
         {
             return from lineStation in XMLTools.LoadListFromXMLSerializer<LineStation>(@"LineStation.xml")
                    where lineStation.MyActivity == Activity.On
                    select lineStation.Clone();
         }
-
+        /// <summary>
+        /// Get All Line Stations meets the condition
+        /// throw ReadDataException
+        /// </summary>
+        /// <param name="predicate">the bool condition</param>
+        /// <returns></returns>
         public IEnumerable<LineStation> GetAllLineStationsBy(Predicate<LineStation> predicate)
         {
             IEnumerable<LineStation> myLineStations = from lineStation in XMLTools.LoadListFromXMLSerializer<LineStation>(@"LineStation.xml")
@@ -316,7 +427,13 @@ namespace DL
                 return myLineStations;
             throw new ReadDataException("No LineStation meets the conditions");
         }
-
+        /// <summary>
+        /// Get solid Line Station
+        /// throw BadLineStationException
+        /// </summary>
+        /// <param name="stationNumber"></param>
+        /// <param name="lineNumber"></param>
+        /// <returns></returns>
         public LineStation GetLineStation(int stationNumber, int lineNumber)
         {
             LineStation myLineStation = XMLTools.LoadListFromXMLSerializer<LineStation>(@"LineStation.xml").FirstOrDefault(
@@ -325,7 +442,11 @@ namespace DL
                 return myLineStation.Clone();
             throw new BadLineStationException("Line Station doesn't exist", lineNumber, stationNumber);
         }
-
+        /// <summary>
+        /// Add Line Station
+        /// throw BadLineStationException
+        /// </summary>
+        /// <param name="tmpLineStation">lineStation to add</param>
         public void AddLineStation(LineStation tmpLineStation)
         {
             var lineStationList = XMLTools.LoadListFromXMLSerializer<LineStation>(@"LineStation.xml");
@@ -337,7 +458,12 @@ namespace DL
             }
             else throw new BadLineStationException("Line Station already exist", tmpLineStation.LineNumber, tmpLineStation.StationNumber);
         }
-
+        /// <summary>
+        /// Delete Line Station
+        /// throw BadLineStationException
+        /// </summary>
+        /// <param name="stationNumber"></param>
+        /// <param name="lineNumber"></param>
         public void DeleteLineStation(int stationNumber, int lineNumber)
         {
             var lineStationList = XMLTools.LoadListFromXMLSerializer<LineStation>(@"LineStation.xml");
@@ -349,8 +475,11 @@ namespace DL
             }
             else throw new BadLineStationException("Line Station doesn't exist", lineNumber, stationNumber);
         }
-
-
+        /// <summary>
+        /// Update Line Station (delete old and add new)
+        /// throw BadLineStationException
+        /// </summary>
+        /// <param name="lineStationToUpdate"></param>
         public void UpdateLineStation(LineStation lineStationToUpdate)
         {
             LineStation tmpLineStation = XMLTools.LoadListFromXMLSerializer<LineStation>(@"LineStation.xml").FirstOrDefault(station => station.LineNumber == lineStationToUpdate.LineNumber && station.StationNumber == lineStationToUpdate.StationNumber && station.MyActivity == Activity.On);
@@ -362,13 +491,14 @@ namespace DL
         #endregion
 
         #region BusInTravel
+        [Obsolete("This Class wasn't used in the project, needs more implementation")]
         public IEnumerable<BusInTravel> GetAllBusInTravel()
         {
             return from busInTravel in XMLTools.LoadListFromXMLSerializer<BusInTravel>(@"BusInTravel.xml")
                    where busInTravel.MyActivity == Activity.On
                    select busInTravel.Clone();
         }
-
+        [Obsolete("This Class wasn't used in the project, needs more implementation")]
         public IEnumerable<BusInTravel> GetAllBusInTravelBy(Predicate<BusInTravel> predicate)
         {
             IEnumerable<BusInTravel> myBusInTravel = from busInTravel in XMLTools.LoadListFromXMLSerializer<BusInTravel>(@"BusInTravel.xml")
@@ -378,7 +508,7 @@ namespace DL
                 return myBusInTravel;
             throw new ReadDataException("No BusInTravel meets the conditions");
         }
-
+        [Obsolete("This Class wasn't used in the project, needs more implementation")]
         public BusInTravel GetBusInTravel(int license, int line, DateTime departureTime)
         {
             BusInTravel myBusInTravel = XMLTools.LoadListFromXMLSerializer<BusInTravel>(@"BusInTravel.xml").FirstOrDefault(
@@ -387,7 +517,7 @@ namespace DL
                 return myBusInTravel.Clone();
             throw new BadBusInTravelException("Bus In Travel doesn't exist", license, line, departureTime);
         }
-
+        [Obsolete("This Class wasn't used in the project, needs more implementation")]
         public void AddBusInTravel(BusInTravel tmpBusInTravel)
         {
             var busInTravelList = XMLTools.LoadListFromXMLSerializer<BusInTravel>(@"BusInTravel.xml");
@@ -401,7 +531,7 @@ namespace DL
             }
             throw new BadBusInTravelException("Bus In Travel already exist", tmpBusInTravel.License, tmpBusInTravel.Line, tmpBusInTravel.DepartureTime);
         }
-
+        [Obsolete("This Class wasn't used in the project, needs more implementation")]
         public void DeleteBusInTravel(int license, int line, DateTime departureTime)
         {
             var busInTravelList = XMLTools.LoadListFromXMLSerializer<BusInTravel>(@"BusInTravel.xml");
@@ -413,7 +543,7 @@ namespace DL
             }
             throw new BadBusInTravelException("Bus In Travel doesn't exist", tmpBusInTravel.License, tmpBusInTravel.Line, tmpBusInTravel.DepartureTime);
         }
-
+        [Obsolete("This Class wasn't used in the project, needs more implementation")]
         public void UpdateBusInTravel(BusInTravel busInTravelToUpdate)
         {
             BusInTravel tmpBusInTravel = XMLTools.LoadListFromXMLSerializer<BusInTravel>(@"BusInTravel.xml").FirstOrDefault(busInTravel => busInTravel.License == busInTravelToUpdate.License && busInTravel.Line == busInTravelToUpdate.Line && busInTravel.MyActivity == Activity.On);
@@ -425,7 +555,10 @@ namespace DL
         #endregion
 
         #region LineDeparting
-
+        /// <summary>
+        /// Get All Line Departing
+        /// </summary>
+        /// <returns>IEnumerable implemented by lineDeparting</returns>
         public IEnumerable<LineDeparting> GetAllLineDeparting()
         {
             var lineDepartingXel = XMLTools.LoadListFromXMLElement(@"LineDeparting.xml");
@@ -440,7 +573,12 @@ namespace DL
                        MyActivity = (Activity)Enum.Parse(typeof(Activity), myLineDeparting.Element("MyActivity").Value, true)
                    };
         }
-
+        /// <summary>
+        /// Get All Line Departing meets the condition
+        /// throw ReadDataException
+        /// </summary>
+        /// <param name="predicate">the condition (bool)</param>
+        /// <returns>IEnumerable implemented by lineDeparting</returns>
         public IEnumerable<LineDeparting> GetAllLineDepartingBy(Predicate<LineDeparting> predicate)
         {
             var lineDepartingXel = XMLTools.LoadListFromXMLElement(@"LineDeparting.xml");
@@ -460,7 +598,13 @@ namespace DL
                 return myLineDeparting;
             throw new ReadDataException("No LineDeparting meets the conditions");
         }
-
+        /// <summary>
+        /// Get solid Line Departing
+        /// throw BadLineDepartingException
+        /// </summary>
+        /// <param name="lineNumber"></param>
+        /// <param name="startTime"></param>
+        /// <returns></returns>
         public LineDeparting GetLineDeparting(int lineNumber, TimeSpan startTime)
         {
             var lineDepartingXel = XMLTools.LoadListFromXMLElement(@"LineDeparting.xml");
@@ -480,7 +624,11 @@ namespace DL
                 return line;
             throw new BadLineDepartingException("Linedeparting doesn't exist ", lineNumber, startTime);
         }
-
+        /// <summary>
+        /// Add Line Departing
+        /// throw BadLineDepartingException
+        /// </summary>
+        /// <param name="tmpLineDeparting">LineDeparting to add</param>
         public void AddLineDeparting(LineDeparting tmpLineDeparting)
         {
             var lineDepartingXel = XMLTools.LoadListFromXMLElement(@"LineDeparting.xml");
@@ -506,7 +654,12 @@ namespace DL
             lineDepartingXel.Add(lineDepartingToAdd);
             XMLTools.SaveListToXMLElement(lineDepartingXel, @"LineDeparting.xml");
         }
-
+        /// <summary>
+        /// Delete Line Departing
+        /// throw BadLineDepartingException
+        /// </summary>
+        /// <param name="lineNumber">Unique entity ID</param>
+        /// <param name="startTime">Unique entity ID</param>
         public void DeleteLineDeparting(int lineNumber, TimeSpan startTime)
         {
             var lineDepartingXel = XMLTools.LoadListFromXMLElement(@"LineDeparting.xml");
@@ -520,7 +673,11 @@ namespace DL
             line.Element("MyActivity").Value = Activity.Off.ToString();
             XMLTools.SaveListToXMLElement(lineDepartingXel, @"LineDeparting.xml");
         }
-
+        /// <summary>
+        /// Update Line Departing (delete old and add new)
+        /// throw BadLineDepartingException
+        /// </summary>
+        /// <param name="lineDepartingToUpdate"></param>
         public void UpdateLineDeparting(LineDeparting lineDepartingToUpdate)
         {
             var lineDepartingXel = XMLTools.LoadListFromXMLElement(@"LineDeparting.xml");
@@ -542,7 +699,10 @@ namespace DL
         #endregion
 
         #region PairStation
-
+        /// <summary>
+        /// Get All PairStations
+        /// </summary>
+        /// <returns>IEnumerable implemented by pairStations</returns>
         public IEnumerable<PairStations> GetAllPairStations()
         {
             var pairStationsXel = XMLTools.LoadListFromXMLElement(@"PairStations.xml");
@@ -557,7 +717,12 @@ namespace DL
                        MyActivity = (Activity)Enum.Parse(typeof(Activity), pairStation.Element("MyActivity").Value, true),
                    };
         }
-
+        /// <summary>
+        /// Get All PairStations meets the codition
+        /// throw ReadDataException
+        /// </summary>
+        /// <param name="predicate">the codition (bool)</param>
+        /// <returns>IEnumerable implemented by pairStations</returns>
         public IEnumerable<PairStations> GetAllPairStationsBy(Predicate<PairStations> predicate)
         {
             var pairStationsXel = XMLTools.LoadListFromXMLElement(@"PairStations.xml");
@@ -577,7 +742,13 @@ namespace DL
                 return pairStations;
             throw new ReadDataException("No Pair station meets the conditions");
         }
-
+        /// <summary>
+        /// Get solid PairStations
+        /// throw BadPairStationException
+        /// </summary>
+        /// <param name="firstStation">Unique entity ID</param>
+        /// <param name="secondStation">Unique entity ID</param>
+        /// <returns></returns>
         public PairStations GetPairStations(int firstStation, int secondStation)
         {
             var pairStationsXel = XMLTools.LoadListFromXMLElement(@"PairStations.xml");
@@ -598,7 +769,11 @@ namespace DL
                 return pair.Clone();
             throw new BadPairStationException("Pair Station doesn't exist", firstStation, secondStation);
         }
-
+        /// <summary>
+        /// Add Pair Stations
+        /// throw BadPairStationException
+        /// </summary>
+        /// <param name="tmpPairStations">PairStations to add</param>
         public void AddPairStations(PairStations tmpPairStations)
         {
             var pairStationsXel = XMLTools.LoadListFromXMLElement(@"PairStations.xml");
@@ -626,7 +801,12 @@ namespace DL
             pairStationsXel.Add(pairStationToAdd);
             XMLTools.SaveListToXMLElement(pairStationsXel, @"PairStations.xml");
         }
-
+        /// <summary>
+        /// Delete PairStations
+        /// throw BadPairStationException
+        /// </summary>
+        /// <param name="firstStation">Unique entity ID</param>
+        /// <param name="secondStation">Unique entity ID</param>
         public void DeletePairStations(int firstStation, int secondStation)
         {
             var pairStationsXel = XMLTools.LoadListFromXMLElement(@"PairStations.xml");
@@ -640,7 +820,11 @@ namespace DL
             pair.Element("MyActivity").Value = Activity.Off.ToString();
             XMLTools.SaveListToXMLElement(pairStationsXel, @"PairStations.xml");
         }
-
+        /// <summary>
+        /// Update PairStations (delete old and add new)
+        /// throw BadPairStationException
+        /// </summary>
+        /// <param name="pairStationsToUpdate"></param>
         public void UpdatePairStations(PairStations pairStationsToUpdate)
         {
             var pairStationsXel = XMLTools.LoadListFromXMLElement(@"PairStations.xml");
@@ -664,6 +848,7 @@ namespace DL
         #endregion
 
         #region UserTrip
+        [Obsolete("This Class wasn't used in the project, needs more implementation")]
         public IEnumerable<UserTrip> GetAllUserTrip()
         {
             return from userTrip in XMLTools.LoadListFromXMLSerializer<UserTrip>(@"UserTrip.xml")
@@ -671,6 +856,7 @@ namespace DL
                    select userTrip.Clone();
         }
 
+        [Obsolete("This Class wasn't used in the project, needs more implementation")]
         public IEnumerable<UserTrip> GetAllUserTripBy(Predicate<UserTrip> predicate)
         {
             IEnumerable<UserTrip> myUserTrip = from UserTrip in XMLTools.LoadListFromXMLSerializer<UserTrip>(@"UserTrip.xml")
@@ -681,6 +867,7 @@ namespace DL
             throw new ReadDataException("No UserTrip meets the conditions");
         }
 
+        [Obsolete("This Class wasn't used in the project, needs more implementation")]
         public UserTrip GetUserTrip(string name)
         {
             UserTrip myUserTrip = XMLTools.LoadListFromXMLSerializer<UserTrip>(@"UserTrip.xml").FirstOrDefault(
@@ -690,6 +877,7 @@ namespace DL
             throw new BadUserTripException("User Trip doesn't exist", name);
         }
 
+        [Obsolete("This Class wasn't used in the project, needs more implementation")]
         public void AddUserTrip(UserTrip tmpUserTrip)
         {
             var userTripList = XMLTools.LoadListFromXMLSerializer<UserTrip>(@"UserTrip.xml");
@@ -704,6 +892,7 @@ namespace DL
             throw new BadUserTripException("User Trip already exist", tmpUserTrip.UserName);
         }
 
+        [Obsolete("This Class wasn't used in the project, needs more implementation")]
         public void DeleteUserTrip(string name)
         {
             var userTripList = XMLTools.LoadListFromXMLSerializer<UserTrip>(@"UserTrip.xml");
@@ -717,6 +906,7 @@ namespace DL
 
         }
 
+        [Obsolete("This Class wasn't used in the project, needs more implementation")]
         public void UpdateUserTrip(UserTrip userTripToUpdate)
         {
             UserTrip tmpUserTrip = XMLTools.LoadListFromXMLSerializer<UserTrip>(@"UserTrip.xml").FirstOrDefault(userTrip => userTrip.UserName == userTripToUpdate.UserName && userTrip.MyActivity == Activity.On);

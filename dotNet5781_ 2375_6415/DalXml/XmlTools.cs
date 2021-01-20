@@ -13,12 +13,21 @@ namespace DL
     class XMLTools
     {
         static string dir = @"xml\";
+        /// <summary>
+        /// static CTOR
+        /// </summary>
         static XMLTools()
         {
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
         }
+
         #region SaveLoadWithXElement
+        /// <summary>
+        /// Saving List of entities To XMLElement
+        /// </summary>
+        /// <param name="rootElem">xelement file</param>
+        /// <param name="filePath">specific file in the directory</param>
         public static void SaveListToXMLElement(XElement rootElem, string filePath)
         {
             try
@@ -30,7 +39,11 @@ namespace DL
                 throw new DO.XMLFileLoadCreateException(filePath, $"fail to create xml file: {filePath}", ex);
             }
         }
-
+        /// <summary>
+        /// Loading List of entities from XMLElement
+        /// </summary>
+        /// <param name="filePath">specific file in the directory</param>
+        /// <returns>list of the entities</returns>
         public static XElement LoadListFromXMLElement(string filePath)
         {
             try
@@ -54,6 +67,12 @@ namespace DL
         #endregion
 
         #region SaveLoadWithXMLSerializer
+        /// <summary>
+        /// Saving List of entities To XMLSerializer
+        /// </summary>
+        /// <typeparam name="T">the entitie's type</typeparam>
+        /// <param name="list">list of the entities</param>
+        /// <param name="filePath">specific file in the directory</param>
         public static void SaveListToXMLSerializer<T>(List<T> list, string filePath)
         {
             try
@@ -68,6 +87,12 @@ namespace DL
                 throw new DO.XMLFileLoadCreateException(filePath, $"fail to create xml file: {filePath}", ex);
             }
         }
+        /// <summary>
+        /// Loading List of entities To XMLSerializer
+        /// </summary>
+        /// <typeparam name="T">the entitie's type</typeparam>
+        /// <param name="filePath">specific file in the directory</param>
+        /// <returns>list of entities</returns>
         public static List<T> LoadListFromXMLSerializer<T>(string filePath)
         {
             try

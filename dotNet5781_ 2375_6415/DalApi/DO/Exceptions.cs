@@ -16,6 +16,7 @@ namespace DO
         protected ReadDataException(SerializationInfo info, StreamingContext context) : base(info, context) { }
     }
 
+    [Serializable]
     public class XMLFileLoadCreateException : Exception
     {
         public string xmlFilePath;
@@ -26,7 +27,6 @@ namespace DO
         public XMLFileLoadCreateException(string xmlPath, string message, Exception innerException) :
             base(message, innerException)
         { xmlFilePath = xmlPath; }
-
         public override string ToString() => base.ToString() + $", fail to load or create xml file: {xmlFilePath}";
     }
 
@@ -74,6 +74,7 @@ namespace DO
         public override string ToString() => base.ToString() + $", bad User name {userName}";
     }
 
+    [Serializable]
     public class BadLineStationException : Exception
     {
         public int line;
@@ -87,6 +88,7 @@ namespace DO
     }
 
     [Serializable]
+    [Obsolete("This Class wasn't used in the project, needs more implementation")]
     public class BadUserTripException : Exception
     {
         public string userName;
@@ -97,6 +99,7 @@ namespace DO
         public override string ToString() => base.ToString() + $", bad UserTrip name {userName}";
     }
 
+    [Serializable]
     public class BadPairStationException : Exception
     {
         public int firstStation;
@@ -110,6 +113,7 @@ namespace DO
     }
 
     [Serializable]
+    [Obsolete("This Class wasn't used in the project, needs more implementation")]
     public class BadBusInTravelException : Exception
     {
         public int license;
@@ -121,6 +125,8 @@ namespace DO
         protected BadBusInTravelException(SerializationInfo info, StreamingContext context, int tmpLicense, int tmpLineNumber, DateTime tmpDepartureTime) : base(info, context) { license = tmpLicense; lineNumber = tmpLineNumber; departureTime = tmpDepartureTime; }
         public override string ToString() => base.ToString() + $", bad BusInTravel: license = {license}, lineNumber = {lineNumber}, departureTime = {departureTime}";
     }
+
+    [Serializable]
     public class BadLineDepartingException : Exception
     {
         public int lineNumber;

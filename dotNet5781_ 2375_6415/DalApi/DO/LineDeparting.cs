@@ -9,6 +9,9 @@ using System.Xml.Serialization;
 
 namespace DO
 {
+    /// <summary>
+    /// implements line trip
+    /// </summary>
     public class LineDeparting
     {
         private int lineNumber;

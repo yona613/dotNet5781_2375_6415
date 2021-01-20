@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace DO
 {
+    /// <summary>
+    /// implements user (user/manager)
+    /// </summary>
     public class User
     {
         private string userName;
