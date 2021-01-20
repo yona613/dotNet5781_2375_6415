@@ -48,19 +48,11 @@ namespace BL
         {
             add //only add one function at a time
             {
-                //ClockObserver -= value; //delete all functions
                 clockObserver = value; 
             }
-            remove  //delete all functions
+            remove 
             {
-                clockObserver -= value;
-                //if (clockObserver != null)
-                //{
-                //    foreach (var d in clockObserver.GetInvocationList())
-                //    {
-                //        clockObserver -= (Action<TimeSpan>)d;
-                //    }
-                //}               
+                clockObserver -= value;            
             }
         }
     }

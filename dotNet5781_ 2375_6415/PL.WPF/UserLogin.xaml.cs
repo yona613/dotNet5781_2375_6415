@@ -16,6 +16,7 @@ namespace PL.WPF
             InitializeComponent();
             bl = BLFactory.GetBL();
         }
+
         /// <summary>
         /// Login Button event
         /// </summary>
@@ -55,7 +56,7 @@ namespace PL.WPF
         /// login implementation
         /// checks that fields are full
         /// then send login query to bl and checks if user exists and password is true
-        /// if yes then opens program eklse error message
+        /// if yes then opens program else error message
         /// </summary>
         private void Login()
         {
@@ -73,7 +74,7 @@ namespace PL.WPF
                     var user = bl.GetUser(name);
                     if (password == user.Password)
                     {
-                        if (user.Permission == Permit.User)
+                        if (user.Permission == Permit.User) //checks permit
                         {
                             new UserWindow().Show();
                             Close();

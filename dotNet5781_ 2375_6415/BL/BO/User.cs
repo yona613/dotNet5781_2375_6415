@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace BO
 {
+    /// <summary>
+    /// Implements users of the program
+    /// </summary>
     public class User
     {
         public string UserName { get; set; }

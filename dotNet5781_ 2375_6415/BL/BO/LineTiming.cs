@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace BO
 {
+    /// <summary>
+    /// Implements timing of line to station observed
+    /// </summary>
     public class LineTiming
     {
         public int Key { get; set; }      

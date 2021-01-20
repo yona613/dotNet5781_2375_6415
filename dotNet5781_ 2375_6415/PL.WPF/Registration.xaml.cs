@@ -9,9 +9,9 @@ namespace PL.WPF
     /// </summary>  
     public partial class Registration : Window
     {
-        bool IsManager;
+        bool IsManager; //to now if registration of manger or user
         public static IBL bl;
-        public Registration(bool tmpIsMAnager)
+        public Registration(bool tmpIsMAnager) //gets registration kind
         {
             InitializeComponent();
             IsManager = tmpIsMAnager;

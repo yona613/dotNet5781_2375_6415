@@ -666,7 +666,7 @@ namespace DL
             XElement line = (from myLineDeparting in lineDepartingXel.Elements()
                                   where myLineDeparting.Element("MyActivity").Value == "On"
                                   where int.Parse(myLineDeparting.Element("LineNumber").Value) == lineNumber
-                                  where XmlConvert.ToTimeSpan(myLineDeparting.Element("startTime").Value) == startTime
+                                  where XmlConvert.ToTimeSpan(myLineDeparting.Element("StartTime").Value) == startTime
                                   select myLineDeparting).FirstOrDefault();
             if (line == null)
                 throw new BadLineDepartingException("LineDeparture doesn't exist", lineNumber, startTime);
@@ -792,11 +792,11 @@ namespace DL
             if (pair != null)
                 throw new BadPairStationException("Pair Station already exist", tmpPairStations.FirstStationNumber, tmpPairStations.LastStationNumber);
             XElement pairStationToAdd = new XElement("PairStation",
-                new XElement("FirstStationNumber", pair.FirstStationNumber),
-                new XElement("LastStationNumber", pair.LastStationNumber),
-                new XElement("Distance", pair.Distance),
-                new XElement("Time", pair.Time),
-                new XElement("MyActivity", pair.MyActivity)
+                new XElement("FirstStationNumber", tmpPairStations.FirstStationNumber),
+                new XElement("LastStationNumber", tmpPairStations.LastStationNumber),
+                new XElement("Distance", tmpPairStations.Distance),
+                new XElement("Time", tmpPairStations.Time),
+                new XElement("MyActivity", tmpPairStations.MyActivity)
                 );
             pairStationsXel.Add(pairStationToAdd);
             XMLTools.SaveListToXMLElement(pairStationsXel, @"PairStations.xml");

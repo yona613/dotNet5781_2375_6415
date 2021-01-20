@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace BO
 {
+    /// <summary>
+    /// Implements Frequency of departure of a line
+    /// </summary>
     public class LineDeparting
     {
         public int LineNumber  { get; set; }

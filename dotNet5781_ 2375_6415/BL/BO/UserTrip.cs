@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace BO
 {
+    [Obsolete("Class not used in program, needs more implementation")]
     public class UserTrip
     {
         public string UserName { get; set; }

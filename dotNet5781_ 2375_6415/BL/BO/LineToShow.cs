@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace BO
 {
+
+    /// <summary>
+    /// Implements line to be sent to upper layer
+    /// gets all data needed to be shawn
+    /// </summary>
     public class LineToShow
     {
         public int LineNumber { get; set; }

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace BO
 {
+    /// <summary>
+    /// Implements Line 
+    /// </summary>
     public class BusLine
     {
         public int LineNumber { get; set; }

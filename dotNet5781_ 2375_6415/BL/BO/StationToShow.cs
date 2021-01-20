@@ -8,6 +8,10 @@ using Microsoft.Maps.MapControl.WPF;
 
 namespace BO
 {
+    /// <summary>
+    /// Implements station to be sent to upper layer
+    /// Gets all data that is needed to be shawn
+    /// </summary>
     public class StationToShow
     {
         public int StationId { get; set; }
@@ -25,8 +29,5 @@ namespace BO
         public bool DigitalPanel { get; set; }
 
         public IEnumerable<string> Lines { get; set; }
-
-        public IEnumerable<int> LineNumbers { get; set; }
-        public Hashtable TimesToStation { get; set; }
     }
 }
