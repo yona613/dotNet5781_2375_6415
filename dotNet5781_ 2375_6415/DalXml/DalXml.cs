@@ -552,7 +552,7 @@ namespace DL
                    {
                        FirstStationNumber = int.Parse(pairStation.Element("FirstStationNumber").Value),
                        LastStationNumber = int.Parse(pairStation.Element("LastStationNumber").Value),
-                       Distance = double.Parse(pairStation.Element("Distance").Value),
+                       Distance = XmlConvert.ToDouble(pairStation.Element("Distance").Value),
                        Time = XmlConvert.ToTimeSpan(pairStation.Element("Time").Value),
                        MyActivity = (Activity)Enum.Parse(typeof(Activity), pairStation.Element("MyActivity").Value, true),
                    };
@@ -567,7 +567,7 @@ namespace DL
                                                      {
                                                          FirstStationNumber = int.Parse(pairStation.Element("FirstStationNumber").Value),
                                                          LastStationNumber = int.Parse(pairStation.Element("LastStationNumber").Value),
-                                                         Distance = double.Parse(pairStation.Element("Distance").Value),
+                                                         Distance = XmlConvert.ToDouble(pairStation.Element("Distance").Value),
                                                          Time = XmlConvert.ToTimeSpan(pairStation.Element("Time").Value),
                                                          MyActivity = (Activity)Enum.Parse(typeof(Activity), pairStation.Element("MyActivity").Value, true),
                                                      }
@@ -589,9 +589,9 @@ namespace DL
                                  {
                                      FirstStationNumber = int.Parse(pairStation.Element("FirstStationNumber").Value),
                                      LastStationNumber = int.Parse(pairStation.Element("LastStationNumber").Value),
-                                     Distance = double.Parse(pairStation.Element("Distance").Value),
+                                     Distance = XmlConvert.ToDouble(pairStation.Element("Distance").Value),
                                      Time = XmlConvert.ToTimeSpan(pairStation.Element("Time").Value),
-                                     MyActivity = (Activity)Enum.Parse(typeof(Activity), pairStation.Element("MyActivity").Value, true),
+                                     MyActivity = (Activity)Enum.Parse(typeof(Activity), pairStation.Element("MyActivity").Value),
                                  }).FirstOrDefault();
 
             if (pair != null)
@@ -610,7 +610,7 @@ namespace DL
                                  {
                                      FirstStationNumber = int.Parse(pairStation.Element("FirstStationNumber").Value),
                                      LastStationNumber = int.Parse(pairStation.Element("LastStationNumber").Value),
-                                     Distance = double.Parse(pairStation.Element("Distance").Value),
+                                     Distance = XmlConvert.ToDouble(pairStation.Element("Distance").Value),
                                      Time = XmlConvert.ToTimeSpan(pairStation.Element("Time").Value),
                                      MyActivity = (Activity)Enum.Parse(typeof(Activity), pairStation.Element("MyActivity").Value, true),
                                  }).FirstOrDefault();
@@ -652,7 +652,7 @@ namespace DL
                                  {
                                      FirstStationNumber = int.Parse(pairStation.Element("FirstStationNumber").Value),
                                      LastStationNumber = int.Parse(pairStation.Element("LastStationNumber").Value),
-                                     Distance = double.Parse(pairStation.Element("Distance").Value),
+                                     Distance = XmlConvert.ToDouble(pairStation.Element("Distance").Value),
                                      Time = XmlConvert.ToTimeSpan(pairStation.Element("Time").Value),
                                      MyActivity = (Activity)Enum.Parse(typeof(Activity), pairStation.Element("MyActivity").Value, true),
                                  }).FirstOrDefault();

@@ -1,0 +1,91 @@
+﻿<Window x:Class="PL.WPF.UserWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="UserWindow" Height="450" Width="800"  WindowState="Maximized" WindowStartupLocation="CenterScreen">
+    <Grid Name="mainGrid" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="6*"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0"
+                   Content="Lines"
+                   FontSize="30"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Stretch"
+                   VerticalContentAlignment="Center"
+                   HorizontalContentAlignment="Center"
+                   />
+            <DataGrid Grid.Row="1"
+                      BorderBrush="DarkCyan"
+                      BorderThickness="2"
+                      ColumnHeaderHeight="50"
+                      ColumnWidth="*"
+                      Name="lineDataGrid" 
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"                     
+                      ItemsSource="{Binding}" 
+                      MouseDoubleClick="ListDoubleMouseClick" Background="#FFFAFAFA" GridLinesVisibility="None"
+                      >
+                <DataGrid.Columns>
+                    <DataGridTextColumn x:Name="lineNumber"
+                                        Header="Line Number"
+                                        Binding="{Binding Path=LineNumber}"
+                                        FontSize="20"
+                                        />
+                    <DataGridTextColumn Header="Last Station"
+                                    Binding="{Binding Path=LastStationName}"
+                                    FontSize="20"
+                                    />
+                    <DataGridTextColumn Header="Area"
+                                    Binding="{Binding Path=LineArea}"
+                                    FontSize="20"
+                                    />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="6*"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0"
+                   Content="Stations"
+                   FontSize="30"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Stretch"
+                   VerticalContentAlignment="Center"
+                   HorizontalContentAlignment="Center"
+                   />
+            <DataGrid Grid.Row="1" 
+                      ColumnWidth="*"
+                      BorderBrush="DarkCyan"
+                      BorderThickness="2"
+                      Name="stationDataGrid" 
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"                     
+                      ItemsSource="{Binding}" 
+                      MouseDoubleClick="ListDoubleMouseClick"
+                  GridLinesVisibility="None"
+                  >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Number"
+                                        Binding="{Binding Path=StationId}"
+                                        FontSize="20"
+                                        />
+                    <DataGridTextColumn Header="Name"
+                                        Binding="{Binding Path=Name}"
+                                        FontSize="20"
+                                        />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </Grid>
+</Window>

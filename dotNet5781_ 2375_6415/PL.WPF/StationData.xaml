@@ -3,10 +3,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
-        xmlns:local="clr-namespace:PL.WPF"
+        xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"         
+        xmlns:local="clr-namespace:PL.WPF" 
         mc:Ignorable="d"
+        Closed="Window_Closed"
         Title="StationData" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <local:TimeSpanConverter x:Key="converter"/>
+    </Window.Resources>
     <Grid Name="mainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="2*"/>
@@ -152,6 +156,15 @@
                           GridLinesVisibility="None"
                           AutoGenerateColumns="False"
                           >
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <Binding Path="ArrivalTime" Converter="{StaticResource converter}"/>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </DataGrid.RowStyle>
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Line :"
                                         Binding="{Binding Path=LineNumber}"
@@ -164,20 +177,6 @@
                                         />
                 </DataGrid.Columns>
             </DataGrid>
-            <!--<ListBox Grid.Row="1" ItemsSource="{Binding Path=Lines}">
-                </ListBox>-->
-            <!--<ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Label Grid.Column="0" Name="line" Content="Line :"/>
-                                <Label Grid.Column="1" Name="number" Content="{Binding}"/>
-                            </Grid>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>-->
         </Grid>
     </Grid>
 </Window>

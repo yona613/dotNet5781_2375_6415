@@ -19,5 +19,7 @@ namespace BL
         public TimeSpan StopTime { get; set; }
         public IEnumerable<LineStationToShow> LineStations { get; set; }
         public string LastStation { get; set; }
+
+        public IEnumerable<PairStations> Stations { get; set; } 
     }
 }

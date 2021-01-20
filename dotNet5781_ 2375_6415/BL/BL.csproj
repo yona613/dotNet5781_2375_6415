@@ -51,7 +51,9 @@
   <ItemGroup>
     <Compile Include="BLApi\BLFactory.cs" />
     <Compile Include="BO\LineInTravelSimulator.cs" />
+    <Compile Include="Config.cs" />
     <Compile Include="LineDepartingSimulation.cs" />
+    <Compile Include="LineInTravel.cs" />
     <Compile Include="LineInTravelSimulator.cs" />
     <Compile Include="BLImp.cs" />
     <Compile Include="BO\Bus.cs" />
@@ -75,6 +77,7 @@
     <Compile Include="BO\Station.cs" />
     <Compile Include="BO\User.cs" />
     <Compile Include="BO\UserTrip.cs" />
+    <Compile Include="TravelSimulator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DalApi\DalApi.csproj">

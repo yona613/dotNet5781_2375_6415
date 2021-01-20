@@ -23,7 +23,6 @@ namespace BLApi
         IEnumerable<BusLine> GetAllBusLines();
         IEnumerable<BusLine> GetAllBusLinesBy(Predicate<BusLine> predicate);
         BusLine GetBusLine(int id);
-        LineToShow GetBusLineToShow(int id);
         //void AddLine(BusLine tmpBusLine, Station firstStation, Station lastStation);
         void AddLine(LineToShow tmpBusLine, List<BO.Station> stations, List<BO.LineStationToShow> stationsToShow);
         void UpdateLine(LineToShow lineToUpdate, int lineNumber);
@@ -111,10 +110,17 @@ namespace BLApi
         StationToShow getStationToShow(int stationNumber);
         #endregion
 
+        #region LineToShow
+
+        LineToShow GetBusLineToShow(int id);
+        IEnumerable<LineToShow> GetAllLinesToShow();
+
+        #endregion
+
         #region Simulation
         void StartSimulator(TimeSpan startTime, int Rate, Action<TimeSpan> updateTime);
         void StopSimulator();
-        void SetStationPanel(StationToShow station, Action<LineTiming> updatePanel);
+        void SetStationPanel(int station, Action<LineTiming> updatePanel);
         bool IsSimulator();
         #endregion
         IEnumerable<LineInTravelSimulator> GetLineInTravel();

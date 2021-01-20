@@ -186,26 +186,6 @@ namespace BL
             }
         }
 
-        public LineToShow GetBusLineToShow(int id)
-        {
-            DO.BusLine busLineDO;
-            try
-            {
-                busLineDO = dal.GetBusLine(id);
-                var lineToShow = (LineToShow)busLineDO.CopyPropertiesToNew(typeof(LineToShow));
-                lineToShow.LineDepartings = from lineDeparting in GetAllLineDepartingBy(x => x.LineNumber == id)
-                                            orderby lineDeparting.StartTime
-                                            let BOLineDeparting = (BO.LineDeparting)lineDeparting.CopyPropertiesToNew(typeof(BO.LineDeparting))
-                                            select BOLineDeparting;
-                lineToShow.LineStations = GetAllStationsOfLine(id);
-                return lineToShow;
-            }
-            catch (DO.BadLineException e)
-            {
-                throw new BOBadLineException(e.Message, id);
-            }
-        }
-
         //public void AddLine(BusLine tmpBusLine, Station firstStation, Station lastStation)
         //{
         //    AddStation(firstStation);
@@ -1431,6 +1411,49 @@ namespace BL
         }
         #endregion
 
+        #region LineToShow
+
+        public IEnumerable<LineToShow> GetAllLinesToShow()
+        {
+            var lines = GetAllBusLines().OrderBy(x => x.LineNumber);
+            List<LineToShow> lineToShowList = new List<LineToShow>() { };
+            foreach (var item in lines)
+            {
+                var lineToShow = (LineToShow)item.CopyPropertiesToNew(typeof(LineToShow));
+                lineToShow.LineDepartings = from lineDeparting in GetAllLineDepartingBy(x => x.LineNumber == item.LineNumber)
+                                            orderby lineDeparting.StartTime
+                                            let BOLineDeparting = (BO.LineDeparting)lineDeparting.CopyPropertiesToNew(typeof(BO.LineDeparting))
+                                            select BOLineDeparting;
+                lineToShow.LineStations = GetAllStationsOfLine(item.LineNumber);
+                lineToShow.LastStationName = lineToShow.LineStations.Last().Name;
+                lineToShowList.Add(lineToShow);
+            }
+            return from line in lineToShowList
+                   select line;
+        }
+
+        public LineToShow GetBusLineToShow(int id)
+        {
+            DO.BusLine busLineDO;
+            try
+            {
+                busLineDO = dal.GetBusLine(id);
+                var lineToShow = (LineToShow)busLineDO.CopyPropertiesToNew(typeof(LineToShow));
+                lineToShow.LineDepartings = from lineDeparting in GetAllLineDepartingBy(x => x.LineNumber == id)
+                                            orderby lineDeparting.StartTime
+                                            let BOLineDeparting = (BO.LineDeparting)lineDeparting.CopyPropertiesToNew(typeof(BO.LineDeparting))
+                                            select BOLineDeparting;
+                lineToShow.LineStations = GetAllStationsOfLine(id);
+                return lineToShow;
+            }
+            catch (DO.BadLineException e)
+            {
+                throw new BOBadLineException(e.Message, id);
+            }
+        }
+
+        #endregion
+
         #region Simulation
         public void StartSimulator(TimeSpan startTime, int rate, Action<TimeSpan> updateTime)
         {
@@ -1446,20 +1469,18 @@ namespace BL
             while (simulatorClock.Cancel != true)
             {
                 simulatorClock.Time = startTime + new TimeSpan(simulatorClock.stopWatch.ElapsedTicks * simulatorClock.Rate);
-                //simulatorClock.clockObserver(new TimeSpan(simulatorClock.Time.Hours, simulatorClock.Time.Minutes, simulatorClock.Time.Seconds));
                 Thread.Sleep(100);
             }
-            //SimulatorClock.Instance.Cancel = false;
         }
         public void StopSimulator()
         {
             SimulatorClock.Instance.Cancel = true;
         }
 
-        public void SetStationPanel(StationToShow station, Action<LineTiming> updatePanel)
+        public void SetStationPanel(int station, Action<LineTiming> updatePanel)
         {
             //foreach (var item in GetAllLineStationsBy(x => x.StationNumber == station.StationId))
-            foreach (var item in station.LineNumbers)
+            /*foreach (var item in station.LineNumbers)
             {
                 //TimeSpan timeToStation = TimeToStation(item.LineNumber, station.StationId);
                 TimeSpan timeToStation = (TimeSpan)station.TimesToStation[item];
@@ -1479,7 +1500,37 @@ namespace BL
                         }
                     }
                 }
-            }
+            }*/
+            TravelSimulator.Instance.StationNumber = station;
+            TravelSimulator.Instance.SetDigitalPanel += updatePanel;
+        }
+
+        public void SetStationPanel1(StationToShow station, Action<LineTiming> updatePanel)
+        {
+            //foreach (var item in GetAllLineStationsBy(x => x.StationNumber == station.StationId))
+            /*foreach (var item in station.LineNumbers)
+            {
+                //TimeSpan timeToStation = TimeToStation(item.LineNumber, station.StationId);
+                TimeSpan timeToStation = (TimeSpan)station.TimesToStation[item];
+                for (int i = 0; i < lineInTravelSimulators.Count; i++)
+                {
+                    if (lineInTravelSimulators[i].LineNumber == item)
+                    {
+                        if (lineInTravelSimulators[i].ElapsedTime <= timeToStation)
+                        {
+                            LineTiming mylineTiming = new LineTiming()
+                            {
+                                LineNumber = lineInTravelSimulators[i].LineNumber,
+                                LastStation = lineInTravelSimulators[i].LastStation,
+                                ArrivalTime = timeToStation - lineInTravelSimulators[i].ElapsedTime
+                            };
+                            updatePanel(mylineTiming);
+                        }
+                    }
+                }
+            }*/
+            TravelSimulator.Instance.StationNumber = station.StationId;
+            TravelSimulator.Instance.SetDigitalPanel += updatePanel;
         }
 
         void SendLinesToTravel()
@@ -1499,7 +1550,7 @@ namespace BL
                         StopTime = lineDeparting.StopTime,
                         Frequency = lineDeparting.Frequency,
                         LineStations = myLine.LineStations,
-                        LastStation = myLine.LineStations.Last().Name                    
+                        LastStation = myLine.LineStations.Last().Name
                     };
                     LineDepartingBw.RunWorkerAsync(myLineDeparting);
                 }
@@ -1510,7 +1561,7 @@ namespace BL
         {
             LineDepartingSimulation myLineDeparting = e.Argument as LineDepartingSimulation;
             TimeSpan travelTime = new TimeSpan();
-            foreach (var item in myLineDeparting.LineStations)
+            /*foreach (var item in myLineDeparting.LineStations)
             {
                 travelTime += item.Time;
             }
@@ -1518,7 +1569,7 @@ namespace BL
             {
                 if (i + travelTime >= SimulatorClock.Instance.Time)
                 {
-                    BackgroundWorker lineTravelBw = new BackgroundWorker();
+                    /*BackgroundWorker lineTravelBw = new BackgroundWorker();
                     lineTravelBw.DoWork += LineInTravelSimulatorDoWork;
                     LineInTravelSimulator myLineIntravel = new LineInTravelSimulator()
                     {
@@ -1530,13 +1581,33 @@ namespace BL
                     };
                     lineInTravelSimulators.Add(myLineIntravel);
                     lineTravelBw.RunWorkerAsync(myLineIntravel);
+                    TimeSpan elapsedTime = new TimeSpan();
+                    List<LineStationToShow> stations = new List<LineStationToShow>();
+            for (int j = 0; j < myLineDeparting.LineStations.Count(); j++)
+                    {
+                        if (i + elapsedTime + myLineDeparting.LineStations.ElementAt(j).Time < SimulatorClock.Instance.Time)
+                        {
+                            stations.Add(myLineDeparting.LineStations.ElementAt(j));
+                        }
+                    }
+                    BackgroundWorker lineTravelBw = new BackgroundWorker();
+                    lineTravelBw.DoWork += LineInTravelSimulatorDoWork1;
+                    LineInTravel myLineIntravel = new LineInTravel()
+                    {
+                        LineNumber = myLineDeparting.LineNumber,
+                        Key = Config.Number,
+                        LastStation = myLineDeparting.LastStation,
+                        LineStations = stations
+                    };
+                    lineTravelBw.RunWorkerAsync(myLineIntravel);
+                    //new Thread(LineInTravelSimulatorDoWork1).Start(new LineInTravel { LineNumber = myLineDeparting.LineNumber, Key = Config.Number, LastStation = myLineDeparting.LastStation, LineStations = stations });
                 }
-            }
+            }*/
             while (SimulatorClock.Instance.Cancel == false)
             {
                 if (myLineDeparting.StartTime <= SimulatorClock.Instance.Time && myLineDeparting.StopTime >= SimulatorClock.Instance.Time)
                 {
-                    BackgroundWorker lineTravelBw = new BackgroundWorker();
+                    /*BackgroundWorker lineTravelBw = new BackgroundWorker();
                     lineTravelBw.DoWork += LineInTravelSimulatorDoWork;
                     LineInTravelSimulator myLineIntravel = new LineInTravelSimulator()
                     {
@@ -1547,10 +1618,78 @@ namespace BL
                         LastStation = myLineDeparting.LastStation
                     };
                     lineInTravelSimulators.Add(myLineIntravel);
+                    lineTravelBw.RunWorkerAsync(myLineIntravel);*/
+                    BackgroundWorker lineTravelBw = new BackgroundWorker();
+                    lineTravelBw.DoWork += LineInTravelSimulatorDoWork1;
+                    LineInTravel myLineIntravel = new LineInTravel()
+                    { 
+                        LineNumber = myLineDeparting.LineNumber, 
+                        Key = Config.Number, 
+                        LastStation = myLineDeparting.LastStation, 
+                        LineStations = myLineDeparting.LineStations.ToList() 
+                    };
                     lineTravelBw.RunWorkerAsync(myLineIntravel);
+                    //new Thread(LineInTravelSimulatorDoWork1).Start(new LineInTravel { LineNumber = myLineDeparting.LineNumber, Key = Config.Number, LastStation =myLineDeparting.LastStation, LineStations = myLineDeparting.LineStations.ToList() });
                 }
                 Thread.Sleep((int)myLineDeparting.Frequency.TotalMilliseconds / SimulatorClock.Instance.Rate);
             }
+        }
+
+        void LineInTravelSimulatorDoWork1(object sender, DoWorkEventArgs e)
+        {
+            LineInTravel myLine = e.Argument as LineInTravel;
+            bool flag = false;
+            int station = TravelSimulator.Instance.StationNumber;
+            TimeSpan timeToStation;
+            for (int i = 0; i < myLine.LineStations.Count && SimulatorClock.Instance.Cancel == false; i++)
+            {
+                timeToStation = new TimeSpan();
+                for (int j = i ; j < myLine.LineStations.Count; j++)
+                {
+                    if (myLine.LineStations[i].StationId == TravelSimulator.Instance.StationNumber)
+                    {
+                        flag = true;
+                        station = TravelSimulator.Instance.StationNumber;
+                        timeToStation = TimeSpan.Zero;
+                        TravelSimulator.Instance.LineTiming = new LineTiming { Key = myLine.Key, ArrivalTime = timeToStation, LastStation = myLine.LastStation, LineNumber = myLine.LineNumber };
+                        break;
+                    }
+                    if (myLine.LineStations[j].StationId == TravelSimulator.Instance.StationNumber)
+                    {
+                        flag = true;
+                        station = TravelSimulator.Instance.StationNumber;
+                        TravelSimulator.Instance.LineTiming = new LineTiming { Key = myLine.Key, ArrivalTime = timeToStation, LastStation = myLine.LastStation, LineNumber = myLine.LineNumber };
+                        break;
+                    }
+                    timeToStation += myLine.LineStations[j].Time;
+                }
+                int timeToSleep = (int)(myLine.LineStations[i].Time.TotalMilliseconds / SimulatorClock.Instance.Rate);
+                while (timeToSleep >= 1000)
+                {
+                    Thread.Sleep(1000);
+                    timeToSleep -= 1000;
+                    for (int k = i; k < myLine.LineStations.Count; k++)
+                    {
+                        if (myLine.LineStations[k].StationId == TravelSimulator.Instance.StationNumber && TravelSimulator.Instance.StationNumber == station)
+                        {
+                            if (timeToStation != TimeSpan.Zero)// && TravelSimulator.Instance.StationNumber == station && flag)
+                            {
+                                timeToStation = timeToStation.Subtract(new TimeSpan(10000000 * SimulatorClock.Instance.Rate));
+                                TravelSimulator.Instance.LineTiming = new LineTiming { Key = myLine.Key, ArrivalTime = timeToStation, LastStation = myLine.LastStation, LineNumber = myLine.LineNumber };
+                            }
+                        }
+                    }
+                }           
+                Thread.Sleep(timeToSleep);
+                flag = false;
+            }
+            /*while (myLineInTravel.ElapsedTime < myLineInTravel.TravelTime && SimulatorClock.Instance.Cancel == false)
+            {
+                TimeSpan myElapsedTime = new TimeSpan(0, 1, 0) + new TimeSpan(0, 0, r.Next(0, 60)) - new TimeSpan(0, 0, r.Next(0, 7));
+                myLineInTravel.ElapsedTime += myElapsedTime;
+                Thread.Sleep(60000 / SimulatorClock.Instance.Rate);
+            }
+            lineInTravelSimulators.Remove(myLineInTravel);*/
         }
 
         void LineInTravelSimulatorDoWork(object sender , DoWorkEventArgs e)

@@ -46,25 +46,31 @@
                 Click="ExitBtn_Click"
                 />
         </Grid>
-        <Grid Name="simulatorGrid" Grid.Column="1">
+        <Grid Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="5*"/>
             </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Label Grid.Row="0" 
+            <Label Content="Simulator" Grid.Row="0" FontSize="30" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            <Grid Name="simulatorGrid" Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="0" 
                    Grid.Column="0" 
                    Content="Simulation Start Time :"
                    VerticalAlignment="Center"
                    HorizontalAlignment="Center"
                    FontSize="20"
                    />
-            <materialDesign:TimePicker Name="startTimePicker"
+                <materialDesign:TimePicker Name="startTimePicker"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"
                                        HorizontalContentAlignment="Center"
@@ -73,14 +79,14 @@
                                        Grid.Column="1"
                                        FontSize="20"
                                        />
-            <Label Grid.Row="1" 
+                <Label Grid.Row="1" 
                    Grid.Column="0" 
                    Content="Simulation Clock Rate :"
                    VerticalAlignment="Center"
                    HorizontalAlignment="Center"
                    FontSize="20"
                    />
-            <TextBox Name="rateTb"
+                <TextBox Name="rateTb"
                      Grid.Row="1"
                      Grid.Column="1"
                      VerticalAlignment="Center"
@@ -90,7 +96,7 @@
                      FontSize="20"
                      Text="00"
                      />
-            <Label Grid.Row="2"
+                <Label Grid.Row="2"
                    Grid.Column="0"
                    Content="Simulation Time :"
                    VerticalAlignment="Center"
@@ -99,7 +105,7 @@
                    HorizontalContentAlignment="Right"
                    FontSize="20"
                    />
-            <Label Grid.Row="2" 
+                <Label Grid.Row="2" 
                    Grid.Column="1"
                    Name="timeLbl"
                    HorizontalAlignment="Stretch"
@@ -109,7 +115,7 @@
                    FontSize="20"
                    Content="00:00:00"
                    />
-            <Button Name="startBtn"
+                <Button Name="startBtn"
                     Grid.Column="0"
                     Grid.Row="3"
                     Content="Start"
@@ -117,7 +123,7 @@
                     Click="startBtn_Click"
                     Background="Green"
                 />
-            <Button Name="stopBtn"
+                <Button Name="stopBtn"
                     Grid.Column="2"
                     Content="Stop"
                     Click="stopBtn_Click"
@@ -126,6 +132,7 @@
                     Opacity="100"
                     Background="red"
                     />
+            </Grid>
         </Grid>
     </Grid>
 </Window>
