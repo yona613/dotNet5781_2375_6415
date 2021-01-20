@@ -1,16 +1,17 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 using BLApi;
+using BO;
 
 namespace PL.WPF
 {
     /// <summary>  
     /// Interaction logic for MainWindow.xaml  
     /// </summary>   
-    public partial class ManagerLogin : Window
+    public partial class UserLogin : Window
     {
         public static IBL bl;
-        public ManagerLogin()
+        public UserLogin()
         {
             InitializeComponent();
             bl = BLFactory.GetBL();
@@ -33,7 +34,7 @@ namespace PL.WPF
         /// <param name="e"></param>
         private void buttonRegister_Click(object sender, RoutedEventArgs e)
         {
-            new Registration(true).ShowDialog();
+            new Registration(false).ShowDialog();
             Close();
         }
 
@@ -72,8 +73,17 @@ namespace PL.WPF
                     var user = bl.GetUser(name);
                     if (password == user.Password)
                     {
-                        new MainWindow().Show();
-                        Close();
+                        if (user.Permission == Permit.User)
+                        {
+                            new UserWindow().Show();
+                            Close();
+                        }
+                        else
+                        {
+                            errormessage.Text = "Sorry! Please enter correct user account";
+                            textBoxName.Clear();
+                            passwordBox1.Clear();
+                        }
                     }
                     else
                     {

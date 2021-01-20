@@ -17,9 +17,9 @@ namespace BL
         #region Singleton
         static readonly SimulatorClock instance = new SimulatorClock();
 
-        static SimulatorClock() { }
+        static SimulatorClock() {}
 
-        SimulatorClock() { }
+        SimulatorClock() { this.Cancel = true; }
 
         public static SimulatorClock Instance { get => instance; }
         #endregion

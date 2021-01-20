@@ -9,10 +9,12 @@ namespace PL.WPF
     /// </summary>  
     public partial class Registration : Window
     {
+        bool IsManager;
         public static IBL bl;
-        public Registration()
+        public Registration(bool tmpIsMAnager)
         {
             InitializeComponent();
+            IsManager = tmpIsMAnager;
             bl = BLFactory.GetBL();
         }
 
@@ -23,8 +25,14 @@ namespace PL.WPF
         /// <param name="e"></param>
         private void Login_Click(object sender, RoutedEventArgs e)
         {
-            ManagerLogin login = new ManagerLogin();
-            login.Show();
+            if (IsManager)
+            {
+                new ManagerLogin().Show();
+            }
+            else
+            {
+                new UserLogin().Show();
+            }
             Close();
         }
 
@@ -94,9 +102,16 @@ namespace PL.WPF
                 BO.User user = new BO.User() //creates new user to register
                 {
                     UserName = textBoxName.Text,
-                    Password = passwordBox1.Password,
-                    Permission = BO.Permit.Admin
+                    Password = passwordBox1.Password
                 };
+                if (IsManager)
+                {
+                    user.Permission = BO.Permit.Admin;
+                }
+                else
+                {
+                    user.Permission = BO.Permit.User;
+                }
                 errormessage.Text = "";
                 try
                 {

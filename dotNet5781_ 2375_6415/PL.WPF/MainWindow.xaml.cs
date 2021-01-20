@@ -198,15 +198,11 @@ namespace PL.WPF
             }
             else if (stationChB.IsChecked == true)
             {
-                //for process of digital panel, because we need to be able to cancell process when closing window
-                BackgroundWorker digitalPanelBw = new BackgroundWorker();
-                digitalPanelBw.WorkerSupportsCancellation = true;
-                new StationData(bl.getStationToShow((stationDataGrid.SelectedItem as BO.Station).StationId), digitalPanelBw).ShowDialog();
-                digitalPanelBw.CancelAsync();//when window closed cancel backgroundworker's work
+                new StationData(bl.getStationToShow((stationDataGrid.SelectedItem as BO.Station).StationId)).ShowDialog();
             }
             else if (lineChB.IsChecked == true)
             {
-                new LineData(MainWindow.bl.GetBusLineToShow((lineDataGrid.SelectedItem as BO.BusLine).LineNumber)).ShowDialog();
+                new LineData(bl.GetBusLineToShow((lineDataGrid.SelectedItem as BO.BusLine).LineNumber)).ShowDialog();
             }
         }
     }
