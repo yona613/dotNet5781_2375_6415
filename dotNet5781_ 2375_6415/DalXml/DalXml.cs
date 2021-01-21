@@ -634,6 +634,8 @@ namespace DL
             var lineDepartingXel = XMLTools.LoadListFromXMLElement(@"LineDeparting.xml");
             LineDeparting line = (from myLineDeparting in lineDepartingXel.Elements()
                                   where myLineDeparting.Element("MyActivity").Value == "On"
+                                  where int.Parse(myLineDeparting.Element("LineNumber").Value) == tmpLineDeparting.LineNumber
+                                  where XmlConvert.ToTimeSpan(myLineDeparting.Element("StartTime").Value) == tmpLineDeparting.StartTime
                                   select new LineDeparting()
                                   {
                                       LineNumber = int.Parse(myLineDeparting.Element("LineNumber").Value),
@@ -683,6 +685,8 @@ namespace DL
             var lineDepartingXel = XMLTools.LoadListFromXMLElement(@"LineDeparting.xml");
             LineDeparting line = (from myLineDeparting in lineDepartingXel.Elements()
                                   where myLineDeparting.Element("MyActivity").Value == "On"
+                                  where int.Parse(myLineDeparting.Element("LineNumber").Value) == lineDepartingToUpdate.LineNumber
+                                  where XmlConvert.ToTimeSpan(myLineDeparting.Element("StartTime").Value) == lineDepartingToUpdate.StartTime
                                   select new LineDeparting()
                                   {
                                       LineNumber = int.Parse(myLineDeparting.Element("LineNumber").Value),
