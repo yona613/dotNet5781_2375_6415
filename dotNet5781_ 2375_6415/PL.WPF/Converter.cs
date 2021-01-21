@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Media;
 using System.Windows.Data;
 using System.Windows.Media;
 
@@ -22,6 +23,7 @@ namespace PL.WPF
         {
             if ((TimeSpan)value <= new TimeSpan(0,3,0))
             {
+                PlaySound(@"button-42.wav");
                 return Brushes.Red;
             }
             return Brushes.White;
@@ -30,6 +32,13 @@ namespace PL.WPF
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
+        }
+
+        private static void PlaySound(string path)
+        {
+            var sp = new SoundPlayer(path);
+            sp.Load();
+            sp.Play();
         }
     }
 }
