@@ -27,7 +27,7 @@ namespace BL
             while (SimulatorClock.Instance.Cancel == false) //works only when simulator is on
             {
                 //if it's time to send lines to travel
-                if (myLineDeparting.StartTime <= SimulatorClock.Instance.Time && myLineDeparting.StopTime >= SimulatorClock.Instance.Time)
+                if (((myLineDeparting.StartTime.Hours < SimulatorClock.Instance.Time.Hours ) || (myLineDeparting.StartTime.Hours == SimulatorClock.Instance.Time.Hours && myLineDeparting.StartTime.Minutes <= SimulatorClock.Instance.Time.Minutes )) && ((myLineDeparting.StopTime.Hours > SimulatorClock.Instance.Time.Hours) ||  (myLineDeparting.StopTime.Hours == SimulatorClock.Instance.Time.Hours  && myLineDeparting.StopTime.Minutes >= SimulatorClock.Instance.Time.Minutes)))
                 {
                     //send new line to travel in a different thread
                     BackgroundWorker lineTravelBw = new BackgroundWorker();
