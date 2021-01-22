@@ -23,7 +23,7 @@ namespace PL.WPF
         {
             if ((TimeSpan)value <= new TimeSpan(0,3,0))
             {
-                PlaySound(@"button-42.wav");
+                PlaySound(@"button-42.wav"); //play sound
                 return Brushes.Red;
             }
             return Brushes.White;
@@ -34,6 +34,10 @@ namespace PL.WPF
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// To play a sound when we need
+        /// </summary>
+        /// <param name="path">Path of file of sound</param>
         private static void PlaySound(string path)
         {
             var sp = new SoundPlayer(path);

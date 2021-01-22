@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <ArrayOfUser xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <User>
     <UserName>Yona</UserName>
@@ -70,6 +70,18 @@
     <UserName>elyassaf</UserName>
     <Password>elyassaf</Password>
     <Permission>Admin</Permission>
+    <MyActivity>On</MyActivity>
+  </User>
+  <User>
+    <UserName>audelia</UserName>
+    <Password>1234</Password>
+    <Permission>User</Permission>
+    <MyActivity>On</MyActivity>
+  </User>
+  <User>
+    <UserName>asnat</UserName>
+    <Password>lafolle</Password>
+    <Permission>User</Permission>
     <MyActivity>On</MyActivity>
   </User>
 </ArrayOfUser>
