@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 namespace BL
 {
     /// <summary>
-    /// Implements Travle Simulator that is observer of station
-    /// when it gets new value in lime timing it triggers all fonctions registered
+    /// Implements Travel Simulator that is observer of station
+    /// when it gets new value in lime timing it triggers all functions registered
     /// in the event
     /// </summary>
     class TravelSimulator

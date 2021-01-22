@@ -1865,40 +1865,68 @@ namespace BL
         #endregion
 
         #region Simulation
+
+        /// <summary>
+        /// Starts the simulation
+        /// Starts the clock of the simulator 
+        /// Starts the action of sending buses to travel
+        /// </summary>
+        /// <param name="startTime">Time of start of simulation</param>
+        /// <param name="rate">Rate of the clock of the simulation</param>
+        /// <param name="updateTime">Action sent to update front end</param>
         public void StartSimulator(TimeSpan startTime, int rate, Action<TimeSpan> updateTime)
         {
-            SimulatorClock.Instance.Cancel = false;
-            SimulatorClock simulatorClock = SimulatorClock.Instance;
-            simulatorClock.Rate = rate;
-            simulatorClock.stopWatch.Restart();
-            simulatorClock.ClockObserver += updateTime;
-            simulatorClock.Time = startTime;
-            SendLinesToTravel();
-            while (simulatorClock.Cancel != true)
+            SimulatorClock simulatorClock = SimulatorClock.Instance; //gets simulator instance
+            simulatorClock.Cancel = false; //not cancelling
+            simulatorClock.Rate = rate; //set the rate
+            simulatorClock.stopWatch.Restart(); //starts the timer
+            simulatorClock.ClockObserver += updateTime; //Observer (event) that fires when time is updated
+            simulatorClock.Time = startTime; //set start time
+            SendLinesToTravel(); //starts action of sending lines to travel
+            while (simulatorClock.Cancel != true) //works untill we stop the simulator
             {
+                //sets new time
                 simulatorClock.Time = startTime + new TimeSpan(simulatorClock.stopWatch.ElapsedTicks * simulatorClock.Rate);
-                Thread.Sleep(100);
+                Thread.Sleep(100);//in order to get updates by seconds(simulation seconds)
             }
         }
+
+        /// <summary>
+        /// Function that stops the simulator
+        /// </summary>
         public void StopSimulator()
         {
             SimulatorClock.Instance.Cancel = true;
         }
 
+        /// <summary>
+        /// Set a station to be the observed of the travel simulator
+        /// </summary>
+        /// <param name="station">Observed station</param>
+        /// <param name="updatePanel">Function to register to event of the observer</param>
         public void SetStationPanel(int station, Action<LineTiming> updatePanel)
         {
-            TravelSimulator.Instance.StationNumber = station;
-            TravelSimulator.Instance.SetDigitalPanel += updatePanel;
+            TravelSimulator.Instance.StationNumber = station; //sets station
+            TravelSimulator.Instance.SetDigitalPanel += updatePanel; //registers function
         }
 
+
+        /// <summary>
+        /// Function that starts Line Departings to send lines to travel
+        /// Each line departing is a thread 
+        /// </summary>
         public void SendLinesToTravel()
         {
-            foreach (var line in GetAllBusLines().OrderBy(x => x.LineNumber))
+            foreach (var line in GetAllBusLines().OrderBy(x => x.LineNumber)) //for all bus lines
             {
+                //for all Line Departinf of this line
                 foreach (var lineDeparting in GetAllLineDepartingBy(x => x.LineNumber == line.LineNumber).OrderBy(x => x.StartTime))
                 {
+                    //Send Line Departing to set lines to travel in a new thread
                     BackgroundWorker LineDepartingBw = new BackgroundWorker();
                     LineDepartingBw.DoWork += SimulationLogic.LineDepartingDoWork;
+
+                    //gets all the data for the specific line in order to send it to the thread
                     LineToShow myLine = GetBusLineToShow(lineDeparting.LineNumber);
                     LineDepartingSimulation myLineDeparting = new LineDepartingSimulation()
                     {
@@ -1909,10 +1937,15 @@ namespace BL
                         LineStations = myLine.LineStations,
                         LastStation = myLine.LineStations.Last().Name
                     };
-                    LineDepartingBw.RunWorkerAsync(myLineDeparting);
+                    LineDepartingBw.RunWorkerAsync(myLineDeparting);//Start thread
                 }
             }
         }
+
+        /// <summary>
+        /// Function to check if simulator is working
+        /// </summary>
+        /// <returns>Is simulator working ?</returns>
         public bool IsSimulator()
         {
             return SimulatorClock.Instance.Cancel != true;
