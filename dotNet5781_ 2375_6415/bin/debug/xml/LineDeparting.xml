@@ -12,7 +12,7 @@
     <StartTime>PT7H</StartTime>
     <Frequency>PT15M</Frequency>
     <StopTime>PT22H</StopTime>
-    <MyActivity>On</MyActivity>
+    <MyActivity>Off</MyActivity>
   </LineDeparting>
   <LineDeparting>
     <LineNumber>3</LineNumber>
@@ -47,7 +47,7 @@
     <StartTime>PT7H</StartTime>
     <Frequency>PT15M</Frequency>
     <StopTime>PT22H</StopTime>
-    <MyActivity>On</MyActivity>
+    <MyActivity>Off</MyActivity>
   </LineDeparting>
   <LineDeparting>
     <LineNumber>8</LineNumber>
