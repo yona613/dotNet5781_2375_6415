@@ -41,6 +41,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		bin\debug\xml\BusLine.xml = bin\debug\xml\BusLine.xml
 		bin\debug\button-42.wav = bin\debug\button-42.wav
 		bin\debug\config.xml = bin\debug\config.xml
+		bin\debug\xml\ConfigKeys.xml = bin\debug\xml\ConfigKeys.xml
 		bin\debug\Icon.ico = bin\debug\Icon.ico
 		bin\debug\xml\LineDeparting.xml = bin\debug\xml\LineDeparting.xml
 		bin\debug\xml\LineStation.xml = bin\debug\xml\LineStation.xml

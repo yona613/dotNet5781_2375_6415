@@ -80,10 +80,5 @@ namespace PL.WPF
                 bl.SetStationPanel(-1, null); //set observed station to -1
             }
         }
-
-        private void digitalPanelDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
     }
 }

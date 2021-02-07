@@ -156,11 +156,16 @@ namespace DL
         public void AddLine(BusLine tmpBusLine)
         {
             var lineList = XMLTools.LoadListFromXMLSerializer<BusLine>(@"BusLine.xml");
+            var keys = XMLTools.LoadListFromXMLElement(@"ConfigKeys.xml");
+            int key = XmlConvert.ToInt32(keys.Element("Lines").Element("Key").Value);
             if (lineList.FirstOrDefault(Line => Line.LineNumber == tmpBusLine.LineNumber && Line.MyActivity == Activity.On) != null)
                 throw new BadLineException("the Line already exist", tmpBusLine.LineNumber);
             BusLine myBusLine = tmpBusLine.Clone();
-            myBusLine.Key = Config.BusLineCounter;
+            myBusLine.Key = key;
             lineList.Add(myBusLine);
+            key++;
+            keys.Element("Lines").Element("Key").SetValue(key);
+            XMLTools.SaveListToXMLElement(keys, @"ConfigKeys.xml");
             XMLTools.SaveListToXMLSerializer<BusLine>(lineList, @"BusLine.xml");
         }
         /// <summary>
